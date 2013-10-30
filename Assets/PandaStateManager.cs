@@ -10,7 +10,7 @@ public class PandaStateManager : MonoBehaviour {
     // OnUpdate
 
     // GetReadyToExit 
-     // <-- ReadyToExit
+     // <-- ReadyToExitsss
 
 	// Use this for initialization
 	void Start () {
