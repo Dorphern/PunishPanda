@@ -5,7 +5,11 @@ public enum CollidableTypes {
 	
 	None,
 	Panda,
-	Wall
+	Wall,
+	
+	//startTraps after 100 to give space for other tags
+	
+	startTraps = 100
 	
 }
 
