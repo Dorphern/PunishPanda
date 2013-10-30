@@ -1,24 +1,85 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/**
+ * PandaStateManager
+ * Manages the current state, doesn't set it, just broardcasts events
+ * when entering and exiting states. For the pandastate itself it also calls onUpdate.
+ **/
+
+
+public enum PandaState
+{
+    Standing,           /* Is standing still */
+    Walking,            /* Is walking in some direction */
+    PushingFinger,      /* Is Pushing a finger (not moving) */
+    HoldingOntoFinger,  /* Holding on to the finger (in the air) */
+    Died                /* The panda is DEAD! (hahahah) */
+}
+
+public enum PandaDirection
+{
+    Left,
+    Right
+}
+
 public class PandaStateManager : MonoBehaviour {
 
-    // Exit event 
+    // Event Handlers
+    delegate void StateHandler(PandaState state);
+    delegate void DirectionHandler(PandaDirection dir);
 
-    // Enter event
+    public event StateHandler onStateExit;
+    public event StateHandler onStateEnter;
+    public event StateHandler onStateUpdate;
 
-    // OnUpdate
+    public event DirectionHandler onDirectionExit;
+    public event DirectionHandler onDirectionEnter;
 
-    // GetReadyToExit 
-     // <-- ReadyToExitsss
+    [SerializeField] private PandaState initState = PandaState.Standing;
+    private PandaState currentState;
+    private PandaDirection currentDirection;
 
-	// Use this for initialization
-	void Start () {
-	
+    # region Public Methods
+
+    // Change the state of the panda
+    public void ChangeState (PandaState state)
+    {
+        if (onStateExit != null) onStateExit(currentState);
+        currentState = state;
+        if (onStateEnter != null) onStateEnter(currentState);
+    }
+
+    public PandaState GetState ()
+    {
+        return currentState;
+    }
+
+    public void ChangeDirection (PandaDirection direction)
+    {
+        if (onDirectionExit != null) onDirectionExit(currentDirection);
+        currentDirection = direction;
+        if (onDirectionEnter != null) onDirectionEnter(currentDirection);
+    }
+
+    public PandaDirection GetDirection ()
+    {
+        return currentDirection;
+    }
+
+    # endregion
+
+    # region Private Methods
+    void Start () 
+    {
+        currentState = initState;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () 
+    {
+        if (onStateUpdate != null) onStateUpdate(currentState);
+    }
+
+    # endregion
 }
