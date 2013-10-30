@@ -61,6 +61,7 @@ public class SlapEvent : MonoBehaviour
             Slap(-hitSpeed);
         }
 
+
         myTransform.Translate((new Vector3(currentSpeed, 0 , 0)) * Time.deltaTime);
     }
 
