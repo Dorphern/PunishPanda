@@ -46,6 +46,10 @@ public class PandaStateManager : MonoBehaviour {
     // Change the state of the panda
     public void ChangeState (PandaState state)
     {
+        if (state == currentState)
+        {
+            return;
+        }
         if (onStateExit != null) onStateExit(currentState);
         currentState = state;
         if (onStateEnter != null) onStateEnter(currentState);
@@ -58,6 +62,10 @@ public class PandaStateManager : MonoBehaviour {
 
     public void ChangeDirection (PandaDirection direction)
     {
+        if (direction == currentDirection)
+        {
+            return;
+        }
         if (onDirectionExit != null) onDirectionExit(currentDirection);
         currentDirection = direction;
         if (onDirectionEnter != null) onDirectionEnter(currentDirection);
