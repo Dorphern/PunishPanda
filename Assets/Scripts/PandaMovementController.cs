@@ -10,8 +10,7 @@ public class PandaMovementController : MonoBehaviour {
 	public Lifting lifting;
 	 
 	private CharacterController controller;
-	private CollisionController collisionController;
-	private PandaStateManager stateManager;
+	private PandaStateManager pandaStateManager;
 	//PLACE-HOLDER PANDA STATES:
 	private bool walkingRight;
 	private bool walkingLeft;
@@ -43,18 +42,12 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	void Awake ()
 	{
-		collisionController = GetComponent<CollisionController>();
 	    controller = GetComponent<CharacterController>();
-		stateManager = GetComponent<PandaStateManager>();
+		pandaStateManager = GetComponent<PandaStateManager>();
 		
 		//START WALKING RIGHT INITIALLY..
 		walkingRight = true;
-		walkingLeft = false;
-		
-		//CHANGE DIRECTION when hits pandas or walls
-		collisionController.OnPandaHit += ChangeDirection;
-		collisionController.OnWallHit += ChangeDirection;
-		
+		walkingLeft = false;		
 	}
 	 
 	void FixedUpdate ()
@@ -65,7 +58,7 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	void Update ()
 	{	
-		switch(stateManager.GetState())
+		switch(pandaStateManager.GetState())
 		{
 			case PandaState.HoldingOntoFinger:
 				LiftMovement();
@@ -96,32 +89,18 @@ public class PandaMovementController : MonoBehaviour {
 		
 		ApplyGravity();
 		
-		if(walkingRight == true  && walkingLeft == false)
+		if(pandaStateManager.GetDirection() == PandaDirection.Right)
 		{
 			controller.Move(Vector3.right * movement.walkSpeed * Time.deltaTime);
 		}
 		
-		if(walkingLeft == true && walkingRight == false)
+		if(pandaStateManager.GetDirection() == PandaDirection.Left)
 		{
 			controller.Move(Vector3.left * movement.walkSpeed * Time.deltaTime);
 		}
 		 
 		//USING "OFFSET" FOR APPLYING GRAVITY and/or JUMPING
 		controller.Move(movement.offset * Time.deltaTime);
-	}
-	
-	void ChangeDirection(ControllerColliderHit hit)
-	{
-		if(walkingRight == true)
-		{
-			walkingLeft = true;
-			walkingRight = false;
-		}
-		else if(walkingLeft == true)
-		{
-			walkingRight = true;
-			walkingLeft = false;
-		}
 	}
 
 	#region JumpingCode (NOT IN USE)
