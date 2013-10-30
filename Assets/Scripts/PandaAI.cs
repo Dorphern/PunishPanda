@@ -5,20 +5,23 @@ using System.Collections;
 
 public class PandaAI : MonoBehaviour {
 
-	PandaStateManager _pandaStateManager;
-	CollisionController _collisionController;
+	PandaStateManager pandaStateManager;
+	CollisionController collisionController;
 	
 	
 	
 	# region Private Methods
 	// Use this for initialization
-	void Start () {
-		_pandaStateManager = GetComponent;
-	}
+	void Start() 
+	{
+		pandaStateManager = GetComponent<PandaStateManager>();
+		collisionController = GetComponent<CollisionController>();
+	}		
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update() 
+	{
+		
 	}
 	
 	# endregion

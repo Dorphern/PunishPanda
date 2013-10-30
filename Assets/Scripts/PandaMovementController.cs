@@ -122,7 +122,6 @@ public class PandaMovementController : MonoBehaviour {
 			walkingRight = true;
 			walkingLeft = false;
 		}
-		
 	}
 
 	#region JumpingCode (NOT IN USE)
