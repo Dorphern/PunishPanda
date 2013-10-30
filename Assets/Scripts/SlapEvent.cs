@@ -38,8 +38,8 @@ public class SlapEvent : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            Vector3 
-            mousePosStart = Input.mousePosition;
+            Vector3 tempMouStart = Input.mousePosition;
+            mousePosStart = new Vector3(tempMouStart.x, tempMouStart.y, 10);
         }
         if(Input.GetMouseButtonUp(0))
         {
