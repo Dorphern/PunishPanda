@@ -5,7 +5,7 @@ public enum CollidableTypes {
 	
 	None,
 	Panda,
-	Example
+	Wall
 	
 }
 

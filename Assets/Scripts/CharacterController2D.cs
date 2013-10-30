@@ -56,7 +56,8 @@ private CharacterController controller;
 		
 		//CHANGE DIRECTION when hits pandas or walls
 		_collisionController.OnPandaHit += changeDirection;
-		_collisionController.OnExampleHit += changeDirection;
+		_collisionController.OnWallHit += changeDirection;
+		
 	}
 	 
 	void  FixedUpdate (){
