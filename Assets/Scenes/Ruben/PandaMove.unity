@@ -150,11 +150,11 @@ GameObject:
   - 4: {fileID: 72634738}
   - 33: {fileID: 72634737}
   - 23: {fileID: 72634736}
-  - 114: {fileID: 72634735}
-  - 114: {fileID: 72634734}
   - 143: {fileID: 72634733}
-  - 114: {fileID: 72634732}
   - 136: {fileID: 72634739}
+  - 114: {fileID: 72634732}
+  - 114: {fileID: 72634734}
+  - 114: {fileID: 72634735}
   m_Layer: 0
   m_Name: panda1
   m_TagString: Untagged
@@ -170,15 +170,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 72634731}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bea1e008e8e9c34486123967e80a0cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 0}
-  movement:
-    gravity: 20
-    jumpHeight: 8
-    walkSpeed: 3
-  _collisionController: {fileID: 72634734}
+  type: 0
 --- !u!143 &72634733
 CharacterController:
   m_ObjectHideFlags: 0
@@ -201,7 +196,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 72634731}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b0c6bc603f6904681add8c0cf7dbbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c7527d2301eb8946a58a7095e33bb69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &72634735
@@ -212,10 +207,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 72634731}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8eec387bccc90408af230420cf8719, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ba3df1058823834b8e60e3222018a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  spawnPoint: {fileID: 0}
+  movement:
+    enabled: 1
+    gravity: 20
+    jumpHeight: 8
+    walkSpeed: 3
+    rotate: 0
+    rotateIn3D: 0
+    rotationSmoothing: 10
+  _collisionController: {fileID: 72634734}
+  liftingState: 0
 --- !u!23 &72634736
 Renderer:
   m_ObjectHideFlags: 0
@@ -292,10 +297,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 172090683}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8eec387bccc90408af230420cf8719, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 3
 --- !u!23 &172090685
 Renderer:
   m_ObjectHideFlags: 0
@@ -500,7 +505,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 913080144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8eec387bccc90408af230420cf8719, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
@@ -647,10 +652,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1548561842}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8eec387bccc90408af230420cf8719, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 3
 --- !u!1 &1575884248
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,10 +944,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1888107484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca8eec387bccc90408af230420cf8719, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 0
 --- !u!114 &1888107492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,7 +956,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1888107484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b0c6bc603f6904681add8c0cf7dbbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c7527d2301eb8946a58a7095e33bb69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1888107493
@@ -962,15 +967,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1888107484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bea1e008e8e9c34486123967e80a0cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ba3df1058823834b8e60e3222018a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
   movement:
+    enabled: 1
     gravity: 20
     jumpHeight: 8
     walkSpeed: 3
+    rotate: 0
+    rotateIn3D: 0
+    rotationSmoothing: 10
   _collisionController: {fileID: 1888107492}
+  liftingState: 0
 --- !u!143 &1888107494
 CharacterController:
   m_ObjectHideFlags: 0

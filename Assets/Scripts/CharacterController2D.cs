@@ -15,6 +15,7 @@ private CharacterController controller;
 	//PROTOTYPE PANDA STATES:
 	private bool walkingRight;
 	private bool walkingLeft;
+	public bool liftingState;
  
 	/***********************************************************************
 	 * Classes
@@ -73,12 +74,12 @@ private CharacterController controller;
 		walkingRight = true;
 		walkingLeft = false;
 		
-		_collisionController.OnPandaHit += changeDirection;
+		//_collisionController.OnPandaHit += changeDirection;
 	}
 
     void Stop()
     {
-        _collisionController.OnPandaHit -= changeDirection;
+        //_collisionController.OnPandaHit -= changeDirection;
     }
 	 
 	void  FixedUpdate (){
