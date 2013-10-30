@@ -68,7 +68,7 @@ public class CollisionController : MonoBehaviour {
 		
     }
 	
-	void OnTriggerExit(Collider other) 
+	void OnTriggerExit(Collider c) 
 	{
         
 		//Default delegate
@@ -76,7 +76,7 @@ public class CollisionController : MonoBehaviour {
 			DefaultOnTriggerExit(c);
     }
 	
-	void OnTriggerStay(Collider other) 
+	void OnTriggerStay(Collider c) 
 	{
         
 		//Default delegate
