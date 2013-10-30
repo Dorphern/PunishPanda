@@ -3,8 +3,6 @@ using System.Collections;
 
 public class SlapEvent : MonoBehaviour
 {
-
-
     public float hitSpeed;
 
     Transform myTransform;
@@ -16,9 +14,10 @@ public class SlapEvent : MonoBehaviour
     private Vector3 mousePosStart;
     private Vector3 mousePosEnd;
     private Vector3 mouseVector;
+    private Vector3 swipeVector;
 
     # region public
-    public void Slap(float _hitSpeed)
+    public void Slap(float _hitSpeed, Vector3 swipe)
     {
             StartCoroutine(BoostSpeed(timeBoost, _hitSpeed));
             
@@ -34,8 +33,10 @@ public class SlapEvent : MonoBehaviour
     }
 
     // Update is called once per frame
+
     void FixedUpdate() {
 
+        // SWIPE
         if(Input.GetMouseButtonDown(0))
         {
             Vector3 tempMouStart = Input.mousePosition;
@@ -43,22 +44,19 @@ public class SlapEvent : MonoBehaviour
         }
         if(Input.GetMouseButtonUp(0))
         {
-            mousePosEnd = Input.mousePosition;
+            Vector3 tempMouEnd = Input.mousePosition;
+            mousePosEnd = new Vector3(tempMouEnd.x, tempMouEnd.y, 0);
             mouseVector = (mousePosEnd - mousePosStart);
-            Debug.DrawRay(mousePosStart, mouseVector);
+           
         }
-        Debug.DrawRay(mousePosStart, mouseVector);
-        Debug.Log("MouseVEctor " + mouseVector);
-        Debug.Log("MouseEnd " + mousePosEnd);
-        Debug.Log("MouseSTa " + mousePosStart);
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            Slap(hitSpeed);
+            Slap(hitSpeed,swipeVector);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Slap(-hitSpeed);
+            Slap(-hitSpeed, swipeVector);
         }
 
 
@@ -72,7 +70,9 @@ public class SlapEvent : MonoBehaviour
         gameObject.renderer.material.color = Color.red;
 
 
-        // Call hitAnimation
+        // Call hitAnimation (direction)
+
+        // Call bloodSpatter with (direction/angle)
 
 
         yield return new WaitForSeconds(waitForSeconds);
