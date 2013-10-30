@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/**
+ * PandaStateManager
+ * Manages the current state, doesn't set it, just broardcasts events
+ * when entering and exiting states. For the pandastate itself it also calls onUpdate.
+ **/
+
+
 public enum PandaState
 {
     Standing,           /* Is standing still */
