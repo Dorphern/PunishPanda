@@ -27,8 +27,8 @@ public enum PandaDirection
 public class PandaStateManager : MonoBehaviour {
 
     // Event Handlers
-    delegate void StateHandler(PandaState state);
-    delegate void DirectionHandler(PandaDirection dir);
+    public delegate void StateHandler(PandaState state);
+    public delegate void DirectionHandler(PandaDirection dir);
 
     public event StateHandler onStateExit;
     public event StateHandler onStateEnter;
