@@ -6,8 +6,7 @@ public class InputHandler : MonoBehaviour {
 	
 	private Ray ray;
 	private RaycastHit hitInfo;
-	private bool leftButtonDown = false;
-	private bool leftButtonUp = false;
+	private PandaStateManager pandaStateManager;
 	
 	void Start () 
 	{
@@ -18,37 +17,26 @@ public class InputHandler : MonoBehaviour {
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
-			leftButtonDown = true;
+			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if(Physics.Raycast(ray, out hitInfo))
+			{
+				Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
+			
+				if(collidable != null && collidable.type == CollidableTypes.Panda)
+				{
+					pandaStateManager = hitInfo.collider.GetComponent<PandaStateManager>();
+					pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);	
+				}
+			}
 		}
 		
 		if(Input.GetMouseButtonUp(0))
 		{
-			leftButtonUp = true;
-		}
-		
-		if(leftButtonDown || leftButtonUp)
-		{
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			if(Physics.Raycast(ray, out hitInfo))
+			if(pandaStateManager != null)
 			{
-				var collidable = hitInfo.collider.GetComponent<Collidable>();
-			
-				if(collidable != null && collidable.type == CollidableTypes.Panda)
-				{
-					if(leftButtonDown)
-					{
-						hitInfo.collider.GetComponent<CharacterController2D>().liftingState = true;
-					}
-					else if(leftButtonUp)
-					{
-						hitInfo.collider.GetComponent<CharacterController2D>().liftingState = false;		
-					}
-					
-				}
+				pandaStateManager.ChangeState(PandaState.Walking);
+				pandaStateManager = null;
 			}
-						
-			leftButtonDown = false;
-			leftButtonUp = false;
 		}
 	}
 }
