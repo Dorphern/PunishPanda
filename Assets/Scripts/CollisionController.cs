@@ -17,18 +17,19 @@ public class CollisionController : MonoBehaviour {
 	 */
 	
 	
-	// delegates
+	// Event Handlers
 	public event System.Action<ControllerColliderHit> OnPandaHit;
 	public event System.Action<ControllerColliderHit> OnWallHit;
 	
 	
-	//defaultDelegates
+	// Default Event Handlers
 	public event System.Action<ControllerColliderHit> DefaultOnHit;
 	public event System.Action<Collider> DefaultOnTriggerEnter;
 	public event System.Action<Collider> DefaultOnTriggerExit;
 	public event System.Action<Collider> DefaultOnTriggerStay;
 	
 	
+	# region Private Methods
 	void OnControllerColliderHit(ControllerColliderHit hit) 
 	{
 		
@@ -83,4 +84,6 @@ public class CollisionController : MonoBehaviour {
 		if(DefaultOnTriggerEnter!=null)
 			DefaultOnTriggerStay(c);
     }
+	
+	# endregion
 }
