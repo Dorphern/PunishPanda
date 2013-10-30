@@ -6,6 +6,7 @@ public class CollisionController : MonoBehaviour {
 	
 	// delegates
 	public event System.Action<ControllerColliderHit> OnPandaHit;
+	public event System.Action<ControllerColliderHit> OnWallHit;
 	
 	
 	
@@ -21,12 +22,14 @@ public class CollisionController : MonoBehaviour {
 			//type collision cases
 			if(collidable.type == CollidableTypes.Panda && OnPandaHit!=null) 
 			{
-				OnPandaHit(hit);		
+				//Debug.Log ("Panda Collision!");
+				OnPandaHit(hit);
 			}
-            else if (collidable.type == CollidableTypes.Panda && OnPandaHit != null)
-            {
-                OnPandaHit(hit);
-            }
+			else if(collidable.type == CollidableTypes.Wall && OnWallHit!=null) 
+			{
+				OnWallHit(hit);		
+			}
+			
 			
 		}		
 	}
