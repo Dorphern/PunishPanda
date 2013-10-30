@@ -3,7 +3,7 @@ using System.Collections;
 
 // Require a character controller to be attached to the same game object
 [RequireComponent(typeof(CharacterController))]
-public class CharacterController2D : MonoBehaviour {
+public class PandaMovementController : MonoBehaviour {
  
 	public Transform spawnPoint; // The character will spawn here
 	public Movement movement;
