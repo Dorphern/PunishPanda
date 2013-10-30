@@ -15,6 +15,7 @@ private CharacterController controller;
 	//PLACE-HOLDER PANDA STATES:
 	private bool walkingRight;
 	private bool walkingLeft;
+	public bool liftingState;
  
 	/***********************************************************************
 	 * Classes
@@ -54,6 +55,8 @@ private CharacterController controller;
 		walkingRight = true;
 		walkingLeft = false;
 		
+		liftingState = false;
+		
 		//CHANGE DIRECTION when hits pandas or walls
 		_collisionController.OnPandaHit += changeDirection;
 		_collisionController.OnWallHit += changeDirection;
@@ -66,14 +69,31 @@ private CharacterController controller;
 	}
 	 
 	void  Update (){
-
-	    MoveCharacter();
+		
+		if(liftingState)
+		{
+			LiftMovement();	
+		}
+		else
+		{
+	    	MoveCharacter();
+		}
+		
+		
 	}
 	 
 	/***********************************************************************
 	 * Custom Functions
 	 ***********************************************************************/
-	 
+	
+	void LiftMovement()
+	{
+		Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z - Camera.main.transform.position.z));
+		Vector3 difference = worldMousePos - transform.position;
+		if(difference.magnitude > 0.01f)
+			controller.Move(difference.normalized * Time.deltaTime * 50f * difference.magnitude);
+	}
+	
 	void  Spawn (){
 	    transform.position = spawnPoint.position;
 	}
