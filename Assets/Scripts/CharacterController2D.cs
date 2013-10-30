@@ -96,8 +96,6 @@ private CharacterController controller;
 		if(walkingRight == true){
 			walkingLeft = true;
 			walkingRight = false;
-			Debug.Log ("Right ="+ walkingRight, gameObject);
-			Debug.Log ("Left ="+ walkingLeft, gameObject);
 		}else if(walkingLeft == true){
 			walkingRight = true;
 			walkingLeft = false;
