@@ -9,11 +9,18 @@ public class PandaMovementController : MonoBehaviour {
 	public Movement movement;
 	public Lifting lifting;
 	public Falling falling;
-	 
+	public Boosting boosting;
+	
 	private CharacterController controller;
 	private PandaAI pandaAI;
  
 	#region SerializedClasses
+	[System.Serializable]
+	public class Boosting
+	{
+		public float boostSpeed = 5f;
+		public float rollOffSpeed = 1.5f;
+	}
 	[System.Serializable]
 	public class Falling
 	{
@@ -38,8 +45,9 @@ public class PandaMovementController : MonoBehaviour {
 	{	 
 	    public float gravity = 20;
 	    public float jumpHeight = 8;
-	    public float walkSpeed = 3;
-
+		public float walkSpeed = 3;
+		[System.NonSerializedAttribute]
+	    public float currentSpeed;
 	    // The character's current movement offset (for Jumping / Falling)
 	    [System.NonSerialized]
 	    public Vector3 offset;
@@ -51,9 +59,14 @@ public class PandaMovementController : MonoBehaviour {
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
 		
+		movement.currentSpeed = movement.walkSpeed;
+		
 		pandaAI.ApplyWalkingMovement += WalkingMovement;
 		pandaAI.ApplyLiftMovement += LiftMovement;
 		pandaAI.ApplyFalling += FallingMovement;
+		pandaAI.BoostingMovement += BoostedMovement;
+		pandaAI.SetBoostSpeed += SetBoostSpeed;
+		pandaAI.SetDefaultSpeed += SetDefaultSpeed;
 	}
 	 
 	void FixedUpdate ()
@@ -89,12 +102,12 @@ public class PandaMovementController : MonoBehaviour {
 		
 		if(direction == PandaDirection.Right)
 		{
-			controller.Move(Vector3.right * movement.walkSpeed * Time.deltaTime);
+			controller.Move(Vector3.right * movement.currentSpeed * Time.deltaTime);
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
-			controller.Move(Vector3.left * movement.walkSpeed * Time.deltaTime);
+			controller.Move(Vector3.left * movement.currentSpeed * Time.deltaTime);
 		}
 	}
 
@@ -148,6 +161,23 @@ public class PandaMovementController : MonoBehaviour {
 		float dot = Vector2.Dot(falling.normalizedDragDirection, Vector2.right);
 		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.deltaTime * falling.sideForce;
 		ApplyGravity();
-		Debug.Log(movement.offset);
 	}
+	
+	void BoostedMovement(PandaDirection direction)
+	{
+		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.deltaTime * boosting.rollOffSpeed);
+		WalkingMovement(direction);
+	}
+	
+	void SetBoostSpeed()
+	{
+		movement.currentSpeed = boosting.boostSpeed;
+	}
+	
+	void SetDefaultSpeed()
+	{
+		movement.currentSpeed = movement.walkSpeed;
+	}
+	
+	
 }
