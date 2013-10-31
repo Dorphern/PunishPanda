@@ -47,6 +47,7 @@ public class PandaAI : MonoBehaviour {
         if (ApplyJump != null)
         {
             ApplyJump(force, direction);
+            pandaStateManager.ChangeState(PandaState.Jumping);
         }
     }
 
@@ -95,7 +96,7 @@ public class PandaAI : MonoBehaviour {
 		
 		collisionController.OnPandaEnter += ChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
-	}		
+	}
 	
 	// Update is called once per frame
 	void Update() 
@@ -113,6 +114,12 @@ public class PandaAI : MonoBehaviour {
 				if(ApplyWalkingMovement!=null)
 					ApplyWalkingMovement(pandaStateManager.GetDirection());
 				break;
+            case PandaState.Jumping:
+                if (ApplyWalkingMovement != null)
+                    ApplyWalkingMovement(pandaStateManager.GetDirection());
+				if(characterController.isGrounded)
+					pandaStateManager.ChangeState(PandaState.Walking);
+                break;
 			case PandaState.Falling:
 				if(ApplyFalling!=null)
 					ApplyFalling();
