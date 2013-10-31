@@ -49,7 +49,7 @@ public class CollisionController : MonoBehaviour {
 		if(collidable!=null && ((previousHit == null) || (previousHit!=null && hit.collider!=previousHit.collider)))
 		{		
 			//type collision cases
-			if(collidable.type == CollidableTypes.Panda && OnPandaHit!=null) 
+			if(collidable.type == CollidableTypes.Panda && OnPandaEnter!=null) 
 			{
 				OnPandaEnter(hit);
 			}
