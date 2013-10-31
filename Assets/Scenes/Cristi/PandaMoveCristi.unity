@@ -392,6 +392,11 @@ MonoBehaviour:
   lifting:
     releaseThreshold: .00999999978
     movementSpeed: 50
+  falling:
+    sideForce: 500
+  boosting:
+    boostSpeed: 8
+    rollOffSpeed: 3
 --- !u!114 &713300004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a9f536520d8843a57153d75f3da50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slapEventLength: 2
 --- !u!1 &913080144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,6 +1074,11 @@ MonoBehaviour:
   lifting:
     releaseThreshold: .00999999978
     movementSpeed: 50
+  falling:
+    sideForce: 500
+  boosting:
+    boostSpeed: 5
+    rollOffSpeed: 1.5
 --- !u!114 &1825923609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1172,6 +1183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a9f536520d8843a57153d75f3da50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slapEventLength: 2
 --- !u!1001 &1915282838
 Prefab:
   m_ObjectHideFlags: 0
@@ -1246,6 +1258,22 @@ Prefab:
     - target: {fileID: 400000, guid: d278ccc1039068e438085983baf5e9c2, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: d278ccc1039068e438085983baf5e9c2, type: 2}
+      propertyPath: m_Name
+      value: Panda
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: d278ccc1039068e438085983baf5e9c2, type: 2}
+      propertyPath: boostSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: d278ccc1039068e438085983baf5e9c2, type: 2}
+      propertyPath: boosting.boostSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: d278ccc1039068e438085983baf5e9c2, type: 2}
+      propertyPath: boosting.rollOffSpeed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d278ccc1039068e438085983baf5e9c2, type: 2}

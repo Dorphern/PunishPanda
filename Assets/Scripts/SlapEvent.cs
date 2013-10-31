@@ -3,24 +3,18 @@ using System.Collections;
 
 public class SlapEvent : MonoBehaviour
 {
-    public float hitSpeed;
-
     Transform myTransform;
-
+	
+	public float slapLength = 2f;
+	
     public float timeBoost;
     public float currentSpeed;
     public float originalSpeed;
 
-    private Vector3 mousePosStart;
-    private Vector3 mousePosEnd;
-    private Vector3 mouseVector;
-    private Vector3 swipeVector;
-
     # region public
-    public void Slap(float _hitSpeed, Vector3 swipe)
+    public void BoostPanda(float hitSpeed, Vector3 swipe)
     {
-            StartCoroutine(BoostSpeed(timeBoost, _hitSpeed));
-            
+    	StartCoroutine(BoostSpeed(timeBoost, hitSpeed));
     }
     #endregion
 
@@ -29,38 +23,6 @@ public class SlapEvent : MonoBehaviour
     {
         currentSpeed = 2;
         myTransform = gameObject.transform;
-
-    }
-
-    // Update is called once per frame
-
-    void FixedUpdate() {
-
-        // SWIPE
-        if(Input.GetMouseButtonDown(0))
-        {
-            Vector3 tempMouStart = Input.mousePosition;
-            mousePosStart = new Vector3(tempMouStart.x, tempMouStart.y, 10);
-        }
-        if(Input.GetMouseButtonUp(0))
-        {
-            Vector3 tempMouEnd = Input.mousePosition;
-            mousePosEnd = new Vector3(tempMouEnd.x, tempMouEnd.y, 0);
-            mouseVector = (mousePosEnd - mousePosStart);
-           
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Slap(hitSpeed,swipeVector);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Slap(-hitSpeed, swipeVector);
-        }
-
-
-        myTransform.Translate((new Vector3(currentSpeed, 0 , 0)) * Time.deltaTime);
     }
 
     #region private
