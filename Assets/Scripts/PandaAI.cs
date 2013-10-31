@@ -19,6 +19,7 @@ public class PandaAI : MonoBehaviour {
 	PandaStateManager pandaStateManager;
 	CollisionController collisionController;
 	CharacterController characterController;
+	PandaMovementController pandaMovementController;
 	
 	#region Public Methods
 	public void PandaPressed()
@@ -90,8 +91,9 @@ public class PandaAI : MonoBehaviour {
 		pandaStateManager = GetComponent<PandaStateManager>();
 		collisionController = GetComponent<CollisionController>();
 		characterController = GetComponent<CharacterController>();
+		pandaMovementController = GetComponent<PandaMovementController>();
 		
-		collisionController.OnPandaHit += ChangeDirection;
+		collisionController.OnPandaEnter += ChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
 	}		
 	
@@ -102,7 +104,10 @@ public class PandaAI : MonoBehaviour {
 		{
 			case PandaState.HoldingOntoFinger:
 				if(ApplyLiftMovement!=null)
+				{	
 					ApplyLiftMovement();
+					CheckLiftThreshold();
+				}
 				break;
 			case PandaState.Walking:
 				if(ApplyWalkingMovement!=null)
@@ -132,7 +137,11 @@ public class PandaAI : MonoBehaviour {
 		}
 	}
 	
-	
+	void CheckLiftThreshold()
+	{
+		if(pandaMovementController.IsExceedingLiftThreshold())
+			pandaStateManager.ChangeState(PandaState.Falling);
+	}
 	
 	IEnumerator PlaySlap(float waitForSeconds)
 	{

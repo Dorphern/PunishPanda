@@ -3,19 +3,19 @@ using System.Collections;
 
 public class SlapEvent : MonoBehaviour
 {
+    public float hitSpeed;
+
     Transform myTransform;
-	
-	public float slapLength = 2f;
-	
+
     public float timeBoost;
     public float currentSpeed;
     public float originalSpeed;
 
+    private Vector3 swipe;
+    private PandaDirection swipeDirection;
+
     # region public
-    public void BoostPanda(float hitSpeed, Vector3 swipe)
-    {
-    	StartCoroutine(BoostSpeed(timeBoost, hitSpeed));
-    }
+
     #endregion
 
     // Use this for initialization
@@ -25,14 +25,42 @@ public class SlapEvent : MonoBehaviour
         myTransform = gameObject.transform;
     }
 
+    // Update is called once per frame
+
+    void FixedUpdate() {
+
+        // SWIPE
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            StartCoroutine(Slap(timeBoost, hitSpeed, swipeDirection));
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            StartCoroutine(Slap(timeBoost, -hitSpeed, swipeDirection));
+        }
+
+        myTransform.Translate((new Vector3(currentSpeed, 0 , 0)) * Time.deltaTime);
+    }
+
     #region private
-    IEnumerator BoostSpeed(float waitForSeconds, float boostSpeed)
+    IEnumerator Slap(float waitForSeconds, float boostSpeed, PandaDirection direction)
     {
+        if (gameObject.GetComponent<PandaStateManager>().GetDirection() == direction)
+        {
+            // inrease movementSpeed game.GetComponent<Movement>().speed = speedBoost;
+        }
+        else if (gameObject.GetComponent<PandaStateManager>().GetDirection() != direction)
+        {
+            gameObject.GetComponent<PandaStateManager>().ChangeDirection(direction);
+        }
         currentSpeed = boostSpeed;
+
         gameObject.renderer.material.color = Color.red;
 
 
         // Call hitAnimation (direction)
+
 
         // Call bloodSpatter with (direction/angle)
 
@@ -40,11 +68,11 @@ public class SlapEvent : MonoBehaviour
         yield return new WaitForSeconds(waitForSeconds);
 
 
-        // Call walkAnimation
-
-
+        // Call walkAnimation after slap i.e. with blood etc. 
+        
+        // decrease speed / end speedbost
         gameObject.renderer.material.color = Color.white;
-        if(boostSpeed < 0)
+        if (boostSpeed < 0)
         {
             currentSpeed = -originalSpeed;
         }
@@ -52,8 +80,6 @@ public class SlapEvent : MonoBehaviour
         {
             currentSpeed = originalSpeed;
         }
-        
-       // timeBoost = 0;
     }
     #endregion
 

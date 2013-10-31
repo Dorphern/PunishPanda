@@ -38,6 +38,7 @@ public class PandaMovementController : MonoBehaviour {
 		public Vector3 worldMousePos;
 		[System.NonSerializedAttribute]
 		public Vector3 difference;
+		public float maxMagnitude = 0.5F;
 	}
 	
 	[System.Serializable]
@@ -53,6 +54,12 @@ public class PandaMovementController : MonoBehaviour {
 	    public Vector3 offset;
 	}
 	#endregion
+	
+	
+	public bool IsExceedingLiftThreshold()
+	{
+		return lifting.difference.magnitude > lifting.maxMagnitude;
+	}
 	 
 	void Start()
 	{
@@ -90,6 +97,8 @@ public class PandaMovementController : MonoBehaviour {
 			controller.Move(lifting.difference.normalized * Time.deltaTime * lifting.movementSpeed * lifting.difference.magnitude);
 		}
 	}
+	
+	
 	 
 	// Move the character using Unity's CharacterController.Move function
 	void WalkingMovement(PandaDirection direction)
@@ -187,5 +196,6 @@ public class PandaMovementController : MonoBehaviour {
 		movement.currentSpeed = movement.walkSpeed;
 	}
 	
+
 	
 }
