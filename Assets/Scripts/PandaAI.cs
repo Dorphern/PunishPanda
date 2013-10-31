@@ -11,7 +11,8 @@ public class PandaAI : MonoBehaviour {
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
-	public event System.Action SetDefaultSpeed;
+    public event System.Action SetDefaultSpeed;
+    public event System.Action<float, float> ApplyJump;
 	
 	public float slapEventLength = 2f;
 	
@@ -38,7 +39,14 @@ public class PandaAI : MonoBehaviour {
 
     public void Jump (float force, float direction)
     {
-
+        if (pandaStateManager.GetDirection() == PandaDirection.Left)
+        {
+            direction = 180f - direction;
+        }
+        if (ApplyJump != null)
+        {
+            ApplyJump(force, direction);
+        }
     }
 
     public void PandaSlapped(Vector2 slapDirection, float force)
@@ -48,6 +56,7 @@ public class PandaAI : MonoBehaviour {
 			return;
 		// play animation + splatter
 		StartCoroutine(PlaySlap(slapEventLength));
+        pandaStateManager.IncrementSlapCounter();
 		
 		Vector2 facingDirection;
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)

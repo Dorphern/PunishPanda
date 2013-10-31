@@ -67,6 +67,7 @@ public class PandaMovementController : MonoBehaviour {
 		pandaAI.BoostingMovement += BoostedMovement;
 		pandaAI.SetBoostSpeed += SetBoostSpeed;
 		pandaAI.SetDefaultSpeed += SetDefaultSpeed;
+        pandaAI.ApplyJump += ApplyJump;
 	}
 	 
 	void FixedUpdate ()
@@ -77,7 +78,7 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	void Update ()
 	{	
-			
+		
 	}
 	
 	void LiftMovement()
@@ -118,14 +119,14 @@ public class PandaMovementController : MonoBehaviour {
 		{
 	        // The character is on the ground
 	        case true:
-	                if (Input.GetButtonDown("Jump"))
-					{ 
-						ApplyJump();
-					}
-					else
-					{
-						movement.offset = Vector3.zero;
-					}
+	            if (Input.GetButtonDown("Jump"))
+				{ 
+					//ApplyJump();
+				}
+				else
+				{
+					movement.offset = Vector3.zero;
+				}
 	        break;
 	 
 	        // The character is midair
@@ -136,12 +137,19 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	}
 	
-	
-	void  ApplyJump ()
-	{
-	    movement.offset.y = movement.jumpHeight;
-	}
-	 #endregion
+    #endregion
+
+    void ApplyJump (float force, float direction)
+    {
+        float radDir = Mathf.Deg2Rad * direction;
+        movement.offset.y = Mathf.Sin(radDir) * force;
+        movement.offset.x = Mathf.Cos(radDir) * force;
+    }
+
+    void ApplyJump ()
+    {
+        movement.offset.y = movement.jumpHeight;
+    }
 	
 	void Spawn()
 	{
