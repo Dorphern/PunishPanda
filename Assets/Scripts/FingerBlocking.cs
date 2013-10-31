@@ -3,34 +3,64 @@ using System.Collections;
 
 public class FingerBlocking : MonoBehaviour {
 	
-	public GameObject aBox;
+
+	//cameraOffset determines where to place blockade on Z-axis
+	private float cameraOffset;
 	
-	// Use this for initialization
 	void Start () {
-		
-		//aBox.enabled = false; 
+		collider.enabled = false;
 	}
 
-	
-	
-	// Update is called once per frame
+	/*
 	void Update () {
 		
-		 //if (Input.GetMouseButton(0))
-			//create collider box..
-		
-		if (Input.GetButtonDown("Fire1")) {
+
+		if (Input.GetMouseButton(0)) 
+		{
          	Vector3 mousePos = Input.mousePosition;
-       		mousePos.z = 12;       // we want 2m away from the camera position
+			cameraOffset = Camera.main.transform.position.z;
+			cameraOffset = Mathf.Abs(cameraOffset);
+			
+			
+       		mousePos.z = cameraOffset;
+			
  
         	Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
 			
-			//objectPos.z = 0;
 			
-       		aBox.transform.position = objectPos;
-			//aBox.enabled = true;
+			collider.enabled = true;
+       		transform.position = objectPos;
+
         }
 		
+	 	if (Input.GetMouseButtonUp(0))
+		{
+
+			collider.enabled = false;
+		}
+		
+	} */
+	
+	
+	void ActivateBlockade (Vector3 mousePos)
+	{
+		cameraOffset = Camera.main.transform.position.z;
+		cameraOffset = Mathf.Abs(cameraOffset);
+			
+		mousePos.z = cameraOffset;
+			
+ 
+        Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
+			
+			
+		collider.enabled = true;
+       	transform.position = objectPos;
 		
 	}
+	
+	void DeactivateBlockade()
+	{
+		collider.enabled = false;
+	}
+	
 }
