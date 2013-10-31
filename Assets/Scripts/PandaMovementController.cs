@@ -9,11 +9,18 @@ public class PandaMovementController : MonoBehaviour {
 	public Movement movement;
 	public Lifting lifting;
 	public Falling falling;
-	 
+	public Boosting boosting;
+	
 	private CharacterController controller;
 	private PandaAI pandaAI;
  
 	#region SerializedClasses
+	[System.Serializable]
+	public class Boosting
+	{
+		public float boostSpeed = 5f;
+		public float rollOffSpeed = 1.5f;
+	}
 	[System.Serializable]
 	public class Falling
 	{
@@ -31,6 +38,7 @@ public class PandaMovementController : MonoBehaviour {
 		public Vector3 worldMousePos;
 		[System.NonSerializedAttribute]
 		public Vector3 difference;
+		public float maxMagnitude = 0.5F;
 	}
 	
 	[System.Serializable]
@@ -38,22 +46,35 @@ public class PandaMovementController : MonoBehaviour {
 	{	 
 	    public float gravity = 20;
 	    public float jumpHeight = 8;
-	    public float walkSpeed = 3;
-
+		public float walkSpeed = 3;
+		[System.NonSerializedAttribute]
+	    public float currentSpeed;
 	    // The character's current movement offset (for Jumping / Falling)
 	    [System.NonSerialized]
 	    public Vector3 offset;
 	}
 	#endregion
+	
+	
+	public bool IsExceedingLiftThreshold()
+	{
+		return lifting.difference.magnitude > lifting.maxMagnitude;
+	}
 	 
 	void Start()
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
 		
+		movement.currentSpeed = movement.walkSpeed;
+		
 		pandaAI.ApplyWalkingMovement += WalkingMovement;
 		pandaAI.ApplyLiftMovement += LiftMovement;
 		pandaAI.ApplyFalling += FallingMovement;
+		pandaAI.BoostingMovement += BoostedMovement;
+		pandaAI.SetBoostSpeed += SetBoostSpeed;
+		pandaAI.SetDefaultSpeed += SetDefaultSpeed;
+        pandaAI.ApplyJump += ApplyJump;
 	}
 	 
 	void FixedUpdate ()
@@ -64,7 +85,7 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	void Update ()
 	{	
-			
+		
 	}
 	
 	void LiftMovement(Vector3 position)
@@ -76,6 +97,8 @@ public class PandaMovementController : MonoBehaviour {
 			controller.Move(lifting.difference.normalized * Time.deltaTime * lifting.movementSpeed * lifting.difference.magnitude);
 		}
 	}
+	
+	
 	 
 	// Move the character using Unity's CharacterController.Move function
 	void WalkingMovement(PandaDirection direction)
@@ -89,12 +112,12 @@ public class PandaMovementController : MonoBehaviour {
 		
 		if(direction == PandaDirection.Right)
 		{
-			controller.Move(Vector3.right * movement.walkSpeed * Time.deltaTime);
+			controller.Move(Vector3.right * movement.currentSpeed * Time.deltaTime);
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
-			controller.Move(Vector3.left * movement.walkSpeed * Time.deltaTime);
+			controller.Move(Vector3.left * movement.currentSpeed * Time.deltaTime);
 		}
 	}
 
@@ -105,14 +128,14 @@ public class PandaMovementController : MonoBehaviour {
 		{
 	        // The character is on the ground
 	        case true:
-	                if (Input.GetButtonDown("Jump"))
-					{ 
-						ApplyJump();
-					}
-					else
-					{
-						movement.offset = Vector3.zero;
-					}
+	            if (Input.GetButtonDown("Jump"))
+				{ 
+					//ApplyJump();
+				}
+				else
+				{
+					movement.offset = Vector3.zero;
+				}
 	        break;
 	 
 	        // The character is midair
@@ -123,12 +146,19 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	}
 	
-	
-	void  ApplyJump ()
-	{
-	    movement.offset.y = movement.jumpHeight;
-	}
-	 #endregion
+    #endregion
+
+    void ApplyJump (float force, float direction)
+    {
+        float radDir = Mathf.Deg2Rad * direction;
+        movement.offset.y = Mathf.Sin(radDir) * force;
+        movement.offset.x = Mathf.Cos(radDir) * force;
+    }
+
+    void ApplyJump ()
+    {
+        movement.offset.y = movement.jumpHeight;
+    }
 	
 	void Spawn()
 	{
@@ -149,4 +179,23 @@ public class PandaMovementController : MonoBehaviour {
 		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.deltaTime * falling.sideForce;
 		ApplyGravity();
 	}
+	
+	void BoostedMovement(PandaDirection direction)
+	{
+		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.deltaTime * boosting.rollOffSpeed);
+		WalkingMovement(direction);
+	}
+	
+	void SetBoostSpeed()
+	{
+		movement.currentSpeed = boosting.boostSpeed;
+	}
+	
+	void SetDefaultSpeed()
+	{
+		movement.currentSpeed = movement.walkSpeed;
+	}
+	
+
+	
 }

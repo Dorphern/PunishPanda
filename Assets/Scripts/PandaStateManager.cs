@@ -15,8 +15,10 @@ public enum PandaState
     Walking,            /* Is walking in some direction */
     PushingFinger,      /* Is Pushing a finger (not moving) */
     HoldingOntoFinger,  /* Holding on to the finger (in the air) */
-    Died,                /* The panda is DEAD! (hahahah) */
-	Falling
+    Died,               /* The panda is DEAD! (hahahah) */
+	Jumping,
+    Falling,
+	Boosting
 }
 
 public enum PandaDirection
@@ -41,6 +43,7 @@ public class PandaStateManager : MonoBehaviour {
     [SerializeField] private PandaState initState = PandaState.Standing;
     private PandaState currentState;
     private PandaDirection currentDirection;
+    private int slapCount = 0;
 
     # region Public Methods
 
@@ -67,6 +70,16 @@ public class PandaStateManager : MonoBehaviour {
     public PandaDirection GetDirection ()
     {
         return currentDirection;
+    }
+
+    public int GetSlapCount ()
+    {
+        return slapCount;
+    }
+
+    public void IncrementSlapCounter ()
+    {
+        slapCount++;
     }
 
     # endregion
