@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 
 
 public class PandaAI : MonoBehaviour {
 
-	public event System.Action ApplyLiftMovement;
-	public event System.Action<PandaDirection> ApplyWalkingMovement;
-	public event System.Action ApplyFalling;
+	public event Action ApplyLiftMovement;
+	public event Action<PandaDirection> ApplyWalkingMovement;
+	public event Action ApplyFalling;
 	
 	PandaStateManager pandaStateManager;
 	CollisionController collisionController;
@@ -29,6 +30,11 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.ChangeState(PandaState.Falling);
 		}
 	}
+
+    public void Jump (float force, float direction)
+    {
+
+    }
 	#endregion
 	
 	# region Private Methods
