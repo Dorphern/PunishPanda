@@ -13,6 +13,24 @@ public class PandaAI : MonoBehaviour {
 	CollisionController collisionController;
 	CharacterController characterController;
 	
+	#region Public Methods
+	public void PandaPressed()
+	{
+		if(pandaStateManager.GetState() == PandaState.Standing || pandaStateManager.GetState() == PandaState.Walking)
+		{
+			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
+		}
+	}
+	
+	public void PandaReleased()
+	{
+		if(pandaStateManager.GetState() == PandaState.HoldingOntoFinger)
+		{
+			pandaStateManager.ChangeState(PandaState.Falling);
+		}
+	}
+	#endregion
+	
 	# region Private Methods
 	// Use this for initialization
 	void Start() 
@@ -31,13 +49,16 @@ public class PandaAI : MonoBehaviour {
 		switch(pandaStateManager.GetState())
 		{
 			case PandaState.HoldingOntoFinger:
-				ApplyLiftMovement();
+				if(ApplyLiftMovement!=null)
+					ApplyLiftMovement();
 				break;
 			case PandaState.Walking:
-				ApplyWalkingMovement(pandaStateManager.GetDirection());
+				if(ApplyWalkingMovement!=null)
+					ApplyWalkingMovement(pandaStateManager.GetDirection());
 				break;
 			case PandaState.Falling:
-				ApplyFalling();
+				if(ApplyFalling!=null)
+					ApplyFalling();
 				if(characterController.isGrounded)
 					pandaStateManager.ChangeState(PandaState.Walking);
 				break;
@@ -55,22 +76,6 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.ChangeDirection(PandaDirection.Left);
 		}
 	}
-	
-	public void PandaPressed()
-	{
-		if(pandaStateManager.GetState() == PandaState.Standing || pandaStateManager.GetState() == PandaState.Walking)
-		{
-			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
-		}
-	}
-	
-	public void PandaReleased()
-	{
-		if(pandaStateManager.GetState() == PandaState.HoldingOntoFinger)
-		{
-			pandaStateManager.ChangeState(PandaState.Falling);
-		}
-	}
-	
 	# endregion
+		
 }
