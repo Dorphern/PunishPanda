@@ -15,7 +15,8 @@ public enum PandaState
     Walking,            /* Is walking in some direction */
     PushingFinger,      /* Is Pushing a finger (not moving) */
     HoldingOntoFinger,  /* Holding on to the finger (in the air) */
-    Died                /* The panda is DEAD! (hahahah) */
+    Died,                /* The panda is DEAD! (hahahah) */
+	Falling
 }
 
 public enum PandaDirection

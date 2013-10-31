@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour {
 	
 	private Ray ray;
 	private RaycastHit hitInfo;
-	private PandaStateManager pandaStateManager;
+	private PandaAI pandaAI;
 	private FingerBlocking fingerBlockade;
 	
 	void Start () 
@@ -25,8 +25,8 @@ public class InputHandler : MonoBehaviour {
 			
 				if(collidable != null && collidable.type == CollidableTypes.Panda)
 				{
-					pandaStateManager = hitInfo.collider.GetComponent<PandaStateManager>();
-					pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);	
+					pandaAI = hitInfo.collider.GetComponent<PandaAI>();
+					pandaAI.PandaPressed();
 				}
 				
 			}		
@@ -34,7 +34,7 @@ public class InputHandler : MonoBehaviour {
 		
 		if(Input.GetMouseButton(0))
 		{
-			if(pandaStateManager == null)
+			if(pandaAI == null)
 			{
 				fingerBlockade.ActivateBlockade(Input.mousePosition);
 			}	
@@ -42,10 +42,10 @@ public class InputHandler : MonoBehaviour {
 		
 		if(Input.GetMouseButtonUp(0))
 		{
-			if(pandaStateManager != null)
+			if(pandaAI != null)
 			{
-				pandaStateManager.ChangeState(PandaState.Walking);
-				pandaStateManager = null;
+				pandaAI.PandaReleased();
+				pandaAI = null;
 			}
 			
 			fingerBlockade.DeactivateBlockade();

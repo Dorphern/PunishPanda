@@ -10,10 +10,7 @@ public class PandaMovementController : MonoBehaviour {
 	public Lifting lifting;
 	 
 	private CharacterController controller;
-	private PandaStateManager pandaStateManager;
-	//PLACE-HOLDER PANDA STATES:
-	private bool walkingRight;
-	private bool walkingLeft;
+	private PandaAI pandaAI;
  
 	#region SerializedClasses
 	[System.Serializable]
@@ -40,14 +37,14 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	#endregion
 	 
-	void Awake ()
+	void Start()
 	{
 	    controller = GetComponent<CharacterController>();
-		pandaStateManager = GetComponent<PandaStateManager>();
+		pandaAI = GetComponent<PandaAI>();
 		
-		//START WALKING RIGHT INITIALLY..
-		walkingRight = true;
-		walkingLeft = false;		
+		pandaAI.ApplyWalkingMovement += WalkingMovement;
+		pandaAI.ApplyLiftMovement += LiftMovement;
+		pandaAI.ApplyFalling += ApplyGravity;
 	}
 	 
 	void FixedUpdate ()
@@ -58,15 +55,7 @@ public class PandaMovementController : MonoBehaviour {
 	 
 	void Update ()
 	{	
-		switch(pandaStateManager.GetState())
-		{
-			case PandaState.HoldingOntoFinger:
-				LiftMovement();
-				break;
-			case PandaState.Walking:
-				MoveCharacter();
-				break;
-		}	
+			
 	}
 	
 	void LiftMovement()
@@ -80,7 +69,7 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	 
 	// Move the character using Unity's CharacterController.Move function
-	void MoveCharacter ()
+	void WalkingMovement(PandaDirection direction)
 	{
 		if(controller.isGrounded)
 		{
@@ -89,18 +78,15 @@ public class PandaMovementController : MonoBehaviour {
 		
 		ApplyGravity();
 		
-		if(pandaStateManager.GetDirection() == PandaDirection.Right)
+		if(direction == PandaDirection.Right)
 		{
 			controller.Move(Vector3.right * movement.walkSpeed * Time.deltaTime);
 		}
 		
-		if(pandaStateManager.GetDirection() == PandaDirection.Left)
+		if(direction == PandaDirection.Left)
 		{
 			controller.Move(Vector3.left * movement.walkSpeed * Time.deltaTime);
 		}
-		 
-		//USING "OFFSET" FOR APPLYING GRAVITY and/or JUMPING
-		controller.Move(movement.offset * Time.deltaTime);
 	}
 
 	#region JumpingCode (NOT IN USE)
@@ -143,5 +129,7 @@ public class PandaMovementController : MonoBehaviour {
 	void  ApplyGravity()
 	{
 	    movement.offset.y -= movement.gravity * Time.deltaTime;
+		//USING "OFFSET" FOR APPLYING GRAVITY
+		controller.Move(movement.offset * Time.deltaTime);
 	}
 }
