@@ -11,7 +11,6 @@ public class FingerBlocking : MonoBehaviour {
     public Vector3 currentVel;
 	
 	void Start () {
-		collider.enabled = false;
         boxTransform = gameObject.transform;
         lastPosition = Vector3.zero;
 

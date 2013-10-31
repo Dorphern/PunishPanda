@@ -94,7 +94,7 @@ public class PandaMovementController : MonoBehaviour {
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.releaseThreshold)
 		{
-			controller.Move(lifting.difference.normalized * Time.deltaTime * lifting.movementSpeed * lifting.difference.magnitude);
+			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
 		}
 	}
 	
@@ -112,12 +112,12 @@ public class PandaMovementController : MonoBehaviour {
 		
 		if(direction == PandaDirection.Right)
 		{
-			controller.Move(Vector3.right * movement.currentSpeed * Time.deltaTime);
+			controller.Move(Vector3.right * movement.currentSpeed * Time.fixedDeltaTime);
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
-			controller.Move(Vector3.left * movement.currentSpeed * Time.deltaTime);
+			controller.Move(Vector3.left * movement.currentSpeed * Time.fixedDeltaTime);
 		}
 	}
 
@@ -167,22 +167,22 @@ public class PandaMovementController : MonoBehaviour {
 	
 	void  ApplyGravity()
 	{	
-	    movement.offset.y -= movement.gravity * Time.deltaTime;
+	    movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		//USING "OFFSET" FOR APPLYING GRAVITY
-		controller.Move(movement.offset * Time.deltaTime);
+		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
 	
 	void FallingMovement()
 	{
 		falling.normalizedDragDirection = new Vector2(lifting.difference.normalized.x, lifting.difference.normalized.y);
 		float dot = Vector2.Dot(falling.normalizedDragDirection, Vector2.right);
-		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.deltaTime * falling.sideForce;
+		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.fixedDeltaTime * falling.sideForce;
 		ApplyGravity();
 	}
 	
 	void BoostedMovement(PandaDirection direction)
 	{
-		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.deltaTime * boosting.rollOffSpeed);
+		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.fixedDeltaTime * boosting.rollOffSpeed);
 		WalkingMovement(direction);
 	}
 	
