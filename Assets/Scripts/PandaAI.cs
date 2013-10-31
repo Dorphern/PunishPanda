@@ -6,9 +6,10 @@ using System.Collections;
 
 public class PandaAI : MonoBehaviour {
 
-	public event Action ApplyLiftMovement;
+	public event Action<Vector3> ApplyLiftMovement;
 	public event Action<PandaDirection> ApplyWalkingMovement;
 	public event Action ApplyFalling;
+	public Vector3 touchPosition;
 	
 	PandaStateManager pandaStateManager;
 	CollisionController collisionController;
@@ -56,7 +57,7 @@ public class PandaAI : MonoBehaviour {
 		{
 			case PandaState.HoldingOntoFinger:
 				if(ApplyLiftMovement!=null)
-					ApplyLiftMovement();
+					ApplyLiftMovement(touchPosition);
 				break;
 			case PandaState.Walking:
 				if(ApplyWalkingMovement!=null)

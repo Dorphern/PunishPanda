@@ -67,9 +67,9 @@ public class PandaMovementController : MonoBehaviour {
 			
 	}
 	
-	void LiftMovement()
+	void LiftMovement(Vector3 position)
 	{
-		lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z - Camera.main.transform.position.z));
+		lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, transform.position.z - Camera.main.transform.position.z));
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.releaseThreshold)
 		{
@@ -148,6 +148,5 @@ public class PandaMovementController : MonoBehaviour {
 		float dot = Vector2.Dot(falling.normalizedDragDirection, Vector2.right);
 		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.deltaTime * falling.sideForce;
 		ApplyGravity();
-		Debug.Log(movement.offset);
 	}
 }
