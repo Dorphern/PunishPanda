@@ -42,7 +42,7 @@ public class FingerBlocking : MonoBehaviour {
 	} */
 	
 	
-	void ActivateBlockade (Vector3 mousePos)
+	public void ActivateBlockade (Vector3 mousePos)
 	{
 		cameraOffset = Camera.main.transform.position.z;
 		cameraOffset = Mathf.Abs(cameraOffset);
@@ -58,7 +58,7 @@ public class FingerBlocking : MonoBehaviour {
 		
 	}
 	
-	void DeactivateBlockade()
+	public void DeactivateBlockade()
 	{
 		collider.enabled = false;
 	}
