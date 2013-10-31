@@ -8,11 +8,20 @@ public class PandaMovementController : MonoBehaviour {
 	public Transform spawnPoint; // The character will spawn here
 	public Movement movement;
 	public Lifting lifting;
+	public Falling falling;
 	 
 	private CharacterController controller;
 	private PandaAI pandaAI;
  
 	#region SerializedClasses
+	[System.Serializable]
+	public class Falling
+	{
+		public float sideForce = 500f;
+		[System.NonSerializedAttribute]
+		public Vector2 normalizedDragDirection;
+	}
+	
 	[System.Serializable]
 	public class Lifting
 	{
@@ -44,7 +53,7 @@ public class PandaMovementController : MonoBehaviour {
 		
 		pandaAI.ApplyWalkingMovement += WalkingMovement;
 		pandaAI.ApplyLiftMovement += LiftMovement;
-		pandaAI.ApplyFalling += ApplyGravity;
+		pandaAI.ApplyFalling += FallingMovement;
 	}
 	 
 	void FixedUpdate ()
@@ -127,9 +136,18 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	
 	void  ApplyGravity()
-	{
+	{	
 	    movement.offset.y -= movement.gravity * Time.deltaTime;
 		//USING "OFFSET" FOR APPLYING GRAVITY
 		controller.Move(movement.offset * Time.deltaTime);
+	}
+	
+	void FallingMovement()
+	{
+		falling.normalizedDragDirection = new Vector2(lifting.difference.normalized.x, lifting.difference.normalized.y);
+		float dot = Vector2.Dot(falling.normalizedDragDirection, Vector2.right);
+		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.deltaTime * falling.sideForce;
+		ApplyGravity();
+		Debug.Log(movement.offset);
 	}
 }
