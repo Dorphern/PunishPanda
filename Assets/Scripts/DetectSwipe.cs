@@ -14,6 +14,7 @@ public class DetectSwipe : MonoBehaviour {
     public float minSpeedRaycast;
     public float SphereCastRadius;
     public float distanceToLevel;
+    public GameObject blocking;
 	// Use this for initialization
 	void Start () {
 	
@@ -22,6 +23,11 @@ public class DetectSwipe : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
+
+
 
        if(Input.GetMouseButtonDown(0))
         {
