@@ -117,7 +117,7 @@ public class InputHandler : MonoBehaviour {
 					else if(collidable.type == CollidableTypes.Hotspot)
 					{
 						tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
-						//tempHotSpot.Activate();	
+                        tempHotSpot.ActivateHotspot();	
 					}
 				}
 			}		
@@ -144,7 +144,7 @@ public class InputHandler : MonoBehaviour {
 			}
 			else if(tempHotSpot != null)
 			{
-				//tempHotSpot.Deactivate();
+                tempHotSpot.DeactivateHotspot();
 				tempHotSpot = null;
 			}
 			else

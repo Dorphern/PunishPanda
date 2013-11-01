@@ -27,9 +27,7 @@ public class Hotspot : MonoBehaviour {
     {
         PandaStateManager pandaStateManager = collider.GetComponent<PandaStateManager>();
         PandaState pandaState = pandaStateManager.GetState();
-        if ((pandaState == PandaState.Walking
-            /*|| pandaState == PandaState.Falling*/)
-            /*&& hotspotActive*/)
+        if (pandaState == PandaState.Walking && hotspotActive)
         {
             collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
         }
@@ -38,11 +36,13 @@ public class Hotspot : MonoBehaviour {
 
     public void ActivateHotspot ()
     {
+        Debug.Log("activate");
         hotspotActive = true;
     }
 
     public void DeactivateHotspot ()
     {
+        Debug.Log("deactivate");
         hotspotActive = false;
     }
 }
