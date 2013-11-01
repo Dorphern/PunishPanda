@@ -5,65 +5,83 @@ public class FingerBlocking : MonoBehaviour {
 
 	//cameraOffset determines where to place blockade on Z-axis
 	private float cameraOffset;
-    public float minSpeed = 30;
-    public float firstMaxSpeed = 200;
+    private float minSpeed = 0.05f;
+    private float maxSpeed = 1;
     private Vector3 lastPosition;
-    public Vector3 currentVel;
+    private Vector2 direction;
+    private float speed;
 	
 	void Start () {
 
 		collider.enabled = false;
-        lastPosition = transform.position;
 
 	}
 	
-	void Update () {
-	} 
-	
-	
 	public void ActivateBlockade (Vector3 mousePos)
 	{
-		collider.enabled = true;
+        if(collider.enabled == true)
+        {
+            StartCoroutine(DeltaPosition(lastPosition));
+        }
+
+		collider.enabled = true;        
         
-        StartCoroutine(DeltaPosition(lastPosition));
 		cameraOffset = Camera.main.transform.position.z; 
 		mousePos.z = Mathf.Abs(cameraOffset);	
 		
 	    Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
         pos.z = 0;
         transform.position = pos;
-        
-
 	}
 	
 	public void DeactivateBlockade()
 	{
 		collider.enabled = false;
+        collider.isTrigger = false;
 		//DestroyImmediate(this.gameObject);
 	}
 
    IEnumerator DeltaPosition(Vector3 lastPos)
     {
+        
         yield return new WaitForEndOfFrame();
 
         Vector3 delta = transform.position - lastPos;
-        float dist = delta.magnitude;
-        float speed = dist / Time.deltaTime;
-        if (speed > firstMaxSpeed)
-            yield break;
+        direction = new Vector2(delta.x, delta.y);
+        float dist = delta.sqrMagnitude;
+        
+        float distPrScreenWidth = dist / Screen.width;
 
+        float speed = distPrScreenWidth / Time.deltaTime;
+        
+        Debug.Log("DistWidth" + distPrScreenWidth);
+        Debug.Log("Dist " + dist);
+        Debug.Log("Speed " + speed);
+        if(speed > maxSpeed)
+        {
+            DebugStreamer.message = "Break";
+            yield break;
+        }
+            
         delta.z = 0;        
         float angle = Vector3.Angle(Vector3.right, delta);
-
+        
         lastPosition = transform.position;
-        Debug.Log(currentVel.magnitude);
-        DebugStreamer.message = ("speed " + speed.ToString() + "Angle " + angle.ToString() + "isTrigger " + collider.isTrigger);
         
         if (speed > minSpeed)
-        {            
+        {
+            DebugStreamer.message = speed.ToString();
             collider.isTrigger = true;
-            // send angle && speed to bloodSplatter
-            
         }
+        else
+        {
+            collider.isTrigger = false;
+        }
+    }
+    void OnTriggerEnter(Collider c)
+    {
+        if (c.GetComponent<Collidable>().type != null && c.GetComponent<Collidable>().type == CollidableTypes.Panda)
+           c.gameObject.renderer.material.color = Color.red;
+        c.GetComponent<PandaAI>().PandaSlapped(direction, speed);
     }
 }
