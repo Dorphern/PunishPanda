@@ -67,7 +67,7 @@ public class PandaAI : MonoBehaviour {
 		}
 		else
 		{
-			facingDirection = - Vector2.right;
+			facingDirection = -Vector2.right;
 		}
 		
 		float dot = Vector2.Dot(slapDirection.normalized, facingDirection);
@@ -96,6 +96,7 @@ public class PandaAI : MonoBehaviour {
 		
 		collisionController.OnPandaEnter += ChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
+        collisionController.OnDeathTrapHit += HitDeathObject;
 	}
 	
 	// Update is called once per frame
@@ -149,7 +150,12 @@ public class PandaAI : MonoBehaviour {
 		if(pandaMovementController.IsExceedingLiftThreshold())
 			pandaStateManager.ChangeState(PandaState.Falling);
 	}
-	
+
+    public void HitDeathObject (ControllerColliderHit hit)
+    {
+        Debug.Log("Hit death object");
+    }
+
 	IEnumerator PlaySlap(float waitForSeconds)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
