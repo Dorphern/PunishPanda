@@ -25,7 +25,8 @@ public class PandaMovementController : MonoBehaviour {
 	[System.Serializable]
 	public class Falling
 	{
-		public float sideForce = 500f;
+		public float sideForceAmplitude = 5f;
+		public float maxMagnitude = 2f;
 		[System.NonSerializedAttribute]
 		public Vector2 normalizedDragDirection;
 	}
@@ -33,13 +34,13 @@ public class PandaMovementController : MonoBehaviour {
 	[System.Serializable]
 	public class Lifting
 	{
-		public float releaseThreshold = 0.01f;
+		public float minMoveDistance = 0.01f;
 		public float movementSpeed = 50f;
 		[System.NonSerializedAttribute]
 		public Vector3 worldMousePos;
 		[System.NonSerializedAttribute]
 		public Vector3 difference;
-		public float maxMagnitude = 0.5F;
+		public float releaseMagnitudeThreshold = 0.5F;
 	}
 	
 	[System.Serializable]
@@ -60,7 +61,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public bool IsExceedingLiftThreshold()
 	{
-		return lifting.difference.magnitude > lifting.maxMagnitude;
+		return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
 	}
 	
 	public bool IsNotMoving()
@@ -100,7 +101,7 @@ public class PandaMovementController : MonoBehaviour {
 	{
 		lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, transform.position.z - Camera.main.transform.position.z));
 		lifting.difference = lifting.worldMousePos - transform.position;
-		if(lifting.difference.magnitude > lifting.releaseThreshold)
+		if(lifting.difference.magnitude > lifting.minMoveDistance)
 		{
 			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
 		}
@@ -119,18 +120,20 @@ public class PandaMovementController : MonoBehaviour {
 		{
 			movement.offset = Vector3.zero;
 		}
-		
-		ApplyGravity();
+		// in order for the isGrounded flag to work we always need to apply gravity
+		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
 		if(direction == PandaDirection.Right)
 		{
-			controller.Move(Vector3.right * movement.currentSpeed * Time.fixedDeltaTime);
+			movement.offset.x = movement.currentSpeed;
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
-			controller.Move(Vector3.left * movement.currentSpeed * Time.fixedDeltaTime);
+			movement.offset.x = - movement.currentSpeed;
 		}
+		// CharacterController.Move() should only be called once per frame
+		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
 
 	#region JumpingCode (NOT IN USE)
@@ -188,7 +191,11 @@ public class PandaMovementController : MonoBehaviour {
 	{
 		falling.normalizedDragDirection = new Vector2(lifting.difference.normalized.x, lifting.difference.normalized.y);
 		float dot = Vector2.Dot(falling.normalizedDragDirection, Vector2.right);
-		movement.offset.x = Mathf.Sign(dot) * lifting.difference.magnitude * Time.fixedDeltaTime * falling.sideForce;
+		// magnitude control how fast the side movement increases based on the difference vector in lifting
+		// we clamp it to avoid fast side movement on fast strokes
+		float magnitude = Mathf.Clamp(lifting.difference.magnitude, 0f, falling.maxMagnitude);
+		// falling.sideForceAmplitude is just a multiplier
+		movement.offset.x = Mathf.Sign(dot) * magnitude * falling.sideForceAmplitude;
 		ApplyGravity();
 	}
 	
