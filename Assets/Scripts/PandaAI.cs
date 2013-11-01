@@ -13,6 +13,7 @@ public class PandaAI : MonoBehaviour {
 	public event System.Action SetBoostSpeed;
     public event System.Action SetDefaultSpeed;
     public event System.Action<float, float> ApplyJump;
+    public event System.Action ApplyJumpingMovement;
 	
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
@@ -52,8 +53,8 @@ public class PandaAI : MonoBehaviour {
         }
         if (ApplyJump != null)
         {
-            ApplyJump(force, direction);
             pandaStateManager.ChangeState(PandaState.Jumping);
+            ApplyJump(force, direction);
         }
     }
 
@@ -122,8 +123,7 @@ public class PandaAI : MonoBehaviour {
 					ApplyWalkingMovement(pandaStateManager.GetDirection());
 				break;
             case PandaState.Jumping:
-                if (ApplyWalkingMovement != null)
-                    ApplyWalkingMovement(pandaStateManager.GetDirection());
+                if (ApplyJumpingMovement != null) ApplyJumpingMovement();
 				if(characterController.isGrounded)
 					pandaStateManager.ChangeState(PandaState.Walking);
                 break;
