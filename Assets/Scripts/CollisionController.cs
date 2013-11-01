@@ -20,7 +20,8 @@ public class CollisionController : MonoBehaviour {
 	
 	// Event Handlers
 	public event Action<ControllerColliderHit> OnPandaHit;
-	public event Action<ControllerColliderHit> OnWallHit;
+    public event Action<ControllerColliderHit> OnWallHit;
+    public event Action<ControllerColliderHit> OnDeathTrapHit;
 
 	//Entry Event Hnadlers
 	
@@ -66,8 +67,12 @@ public class CollisionController : MonoBehaviour {
 			}
 			else if(collidable.type == CollidableTypes.Wall && OnWallHit!=null) 
 			{
-				OnWallHit(hit);		
-			}
+				OnWallHit(hit);
+            }
+            else if (collidable.type == CollidableTypes.DeathTrap && OnDeathTrapHit != null)
+            {
+                OnDeathTrapHit(hit);
+            }
 			
 			
 		}
