@@ -5,8 +5,8 @@ using System.Collections;
 
 
 public class PandaAI : MonoBehaviour {
-	
-	public event System.Action ApplyLiftMovement;
+
+	public event Action<Vector3> ApplyLiftMovement;
 	public event System.Action<PandaDirection> ApplyWalkingMovement;
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
@@ -15,6 +15,8 @@ public class PandaAI : MonoBehaviour {
     public event System.Action<float, float> ApplyJump;
 	
 	public float slapEventLength = 2f;
+	[System.NonSerializedAttribute]
+	public Vector3 touchPosition;
 	
 	PandaStateManager pandaStateManager;
 	CollisionController collisionController;
@@ -100,14 +102,14 @@ public class PandaAI : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update() 
+	void FixedUpdate() 
 	{	
 		switch(pandaStateManager.GetState())
 		{
 			case PandaState.HoldingOntoFinger:
 				if(ApplyLiftMovement!=null)
 				{	
-					ApplyLiftMovement();
+					ApplyLiftMovement(touchPosition);
 					CheckLiftThreshold();
 				}
 				break;

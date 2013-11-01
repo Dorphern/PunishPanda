@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class FingerBlocking : MonoBehaviour {
-	
 
 	//cameraOffset determines where to place blockade on Z-axis
 	private float cameraOffset;
@@ -15,35 +14,33 @@ public class FingerBlocking : MonoBehaviour {
 		collider.enabled = false;
         boxTransform = gameObject.transform;
         lastPosition = Vector3.zero;
-	}
 
+	}
 	
 	void Update () {
 
-        lastPosition = boxTransform.position;
-        StartCoroutine(DeltaPosition(lastPosition));
+        
 	} 
 	
 	
 	public void ActivateBlockade (Vector3 mousePos)
 	{
-		cameraOffset = Camera.main.transform.position.z;
-		cameraOffset = Mathf.Abs(cameraOffset);
-			
-		mousePos.z = cameraOffset;
-			
- 
-        Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
-
-        collider.isTrigger = false;	
 		collider.enabled = true;
-       	transform.position = objectPos;
-		
+		cameraOffset = Camera.main.transform.position.z; 
+		mousePos.z = Mathf.Abs(cameraOffset);	
+			
+       	transform.position = Camera.main.ScreenToWorldPoint(mousePos);
+
+
+		lastPosition = boxTransform.position;
+        StartCoroutine(DeltaPosition(lastPosition));
+
 	}
 	
 	public void DeactivateBlockade()
 	{
 		collider.enabled = false;
+		//DestroyImmediate(this.gameObject);
 	}
 
    IEnumerator DeltaPosition(Vector3 lastPos)
@@ -51,7 +48,7 @@ public class FingerBlocking : MonoBehaviour {
        
         yield return new WaitForEndOfFrame();
         currentVel = (lastPos - boxTransform.position) / Time.deltaTime;
-        Debug.Log(currentVel.magnitude);
+        //Debug.Log(currentVel.magnitude);
 
         if (currentVel.magnitude > minVelocity)
         {
