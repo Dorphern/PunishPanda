@@ -28,8 +28,11 @@ public class FingerBlocking : MonoBehaviour {
 		collider.enabled = true;
 		cameraOffset = Camera.main.transform.position.z; 
 		mousePos.z = Mathf.Abs(cameraOffset);	
-			
-       	transform.position = Camera.main.ScreenToWorldPoint(mousePos);
+		
+	    Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
+        pos.z = 0;
+        transform.position = pos;
+        
 
 
 		lastPosition = boxTransform.position;
