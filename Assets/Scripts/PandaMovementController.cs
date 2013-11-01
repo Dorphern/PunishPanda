@@ -75,6 +75,7 @@ public class PandaMovementController : MonoBehaviour {
 		pandaAI.SetBoostSpeed += SetBoostSpeed;
 		pandaAI.SetDefaultSpeed += SetDefaultSpeed;
         pandaAI.ApplyJump += ApplyJump;
+        pandaAI.ApplyJumpingMovement += JumpingMovement;
 	}
 	 
 	void FixedUpdate ()
@@ -97,8 +98,12 @@ public class PandaMovementController : MonoBehaviour {
 			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
 		}
 	}
-	
-	
+
+
+    void JumpingMovement ()
+    {
+        ApplyGravity();
+    }
 	 
 	// Move the character using Unity's CharacterController.Move function
 	void WalkingMovement(PandaDirection direction)

@@ -13,26 +13,6 @@ public class Hotspot : MonoBehaviour {
 
     private bool hotspotActive = false;
 
-    void OnMouseDown ()
-    {
-        SetIsActive(true);
-    }
-
-    void OnMouseExit ()
-    {
-        SetIsActive(true);
-    }
-
-    void OnMouseUp ()
-    {
-        SetIsActive(false);
-    }
-
-    void SetIsActive (bool isDown)
-    {
-        hotspotActive = IsActive() && isDown;
-    }
-
     void OnTriggerEnter (Collider collider)
     {
         CheckPandaHit(collider);
@@ -41,14 +21,6 @@ public class Hotspot : MonoBehaviour {
     void OnTriggerStay (Collider collider)
     {
         CheckPandaHit(collider);
-    }
-
-    bool IsActive () {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
-        if (hit.collider == null) return false; 
-        return hit.collider.gameObject == gameObject;
     }
 
     void CheckPandaHit (Collider collider)
@@ -62,5 +34,15 @@ public class Hotspot : MonoBehaviour {
             collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
         }
         
+    }
+
+    public void ActivateHotspot ()
+    {
+        hotspotActive = true;
+    }
+
+    public void DeactivateHotspot ()
+    {
+        hotspotActive = false;
     }
 }
