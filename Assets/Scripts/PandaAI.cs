@@ -17,6 +17,10 @@ public class PandaAI : MonoBehaviour {
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
 	public Vector3 touchPosition;
+	public float pandaCollisionThreshold = 0.5f;
+	
+	float timeSinceLastCollisionWithPanda = 0f;
+	
 	
 	PandaStateManager pandaStateManager;
 	CollisionController collisionController;
@@ -96,7 +100,7 @@ public class PandaAI : MonoBehaviour {
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
 		
-		collisionController.OnPandaEnter += ChangeDirection;
+		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
         collisionController.OnDeathTrapHit += HitDeathObject;
 	}
@@ -137,6 +141,35 @@ public class PandaAI : MonoBehaviour {
 	
 	void ChangeDirection(ControllerColliderHit hit)
 	{
+		if(pandaStateManager.GetDirection() == PandaDirection.Left)
+		{
+			pandaStateManager.ChangeDirection(PandaDirection.Right);
+		}
+		else
+		{
+			pandaStateManager.ChangeDirection(PandaDirection.Left);
+		}
+	}
+	
+
+	
+	void PandaChangeDirection(ControllerColliderHit hit)
+	{
+		PandaStateManager colliderSM = hit.collider.GetComponent<PandaStateManager>();
+		
+		Debug.Log("hit!");
+		
+		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionThreshold ||
+			pandaStateManager.GetState() != PandaState.Walking ||
+			colliderSM.GetState() != PandaState.Walking)
+		{
+			return;
+		}
+		
+		
+		
+		timeSinceLastCollisionWithPanda = Time.time;
+	
 		if(pandaStateManager.GetDirection() == PandaDirection.Left)
 		{
 			pandaStateManager.ChangeDirection(PandaDirection.Right);
