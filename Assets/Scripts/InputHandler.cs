@@ -3,20 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
-	public FingerBlocking blockade;
+	public List<FingerBlocking> blockades;
 	public bool useMouseInput = false;
-	
+	public float fingerRadius = 1f;
 	private Ray ray;
 	private RaycastHit hitInfo;
 	private PandaAI tempPanda = null;
 	private FingerBlocking tempBlockade;
 	private Dictionary<int, PandaAI> selectedPandas; 
-	private Dictionary<int, FingerBlocking> blockades; 
+	private Dictionary<int, FingerBlocking> selectedBlockades; 
 	
 	void Start () 
 	{
 		selectedPandas = new Dictionary<int, PandaAI>();
-		blockades = new Dictionary<int, FingerBlocking>();
+		selectedBlockades = new Dictionary<int, FingerBlocking>();
 	}
 	
 	void Update () 
@@ -24,57 +24,67 @@ public class InputHandler : MonoBehaviour {
 		if(useMouseInput)
 		{
 			MouseUpdate();
+		}
+		else
+		{
+			TouchUpdate();
+		}
+	}
+	
+	void TouchUpdate()
+	{
+		// we don't have any valid input
+		if(Input.touchCount == 0)
+		{
 			return;
 		}
 		
-		if(Input.touchCount > 0 && Input.touchCount < 3)
+		foreach(Touch touch in Input.touches)
 		{
-			foreach(Touch touch in Input.touches)
+			// We try to select a panda
+			if(touch.phase == TouchPhase.Began)
 			{
-				// We try to select a panda
-				if(touch.phase == TouchPhase.Began)
+				bool selectedPanda = SelectPanda(touch.position, touch.fingerId);
+				if(selectedPanda == false)
 				{
-					bool selectedPanda = SelectPanda(touch.position, touch.fingerId);
-					if(selectedPanda == false)
-					{
-						tempBlockade = Instantiate(blockade) as FingerBlocking;
-						blockades.Add(touch.fingerId,  tempBlockade);	
-					}
-				}
-				
-				selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
-				// if our fingerID corresponds with a panda we updated the position on PandaAI
-				if(tempPanda != null)
-				{
-					tempPanda.touchPosition = touch.position;
-				}
-				else
-				{
-					blockades.TryGetValue(touch.fingerId, out tempBlockade);
-					if(tempBlockade != null)
-					{
-						tempBlockade.ActivateBlockade(touch.position);	
-					}
-				}
-				//We release a panda
-				if(touch.phase == TouchPhase.Ended)
-				{
-					if(selectedPandas.ContainsKey(touch.fingerId))
-					{
-						selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
-						tempPanda.PandaReleased();
-						selectedPandas.Remove(touch.fingerId);
-					}
-					else if(blockades.ContainsKey(touch.fingerId))
-					{
-						blockades.TryGetValue(touch.fingerId, out tempBlockade);
-						tempBlockade.DeactivateBlockade();
-						blockades.Remove(touch.fingerId);
-					}
+					//tempBlockade = Instantiate(blockades[0]) as FingerBlocking;
+					selectedBlockades.Add(touch.fingerId,  blockades[0]);
+					blockades.RemoveAt(0);
 				}
 			}
 			
-		}
+			selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
+			// if our fingerID corresponds with a panda we updated the position on PandaAI
+			if(tempPanda != null)
+			{
+				tempPanda.touchPosition = touch.position;
+			}
+			else
+			{
+				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
+				if(tempBlockade != null)
+				{
+					tempBlockade.ActivateBlockade(touch.position);	
+				}
+			}
+			//We release a panda
+			if(touch.phase == TouchPhase.Ended)
+			{
+				if(selectedPandas.ContainsKey(touch.fingerId))
+				{
+					selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
+					tempPanda.PandaReleased();
+					selectedPandas.Remove(touch.fingerId);
+				}
+				else if(selectedBlockades.ContainsKey(touch.fingerId))
+				{
+					selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
+					tempBlockade.DeactivateBlockade();
+					blockades.Add(tempBlockade);
+					selectedBlockades.Remove(touch.fingerId);
+				}
+			}
+		}			
 	}
 	
 	void MouseUpdate()
@@ -82,7 +92,7 @@ public class InputHandler : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0))
 		{
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			if(Physics.Raycast(ray, out hitInfo))
+			if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 			{
 				Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
 			
@@ -92,7 +102,6 @@ public class InputHandler : MonoBehaviour {
 					tempPanda.touchPosition = Input.mousePosition;
 					tempPanda.PandaPressed();
 				}
-				
 			}		
 		}
 		
@@ -100,7 +109,7 @@ public class InputHandler : MonoBehaviour {
 		{
 			if(tempPanda == null)
 			{
-				blockade.ActivateBlockade(Input.mousePosition);
+				blockades[0].ActivateBlockade(Input.mousePosition);
 			}
 			else
 			{
@@ -117,7 +126,7 @@ public class InputHandler : MonoBehaviour {
 			}
 			else
 			{
-				blockade.DeactivateBlockade();
+				blockades[0].DeactivateBlockade();
 			}
 		}
 		
@@ -126,7 +135,7 @@ public class InputHandler : MonoBehaviour {
 	bool SelectPanda(Vector3 position, int fingerID)
 	{
 		ray = Camera.main.ScreenPointToRay(position);
-		if(Physics.Raycast(ray, out hitInfo))
+		if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 		{
 			Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
 		
