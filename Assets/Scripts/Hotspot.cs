@@ -11,7 +11,7 @@ public class Hotspot : MonoBehaviour {
     [SerializeField] private float bounceForce = 1f;
     [SerializeField] private float bounceDirection = 1f;
 
-    private bool active = false;
+    private bool hotspotActive = false;
 
     void OnMouseDown ()
     {
@@ -30,7 +30,7 @@ public class Hotspot : MonoBehaviour {
 
     void SetIsActive (bool isDown)
     {
-        active = IsActive() && isDown;
+        hotspotActive = IsActive() && isDown;
     }
 
     void OnTriggerEnter (Collider collider)
@@ -57,7 +57,7 @@ public class Hotspot : MonoBehaviour {
         PandaState pandaState = pandaStateManager.GetState();
         if ((pandaState == PandaState.Walking
             /*|| pandaState == PandaState.Falling*/)
-            /*&& active*/)
+            /*&& hotspotActive*/)
         {
             collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
         }
