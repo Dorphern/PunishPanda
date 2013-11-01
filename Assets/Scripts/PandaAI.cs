@@ -153,10 +153,7 @@ public class PandaAI : MonoBehaviour {
 		// make sure some time has passed since the last collision
 		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionThreshold)
 			return;
-		
-		Debug.Log("collision at " + Time.time);
-		Debug.Log("last Collision " + timeSinceLastCollisionWithPanda);
-		Debug.Log(Time.time - timeSinceLastCollisionWithPanda);
+	
 		timeSinceLastCollisionWithPanda = Time.time;
 		
 		// make sure the other panda is walking
