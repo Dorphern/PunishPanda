@@ -141,42 +141,43 @@ public class PandaAI : MonoBehaviour {
 	
 	void ChangeDirection(ControllerColliderHit hit)
 	{
-		if(pandaStateManager.GetDirection() == PandaDirection.Left)
-		{
-			pandaStateManager.ChangeDirection(PandaDirection.Right);
-		}
-		else
-		{
-			pandaStateManager.ChangeDirection(PandaDirection.Left);
-		}
+		pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 	}
 	
 
 	
 	void PandaChangeDirection(ControllerColliderHit hit)
 	{
-		PandaStateManager colliderSM = hit.collider.GetComponent<PandaStateManager>();
+		PandaStateManager otherPandaSM = hit.collider.GetComponent<PandaStateManager>();
 		
-		Debug.Log("hit!");
-		
-		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionThreshold ||
-			pandaStateManager.GetState() != PandaState.Walking ||
-			colliderSM.GetState() != PandaState.Walking)
-		{
+		// make sure some time has passed since the last collision
+		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionThreshold)
 			return;
-		}
 		
-		
-		
+		Debug.Log("collision at " + Time.time);
+		Debug.Log("last Collision " + timeSinceLastCollisionWithPanda);
+		Debug.Log(Time.time - timeSinceLastCollisionWithPanda);
 		timeSinceLastCollisionWithPanda = Time.time;
-	
-		if(pandaStateManager.GetDirection() == PandaDirection.Left)
+		
+		// make sure the other panda is walking
+		if(otherPandaSM.GetState() != PandaState.Walking)
 		{
-			pandaStateManager.ChangeDirection(PandaDirection.Right);
+			// make sure this panda is either walking or falling
+			if((pandaStateManager.GetState() != PandaState.Walking ||
+			    pandaStateManager.GetState() != PandaState.Falling ))
+				return;
 		}
-		else
+				
+		// if this panda is falling move in the oposite direction of the other panda
+		if(pandaStateManager.GetState() == PandaState.Falling)
 		{
-			pandaStateManager.ChangeDirection(PandaDirection.Left);
+			pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
+		}
+		
+		// if both pandas are walking just bounce off of each other
+		else if(pandaStateManager.GetState() == PandaState.Walking )
+		{
+			pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 		}
 	}
 	
