@@ -22,10 +22,6 @@ public class CollisionController : MonoBehaviour {
 	public event Action<ControllerColliderHit> OnPandaHit;
     public event Action<ControllerColliderHit> OnWallHit;
     public event Action<ControllerColliderHit> OnDeathTrapHit;
-
-	//Entry Event Hnadlers
-	
-	public event Action<ControllerColliderHit> OnPandaEnter;
 	
 	// Default Event Handlers
 	public event Action<ControllerColliderHit> DefaultOnHit;
@@ -45,16 +41,6 @@ public class CollisionController : MonoBehaviour {
 	{
 		
 		var collidable = hit.collider.GetComponent<Collidable>();
-
-		//entry collision cases
-		if(collidable!=null && ((previousHit == null) || (previousHit!=null && hit.collider!=previousHit.collider)))
-		{		
-			//type collision cases
-			if(collidable.type == CollidableTypes.Panda && OnPandaEnter!=null) 
-			{
-				OnPandaEnter(hit);
-			}
-		}
 				
 		
 		// basic collison cases
