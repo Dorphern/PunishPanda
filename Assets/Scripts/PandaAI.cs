@@ -187,6 +187,7 @@ public class PandaAI : MonoBehaviour {
     public void HitDeathObject (ControllerColliderHit hit)
     {
         Debug.Log("Hit death object");
+        pandaStateManager.ChangeState(PandaState.Died);
     }
 
 	IEnumerator PlaySlap(float waitForSeconds)
