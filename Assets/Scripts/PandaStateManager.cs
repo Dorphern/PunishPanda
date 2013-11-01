@@ -46,7 +46,19 @@ public class PandaStateManager : MonoBehaviour {
     private int slapCount = 0;
 
     # region Public Methods
-
+	
+	public void SwapDirection(PandaDirection dir)
+	{
+		if(dir == PandaDirection.Left)
+		{
+			ChangeDirection(PandaDirection.Right);
+		}
+		else
+		{
+			ChangeDirection(PandaDirection.Left);
+		}	
+	}
+	
     // Change the state of the panda
     public void ChangeState (PandaState state)
     {

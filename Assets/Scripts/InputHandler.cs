@@ -6,17 +6,21 @@ public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
 	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
+	
 	private Ray ray;
 	private RaycastHit hitInfo;
 	private PandaAI tempPanda = null;
+	private Hotspot tempHotSpot;
 	private FingerBlocking tempBlockade;
 	private Dictionary<int, PandaAI> selectedPandas; 
+	private Dictionary<int, Hotspot> selectedHotSpots; 
 	private Dictionary<int, FingerBlocking> selectedBlockades; 
 	
 	void Start () 
 	{
 		selectedPandas = new Dictionary<int, PandaAI>();
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
+		selectedHotSpots = new Dictionary<int, Hotspot>();
 	}
 	
 	void Update () 
@@ -41,13 +45,19 @@ public class InputHandler : MonoBehaviour {
 		
 		foreach(Touch touch in Input.touches)
 		{
+			// ignore extra touches
+			if(Input.touchCount > 2)
+			{
+				if(selectedPandas.ContainsKey(touch.fingerId) == false && selectedBlockades.ContainsKey(touch.fingerId) == false)
+					continue;
+			}
+			
 			// We try to select a panda
 			if(touch.phase == TouchPhase.Began)
 			{
 				bool selectedPanda = SelectPanda(touch.position, touch.fingerId);
 				if(selectedPanda == false)
 				{
-					//tempBlockade = Instantiate(blockades[0]) as FingerBlocking;
 					selectedBlockades.Add(touch.fingerId,  blockades[0]);
 					blockades.RemoveAt(0);
 				}
@@ -96,11 +106,19 @@ public class InputHandler : MonoBehaviour {
 			{
 				Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
 			
-				if(collidable != null && collidable.type == CollidableTypes.Panda)
+				if(collidable != null)
 				{
-					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
-					tempPanda.touchPosition = Input.mousePosition;
-					tempPanda.PandaPressed();
+					if(collidable.type == CollidableTypes.Panda)
+					{
+						tempPanda = hitInfo.collider.GetComponent<PandaAI>();
+						tempPanda.touchPosition = Input.mousePosition;
+						tempPanda.PandaPressed();
+					}
+					else if(collidable.type == CollidableTypes.Hotspot)
+					{
+						tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
+						//tempHotSpot.Activate();	
+					}
 				}
 			}		
 		}
@@ -123,6 +141,11 @@ public class InputHandler : MonoBehaviour {
 			{
 				tempPanda.PandaReleased();
 				tempPanda = null;
+			}
+			else if(tempHotSpot != null)
+			{
+				//tempHotSpot.Deactivate();
+				tempHotSpot = null;
 			}
 			else
 			{
