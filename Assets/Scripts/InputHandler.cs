@@ -6,6 +6,7 @@ public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
 	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
+	
 	private Ray ray;
 	private RaycastHit hitInfo;
 	private PandaAI tempPanda = null;
@@ -41,13 +42,19 @@ public class InputHandler : MonoBehaviour {
 		
 		foreach(Touch touch in Input.touches)
 		{
+			// ignore extra touches
+			if(Input.touchCount > 2)
+			{
+				if(selectedPandas.ContainsKey(touch.fingerId) == false && selectedBlockades.ContainsKey(touch.fingerId) == false)
+					continue;
+			}
+			
 			// We try to select a panda
 			if(touch.phase == TouchPhase.Began)
 			{
 				bool selectedPanda = SelectPanda(touch.position, touch.fingerId);
 				if(selectedPanda == false)
 				{
-					//tempBlockade = Instantiate(blockades[0]) as FingerBlocking;
 					selectedBlockades.Add(touch.fingerId,  blockades[0]);
 					blockades.RemoveAt(0);
 				}
