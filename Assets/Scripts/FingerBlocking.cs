@@ -5,7 +5,7 @@ public class FingerBlocking : MonoBehaviour {
 
 	//cameraOffset determines where to place blockade on Z-axis
 	private float cameraOffset;
-    private float minSpeed = 0.05f;
+    private float minSpeed = 0.03f;
     private float maxSpeed = 1;
     private Vector3 lastPosition;
     private Vector2 direction;
@@ -57,11 +57,11 @@ public class FingerBlocking : MonoBehaviour {
         Debug.Log("DistWidth" + distPrScreenWidth);
         Debug.Log("Dist " + dist);
         Debug.Log("Speed " + speed);
-        if(speed > maxSpeed)
-        {
-            DebugStreamer.message = "Break";
-            yield break;
-        }
+        //if(speed > maxSpeed)
+        //{
+        //    DebugStreamer.message = "Break";
+        //    yield break;
+        //}
             
         delta.z = 0;        
         float angle = Vector3.Angle(Vector3.right, delta);
