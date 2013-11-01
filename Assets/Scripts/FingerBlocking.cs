@@ -11,6 +11,7 @@ public class FingerBlocking : MonoBehaviour {
     public Vector3 currentVel;
 	
 	void Start () {
+		collider.enabled = false;
         boxTransform = gameObject.transform;
         lastPosition = Vector3.zero;
 
@@ -24,7 +25,7 @@ public class FingerBlocking : MonoBehaviour {
 	
 	public void ActivateBlockade (Vector3 mousePos)
 	{
-
+		collider.enabled = true;
 		cameraOffset = Camera.main.transform.position.z; 
 		mousePos.z = Mathf.Abs(cameraOffset);	
 			
@@ -38,7 +39,8 @@ public class FingerBlocking : MonoBehaviour {
 	
 	public void DeactivateBlockade()
 	{
-		DestroyImmediate(this.gameObject);
+		collider.enabled = false;
+		//DestroyImmediate(this.gameObject);
 	}
 
    IEnumerator DeltaPosition(Vector3 lastPos)
@@ -46,7 +48,7 @@ public class FingerBlocking : MonoBehaviour {
        
         yield return new WaitForEndOfFrame();
         currentVel = (lastPos - boxTransform.position) / Time.deltaTime;
-        Debug.Log(currentVel.magnitude);
+        //Debug.Log(currentVel.magnitude);
 
         if (currentVel.magnitude > minVelocity)
         {

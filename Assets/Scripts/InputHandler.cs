@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
 	public FingerBlocking blockade;
+	public bool useMouseInput = false;
 	
 	private Ray ray;
 	private RaycastHit hitInfo;
@@ -20,6 +21,12 @@ public class InputHandler : MonoBehaviour {
 	
 	void Update () 
 	{
+		if(useMouseInput)
+		{
+			MouseUpdate();
+			return;
+		}
+		
 		if(Input.touchCount > 0 && Input.touchCount < 3)
 		{
 			foreach(Touch touch in Input.touches)
@@ -68,6 +75,52 @@ public class InputHandler : MonoBehaviour {
 			}
 			
 		}
+	}
+	
+	void MouseUpdate()
+	{
+		if(Input.GetMouseButtonDown(0))
+		{
+			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if(Physics.Raycast(ray, out hitInfo))
+			{
+				Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
+			
+				if(collidable != null && collidable.type == CollidableTypes.Panda)
+				{
+					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
+					tempPanda.touchPosition = Input.mousePosition;
+					tempPanda.PandaPressed();
+				}
+				
+			}		
+		}
+		
+		if(Input.GetMouseButton(0))
+		{
+			if(tempPanda == null)
+			{
+				blockade.ActivateBlockade(Input.mousePosition);
+			}
+			else
+			{
+				tempPanda.touchPosition = Input.mousePosition;	
+			}
+		}
+		
+		if(Input.GetMouseButtonUp(0))
+		{
+			if(tempPanda != null)
+			{
+				tempPanda.PandaReleased();
+				tempPanda = null;
+			}
+			else
+			{
+				blockade.DeactivateBlockade();
+			}
+		}
+		
 	}
 	
 	bool SelectPanda(Vector3 position, int fingerID)
