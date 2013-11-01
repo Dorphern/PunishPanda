@@ -13,6 +13,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
+	Vector3 lastPos;
  
 	#region SerializedClasses
 	[System.Serializable]
@@ -52,6 +53,7 @@ public class PandaMovementController : MonoBehaviour {
 	    // The character's current movement offset (for Jumping / Falling)
 	    [System.NonSerialized]
 	    public Vector3 offset;
+		public float notMovingThreshold = 0.5f;
 	}
 	#endregion
 	
@@ -60,7 +62,15 @@ public class PandaMovementController : MonoBehaviour {
 	{
 		return lifting.difference.magnitude > lifting.maxMagnitude;
 	}
-	 
+	
+	public bool IsNotMoving()
+	{
+		Vector3 diff = lastPos - transform.position;
+		if(diff.magnitude > movement.notMovingThreshold)
+			return true;
+		return false;
+		
+	}
 	void Start()
 	{
 	    controller = GetComponent<CharacterController>();
@@ -82,11 +92,8 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-	}
-	 
-	void Update ()
-	{	
-		
+		// Store the last position of the character;
+		lastPos = transform.position;
 	}
 	
 	void LiftMovement(Vector3 position)

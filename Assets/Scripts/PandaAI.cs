@@ -15,13 +15,13 @@ public class PandaAI : MonoBehaviour {
     public event System.Action<float, float> ApplyJump;
     public event System.Action ApplyJumpingMovement;
 	
+	
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
 	public Vector3 touchPosition;
 	public float pandaCollisionDelay = 0.02f;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
-	
 	
 	PandaStateManager pandaStateManager;
 	CollisionController collisionController;
@@ -101,6 +101,7 @@ public class PandaAI : MonoBehaviour {
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
 		
+		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
         collisionController.OnDeathTrapHit += HitDeathObject;
@@ -130,13 +131,24 @@ public class PandaAI : MonoBehaviour {
 			case PandaState.Falling:
 				if(ApplyFalling!=null)
 					ApplyFalling();
-				if(characterController.isGrounded)
-					pandaStateManager.ChangeState(PandaState.Walking);
+				//if(characterController.isGrounded)
+				//	pandaStateManager.ChangeState(PandaState.Walking);
 				break;
 			case PandaState.Boosting:
 				BoostingMovement(pandaStateManager.GetDirection());
 				break;
+			case PandaState.FallTransition:
+				if(ApplyWalkingMovement!=null)
+					ApplyWalkingMovement(pandaStateManager.GetDirection());
+				break;
+				
 		}
+	}
+	
+	void FloorCollision(ControllerColliderHit hit)
+	{
+		if(pandaStateManager.GetState() == PandaState.FallTransition || pandaStateManager.GetState() == PandaState.Falling)
+			pandaStateManager.ChangeState(PandaState.Walking);
 	}
 	
 	void ChangeDirection(ControllerColliderHit hit)
@@ -168,9 +180,18 @@ public class PandaAI : MonoBehaviour {
 		// if this panda is falling move in the oposite direction of the other panda
 		if(pandaStateManager.GetState() == PandaState.Falling)
 		{
-			pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
+			pandaStateManager.ChangeState(PandaState.FallTransition);
 		}
 		
+		else if(pandaStateManager.GetState() == PandaState.FallTransition)
+		{
+			
+			
+			if(pandaMovementController.IsNotMoving())
+				pandaStateManager.ChangeDirection(otherPandaSM.GetDirection());
+			else
+				pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
+		}
 		// if both pandas are walking just bounce off of each other
 		else if(pandaStateManager.GetState() == PandaState.Walking )
 		{

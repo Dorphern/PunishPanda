@@ -22,16 +22,14 @@ public class CollisionController : MonoBehaviour {
 	public event Action<ControllerColliderHit> OnPandaHit;
     public event Action<ControllerColliderHit> OnWallHit;
     public event Action<ControllerColliderHit> OnDeathTrapHit;
+	public event Action<ControllerColliderHit> OnFloorHit;
 	
 	// Default Event Handlers
 	public event Action<ControllerColliderHit> DefaultOnHit;
 	public event Action<Collider> DefaultOnTriggerEnter;
 	public event Action<Collider> DefaultOnTriggerExit;
 	public event Action<Collider> DefaultOnTriggerStay;
-	
-	
-	// previous update collision
-	ControllerColliderHit previousHit;
+
 	
 	# region Private Methods
 	
@@ -59,7 +57,10 @@ public class CollisionController : MonoBehaviour {
             {
                 OnDeathTrapHit(hit);
             }
-			
+			else if (collidable.type == CollidableTypes.Floor && OnFloorHit != null)
+            {
+                OnFloorHit(hit);
+            }
 			
 		}
 		
@@ -69,8 +70,7 @@ public class CollisionController : MonoBehaviour {
 		{
 			DefaultOnHit(hit);	
 		}
-		
-		previousHit = hit;
+	
 	}
 	
 	void OnTriggerEnter(Collider c) 
