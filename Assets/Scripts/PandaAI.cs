@@ -151,7 +151,7 @@ public class PandaAI : MonoBehaviour {
 		PandaStateManager otherPandaSM = hit.collider.GetComponent<PandaStateManager>();
 		
 		// make sure some time has passed since the last collision
-		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionThreshold)
+		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionDelay)
 			return;
 	
 		timeSinceLastCollisionWithPanda = Time.time;
