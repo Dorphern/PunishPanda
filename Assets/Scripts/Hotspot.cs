@@ -36,13 +36,11 @@ public class Hotspot : MonoBehaviour {
 
     public void ActivateHotspot ()
     {
-        Debug.Log("activate");
         hotspotActive = true;
     }
 
     public void DeactivateHotspot ()
     {
-        Debug.Log("deactivate");
         hotspotActive = false;
     }
 }
