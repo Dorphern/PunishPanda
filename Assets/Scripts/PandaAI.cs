@@ -41,6 +41,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.HoldingOntoFinger)
 		{
+			pandaMovementController.movement.offset.x = 0f;
 			pandaStateManager.ChangeState(PandaState.Falling);
 		}
 	}
@@ -111,7 +112,7 @@ public class PandaAI : MonoBehaviour {
 	void FixedUpdate() 
 	{	
 		switch(pandaStateManager.GetState())
-		{
+		{	
 			case PandaState.HoldingOntoFinger:
 				if(ApplyLiftMovement!=null)
 				{	
@@ -155,9 +156,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 	}
-	
 
-	
 	void PandaChangeDirection(ControllerColliderHit hit)
 	{
 		PandaStateManager otherPandaSM = hit.collider.GetComponent<PandaStateManager>();
