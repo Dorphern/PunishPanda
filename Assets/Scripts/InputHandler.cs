@@ -10,14 +10,17 @@ public class InputHandler : MonoBehaviour {
 	private Ray ray;
 	private RaycastHit hitInfo;
 	private PandaAI tempPanda = null;
+	private Hotspot tempHotSpot;
 	private FingerBlocking tempBlockade;
 	private Dictionary<int, PandaAI> selectedPandas; 
+	private Dictionary<int, Hotspot> selectedHotSpots; 
 	private Dictionary<int, FingerBlocking> selectedBlockades; 
 	
 	void Start () 
 	{
 		selectedPandas = new Dictionary<int, PandaAI>();
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
+		selectedHotSpots = new Dictionary<int, Hotspot>();
 	}
 	
 	void Update () 
@@ -103,11 +106,19 @@ public class InputHandler : MonoBehaviour {
 			{
 				Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
 			
-				if(collidable != null && collidable.type == CollidableTypes.Panda)
+				if(collidable != null)
 				{
-					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
-					tempPanda.touchPosition = Input.mousePosition;
-					tempPanda.PandaPressed();
+					if(collidable.type == CollidableTypes.Panda)
+					{
+						tempPanda = hitInfo.collider.GetComponent<PandaAI>();
+						tempPanda.touchPosition = Input.mousePosition;
+						tempPanda.PandaPressed();
+					}
+					else if(collidable.type == CollidableTypes.Hotspot)
+					{
+						tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
+						//tempHotSpot.Activate();	
+					}
 				}
 			}		
 		}
@@ -130,6 +141,11 @@ public class InputHandler : MonoBehaviour {
 			{
 				tempPanda.PandaReleased();
 				tempPanda = null;
+			}
+			else if(tempHotSpot != null)
+			{
+				//tempHotSpot.Deactivate();
+				tempHotSpot = null;
 			}
 			else
 			{
