@@ -45,8 +45,6 @@ public class FingerBlocking : MonoBehaviour {
    IEnumerator DeltaPosition(Vector3 lastPos)
     {
         yield return new WaitForEndOfFrame();
-        currentVel = (lastPos - boxTransform.position) / Time.deltaTime;
-        //Debug.Log(currentVel.magnitude);
 
         Vector3 delta = transform.position - lastPos;
         float dist = delta.magnitude;
