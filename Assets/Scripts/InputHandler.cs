@@ -52,32 +52,25 @@ public class InputHandler : MonoBehaviour {
 					continue;
 			}
 			
-			// We try to select a panda
+			// Touch began
 			if(touch.phase == TouchPhase.Began)
 			{
-				bool selectedPanda = SelectPanda(touch.position, touch.fingerId);
-				if(selectedPanda == false)
-				{
-					selectedBlockades.Add(touch.fingerId,  blockades[0]);
-					blockades.RemoveAt(0);
-				}
+				DetectCollidable(touch.position, touch.fingerId);
 			}
 			
-			selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
-			// if our fingerID corresponds with a panda we updated the position on PandaAI
-			if(tempPanda != null)
+			if(selectedPandas.ContainsKey(touch.fingerId))
 			{
+				selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
+				// if our fingerID corresponds with a panda we updated the position on PandaAI
 				tempPanda.touchPosition = touch.position;
 			}
-			else
+			else if(selectedBlockades.ContainsKey(touch.fingerId))
 			{
 				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
-				if(tempBlockade != null)
-				{
-					tempBlockade.ActivateBlockade(touch.position);	
-				}
+				tempBlockade.ActivateBlockade(touch.position);	
 			}
-			//We release a panda
+			
+			// Touch ended
 			if(touch.phase == TouchPhase.Ended)
 			{
 				if(selectedPandas.ContainsKey(touch.fingerId))
@@ -92,6 +85,12 @@ public class InputHandler : MonoBehaviour {
 					tempBlockade.DeactivateBlockade();
 					blockades.Add(tempBlockade);
 					selectedBlockades.Remove(touch.fingerId);
+				}
+				else if(selectedHotSpots.ContainsKey(touch.fingerId))
+				{
+					selectedHotSpots.TryGetValue(touch.fingerId, out tempHotSpot);
+					//tempHotSpot.Deactivate();
+					selectedHotSpots.Remove(touch.fingerId);
 				}
 			}
 		}			
@@ -155,22 +154,34 @@ public class InputHandler : MonoBehaviour {
 		
 	}
 	
-	bool SelectPanda(Vector3 position, int fingerID)
+	void DetectCollidable(Vector3 position, int fingerID)
 	{
 		ray = Camera.main.ScreenPointToRay(position);
 		if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 		{
 			Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
 		
-			if(collidable != null && collidable.type == CollidableTypes.Panda)
+			if(collidable != null)
 			{
-				tempPanda = hitInfo.collider.GetComponent<PandaAI>();
-				tempPanda.PandaPressed();
-				tempPanda.touchPosition = position;
-				selectedPandas.Add(fingerID, tempPanda);
-				return true;
+				if(collidable.type == CollidableTypes.Panda)
+				{
+					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
+					tempPanda.PandaPressed();
+					tempPanda.touchPosition = position;
+					selectedPandas.Add(fingerID, tempPanda);
+					return;
+				}
+				else if(collidable.type == CollidableTypes.Hotspot)
+				{
+					tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
+					//tempHotSpot.Activate();
+					selectedHotSpots.Add(fingerID, tempHotSpot);
+					return;
+				}
 			}			
-		}	
-		return false;
+		}
+		// we activate a blockade 
+		selectedBlockades.Add(touch.fingerId,  blockades[0]);
+		blockades.RemoveAt(0);
 	}	
 }
