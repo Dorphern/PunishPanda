@@ -17,7 +17,7 @@ public class PandaAI : MonoBehaviour {
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
 	public Vector3 touchPosition;
-	public float pandaCollisionThreshold = 0.5f;
+	public float pandaCollisionDelay = 0.02f;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
