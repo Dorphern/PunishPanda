@@ -89,7 +89,7 @@ public class InputHandler : MonoBehaviour {
 				else if(selectedHotSpots.ContainsKey(touch.fingerId))
 				{
 					selectedHotSpots.TryGetValue(touch.fingerId, out tempHotSpot);
-					//tempHotSpot.Deactivate();
+					tempHotSpot.DeactivateHotspot();
 					selectedHotSpots.Remove(touch.fingerId);
 				}
 			}
@@ -174,14 +174,14 @@ public class InputHandler : MonoBehaviour {
 				else if(collidable.type == CollidableTypes.Hotspot)
 				{
 					tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
-					//tempHotSpot.Activate();
+					tempHotSpot.ActivateHotspot();
 					selectedHotSpots.Add(fingerID, tempHotSpot);
 					return;
 				}
 			}			
 		}
 		// we activate a blockade 
-		selectedBlockades.Add(touch.fingerId,  blockades[0]);
+		selectedBlockades.Add(fingerID,  blockades[0]);
 		blockades.RemoveAt(0);
 	}	
 }
