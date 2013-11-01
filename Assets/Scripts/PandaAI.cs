@@ -187,9 +187,11 @@ public class PandaAI : MonoBehaviour {
 			
 			
 			if(pandaMovementController.IsNotMoving())
-				pandaStateManager.ChangeDirection(otherPandaSM.GetDirection());
-			else
-				pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
+			{
+				pandaMovementController.JumpOff();
+			}
+		
+			pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
 		}
 		// if both pandas are walking just bounce off of each other
 		else if(pandaStateManager.GetState() == PandaState.Walking )

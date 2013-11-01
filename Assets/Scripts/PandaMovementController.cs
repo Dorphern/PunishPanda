@@ -10,10 +10,12 @@ public class PandaMovementController : MonoBehaviour {
 	public Lifting lifting;
 	public Falling falling;
 	public Boosting boosting;
+	public JumpingOff jumpOff;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
+
  
 	#region SerializedClasses
 	[System.Serializable]
@@ -21,6 +23,13 @@ public class PandaMovementController : MonoBehaviour {
 	{
 		public float boostSpeed = 5f;
 		public float rollOffSpeed = 1.5f;
+	}
+	
+	[System.Serializable]
+	public class JumpingOff
+	{
+		public float jumpOffSpeed = 3f;
+		public float jumpOffDir = 45f;	
 	}
 	[System.Serializable]
 	public class Falling
@@ -54,8 +63,10 @@ public class PandaMovementController : MonoBehaviour {
 	    // The character's current movement offset (for Jumping / Falling)
 	    [System.NonSerialized]
 	    public Vector3 offset;
-		public float notMovingThreshold = 0.5f;
+		public float notMovingThreshold = 0.01f;
 	}
+	
+
 	#endregion
 	
 	
@@ -67,11 +78,17 @@ public class PandaMovementController : MonoBehaviour {
 	public bool IsNotMoving()
 	{
 		Vector3 diff = lastPos - transform.position;
-		if(diff.magnitude > movement.notMovingThreshold)
+		if(diff.magnitude < movement.notMovingThreshold)
 			return true;
-		return false;
-		
+		return false;	
 	}
+	
+	public void JumpOff()
+	{
+		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
+	}
+	
+	
 	void Start()
 	{
 	    controller = GetComponent<CharacterController>();
@@ -163,7 +180,7 @@ public class PandaMovementController : MonoBehaviour {
 	
     #endregion
 
-    void ApplyJump (float force, float direction)
+    public void ApplyJump (float force, float direction)
     {
         float radDir = Mathf.Deg2Rad * direction;
         movement.offset.y = Mathf.Sin(radDir) * force;
