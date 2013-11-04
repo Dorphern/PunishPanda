@@ -28,6 +28,7 @@ public class PandaAI : MonoBehaviour {
 	CollisionController collisionController;
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
+	BloodSplatter bloodSplatter;
 	
 	#region Public Methods
 	public void PandaPressed()
@@ -65,8 +66,8 @@ public class PandaAI : MonoBehaviour {
 		// we can slap the panda only in walking and standing state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing)
 			return;
-		// play animation + splatter
-		StartCoroutine(PlaySlap(slapEventLength));
+		// play animation + splatter ( texture projection + particles)
+		StartCoroutine(PlaySlap(slapEventLength, slapDirection));
         pandaStateManager.IncrementSlapCounter();
 		
 		Vector2 facingDirection;
@@ -102,6 +103,7 @@ public class PandaAI : MonoBehaviour {
 		collisionController = GetComponent<CollisionController>();
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
+		bloodSplatter = GetComponent<BloodSplatter>();
 		
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
@@ -221,9 +223,11 @@ public class PandaAI : MonoBehaviour {
         pandaStateManager.ChangeState(PandaState.Died);
     }
 
-	IEnumerator PlaySlap(float waitForSeconds)
+	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
+		bloodSplatter.ProjectBlood(slapDirection.normalized);
+		
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		
