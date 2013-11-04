@@ -39,6 +39,7 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Falling         )
 			
 		{
+			pandaMovementController.ResetGravity();
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
 	}
