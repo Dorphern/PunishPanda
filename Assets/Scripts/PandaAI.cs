@@ -33,7 +33,11 @@ public class PandaAI : MonoBehaviour {
 	#region Public Methods
 	public void PandaPressed()
 	{
-		if(pandaStateManager.GetState() == PandaState.Standing || pandaStateManager.GetState() == PandaState.Walking)
+		if( pandaStateManager.GetState() == PandaState.Standing        || 
+		    pandaStateManager.GetState() == PandaState.Walking         ||
+			pandaStateManager.GetState() == PandaState.FallTransition  ||
+			pandaStateManager.GetState() == PandaState.Falling         )
+			
 		{
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
