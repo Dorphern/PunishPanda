@@ -141,13 +141,15 @@ public class PandaMovementController : MonoBehaviour {
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
 		if(direction == PandaDirection.Right)
-		{
+		{	
 			movement.offset.x = movement.currentSpeed;
+			transform.rotation = Quaternion.LookRotation(Vector3.forward);
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
 			movement.offset.x = - movement.currentSpeed;
+			transform.rotation = Quaternion.LookRotation(Vector3.back);
 		}
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
