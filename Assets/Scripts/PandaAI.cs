@@ -14,6 +14,7 @@ public class PandaAI : MonoBehaviour {
     public event System.Action SetDefaultSpeed;
     public event System.Action<float, float> ApplyJump;
     public event System.Action ApplyJumpingMovement;
+	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	
 	
 	public float slapEventLength = 2f;
@@ -167,21 +168,23 @@ public class PandaAI : MonoBehaviour {
 	
 		timeSinceLastCollisionWithPanda = Time.time;
 		
+		
+		/*
 		// make sure the other panda is walking
 		if(otherPandaSM.GetState() != PandaState.Walking)
 		{
 			// make sure this panda is either walking or falling
-			if((pandaStateManager.GetState() != PandaState.Walking ||
-			    pandaStateManager.GetState() != PandaState.Falling ))
+			if(!(pandaStateManager.GetState() == PandaState.Walking ||
+			    pandaStateManager.GetState() == PandaState.Falling ))
 				return;
-		}
+		}*/
 				
-		// if this panda is falling move in the oposite direction of the other panda
+		// if this panda is falling onto another panda change to fall transition state
 		if(pandaStateManager.GetState() == PandaState.Falling)
 		{
 			pandaStateManager.ChangeState(PandaState.FallTransition);
 		}
-		
+		// if this panda falls on another panda jump off of it
 		else if(pandaStateManager.GetState() == PandaState.FallTransition)
 		{
 			
@@ -193,10 +196,16 @@ public class PandaAI : MonoBehaviour {
 		
 			
 		}
-		// if both pandas are walking just bounce off of each other
+		
 		else if(pandaStateManager.GetState() == PandaState.Walking )
 		{
-			pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+		
+			// if both pandas are walking just bounce off of each other
+			if(otherPandaSM.GetState() == PandaState.Walking)
+				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+			// if we hit a panda that is holding on to the finger we want this panda to change direction
+			else if(otherPandaSM.GetState() ==  PandaState.HoldingOntoFinger)
+				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 		}
 	}
 	
