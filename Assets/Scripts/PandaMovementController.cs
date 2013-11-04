@@ -88,6 +88,10 @@ public class PandaMovementController : MonoBehaviour {
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
 	
+	public void ResetGravity()
+	{
+		movement.offset.y = 0;
+	}
 	
 	void Start()
 	{
