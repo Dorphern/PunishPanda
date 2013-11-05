@@ -56,13 +56,12 @@ Shader "PunishPanda/Toon Outline" {
 	}
 	
 	SubShader {
-		Tags { "RenderType"="Opaque" }
+		Tags { "Queue" = "Transparent" }
 		Pass {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
 			Cull Front
 			ZWrite Off
-			ZTest Always
 			ColorMask RGB
 			Blend SrcAlpha OneMinusSrcAlpha
 
