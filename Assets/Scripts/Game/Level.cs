@@ -60,10 +60,7 @@ public class Level : MonoBehaviour
         if (!paused && alivePandas > 0)
         {
             elapsedTime += PandaTime.deltaTime;
-            Debug.Log(elapsedTime);
         }
-        
-
     }
 
     private void OnGUI()
