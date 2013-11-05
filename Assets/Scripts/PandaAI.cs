@@ -36,7 +36,8 @@ public class PandaAI : MonoBehaviour {
 		if( pandaStateManager.GetState() == PandaState.Standing        || 
 		    pandaStateManager.GetState() == PandaState.Walking         ||
 			pandaStateManager.GetState() == PandaState.FallTransition  ||
-			pandaStateManager.GetState() == PandaState.Falling         )
+			pandaStateManager.GetState() == PandaState.Falling         ||
+			pandaStateManager.GetState() == PandaState.Jumping)
 			
 		{
 			pandaMovementController.ResetHolding();
@@ -130,6 +131,7 @@ public class PandaAI : MonoBehaviour {
 				}
 				break;
 			case PandaState.Walking:
+				
 				if(ApplyWalkingMovement!=null)
 					ApplyWalkingMovement(pandaStateManager.GetDirection());
 				break;
