@@ -47,4 +47,7 @@ public class FingerBlocking : MonoBehaviour {
 				childColliders[i].enabled = val;
 		}
 	}
+	
+	
+	
 }
