@@ -6,7 +6,9 @@ public enum CollidableTypes {
 	None,
 	Panda,
 	DeathTrap,
-	Wall
+	Wall,
+    Hotspot,
+	Floor
 	
 }
 
