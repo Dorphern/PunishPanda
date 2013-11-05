@@ -22,9 +22,10 @@ public class GameManager : MonoBehaviour {
     {
         DontDestroyOnLoad(transform.gameObject);
         levelManager = GetComponent<LevelManager>();
-        GetComponentInChildren<GameGUI>().Initialize(levelManager);
+        GetComponentInChildren<MenuGUI>().Initialize(levelManager);
         InstanceFinder.GameManager = this;
         InstanceFinder.LevelManager = levelManager;
+        InstanceFinder.PointSystem = GetComponent<PointSystem>();
     }
 
     public Level ActiveLevel

@@ -6,7 +6,7 @@ namespace PunishPanda
     
 public static class PandaTime
 {
-    private static float _timeScale;
+    private static float _timeScale = 1.0f;
 
     public static float timeScale
     {

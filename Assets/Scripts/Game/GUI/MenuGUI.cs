@@ -1,38 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameGUI : MonoBehaviour {
+public class MenuGUI : MonoBehaviour {
     public void Initialize(LevelManager levelManager)
     {
-        _levelManager = levelManager;
+        this.levelManager = levelManager;
     }
 
-    private LevelManager _levelManager;
+    private LevelManager levelManager;
 
     void OnGUI()
     {
-        if (!_levelManager.IsLoadingLevel)
+        if (!levelManager.IsLoadingLevel)
         {
-            if (_levelManager.IsInMainMenu)
+            if (levelManager.IsInMainMenu)
             {
                 Rect position = new Rect(50, 50, 100, 80);
-                for (int i = 0; i < _levelManager.WorldCount; i++)
+                for (int i = 0; i < levelManager.WorldCount; i++)
                 {
-                    var world = _levelManager.GetWorld(i);
+                    var world = levelManager.GetWorld(i);
                     if (GUI.Button(position, world.WorldName))
                     {
-                        _levelManager.CurrentWorld = world;
+                        levelManager.CurrentWorld = world;
                     }
                     position.x += 150;
                 }
 
                 Rect levelPosition = new Rect(50, 150, 100, 80);
-                for (int i = 0; i < _levelManager.CurrentWorld.Levels.Count; i++)
+                for (int i = 0; i < levelManager.CurrentWorld.Levels.Count; i++)
                 {
-                    var level = _levelManager.CurrentWorld.Levels[i];
+                    var level = levelManager.CurrentWorld.Levels[i];
                     if (GUI.Button(levelPosition, "Load " + level.LevelName))
                     {
-                        _levelManager.LoadLevelByWorldIndex(i);
+                        levelManager.LoadLevelByWorldIndex(i);
                     }
                     levelPosition.x += 150;
                 }

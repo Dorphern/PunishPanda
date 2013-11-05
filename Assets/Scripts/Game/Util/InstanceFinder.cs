@@ -7,6 +7,7 @@ public class InstanceFinder : MonoBehaviour
 
     public static LevelManager LevelManager { get; set; }
     public static GameManager GameManager { get; set; }
+    public static PointSystem PointSystem { get; set; }
 
     public bool SetupIfMissing()
     {

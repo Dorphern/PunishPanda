@@ -6,7 +6,7 @@ using PunishPanda.Game;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField] private LevelScore score = new LevelScore();
+    [SerializeField] private LevelScore levelScore = new LevelScore();
 
     public void Pause()
     {
@@ -14,7 +14,7 @@ public class Level : MonoBehaviour
     }
 
     public void Continue()
-    {
+    { 
         paused = false;
     }
 
@@ -39,7 +39,6 @@ public class Level : MonoBehaviour
         }
     }
 
-    private LevelData levelData;
     private float elapsedTime;
     private bool paused;
     private int totalPandaCount;
@@ -51,7 +50,6 @@ public class Level : MonoBehaviour
         //This code only exists to enable that the game will work correctly when working in the editor and loading a random map
         if (!GetComponent<InstanceFinder>().SetupIfMissing())
         {
-            levelData = InstanceFinder.LevelManager.CurrentLevel;
             InstanceFinder.GameManager.ActiveLevel = this;
         }
         InstanceFinder.GameManager.ActiveLevel = this;
@@ -62,12 +60,10 @@ public class Level : MonoBehaviour
         if (!paused && alivePandas > 0)
         {
             elapsedTime += PandaTime.deltaTime;
+            Debug.Log(elapsedTime);
         }
+        
 
-        if (alivePandas == 0)
-        {
-            
-        }
     }
 
     private void OnGUI()
@@ -100,33 +96,36 @@ public class Level : MonoBehaviour
         }
         else
         {
-
+            int heightOffset = 30;
             Rect nextRect = new Rect(Screen.width/2 - 75, 50, 100, 40);
-            int score = ScoreCalculator.Score(this.score, pandaKills, alivePandas, elapsedTime);
+            int score = ScoreCalculator.Score(levelScore, pandaKills, alivePandas, elapsedTime);
             GUI.Label(nextRect, "Score: " + score);
-            nextRect.y += 50;
+            nextRect.y += heightOffset;
             GUI.Label(nextRect, "Panda Kills: " + pandaKills);
-            nextRect.y += 50;
-            GUI.Label(nextRect, "Time Score: " + ScoreCalculator.TimeScore(this.score, elapsedTime));
+            nextRect.y += heightOffset;
+
+            GUI.Label(nextRect, "Time Score: " + ScoreCalculator.TimeScore(levelScore, elapsedTime));
+            nextRect.y += heightOffset;
+            GUI.Label(nextRect, "Stars: " + ScoreCalculator.Stars(levelScore, score));
             if (alivePandas == 0)
             {
-                nextRect.y += 50;
+                nextRect.y += heightOffset;
                 nextRect.width += 20;
                 GUI.Label(nextRect, "Perfect Panda Kill!");
                 nextRect.width -= 20;
             }
-            nextRect.y += 100;
+            nextRect.y += heightOffset*2;
             if (GUI.Button(nextRect, "Next Level"))
             {
                 levelManger.LoadNextLevel();
             }
 
-            nextRect.y += 50;
+            nextRect.y += heightOffset * 2 ;
             if (GUI.Button(nextRect, "Replay"))
             {
                 levelManger.Reload();
             }
-            nextRect.y += 50;
+            nextRect.y += heightOffset * 2;
             if (GUI.Button(nextRect, "Main Menu"))
             {
                 levelManger.LoadMainMenu();
