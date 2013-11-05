@@ -37,10 +37,11 @@ Shader "PunishPanda/Toon Outline" {
 	ENDCG
 
 	SubShader {
-		Tags { "RenderType"="Opaque" }
+		Tags { "Queue" = "Transparent" }
 		Pass {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
+			Cull Front
 			ZWrite Off
 			ColorMask RGB
 			Blend SrcAlpha OneMinusSrcAlpha
@@ -60,7 +61,8 @@ Shader "PunishPanda/Toon Outline" {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
 			Cull Front
-			ZWrite On
+			ZWrite Off
+			ZTest Always
 			ColorMask RGB
 			Blend SrcAlpha OneMinusSrcAlpha
 
