@@ -8,15 +8,27 @@ public class GameManager : MonoBehaviour {
 	void Awake()
 	{
 	    var instance = InstanceFinder.GameManager;
-	    if (instance == this)
+	    if (instance == null)
 	    {
-	        DontDestroyOnLoad(transform.gameObject);
-	        levelManager = GetComponent<LevelManager>();
-	        GetComponentInChildren<MainMenuGUI>().Initialize(levelManager);
+	        Initialize();
 	    }
 	    else
 	    {
 	        Object.Destroy(gameObject);   
 	    }
 	}
+
+    public void Initialize()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+        levelManager = GetComponent<LevelManager>();
+        GetComponentInChildren<GameGUI>().Initialize(levelManager);
+        InstanceFinder.GameManager = this;
+        InstanceFinder.LevelManager = levelManager;
+    }
+
+    public Level ActiveLevel
+    {
+        get; set;
+    }
 }

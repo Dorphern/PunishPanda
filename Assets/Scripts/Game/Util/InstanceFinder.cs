@@ -1,28 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class InstanceFinder
+public class InstanceFinder : MonoBehaviour
 {
-    private static LevelManager _levelManager;
+    [SerializeField] private GameObject gameManagerPrefab;
 
-    public static LevelManager LevelManager
-    {
-        get
-        {
-            if (_levelManager == null)
-                _levelManager = Object.FindObjectOfType(typeof (LevelManager)) as LevelManager;
-            return _levelManager;
-        }
-    }
+    public static LevelManager LevelManager { get; set; }
+    public static GameManager GameManager { get; set; }
 
-    private static GameManager _gameManager;
-    public static GameManager GameManager
+    public bool SetupIfMissing()
     {
-        get
+#if UNITY_EDITOR
+        if (GameManager == null)
         {
-            if (_gameManager == null)
-                _gameManager = Object.FindObjectOfType(typeof(GameManager)) as GameManager;
-            return _gameManager;
+            GameManager = (Object.Instantiate(gameManagerPrefab) as GameObject).GetComponent<GameManager>();
+            GameManager.Initialize();
+            LevelManager.TransitionIntoLevel();
+            return true;
         }
+#endif
+        return false;
     }
 }

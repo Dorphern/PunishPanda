@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            return _currentWorld.Levels[_currentLevelIndex];
+            return currentWorld.Levels[currentLevelIndex];
         }
     }
 
@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            return _currentLevelIndex;
+            return currentLevelIndex;
         }
     }
 
@@ -25,104 +25,140 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            return _currentWorld;
+            return currentWorld;
         }
         set
         {
             if (value != null)
             {
-                _currentWorld = value;
-                _currentLevelIndex = -1;
+                currentWorld = value;
+                currentLevelIndex = -1;
             }
         }
     }
-
-    //public void LoadLevelByName(string levelName)
-    //{
-    //    LevelToLoad = levelName;
-    //    Application.LoadLevel(_transitionLevelName);
-    //}
 
     public string LevelToLoad
     {
         get; private set;
     }
 
-    public void LoadLevelByIndex(int index)
+    public void LoadMainMenu()
     {
-        if (_currentWorld.Levels.Count > index)
+        isInMainMenu = true;
+        LoadLevelWithTransition("MainMenu");
+    }
+
+    public void LoadLevelByWorldIndex(int index)
+    {
+        if (currentWorld.Levels.Count > index)
         {
-            _currentLevelIndex = index;
-            LoadLevelWithTransition(_currentWorld.Levels[index].LevelName);
+            isInMainMenu = false;
+            currentLevelIndex = index;
+            LoadLevelWithTransition(CurrentLevel.LevelName);
         }
+    }
+
+    public void Reload()
+    {
+        isInMainMenu = false;
+        LoadLevelWithTransition(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
     {
+        isInMainMenu = false;
+
+        ++currentLevelIndex;
         if (MoreLevelsInWorld)
         {
-            ++_currentLevelIndex;
-
-            LoadLevelWithTransition(_currentWorld.Levels[_currentLevelIndex].LevelName);
+            LoadLevelWithTransition(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
+            isInMainMenu = true;
             LoadLevelWithTransition("MainMenu");
         }
     }
 
-    public void NextWorld()
+    public GameWorld GetWorld(int index)
     {
-        int index = _worlds.FindIndex(_currentWorld);
-        if (index + 1 < _worlds.Count)
+        return worlds[index];
+    }
+
+    public bool IsInMainMenu
+    {
+        get
         {
-            CurrentWorld = _worlds[index + 1];
+            return isInMainMenu;
         }
-        else
+    }
+
+    public bool IsLoadingLevel
+    {
+        get;
+        set;
+    }
+
+    public int WorldCount
+    {
+        get { return worlds.Count; }
+    }
+
+    public void TransitionIntoLevel()
+    {
+#if UNITY_EDITOR
+        isInMainMenu = false;
+        currentLevelIndex = 0;
+#endif
+    }
+
+
+    void Awake()
+    {
+        currentWorld = worlds[0];
+        currentLevelIndex = -1;
+    }
+
+    [SerializeField]
+    private string transitionLevelName;
+
+    [SerializeField]
+    private string mainMenuName;
+
+    [SerializeField]
+    private List<GameWorld> worlds;
+
+    private bool isInMainMenu = true;
+
+
+    private GameWorld currentWorld;
+    private int currentLevelIndex;
+
+    private bool MoreLevelsInWorld
+    {
+        get
         {
-            _currentLevelIndex = -1;
+            return currentWorld.Levels.Count > currentLevelIndex;
         }
     }
 
     private void LoadLevelWithTransition(string levelName)
     {
         LevelToLoad = levelName;
-        Application.LoadLevel(_transitionLevelName);
+        Application.LoadLevel(transitionLevelName);
     }
 
-    public bool MoreLevelsInWorld
+    private void NextWorld()
     {
-        get
+        int index = worlds.FindIndex(currentWorld);
+        if (index + 1 < worlds.Count)
         {
-            return _currentWorld.Levels.Count > _currentLevelIndex + 1;
+            CurrentWorld = worlds[index + 1];
+        }
+        else
+        {
+            currentLevelIndex = -1;
         }
     }
-
-    public GameWorld GetWorld(int index)
-    {
-        return _worlds[index];
-    }
-
-    public int WorldCount
-    {
-        get { return _worlds.Count; }
-    }
-
-    void Awake()
-    {
-        _currentWorld = _worlds[0];
-        _currentLevelIndex = -1;
-    }
-
-    [SerializeField]
-    private string _transitionLevelName;
-
-    [SerializeField]
-    private List<GameWorld> _worlds;
-
-    [NonSerialized]
-    private GameWorld _currentWorld;
-    [NonSerialized]
-    private int _currentLevelIndex;
 }

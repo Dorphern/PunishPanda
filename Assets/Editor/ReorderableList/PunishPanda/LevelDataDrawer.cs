@@ -64,33 +64,17 @@ public class LevelDataDrawer : IReorderableListAdaptor
         var currentLevel = levelDataList[index];
         Rect togglePos = position;
         togglePos.height = 17;
-        currentLevel.FoldedOut = EditorGUI.Toggle(togglePos, currentLevel.LevelName, currentLevel.FoldedOut);
+        float totalWidth = position.width;
+        position.width -= 60;
+        currentLevel.LevelName = EditorGUI.TextField(position, currentLevel.LevelName);
+        position.x += totalWidth - 60;
+        position.width = 60;
+        currentLevel.Mode = (PunishPanda.Game.GameModes) EditorGUI.EnumPopup(position, currentLevel.Mode);
         
-        position.y += 17;
-        position.height = 17;
-        if (currentLevel.FoldedOut)
-        {
-            Rect nameRect = position;
-            float totalWidth = position.width;
-            position.width -= 60;
-            currentLevel.LevelName = EditorGUI.TextField(position, currentLevel.LevelName);
-            position.x += totalWidth - 60;
-            position.width = 60;
-            currentLevel.Mode = (PunishPanda.Game.GameModes) EditorGUI.EnumPopup(position, currentLevel.Mode);
-            nameRect.y += 17;
-            currentLevel.Score.One = EditorGUI.IntField(nameRect, "One", currentLevel.Score.One);
-            nameRect.y += 17;
-            currentLevel.Score.Two = EditorGUI.IntField(nameRect, "Two", currentLevel.Score.Two);
-            nameRect.y += 17;
-            currentLevel.Score.Three = EditorGUI.IntField(nameRect, "Three", currentLevel.Score.Three);
-        }
     }
 
     public float GetItemHeight(int index)
     {
-        var currentLevel = levelDataList[index];
-        if (currentLevel.FoldedOut)
-            return 17.0f*5;
         return 17;
     }
 }
