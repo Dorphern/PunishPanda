@@ -39,6 +39,7 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Falling         )
 			
 		{
+			pandaMovementController.ResetHolding();
 			pandaMovementController.ResetGravity();
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
@@ -218,8 +219,9 @@ public class PandaAI : MonoBehaviour {
 	
 	void CheckLiftThreshold()
 	{
-		if(pandaMovementController.IsExceedingLiftThreshold())
+		if(pandaMovementController.IsExceedingLiftThreshold(this.touchPosition))
 			pandaStateManager.ChangeState(PandaState.Falling);
+			
 	}
 
     public void HitDeathObject (ControllerColliderHit hit)
