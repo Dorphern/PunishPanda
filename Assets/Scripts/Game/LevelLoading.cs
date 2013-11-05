@@ -13,8 +13,6 @@ public class LevelLoading : MonoBehaviour
 
     private IEnumerator LoadLevel(string levelName)
     {
-        
-        yield return new WaitForSeconds(1.2f);
         yield return Application.LoadLevelAdditiveAsync(levelName);
         
         Destroy(loadLevelObject);
