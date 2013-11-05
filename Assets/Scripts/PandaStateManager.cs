@@ -42,6 +42,7 @@ public class PandaStateManager : MonoBehaviour {
     public event DirectionHandler onDirectionEnter;
 
     [SerializeField] private PandaState initState = PandaState.Standing;
+	[SerializeField] private PandaDirection initDirection = PandaDirection.Left;
     private PandaState currentState;
     private PandaDirection currentDirection;
     private int slapCount = 0;
@@ -101,6 +102,7 @@ public class PandaStateManager : MonoBehaviour {
     void Start () 
     {
         currentState = initState;
+		currentDirection = initDirection;
 	}
 	
 	void Update () 
