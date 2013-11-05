@@ -1,8 +1,8 @@
-Shader "Toon/Basic Outline" {
+Shader "PunishPanda/Toon Outline" {
 	Properties {
 		_Color ("Main Color", Color) = (.5,.5,.5,1)
 		_OutlineColor ("Outline Color", Color) = (0,0,0,1)
-		_Outline ("Outline width", Range (.002, 0.03)) = .005
+		_Outline ("Outline width", Range (.002, 0.03)) = .003
 		_MainTex ("Base (RGB)", 2D) = "white" { }
 		_ToonShade ("ToonShader Cubemap(RGB)", CUBE) = "" { Texgen CubeNormal }
 	}
@@ -38,12 +38,10 @@ Shader "Toon/Basic Outline" {
 
 	SubShader {
 		Tags { "RenderType"="Opaque" }
-		UsePass "Toon/Basic/BASE"
 		Pass {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
-			Cull Front
-			ZWrite On
+			ZWrite Off
 			ColorMask RGB
 			Blend SrcAlpha OneMinusSrcAlpha
 
@@ -53,11 +51,11 @@ Shader "Toon/Basic Outline" {
 			half4 frag(v2f i) :COLOR { return i.color; }
 			ENDCG
 		}
+		UsePass "Toon/Basic/BASE"
 	}
 	
 	SubShader {
 		Tags { "RenderType"="Opaque" }
-		UsePass "Toon/Basic/BASE"
 		Pass {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
@@ -72,6 +70,7 @@ Shader "Toon/Basic Outline" {
 			ENDCG
 			SetTexture [_MainTex] { combine primary }
 		}
+		UsePass "Toon/Basic/BASE"
 	}
 	
 	Fallback "Toon/Basic"
