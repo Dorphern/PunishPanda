@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class CollisionController : MonoBehaviour {
@@ -18,45 +19,58 @@ public class CollisionController : MonoBehaviour {
 	
 	
 	// Event Handlers
-	public event System.Action<ControllerColliderHit> OnPandaHit;
-	public event System.Action<ControllerColliderHit> OnWallHit;
-	
+	public event Action<ControllerColliderHit> OnPandaHit;
+    public event Action<ControllerColliderHit> OnWallHit;
+    public event Action<ControllerColliderHit> OnDeathTrapHit;
+	public event Action<ControllerColliderHit> OnFloorHit;
 	
 	// Default Event Handlers
-	public event System.Action<ControllerColliderHit> DefaultOnHit;
-	public event System.Action<Collider> DefaultOnTriggerEnter;
-	public event System.Action<Collider> DefaultOnTriggerExit;
-	public event System.Action<Collider> DefaultOnTriggerStay;
-	
+	public event Action<ControllerColliderHit> DefaultOnHit;
+	public event Action<Collider> DefaultOnTriggerEnter;
+	public event Action<Collider> DefaultOnTriggerExit;
+	public event Action<Collider> DefaultOnTriggerStay;
+
 	
 	# region Private Methods
+	
+	
+	
 	void OnControllerColliderHit(ControllerColliderHit hit) 
 	{
 		
 		var collidable = hit.collider.GetComponent<Collidable>();
+				
 		
-		//check if the object we collided with has a collidable
+		// basic collison cases
 		if(collidable!=null)
 		{	
 			//type collision cases
 			if(collidable.type == CollidableTypes.Panda && OnPandaHit!=null) 
 			{
-				//Debug.Log ("Panda Collision!");
 				OnPandaHit(hit);
 			}
 			else if(collidable.type == CollidableTypes.Wall && OnWallHit!=null) 
 			{
-				OnWallHit(hit);		
-			}
-			
+				OnWallHit(hit);
+            }
+            else if (collidable.type == CollidableTypes.DeathTrap && OnDeathTrapHit != null)
+            {
+                OnDeathTrapHit(hit);
+            }
+			else if (collidable.type == CollidableTypes.Floor && OnFloorHit != null)
+            {
+                OnFloorHit(hit);
+            }
 			
 		}
+		
+
 		//Default delegate
 		if(DefaultOnHit!=null)
 		{
 			DefaultOnHit(hit);	
 		}
-		
+	
 	}
 	
 	void OnTriggerEnter(Collider c) 
