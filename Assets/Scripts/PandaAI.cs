@@ -76,7 +76,7 @@ public class PandaAI : MonoBehaviour {
 			return;
 		// play animation + splatter ( texture projection + particles)
 		StartCoroutine(PlaySlap(slapEventLength, slapDirection));
-        pandaStateManager.IncrementSlapCounter();
+        pandaStateManager.IncrementSlapCount();
 		
 		Vector2 facingDirection;
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
