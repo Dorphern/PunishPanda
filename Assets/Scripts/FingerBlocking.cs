@@ -5,26 +5,25 @@ public class FingerBlocking : MonoBehaviour {
 
 	//cameraOffset determines where to place blockade on Z-axis
 	private float cameraOffset;
-    private float minSpeed = 0.03f;
-    private float maxSpeed = 1;
-    private Vector3 lastPosition;
+    private Vector3 firstPos;
+    private Vector3 endPos;
     private Vector2 direction;
     private float speed;
+	private Collider [] childColliders;
+    int count = 0;
+	
 	
 	void Start () {
 
 		collider.enabled = false;
-
+		childColliders = GetComponentsInChildren<Collider>();
 	}
 	
 	public void ActivateBlockade (Vector3 mousePos)
 	{
-        if(collider.enabled == true)
-        {
-            StartCoroutine(DeltaPosition(lastPosition));
-        }
 
-		collider.enabled = true;        
+
+
         
 		cameraOffset = Camera.main.transform.position.z; 
 		mousePos.z = Mathf.Abs(cameraOffset);	
@@ -32,53 +31,68 @@ public class FingerBlocking : MonoBehaviour {
 	    Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
         pos.z = 0;
         transform.position = pos;
+
+        firstPos = transform.position;
+        if (collider.enabled == false)
+        {
+            endPos = firstPos;
+        }
+        Swipe();
+
+        collider.enabled = true;
+        ChildCollidersEnabled(true);
 	}
 	
 	public void DeactivateBlockade()
 	{
 		collider.enabled = false;
-        collider.isTrigger = false;
-		//DestroyImmediate(this.gameObject);
+        ChildCollidersEnabled(false);
+		collider.isTrigger = false;
+	}
+	
+	void ChildCollidersEnabled(bool val)
+	{
+		if(childColliders!=null)
+		{
+			for(int i=0; i<childColliders.Length; i++)
+				childColliders[i].enabled = val;
+		}
 	}
 
-   IEnumerator DeltaPosition(Vector3 lastPos)
+    void Swipe()
     {
-        
-        yield return new WaitForEndOfFrame();
+        Vector3 direction = endPos - firstPos;
+        Vector2 direction2D = new Vector2(direction.x, direction.y);
+        Debug.Log("firstPos" + firstPos);
+        Debug.Log("endPos" + endPos);
+        float scrVecX = (direction2D.x * 10) / Screen.width;
+        float scrVecY = (direction2D.y * 10) / Screen.height;
 
-        Vector3 delta = transform.position - lastPos;
-        direction = new Vector2(delta.x, delta.y);
-        float dist = delta.sqrMagnitude;
-        
-        float distPrScreenWidth = dist / Screen.width;
+        Vector2 scrVec = new Vector2(scrVecX, scrVecY);
 
-        float speed = distPrScreenWidth / Time.deltaTime;
         
-        //if(speed > maxSpeed)
+        float dist = scrVec.magnitude;
+        float speed = dist / Time.deltaTime;
+
+        //if (speed > 10f)
         //{
-        //    DebugStreamer.message = "Break";
-        //    yield break;
+        //    return;
         //}
-            
-        delta.z = 0;        
-        float angle = Vector3.Angle(Vector3.right, delta);
-        
-        lastPosition = transform.position;
-        
-        if (speed > minSpeed)
+        Ray ray = new Ray(firstPos, direction);
+
+        Debug.DrawLine(firstPos, endPos, Color.red, 3f);
+
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, direction.magnitude + 0.01f, 1 << 8))
         {
-            DebugStreamer.message = speed.ToString();
-            collider.isTrigger = true;
+            if (hit.collider.GetComponent<Collidable>().type != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Panda)
+                count++;
+                Debug.Log("Hit Panda" + count);
+            hit.collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
         }
-        else
-        {
-            collider.isTrigger = false;
-        }
+            endPos = firstPos;
+             
     }
-    void OnTriggerEnter(Collider c)
-    {
-        if (c.GetComponent<Collidable>().type != null && c.GetComponent<Collidable>().type == CollidableTypes.Panda)
-           c.gameObject.renderer.material.color = Color.red;
-        c.GetComponent<PandaAI>().PandaSlapped(direction, speed);
-    }
+	
+	
 }

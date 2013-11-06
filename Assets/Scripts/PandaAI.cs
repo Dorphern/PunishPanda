@@ -33,8 +33,15 @@ public class PandaAI : MonoBehaviour {
 	#region Public Methods
 	public void PandaPressed()
 	{
-		if(pandaStateManager.GetState() == PandaState.Standing || pandaStateManager.GetState() == PandaState.Walking)
+		if( pandaStateManager.GetState() == PandaState.Standing        || 
+		    pandaStateManager.GetState() == PandaState.Walking         ||
+			pandaStateManager.GetState() == PandaState.FallTransition  ||
+			pandaStateManager.GetState() == PandaState.Falling         ||
+			pandaStateManager.GetState() == PandaState.Jumping)
+			
 		{
+			pandaMovementController.ResetHolding();
+			pandaMovementController.ResetGravity();
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
 	}
@@ -124,6 +131,7 @@ public class PandaAI : MonoBehaviour {
 				}
 				break;
 			case PandaState.Walking:
+				
 				if(ApplyWalkingMovement!=null)
 					ApplyWalkingMovement(pandaStateManager.GetDirection());
 				break;
@@ -213,8 +221,9 @@ public class PandaAI : MonoBehaviour {
 	
 	void CheckLiftThreshold()
 	{
-		if(pandaMovementController.IsExceedingLiftThreshold())
+		if(pandaMovementController.IsExceedingLiftThreshold(this.touchPosition))
 			pandaStateManager.ChangeState(PandaState.Falling);
+			
 	}
 
     public void HitDeathObject (ControllerColliderHit hit)

@@ -15,6 +15,8 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
+	
+	bool withinRange = false;
 
  
 	#region SerializedClasses
@@ -70,9 +72,24 @@ public class PandaMovementController : MonoBehaviour {
 	#endregion
 	
 	
-	public bool IsExceedingLiftThreshold()
+	public bool IsExceedingLiftThreshold(Vector3 position)
 	{
-		return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
+		
+		// these checks ensure that the panda is within the threshold before it starts checking for it
+		if(lifting.difference.magnitude < lifting.releaseMagnitudeThreshold && !withinRange)
+		{
+			withinRange = true;
+			return false;
+		}
+		else if(!withinRange)
+			return false;
+		else
+			return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
+	}
+	
+	public void ResetHolding()
+	{
+		withinRange = false;	
 	}
 	
 	public bool IsNotMoving()
@@ -88,6 +105,10 @@ public class PandaMovementController : MonoBehaviour {
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
 	
+	public void ResetGravity()
+	{
+		movement.offset.y = 0;
+	}
 	
 	void Start()
 	{
@@ -116,11 +137,12 @@ public class PandaMovementController : MonoBehaviour {
 	
 	void LiftMovement(Vector3 position)
 	{
+		
 		lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, transform.position.z - Camera.main.transform.position.z));
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.minMoveDistance)
 		{
-			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
+			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);			
 		}
 	}
 
