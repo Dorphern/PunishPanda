@@ -225,9 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpeed: 30
-  firstMaxSpeed: 200
-  currentVel: {x: 0, y: 0, z: 0}
 --- !u!65 &283775797
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -394,7 +391,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 532073721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.82148337, y: 1.90183163, z: -9.07591057}
+  m_LocalPosition: {x: -3.82148337, y: 1.90183163, z: -8.72854805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -452,12 +449,14 @@ MonoBehaviour:
     gravity: 20
     jumpHeight: 8
     walkSpeed: 3
+    notMovingThreshold: .5
   lifting:
-    releaseThreshold: .100000001
+    minMoveDistance: .100000001
     movementSpeed: 50
-    maxMagnitude: 1.5
+    releaseMagnitudeThreshold: 1.5
   falling:
-    sideForce: 500
+    sideForceAmplitude: 5
+    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
@@ -586,7 +585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &913080145
 Renderer:
   m_ObjectHideFlags: 0
@@ -671,6 +670,7 @@ GameObject:
   - 33: {fileID: 1442611520}
   - 64: {fileID: 1442611519}
   - 23: {fileID: 1442611518}
+  - 114: {fileID: 1442611522}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -727,6 +727,18 @@ Transform:
   m_LocalScale: {x: 3, y: 1, z: .5}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1442611522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1442611517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
 --- !u!1 &1478071547
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +781,7 @@ MonoBehaviour:
   blockades:
   - {fileID: 1785308901}
   - {fileID: 283775796}
-  useMouseInput: 0
+  useMouseInput: 1
   fingerRadius: 1
 --- !u!1001 &1511117834
 Prefab:
@@ -816,7 +828,7 @@ Prefab:
       objectReference: {fileID: 283775796}
     - target: {fileID: 11400000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
       propertyPath: useMouseInput
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
@@ -954,6 +966,7 @@ GameObject:
   - 33: {fileID: 1575884251}
   - 64: {fileID: 1575884250}
   - 23: {fileID: 1575884249}
+  - 114: {fileID: 1575884253}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1010,6 +1023,18 @@ Transform:
   m_LocalScale: {x: 2, y: 1, z: .5}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1575884253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1575884248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
 --- !u!1 &1622337432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,9 +1195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpeed: 30
-  firstMaxSpeed: 200
-  currentVel: {x: 0, y: 0, z: 0}
 --- !u!23 &1785308902
 Renderer:
   m_ObjectHideFlags: 0
@@ -1278,12 +1300,14 @@ MonoBehaviour:
     gravity: 20
     jumpHeight: 8
     walkSpeed: 3
+    notMovingThreshold: .5
   lifting:
-    releaseThreshold: .100000001
+    minMoveDistance: .100000001
     movementSpeed: 50
-    maxMagnitude: 1.5
+    releaseMagnitudeThreshold: 1.5
   falling:
-    sideForce: 500
+    sideForceAmplitude: 5
+    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
