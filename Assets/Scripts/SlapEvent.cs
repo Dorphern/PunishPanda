@@ -11,17 +11,11 @@ public class SlapEvent : MonoBehaviour
     public float currentSpeed;
     public float originalSpeed;
 
-    private Vector3 mousePosStart;
-    private Vector3 mousePosEnd;
-    private Vector3 mouseVector;
-    private Vector3 swipeVector;
+    private Vector3 swipe;
+    private PandaDirection swipeDirection;
 
     # region public
-    public void Slap(float _hitSpeed, Vector3 swipe)
-    {
-            StartCoroutine(BoostSpeed(timeBoost, _hitSpeed));
-            
-    }
+
     #endregion
 
     // Use this for initialization
@@ -29,7 +23,6 @@ public class SlapEvent : MonoBehaviour
     {
         currentSpeed = 2;
         myTransform = gameObject.transform;
-
     }
 
     // Update is called once per frame
@@ -37,40 +30,37 @@ public class SlapEvent : MonoBehaviour
     void FixedUpdate() {
 
         // SWIPE
-        if(Input.GetMouseButtonDown(0))
-        {
-            Vector3 tempMouStart = Input.mousePosition;
-            mousePosStart = new Vector3(tempMouStart.x, tempMouStart.y, 10);
-        }
-        if(Input.GetMouseButtonUp(0))
-        {
-            Vector3 tempMouEnd = Input.mousePosition;
-            mousePosEnd = new Vector3(tempMouEnd.x, tempMouEnd.y, 0);
-            mouseVector = (mousePosEnd - mousePosStart);
-           
-        }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            Slap(hitSpeed,swipeVector);
+            StartCoroutine(Slap(timeBoost, hitSpeed, swipeDirection));
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Slap(-hitSpeed, swipeVector);
+            StartCoroutine(Slap(timeBoost, -hitSpeed, swipeDirection));
         }
-
 
         myTransform.Translate((new Vector3(currentSpeed, 0 , 0)) * Time.deltaTime);
     }
 
     #region private
-    IEnumerator BoostSpeed(float waitForSeconds, float boostSpeed)
+    IEnumerator Slap(float waitForSeconds, float boostSpeed, PandaDirection direction)
     {
+        if (gameObject.GetComponent<PandaStateManager>().GetDirection() == direction)
+        {
+            // inrease movementSpeed game.GetComponent<Movement>().speed = speedBoost;
+        }
+        else if (gameObject.GetComponent<PandaStateManager>().GetDirection() != direction)
+        {
+            gameObject.GetComponent<PandaStateManager>().ChangeDirection(direction);
+        }
         currentSpeed = boostSpeed;
+
         gameObject.renderer.material.color = Color.red;
 
 
         // Call hitAnimation (direction)
+
 
         // Call bloodSpatter with (direction/angle)
 
@@ -78,11 +68,11 @@ public class SlapEvent : MonoBehaviour
         yield return new WaitForSeconds(waitForSeconds);
 
 
-        // Call walkAnimation
-
-
+        // Call walkAnimation after slap i.e. with blood etc. 
+        
+        // decrease speed / end speedbost
         gameObject.renderer.material.color = Color.white;
-        if(boostSpeed < 0)
+        if (boostSpeed < 0)
         {
             currentSpeed = -originalSpeed;
         }
@@ -90,8 +80,6 @@ public class SlapEvent : MonoBehaviour
         {
             currentSpeed = originalSpeed;
         }
-        
-       // timeBoost = 0;
     }
     #endregion
 
