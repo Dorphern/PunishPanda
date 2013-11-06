@@ -17,6 +17,7 @@ GameObject:
   - 114: {fileID: 11400008}
   - 114: {fileID: 11400002}
   - 136: {fileID: 13600000}
+  - 114: {fileID: 11400010}
   m_Layer: 8
   m_Name: Panda
   m_TagString: Untagged
@@ -49,7 +50,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.38060331, y: .597126007, z: 0}
+  m_LocalPosition: {x: -14.9865017, y: -1.99942207, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -139,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
+  initDirection: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -181,8 +183,8 @@ MonoBehaviour:
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
-    movementSpeed: 50
-    releaseMagnitudeThreshold: 1.5
+    movementSpeed: 20
+    releaseMagnitudeThreshold: 1
   falling:
     sideForceAmplitude: 5
     maxMagnitude: 2
@@ -205,6 +207,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slapEventLength: 2
   pandaCollisionDelay: .0199999996
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4931b6190f1fcc4889b39f3aea4b4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleVersion: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
