@@ -100,6 +100,7 @@ public class PandaStateManager : MonoBehaviour {
         return slapCount;
     }
 
+
     public void IncrementSlapCount ()
     {
         slapCount++;
