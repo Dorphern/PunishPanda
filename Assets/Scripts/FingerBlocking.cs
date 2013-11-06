@@ -54,9 +54,6 @@ public class FingerBlocking : MonoBehaviour {
 
         float speed = distPrScreenWidth / Time.deltaTime;
         
-        Debug.Log("DistWidth" + distPrScreenWidth);
-        Debug.Log("Dist " + dist);
-        Debug.Log("Speed " + speed);
         //if(speed > maxSpeed)
         //{
         //    DebugStreamer.message = "Break";
