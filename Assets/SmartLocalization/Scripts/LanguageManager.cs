@@ -28,10 +28,15 @@ public class LanguageManager : MonoBehaviour
             {
                 GameObject go = new GameObject();
                 instance = go.AddComponent<LanguageManager>();
+                //go.transform.parent = InstanceFinder.GameManager.transform;
                 go.name = "LanguageManager";
             }
 
             return instance;
+        }
+        set
+        {
+            instance = value;
         }
     }
 	public static bool HasInstance
@@ -125,7 +130,7 @@ public class LanguageManager : MonoBehaviour
 		if (instance == null)
 		{
 			instance = this;
-			DontDestroyOnLoad (this.gameObject);
+            DontDestroyOnLoad(transform.gameObject);
 		}
 		
 		if(PlayerPrefs.HasKey("cws_defaultLanguage"))
@@ -135,7 +140,7 @@ public class LanguageManager : MonoBehaviour
 		
 		GetAvailableLanguages();
 
-		Debug.Log ("LanguageManager.cs: Waking up");
+		//Debug.Log ("LanguageManager.cs: Waking up");
 		
 		//Load the default language(if it exists)
 		foreach(string availableLanguage in availableLanguages)
