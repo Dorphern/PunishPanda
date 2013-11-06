@@ -29,6 +29,7 @@ public class PandaAI : MonoBehaviour {
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
 	BloodSplatter bloodSplatter;
+	BloodOnSlap bloodOnSlap;
 	
 	#region Public Methods
 	public void PandaPressed()
@@ -99,6 +100,7 @@ public class PandaAI : MonoBehaviour {
 			// the slap direction is opposite to the panda's facing direction
 			ChangeDirection(null);
 		}
+		bloodOnSlap.EmmitSlapBlood();
 	}
 	#endregion
 	
@@ -111,6 +113,7 @@ public class PandaAI : MonoBehaviour {
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
 		bloodSplatter = GetComponent<BloodSplatter>();
+		bloodOnSlap = GetComponent<BloodOnSlap>();
 		
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
@@ -235,7 +238,7 @@ public class PandaAI : MonoBehaviour {
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
-		bloodSplatter.ProjectBlood(slapDirection.normalized);
+		//bloodSplatter.ProjectBlood(slapDirection.normalized);
 		
 		
 		yield return new WaitForSeconds(waitForSeconds);
