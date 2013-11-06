@@ -537,6 +537,7 @@ GameObject:
   - 114: {fileID: 713300011}
   - 114: {fileID: 713300005}
   - 136: {fileID: 713300006}
+  - 114: {fileID: 713300013}
   - 114: {fileID: 713300012}
   m_Layer: 8
   m_Name: Panda
@@ -579,8 +580,8 @@ MonoBehaviour:
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
-    movementSpeed: 50
-    releaseMagnitudeThreshold: 1.5
+    movementSpeed: 20
+    releaseMagnitudeThreshold: 1
   falling:
     sideForceAmplitude: 5
     maxMagnitude: 2
@@ -713,6 +714,19 @@ MonoBehaviour:
   decalProjectorScale: {x: 3, y: 2, z: 3}
   cullingAngle: 90
   meshOffset: .00100000005
+--- !u!114 &713300013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400010, guid: d278ccc1039068e438085983baf5e9c2,
+    type: 2}
+  m_PrefabInternal: {fileID: 2054057783}
+  m_GameObject: {fileID: 713300001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4931b6190f1fcc4889b39f3aea4b4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleVersion: 1
 --- !u!1 &857909094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1040,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1478071548}
   - 114: {fileID: 1478071549}
+  - 114: {fileID: 1478071551}
+  - 114: {fileID: 1478071550}
   m_Layer: 0
   m_Name: InputHandler
   m_TagString: Untagged
@@ -1059,8 +1075,37 @@ MonoBehaviour:
   blockades:
   - {fileID: 1785308901}
   - {fileID: 283775796}
+  swipeControllers:
+  - {fileID: 1478071551}
+  - {fileID: 1478071550}
   useMouseInput: 1
-  fingerRadius: 1
+  fingerRadius: .800000012
+  swipeThreshold: 0
+  draggingBoxMaximumThreshold: 0
+--- !u!114 &1478071550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400004, guid: 0f0d70d6301bb114cac8328a5122603c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1511117834}
+  m_GameObject: {fileID: 1478071547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a817431e6ff8074bbec6251a3c6cb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1478071551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 0f0d70d6301bb114cac8328a5122603c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1511117834}
+  m_GameObject: {fileID: 1478071547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a817431e6ff8074bbec6251a3c6cb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1490255234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1828,6 +1873,7 @@ GameObject:
   - 114: {fileID: 1825923616}
   - 114: {fileID: 1825923610}
   - 136: {fileID: 1825923611}
+  - 114: {fileID: 1825923613}
   m_Layer: 8
   m_Name: Panda
   m_TagString: Untagged
@@ -1869,8 +1915,8 @@ MonoBehaviour:
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
-    movementSpeed: 50
-    releaseMagnitudeThreshold: 1.5
+    movementSpeed: 20
+    releaseMagnitudeThreshold: 1
   falling:
     sideForceAmplitude: 5
     maxMagnitude: 2
@@ -1934,6 +1980,19 @@ CharacterController:
   m_SkinWidth: .0799999982
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1825923613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400010, guid: d278ccc1039068e438085983baf5e9c2,
+    type: 2}
+  m_PrefabInternal: {fileID: 504195945}
+  m_GameObject: {fileID: 1825923606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4931b6190f1fcc4889b39f3aea4b4a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleVersion: 1
 --- !u!33 &1825923614
 MeshFilter:
   m_ObjectHideFlags: 0
