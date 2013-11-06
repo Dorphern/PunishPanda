@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
+	public List<SwipeController> swipeControllers;
 	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
+	public float swipeThreshold = 10f;
+	public float draggingBoxMaximumThreshold = 0f;
+	
 	
 	private Ray ray;
 	private RaycastHit hitInfo;
@@ -15,13 +19,20 @@ public class InputHandler : MonoBehaviour {
 	private Dictionary<int, PandaAI> selectedPandas; 
 	private Dictionary<int, Hotspot> selectedHotSpots; 
 	private Dictionary<int, FingerBlocking> selectedBlockades; 
+	private Dictionary<int, SwipeController> selectedSwipeControllers; 
+	private Vector3 lastMousePos;
+	private bool swiping = false;
+	
 	
 	void Start () 
 	{
 		selectedPandas = new Dictionary<int, PandaAI>();
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
 		selectedHotSpots = new Dictionary<int, Hotspot>();
+		selectedSwipeControllers = new Dictionary<int, SwipeController>();
+
 	}
+	
 	
 	void Update () 
 	{
@@ -34,7 +45,7 @@ public class InputHandler : MonoBehaviour {
 			TouchUpdate();
 		}
 	}
-	
+
 	void TouchUpdate()
 	{
 		// we don't have any valid input
@@ -57,20 +68,21 @@ public class InputHandler : MonoBehaviour {
 			{
 				PerformTouchBegan(touch.position, touch.fingerId);
 			}
-			
-			PerformTouchUpdate(touch);
-			
 			// Touch ended
-			if(touch.phase == TouchPhase.Ended)
+			else if(touch.phase == TouchPhase.Ended)
 			{
 				PerformTouchEnded(touch.fingerId);
 			}
+			
+			PerformTouchUpdate(touch);
 		}			
 	}
 	
 	void PerformTouchBegan(Vector3 position, int fingerID)
 	{
 		ray = Camera.main.ScreenPointToRay(position);
+		// using this flag to ensure that we hit something relavent to touch controls
+		bool hitflag = false;
 		if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 		{
 			Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
@@ -83,6 +95,7 @@ public class InputHandler : MonoBehaviour {
 					tempPanda.PandaPressed();
 					tempPanda.touchPosition = position;
 					selectedPandas.Add(fingerID, tempPanda);
+					hitflag = true;
 					return;
 				}
 				else if(collidable.type == CollidableTypes.Hotspot)
@@ -90,13 +103,19 @@ public class InputHandler : MonoBehaviour {
 					tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
 					tempHotSpot.ActivateHotspot();
 					selectedHotSpots.Add(fingerID, tempHotSpot);
+					hitflag = true;
 					return;
 				}
-			}			
+			}
 		}
-		// we activate a blockade 
-		selectedBlockades.Add(fingerID,  blockades[0]);
-		blockades.RemoveAt(0);
+		//if we didnt touch anything relevant we add a blockade and swipeController to the finger
+		if(!hitflag)
+		{
+			selectedBlockades.Add(fingerID,  blockades[0]);
+			blockades.RemoveAt(0);
+			selectedSwipeControllers.Add(fingerID,  swipeControllers[0]);
+			swipeControllers.RemoveAt(0);
+		}
 	}
 	
 	void PerformTouchUpdate(Touch touch)
@@ -107,10 +126,41 @@ public class InputHandler : MonoBehaviour {
 			// if our fingerID corresponds with a panda we updated the position on PandaAI
 			tempPanda.touchPosition = touch.position;
 		}
+		// if we have a blockade selected we can perform actions involving blocking and slaping
 		else if(selectedBlockades.ContainsKey(touch.fingerId))
 		{
-			selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
-			tempBlockade.ActivateBlockade(touch.position);	
+			float magnitude = touch.deltaPosition.magnitude;
+			
+			// if we are fast enough for swiping
+			if(magnitude > swipeThreshold)
+			{
+				SwipeController tempSwipeController;
+				selectedSwipeControllers.TryGetValue(touch.fingerId, out tempSwipeController);
+				if(!swiping)
+				{
+					swiping = true;
+					tempSwipeController.InitSwipe(touch.position);
+				}
+					
+				tempSwipeController.Swipe(touch.position);
+			}
+			// reset the swiping flag
+			else
+				swiping = false;
+			
+			// if we are slow enough for dragging
+			if(magnitude <= draggingBoxMaximumThreshold)
+			{
+				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
+				tempBlockade.ActivateBlockade(touch.position);	
+			}
+			// otherwise disable the blockade
+			else
+			{
+				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
+				tempBlockade.DeactivateBlockade();
+			}
+			
 		}
 	}
 	
@@ -160,19 +210,48 @@ public class InputHandler : MonoBehaviour {
                         tempHotSpot.ActivateHotspot();	
 					}
 				}
-			}		
+			}
+			lastMousePos = Input.mousePosition;
 		}
 		
 		if(Input.GetMouseButton(0))
-		{
+		{ 
 			if(tempPanda != null)
 			{
 				tempPanda.touchPosition = Input.mousePosition;	
 			}
 			else if(tempHotSpot == null)
 			{
-				blockades[0].ActivateBlockade(Input.mousePosition);
+
+				
+				Vector3 mouseDelta = (Input.mousePosition - lastMousePos);
+				
+				// if we are fast enough for swiping
+				if(mouseDelta.magnitude > swipeThreshold)
+				{
+					if(!swiping)
+					{
+						swiping = true;
+						swipeControllers[0].InitSwipe(Input.mousePosition);
+					}
+						
+					swipeControllers[0].Swipe(Input.mousePosition);
+				}
+				else
+					swiping = false;
+				
+				// if we are slow enough for dragging
+				if(mouseDelta.magnitude <= draggingBoxMaximumThreshold)
+				{
+					blockades[0].ActivateBlockade(Input.mousePosition);
+				}
+				// otherwise disable the blockade
+				else
+					blockades[0].DeactivateBlockade();
+				
 			}
+						
+			lastMousePos = Input.mousePosition;
 		}
 		
 		if(Input.GetMouseButtonUp(0))
