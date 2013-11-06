@@ -15,7 +15,11 @@ public enum PandaState
     Walking,            /* Is walking in some direction */
     PushingFinger,      /* Is Pushing a finger (not moving) */
     HoldingOntoFinger,  /* Holding on to the finger (in the air) */
-    Died                /* The panda is DEAD! (hahahah) */
+    Died,               /* The panda is DEAD! (hahahah) */
+	Jumping,
+    Falling,
+	Boosting,
+	FallTransition
 }
 
 public enum PandaDirection
@@ -43,14 +47,22 @@ public class PandaStateManager : MonoBehaviour {
     private int slapCount = 0;
 
     # region Public Methods
-
+	
+	public void SwapDirection(PandaDirection dir)
+	{
+		if(dir == PandaDirection.Left)
+		{
+			ChangeDirection(PandaDirection.Right);
+		}
+		else
+		{
+			ChangeDirection(PandaDirection.Left);
+		}	
+	}
+	
     // Change the state of the panda
     public void ChangeState (PandaState state)
     {
-        if (state == currentState)
-        {
-            return;
-        }
         if (onStateExit != null) onStateExit(currentState);
         currentState = state;
         if (onStateEnter != null) onStateEnter(currentState);
@@ -63,10 +75,6 @@ public class PandaStateManager : MonoBehaviour {
 
     public void ChangeDirection (PandaDirection direction)
     {
-        if (direction == currentDirection)
-        {
-            return;
-        }
         if (onDirectionExit != null) onDirectionExit(currentDirection);
         currentDirection = direction;
         if (onDirectionEnter != null) onDirectionEnter(currentDirection);
@@ -77,7 +85,12 @@ public class PandaStateManager : MonoBehaviour {
         return currentDirection;
     }
 
-    public void IncrementSlapCount ()
+    public int GetSlapCount ()
+    {
+        return slapCount;
+    }
+
+    public void IncrementSlapCounter ()
     {
         slapCount++;
     }
