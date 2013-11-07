@@ -20,6 +20,8 @@ public  float updateInterval = 0.5F;
 private float accum   = 0; // FPS accumulated over the interval
 private int   frames  = 0; // Frames drawn over the interval
 private float timeleft; // Left time for current interval
+	
+public BloodSplatter splatter;
  
 void Start()
 {
@@ -43,7 +45,7 @@ void Update()
     {
         // display two fractional digits (f2 format)
 	float fps = accum/frames;
-	string format = System.String.Format("{0:F2} FPS",fps);
+	string format = System.String.Format("{0:F2} FPS & splat count: {1}",fps, splatter.m_DecalProjectors.Count);
 	guiText.text = format;
  
 	if(fps < 30)

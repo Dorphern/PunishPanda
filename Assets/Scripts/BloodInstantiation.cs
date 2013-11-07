@@ -22,7 +22,9 @@ public class BloodInstantiation : MonoBehaviour {
 		{
 			newBloodProjector = new GameObject("Projector" + i);
 			newBloodProjector.AddComponent<DS_DecalProjector>();
+			//newBloodProjector.GetComponent<DS_DecalProjector>().GetDecals().dec
 			newBloodProjector.transform.parent = this.transform;
+			newBloodProjector.transform.localPosition = new Vector3(i/2, 0, i%7);
 		}
 	}
 	
