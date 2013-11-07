@@ -238,8 +238,7 @@ public class PandaAI : MonoBehaviour {
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
-		//bloodSplatter.ProjectBlood(slapDirection.normalized);
-		
+		bloodSplatter.ProjectBlood(slapDirection.normalized);
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		
