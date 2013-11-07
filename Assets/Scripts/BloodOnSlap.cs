@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum Version {v1, v2}
 public class BloodOnSlap : MonoBehaviour {
 	
 	/*****************************************************
@@ -11,6 +12,8 @@ public class BloodOnSlap : MonoBehaviour {
 	*********************************************************/
 		
 	private PandaStateManager pandaStateManager;
+	public Version particleVersion;
+	private string objectName;
 
 	
 	void Start ()
@@ -20,16 +23,24 @@ public class BloodOnSlap : MonoBehaviour {
 	
 	public void EmmitSlapBlood()
 	{
-		GameObject BloodSplat = Instantiate(Resources.Load("BloodSplat")) as GameObject;
+		GameObject BloodSplat;
+		
+		if(particleVersion == Version.v1)
+		{
+			objectName = "particle_slap_v1";	
+		}
+		else
+		{
+			objectName = "particle_slap_v2";
+		}
+		
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
-			{
-				//Debug.Log ("gave position");
-				BloodSplat.transform.position = transform.position;
-			}
-			else
-			{
-				BloodSplat.transform.position = transform.position;
-				BloodSplat.transform.rotation = Quaternion.LookRotation(Vector3.back);
-			}	
+		{
+			BloodSplat = Instantiate(Resources.Load(objectName),transform.position, Quaternion.identity) as GameObject;		
+		}
+		else
+		{
+			BloodSplat = Instantiate(Resources.Load(objectName),transform.position, Quaternion.LookRotation(Vector3.back)) as GameObject;
+		}	
 	}
 }

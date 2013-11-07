@@ -8,7 +8,8 @@ public class RemoveAfterTime : MonoBehaviour {
 	
 	void Start () 
 	{
-		if(this.gameObject.name == "BloodSplat(Clone)")
+		if(this.gameObject.name == "particle_slap_v1(Clone)"  || 
+			this.gameObject.name == "particle_slap_v2(Clone)")
 		{
 			Destroy(gameObject, EventLength);
 			//Debug.Log ("Destroyed BloodSplat object");
