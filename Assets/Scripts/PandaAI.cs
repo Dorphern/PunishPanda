@@ -28,7 +28,6 @@ public class PandaAI : MonoBehaviour {
 	CollisionController collisionController;
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
-	BloodSplatter bloodSplatter;
 	BloodOnSlap bloodOnSlap;
 	
 	#region Public Methods
@@ -112,7 +111,6 @@ public class PandaAI : MonoBehaviour {
 		collisionController = GetComponent<CollisionController>();
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
-		bloodSplatter = GetComponent<BloodSplatter>();
 		bloodOnSlap = GetComponent<BloodOnSlap>();
 		
 		collisionController.OnFloorHit += FloorCollision;
@@ -238,7 +236,7 @@ public class PandaAI : MonoBehaviour {
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
-		bloodSplatter.ProjectBlood(slapDirection.normalized);
+		BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		
