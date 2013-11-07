@@ -72,13 +72,15 @@ public class Level : MonoBehaviour
             if (levelManger != null)
             {
                 Rect nextRect = new Rect(Screen.width - 150, 50, 100, 80);
-                if (GUI.Button(nextRect, "Next level"))
+                string nextLevelString = LanguageManager.Instance.GetTextValue("Game.NextLevel");
+                if (GUI.Button(nextRect, nextLevelString))
                 {
                     levelManger.LoadNextLevel();
                 }
 
                 nextRect = new Rect(Screen.width - 300, 50, 100, 80);
-                if (GUI.Button(nextRect, "Main Menu"))
+                string mainMenuString = LanguageManager.Instance.GetTextValue("Game.MainMenu");
+                if (GUI.Button(nextRect, mainMenuString))
                 {
                     levelManger.LoadMainMenu();
                 }
@@ -93,37 +95,48 @@ public class Level : MonoBehaviour
         }
         else
         {
-            int heightOffset = 30;
+            int heightOffset = 30; 
             Rect nextRect = new Rect(Screen.width/2 - 75, 50, 100, 40);
             int score = ScoreCalculator.Score(levelScore, pandaKills, alivePandas, elapsedTime);
-            GUI.Label(nextRect, "Score: " + score);
+            string scoreString = LanguageManager.Instance.GetTextValue("Score.Score");
+            GUI.Label(nextRect, scoreString + score);
             nextRect.y += heightOffset;
-            GUI.Label(nextRect, "Panda Kills: " + pandaKills);
+            string pandaKillsString = LanguageManager.Instance.GetTextValue("Score.PandaKills");
+            GUI.Label(nextRect, pandaKillsString + pandaKills);
             nextRect.y += heightOffset;
 
-            GUI.Label(nextRect, "Time Score: " + ScoreCalculator.TimeScore(levelScore, elapsedTime));
+            string timeScoreString = LanguageManager.Instance.GetTextValue("Score.TimeScore");
+            GUI.Label(nextRect, timeScoreString + ScoreCalculator.TimeScore(levelScore, elapsedTime));
             nextRect.y += heightOffset;
-            GUI.Label(nextRect, "Stars: " + ScoreCalculator.Stars(levelScore, score));
+
+            string starsString = LanguageManager.Instance.GetTextValue("Score.Stars");
+            GUI.Label(nextRect, starsString + ScoreCalculator.Stars(levelScore, score));
             if (alivePandas == 0)
             {
                 nextRect.y += heightOffset;
                 nextRect.width += 20;
-                GUI.Label(nextRect, "Perfect Panda Kill!");
+                string perfectPandaKill = LanguageManager.Instance.GetTextValue("Score.PerfectKill");
+                GUI.Label(nextRect, perfectPandaKill);
                 nextRect.width -= 20;
             }
             nextRect.y += heightOffset*2;
-            if (GUI.Button(nextRect, "Next Level"))
+
+            string nextLevelString = LanguageManager.Instance.GetTextValue("Game.NextLevel");
+            if (GUI.Button(nextRect, nextLevelString))
             {
                 levelManger.LoadNextLevel();
             }
 
-            nextRect.y += heightOffset * 2 ;
-            if (GUI.Button(nextRect, "Replay"))
+            string replayString = LanguageManager.Instance.GetTextValue("Game.Replay");
+            nextRect.y += heightOffset * 2;
+            if (GUI.Button(nextRect, replayString))
             {
                 levelManger.Reload();
             }
+            
+            string mainMenuString = LanguageManager.Instance.GetTextValue("Game.MainMenu");
             nextRect.y += heightOffset * 2;
-            if (GUI.Button(nextRect, "Main Menu"))
+            if (GUI.Button(nextRect, mainMenuString))
             {
                 levelManger.LoadMainMenu();
             }
