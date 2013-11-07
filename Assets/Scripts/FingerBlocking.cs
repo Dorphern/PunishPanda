@@ -23,7 +23,7 @@ public class FingerBlocking : MonoBehaviour {
 		return collider.enabled;
 	}
 	
-	public void ActivateBlockade (Vector3 mousePos)
+	public void RepositionBlockade (Vector3 mousePos)
 	{
 
 		float cameraOffset = Camera.main.transform.position.z; 
@@ -32,14 +32,10 @@ public class FingerBlocking : MonoBehaviour {
 	    Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
         pos.z = 0;
         transform.position = pos;
-
-//        firstPos = transform.position;
-//        if (collider.enabled == false)
-//        {
-//            endPos = firstPos;
-//        }
-//        Swipe();
-
+	}
+	
+	public void ActivateBlockade() 
+	{
         collider.enabled = true;
         ChildCollidersEnabled(true);
 	}
