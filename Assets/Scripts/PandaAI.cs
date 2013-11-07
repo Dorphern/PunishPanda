@@ -76,7 +76,7 @@ public class PandaAI : MonoBehaviour {
 			return;
 		// play animation + splatter ( texture projection + particles)
 		StartCoroutine(PlaySlap(slapEventLength, slapDirection));
-        pandaStateManager.IncrementSlapCounter();
+        pandaStateManager.IncrementSlapCount();
 		
 		Vector2 facingDirection;
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
@@ -238,8 +238,7 @@ public class PandaAI : MonoBehaviour {
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
-		//bloodSplatter.ProjectBlood(slapDirection.normalized);
-		
+		bloodSplatter.ProjectBlood(slapDirection.normalized);
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		

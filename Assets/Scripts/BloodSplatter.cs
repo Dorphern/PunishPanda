@@ -21,7 +21,8 @@ public class BloodSplatter : MonoBehaviour {
 	private Matrix4x4 m_WorldToDecalsMatrix;
 	
 		// All the projectors that were created at runtime.
-	private List <DecalProjector> m_DecalProjectors = new List <DecalProjector> ();
+	[System.NonSerialized]
+	public List <DecalProjector> m_DecalProjectors = new List <DecalProjector> ();
 	
 		// Intermediate mesh data. Mesh data is added to that one for a specific projector
 		// in order to perform the cutting.
@@ -43,8 +44,12 @@ public class BloodSplatter : MonoBehaviour {
 	private int m_UVRectangleIndex = 0;
 	
 	private RaycastHit hitInfo;
+	private int layerMask;
 	// 3D vector controlling the direction of the splat
 	private Vector3 projectionDirection = Vector3.right;
+	
+	public int maxSpaltCount = 100;
+	
 	
 		// Move on to the next uv rectangle index.
 	private void NextUVRectangleIndex () 
@@ -74,6 +79,17 @@ public class BloodSplatter : MonoBehaviour {
 			m_DecalsMeshCutter = new DecalsMeshCutter ();
 			m_WorldToDecalsMatrix = m_Decals.CachedTransform.worldToLocalMatrix;
 		}
+		
+		layerMask = ( 1 << LayerMask.NameToLayer("Panda") );
+		layerMask |= ( 1 << LayerMask.NameToLayer("FingerBlockade") );
+		layerMask = ~layerMask;
+		
+		// We instantiate a blood splatter in order to avoid a huge spike in performance caused by the first slap
+		ProjectBlood(Vector2.right);
+		DecalProjector l_DecalProjector = m_DecalProjectors [0];
+		m_DecalProjectors.RemoveAt (0);
+		m_DecalsMesh.RemoveProjector (l_DecalProjector);
+		m_Decals.UpdateDecalsMeshes (m_DecalsMesh);
 	}
 	
 	private void Update () 
@@ -98,13 +114,14 @@ public class BloodSplatter : MonoBehaviour {
 		projectionDirection.y = slapDirection.y;
 		projectionDirection.z = Mathf.Abs(slapDirection.x);
 		
-		if (Physics.Raycast (transform.position, projectionDirection, out hitInfo, Mathf.Infinity)) 
+		if (Physics.Raycast (transform.position + new Vector3(0, 1f, 0), projectionDirection, out hitInfo, 10f, layerMask)) 
 		{
+			//Debug.Log(hitInfo.collider.gameObject.name);
 				// Collider hit.
 				// Make sure there are not too many projectors.
-			if (m_DecalProjectors.Count >= 50) 
+			if (m_DecalProjectors.Count >= maxSpaltCount) 
 			{
-					// If there are more than 50 projectors, we remove the first one from
+					// If there are more than maxSpatCount projectors, we remove the first one from
 					// our list and certainly from the decals mesh (the intermediate mesh
 					// format). All the mesh data that belongs to this projector will
 					// be removed.
@@ -112,10 +129,11 @@ public class BloodSplatter : MonoBehaviour {
 				m_DecalProjectors.RemoveAt (0);
 				m_DecalsMesh.RemoveProjector (l_DecalProjector);
 			}
-
+			//Debug.DrawRay(hitInfo.point, - projectionDirection, Color.blue, 1000f);
+			
 				// Calculate the position and rotation for the new decal projector.
 			Vector3 l_ProjectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
-			Quaternion l_ProjectorRotation = ProjectorRotationUtility.ProjectorRotation (Camera.main.transform.forward, Vector3.up);
+			Quaternion l_ProjectorRotation = ProjectorRotationUtility.ProjectorRotation ( - hitInfo.normal, Vector3.up);
 
 				// Randomize the rotation.
 			Quaternion l_RandomRotation = Quaternion.Euler (0.0f, Random.Range (0.0f, 360.0f), 0.0f);

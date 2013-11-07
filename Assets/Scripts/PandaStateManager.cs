@@ -86,12 +86,21 @@ public class PandaStateManager : MonoBehaviour {
         return currentDirection;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/heads/master
     public int GetSlapCount ()
     {
         return slapCount;
     }
 
+<<<<<<< HEAD
     public void IncrementSlapCounter ()
+=======
+
+    public void IncrementSlapCount ()
+>>>>>>> refs/heads/master
     {
         slapCount++;
     }
