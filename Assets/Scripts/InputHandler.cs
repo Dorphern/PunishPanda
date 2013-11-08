@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
-	public List<SwipeController> swipeControllers;
+	public SwipeController swipeController;
 	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
 	public float swipeThreshold = 10f;
 	public float draggingBoxMaximumThreshold = 0f;
-	
+	public float blockadeDistanceFromFingerThreshold = 1f;
 	
 	private Ray ray;
 	private RaycastHit hitInfo;
@@ -19,9 +19,7 @@ public class InputHandler : MonoBehaviour {
 	private Dictionary<int, PandaAI> selectedPandas; 
 	private Dictionary<int, Hotspot> selectedHotSpots; 
 	private Dictionary<int, FingerBlocking> selectedBlockades; 
-	private Dictionary<int, SwipeController> selectedSwipeControllers; 
-	private Vector3 lastMousePos;
-	private bool swiping = false;
+	private Vector3 [] lastMousePos;
 	
 	
 	void Start () 
@@ -29,8 +27,9 @@ public class InputHandler : MonoBehaviour {
 		selectedPandas = new Dictionary<int, PandaAI>();
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
 		selectedHotSpots = new Dictionary<int, Hotspot>();
-		selectedSwipeControllers = new Dictionary<int, SwipeController>();
-
+		lastMousePos = new Vector3[2];
+		
+		
 	}
 	
 	
@@ -59,7 +58,7 @@ public class InputHandler : MonoBehaviour {
 			// ignore extra touches
 			if(Input.touchCount > 2)
 			{
-				if(selectedPandas.ContainsKey(touch.fingerId) == false && selectedBlockades.ContainsKey(touch.fingerId) == false)
+				if(touch.fingerId > 1)
 					continue;
 			}
 			
@@ -113,8 +112,7 @@ public class InputHandler : MonoBehaviour {
 		{
 			selectedBlockades.Add(fingerID,  blockades[0]);
 			blockades.RemoveAt(0);
-			selectedSwipeControllers.Add(fingerID,  swipeControllers[0]);
-			swipeControllers.RemoveAt(0);
+			lastMousePos[fingerID] = position;
 		}
 	}
 	
@@ -129,30 +127,35 @@ public class InputHandler : MonoBehaviour {
 		// if we have a blockade selected we can perform actions involving blocking and slaping
 		else if(selectedBlockades.ContainsKey(touch.fingerId))
 		{
-			float magnitude = touch.deltaPosition.magnitude;
+		
+			float relativCurrPosX = touch.position.x / Screen.width;
+			float relativCurrPosY = touch.position.y / Screen.height;
+			
+			float relativLastPosX = lastMousePos[touch.fingerId].x / Screen.width;
+			float relativLastPosY = lastMousePos[touch.fingerId].y / Screen.height;
+			
+			Vector3 relativCurrPos = new Vector3(relativCurrPosX, relativCurrPosY, Input.mousePosition.z);
+			Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
+			
+			Vector3 mouseDelta = (relativCurrPos - relativLastPos);
+			
+			float magnitude = mouseDelta.magnitude;//touch.deltaPosition.magnitude;
 			
 			// if we are fast enough for swiping
 			if(magnitude > swipeThreshold)
-			{
-				SwipeController tempSwipeController;
-				selectedSwipeControllers.TryGetValue(touch.fingerId, out tempSwipeController);
-				if(!swiping)
-				{
-					swiping = true;
-					tempSwipeController.InitSwipe(touch.position);
-				}
-					
-				tempSwipeController.Swipe(touch.position);
+			{				
+				swipeController.Swipe(touch.position, lastMousePos[touch.fingerId]);
 			}
-			// reset the swiping flag
-			else
-				swiping = false;
 			
 			// if we are slow enough for dragging
+			
 			if(magnitude <= draggingBoxMaximumThreshold)
 			{
 				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
-				tempBlockade.ActivateBlockade(touch.position);	
+				Vector3 distanceFromFinger = blockades[0].transform.position - Input.mousePosition;
+				if(!tempBlockade.IsEnabled() || distanceFromFinger.magnitude > blockadeDistanceFromFingerThreshold)
+					tempBlockade.RepositionBlockade(touch.position);
+				tempBlockade.ActivateBlockade();	
 			}
 			// otherwise disable the blockade
 			else
@@ -160,7 +163,7 @@ public class InputHandler : MonoBehaviour {
 				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
 				tempBlockade.DeactivateBlockade();
 			}
-			
+			lastMousePos[touch.fingerId] = touch.position;
 		}
 	}
 	
@@ -191,6 +194,7 @@ public class InputHandler : MonoBehaviour {
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
+			Debug.Log("clicked");
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 			{
@@ -211,7 +215,7 @@ public class InputHandler : MonoBehaviour {
 					}
 				}
 			}
-			lastMousePos = Input.mousePosition;
+			lastMousePos[0] = Input.mousePosition;
 		}
 		
 		if(Input.GetMouseButton(0))
@@ -222,28 +226,31 @@ public class InputHandler : MonoBehaviour {
 			}
 			else if(tempHotSpot == null)
 			{
-
 				
-				Vector3 mouseDelta = (Input.mousePosition - lastMousePos);
+				float relativCurrPosX = Input.mousePosition.x / Screen.width;
+				float relativCurrPosY = Input.mousePosition.y / Screen.height;
 				
+				float relativLastPosX = lastMousePos[0].x / Screen.width;
+				float relativLastPosY = lastMousePos[0].y / Screen.height;
+				
+				Vector3 relativCurrPos = new Vector3(relativCurrPosX, relativCurrPosY, Input.mousePosition.z);
+				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
+				
+				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
+				Debug.Log(mouseDelta.magnitude);
 				// if we are fast enough for swiping
 				if(mouseDelta.magnitude > swipeThreshold)
 				{
-					if(!swiping)
-					{
-						swiping = true;
-						swipeControllers[0].InitSwipe(Input.mousePosition);
-					}
-						
-					swipeControllers[0].Swipe(Input.mousePosition);
+					swipeController.Swipe(Input.mousePosition, lastMousePos[0]);
 				}
-				else
-					swiping = false;
-				
+		
 				// if we are slow enough for dragging
 				if(mouseDelta.magnitude <= draggingBoxMaximumThreshold)
 				{
-					blockades[0].ActivateBlockade(Input.mousePosition);
+					Vector3 distanceFromFinger = blockades[0].transform.position - Input.mousePosition;
+					if(!blockades[0].IsEnabled()|| distanceFromFinger.magnitude > blockadeDistanceFromFingerThreshold)
+						blockades[0].RepositionBlockade (Input.mousePosition);
+					blockades[0].ActivateBlockade();
 				}
 				// otherwise disable the blockade
 				else
@@ -251,7 +258,7 @@ public class InputHandler : MonoBehaviour {
 				
 			}
 						
-			lastMousePos = Input.mousePosition;
+			lastMousePos[0] = Input.mousePosition;
 		}
 		
 		if(Input.GetMouseButtonUp(0))
