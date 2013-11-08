@@ -13,6 +13,7 @@ public static class AudioNodeWorker  {
         var node = go.AddComponent<AudioNode>();
         node.GUID = guid;
         node.Type = type;
+        node.Name = parent.Name + " Child";
         node.Bus = parent.Bus;
         NodeWorker.AssignParent(node, parent);
 
@@ -42,7 +43,6 @@ public static class AudioNodeWorker  {
     public static AudioNode CreateNode(GameObject go, AudioNode parent, AudioNodeType type)
     {
         var newNode = CreateNode(go, parent, GUIDCreator.Create(), type);
-        newNode.Name = "Name";
         AddDataClass(newNode);
         return newNode;
     }
@@ -98,7 +98,7 @@ public static class AudioNodeWorker  {
 
         var child = CreateNode(parent.gameObject, parent, GUIDCreator.Create(), newNodeType);
         parent.FoldedOut = true;
-        child.Name = "Name";
+        child.Name = parent.Name + " Child";
         child.BankLink = AudioBankWorker.GetParentBank(child);
         AddDataClass(child);
         return child;

@@ -16,7 +16,7 @@ public class HDRBaseWindow : EditorWindow
         autoRepaintOnSceneChange = true;
         EditorApplication.modifierKeysChanged += Repaint;
 
-        Manager = AudioInstanceFinder.DataManager;
+        Manager = HDRInstanceFinder.DataManager;
 
         EditorResources.Reload();
     }
@@ -38,7 +38,7 @@ public class HDRBaseWindow : EditorWindow
     {
         if (Manager == null)
         {
-            Manager = AudioInstanceFinder.DataManager;
+            Manager = HDRInstanceFinder.DataManager;
             if (Manager == null)
             {
                 ErrorDrawer.MissingAudioManager();

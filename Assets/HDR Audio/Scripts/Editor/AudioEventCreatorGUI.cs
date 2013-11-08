@@ -21,10 +21,10 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
     {
         BaseOnGUI();
 
-        var root = AudioInstanceFinder.DataManager.EventTree;
-        int id = AudioInstanceFinder.GuiUserPrefs.SelectedEventID;
+        var root = HDRInstanceFinder.DataManager.EventTree;
+        int id = HDRInstanceFinder.GuiUserPrefs.SelectedEventID;
         var selectedNode = UpdateSelectedNode(root, id);
-        AudioInstanceFinder.GuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
+        HDRInstanceFinder.GuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
         this.height = height;
@@ -43,7 +43,7 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, true);
         EditorGUILayout.BeginVertical();
 
-        isDirty |= treeDrawer.DrawTree(AudioInstanceFinder.DataManager.EventTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.EventTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
@@ -99,8 +99,7 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
         return AudioEventWorker.CanDropObjects(audioEvent, objects);
     }
 
-
-
+    
     protected override void OnContext(AudioEvent node)
     {
         var menu = new GenericMenu();

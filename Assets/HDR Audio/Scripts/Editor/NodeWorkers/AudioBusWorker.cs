@@ -24,6 +24,7 @@ public static class AudioBusWorker
     {
         var node = go.AddComponent<AudioBus>();
         node.GUID = guid;
+        node.name = parent.Name + " Child";
         node.AssignParent(parent);
         return node;
     }
@@ -36,8 +37,14 @@ public static class AudioBusWorker
 
     public static void DeleteBus(AudioBus bus, AudioNode root)
     {
-        HashSet<AudioBus> toDelete = new HashSet<AudioBus>();
+        HashSet<AudioBus> toDelete = new HashSet<AudioBus>(); 
         GetBussesToDelete(toDelete, bus);
+
+        var runtimePlayers = bus.GetRuntimePlayers();
+        for (int i = 0; i < runtimePlayers.Count; ++i)
+        {
+            runtimePlayers[i].SetNewBus(bus.Parent);
+        }
 
         List<AudioNode> affectedNodes = new List<AudioNode>();
         NodeWorker.FindAllNodes(root, node => toDelete.Contains(node.Bus), affectedNodes);
@@ -46,6 +53,7 @@ public static class AudioBusWorker
         {
             affectedNodes[i].Bus = bus.Parent;
         }
+        
         
         ActualDelete(bus);
     }
@@ -73,7 +81,7 @@ public static class AudioBusWorker
     {
         var child = CreateBus(parent.gameObject, parent, GUIDCreator.Create());
         child.FoldedOut = true;
-        child.Name = "Name";
+        child.Name = parent.Name + " Child";
 
         return child;
     }

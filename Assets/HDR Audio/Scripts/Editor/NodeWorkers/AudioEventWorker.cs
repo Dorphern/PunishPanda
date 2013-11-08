@@ -15,6 +15,7 @@ public static class AudioEventWorker  {
         node.Type = EventNodeType.Root;
         node.GUID = guid;
         node.FoldedOut = true;
+        node.Name = "Root Folder";
         return node;
     }
 
@@ -23,6 +24,7 @@ public static class AudioEventWorker  {
         var node = go.AddComponent<AudioEvent>();
         node.Type = EventNodeType.Folder;
         node.GUID = guid;
+        node.Name = parent.Name + " Child Folder";
         node.AssignParent(parent);
         return node;
     }
@@ -46,6 +48,7 @@ public static class AudioEventWorker  {
         var node = go.AddComponent<AudioEvent>();
         node.Type = type;
         node.GUID = guid;
+        node.Name = parent.Name + " Child";
         node.AssignParent(parent);
         return node;
     }
@@ -66,7 +69,6 @@ public static class AudioEventWorker  {
     {
         var child = CreateEvent(audioEvent.gameObject, audioEvent, GUIDCreator.Create(), type);
         child.FoldedOut = true;
-        child.Name = "Name";
         
         return child;
     }

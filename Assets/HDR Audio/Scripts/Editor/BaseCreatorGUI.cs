@@ -101,6 +101,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
         searchingFor = node.ID.ToString(); 
         lowercaseSearchingFor = searchingFor;
         treeDrawer.Filter(ShouldFilter);
+        treeDrawer.SelectedNode = node;
     }
 
     protected virtual bool ShouldFilter(T node)

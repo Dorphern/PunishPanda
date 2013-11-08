@@ -18,10 +18,10 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
     public bool OnGUI(int leftWidth, int height)
     {
         BaseOnGUI();
-        var root = AudioInstanceFinder.DataManager.AudioTree;
-        int id = AudioInstanceFinder.GuiUserPrefs.SelectedAudioNodeID;
+        var root = HDRInstanceFinder.DataManager.AudioTree;
+        int id = HDRInstanceFinder.GuiUserPrefs.SelectedAudioNodeID;
         var selectedNode = UpdateSelectedNode(root, id);
-        AudioInstanceFinder.GuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
+        HDRInstanceFinder.GuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
         this.height = height;

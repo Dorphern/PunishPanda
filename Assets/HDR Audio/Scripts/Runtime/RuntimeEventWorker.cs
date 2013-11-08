@@ -22,7 +22,7 @@ public class RuntimeEventWorker : MonoBehaviour
     }
 
     public void StopAll(GameObject controllingObject)
-    {
+    { 
         List<RuntimeInfo> valueTupleList;
         GOAudioNodes.TryGetValue(controllingObject, out valueTupleList);
         if (valueTupleList != null)

@@ -18,10 +18,10 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
     {
         BaseOnGUI();
 
-        var root = AudioInstanceFinder.DataManager.BusTree;
-        int id = AudioInstanceFinder.GuiUserPrefs.SelectedBusID;
+        var root = HDRInstanceFinder.DataManager.BusTree;
+        int id = HDRInstanceFinder.GuiUserPrefs.SelectedBusID;
         var selectedNode = UpdateSelectedNode(root, id);
-        AudioInstanceFinder.GuiUserPrefs.SelectedBusID = selectedNode != null ? selectedNode.ID : 0;
+        HDRInstanceFinder.GuiUserPrefs.SelectedBusID = selectedNode != null ? selectedNode.ID : 0;
     
 
         this.leftWidth = leftWidth;
@@ -41,7 +41,7 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         EditorGUILayout.BeginVertical();
         treeArea.y -= 25;
         //treeArea.height += 10;
-        isDirty |= treeDrawer.DrawTree(AudioInstanceFinder.DataManager.BusTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.BusTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
@@ -53,7 +53,7 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         if (treeDrawer.SelectedNode != null)
         {
             AudioBusDrawer.Draw(treeDrawer.SelectedNode);
-            AudioBusVolumeHelper.SetBusVolumes(AudioInstanceFinder.DataManager.BusTree);
+            AudioBusVolumeHelper.SetBusVolumes(HDRInstanceFinder.DataManager.BusTree);
             
         }
     }
@@ -100,7 +100,7 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         if (bus.IsRoot)
             return;
 
-        AudioBusWorker.DeleteBus(bus, AudioInstanceFinder.DataManager.AudioTree);
+        AudioBusWorker.DeleteBus(bus, HDRInstanceFinder.DataManager.AudioTree);
     }
 
     public void FindBus(AudioBus audioBus)

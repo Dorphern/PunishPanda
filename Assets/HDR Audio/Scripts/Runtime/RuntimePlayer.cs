@@ -12,7 +12,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class RuntimePlayer : MonoBehaviour
 {
-    public void Play(AudioNode node, RuntimeInfo playingInfo)
+    public void Play(AudioNode node, RuntimeInfo playingInfo) 
     {
         currentIndex = 0;
         attachedToBus = RuntimeHelper.GetBus(node);
@@ -52,6 +52,11 @@ public class RuntimePlayer : MonoBehaviour
                 continue;
             audioSources[i].volume = originalVolume[i] * newVolume;
         }
+    }
+
+    public void SetNewBus(AudioBus bus)
+    {
+        attachedToBus = bus;
     }
 
     public void Initialize(AudioGOPool spawnedFrom)
