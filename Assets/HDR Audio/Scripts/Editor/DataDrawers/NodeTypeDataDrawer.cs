@@ -75,7 +75,6 @@ public static class NodeTypeDataDrawer
 
             #endregion
 
-        
             
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();

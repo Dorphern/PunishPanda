@@ -1,6 +1,7 @@
+using System;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using System.Collections;
+using Object = UnityEngine.Object;
 
 public static class TreeWalker
 {
@@ -17,6 +18,20 @@ public static class TreeWalker
                 return result;
         }
         return null;
+    }
+
+    public static int Count<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        if (node == null)
+            return 0;
+        int result = 0;
+        if (predicate(node))
+            result += 1;
+        for (int i = 0; i < node.GetChildren.Count; i++)
+        {
+            result += Count(node.GetChildren[i], predicate);
+        }
+        return result;
     }
 
     public static int FindIndexInParent<T>(T node) where T : Object, ITreeNode<T>

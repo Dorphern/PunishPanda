@@ -13,7 +13,6 @@ public static class AudioBankWorker {
         node.GUID = guid;
         node.Parent = parent;
         node.IsFoldedOut = true;
-        node.Name = "Name";
         NodeWorker.AssignParent(node, parent);
         return node;
     }
@@ -29,7 +28,7 @@ public static class AudioBankWorker {
     public static AudioBankLink CreateFolder(GameObject go, AudioBankLink parent, int guid)
     {
         var node = CreateNode(go, parent, guid);
-        node.Name = "folder";
+        node.Name = parent.Name + " Child Folder";
         node.Type = AudioBankTypes.Folder;
         return node;
     }
@@ -37,7 +36,7 @@ public static class AudioBankWorker {
     private static AudioBankLink CreateBankLink(GameObject go, AudioBankLink parent, int guid)
     {
         var node = CreateNode(go, parent, guid);
-        node.Name = "BankLink";
+        node.Name = parent.Name + " Child"; 
         node.Type = AudioBankTypes.Link;
         return node;
     }

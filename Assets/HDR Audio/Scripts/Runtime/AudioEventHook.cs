@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("HDR Audio/Audio Event Hook")]
 public class AudioEventHook : MonoBehaviour
 {
     [EventHookAttribute("On Enable")]

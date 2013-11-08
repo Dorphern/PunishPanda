@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("HDR Audio/Audio Bank Hook")]
 public class BankHook : MonoBehaviour
 {
     [BankHookAttribute("Load On Enable")]

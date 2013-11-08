@@ -15,14 +15,14 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
     {
         BaseOnGUI();
 
-        var dataManager = AudioInstanceFinder.DataManager;
+        var dataManager = HDRInstanceFinder.DataManager;
         if (dataManager != null)
         {
             Undo.ClearSnapshotTarget();
             var root = dataManager.BankLinkTree;
-            int id = AudioInstanceFinder.GuiUserPrefs.SelectedBusID;
+            int id = HDRInstanceFinder.GuiUserPrefs.SelectedBankLinkID;
             var selectedNode = UpdateSelectedNode(root, id);
-            AudioInstanceFinder.GuiUserPrefs.SelectedBusID = selectedNode != null ? selectedNode.ID : 0;
+            HDRInstanceFinder.GuiUserPrefs.SelectedBankLinkID = selectedNode != null ? selectedNode.ID : 0;
         }
 
         this.leftWidth = leftWidth;
@@ -42,7 +42,7 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, true);
         EditorGUILayout.BeginVertical();
 
-        isDirty |= treeDrawer.DrawTree(AudioInstanceFinder.DataManager.BankLinkTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.BankLinkTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
@@ -104,11 +104,22 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
         menu.AddSeparator("");
 
-        if (!node.IsRoot)
-            menu.AddItem(new GUIContent(@"Delete"), false, data => { /*DeleteNode(audioBus);*/ }, node);
-        else
+        /*if (!node.IsRoot)
+        {
+            menu.AddItem(new GUIContent(@"Delete"), false, data => DeleteNode(HDRInstanceFinder.DataManager.BankLinkTree, data as AudioBankLink), node);
+        }
+        else*/
             menu.AddDisabledItem(new GUIContent(@"Delete"));
         menu.ShowAsContext();
+    }
+
+    private void DeleteNode(AudioBankLink root, AudioBankLink node)
+    {
+        int nonFolderCount = TreeWalker.Count(root, link => link.Type == AudioBankTypes.Link);
+        if (nonFolderCount == 1)
+        {
+            EditorUtility.DisplayDialog("Cannot delete the last bank", "Cannot delete the last bank", "ok");
+        }
     }
 
     private void CreateBank(AudioBankLink parent, AudioBankTypes type)
