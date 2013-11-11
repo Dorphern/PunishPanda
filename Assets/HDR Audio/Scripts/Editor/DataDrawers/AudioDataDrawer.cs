@@ -1,4 +1,5 @@
 using HDRAudio;
+using HDRAudio.ExtensionMethods;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public static class AudioDataDrawer {
         var clip = (AudioClip)EditorGUILayout.ObjectField(audio.Clip, typeof(AudioClip), false);
         if (clip != audio.EditorClip) //Assign new clip
         {
-            Undo.RegisterUndo(new Object[] {  node.NodeData, AudioBankWorker.GetParentBank(node).LazyBankFetch }, "Changed " + node.Name + " Clip");
+            Undo.RegisterUndo(new Object[] {  node.NodeData, node.GetBank().LazyBankFetch }, "Changed " + node.Name + " Clip");
             audio.EditorClip = clip;
             AudioBankWorker.SwapClipInBank(node, clip);
         }
