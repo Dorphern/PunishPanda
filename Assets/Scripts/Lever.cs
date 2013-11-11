@@ -18,7 +18,7 @@ public class Lever : MonoBehaviour {
 	{
 		if(collider.GetComponent<Collidable>().type == CollidableTypes.Panda)
 		{
-			if(trap.isActive() == true)
+			if(trap.IsActive() == true)
 			{
 				trap.DeactivateTrap();
 			}

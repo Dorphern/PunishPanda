@@ -14,14 +14,14 @@ public class PressurePad : MonoBehaviour {
 	{
 		if(pandaCount > 0)
 		{
-			if(trap.isActive() == false)
+			if(trap.IsActive() == false)
 			{
 				trap.ActivateTrap();
 			}
 		}
 		else
 		{
-			if(trap.isActive() == true)
+			if(trap.IsActive() == true)
 			{
 				trap.DeactivateTrap();
 			}
