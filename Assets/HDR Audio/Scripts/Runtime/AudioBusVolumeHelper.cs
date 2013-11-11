@@ -47,16 +47,20 @@ public static class AudioBusVolumeHelper {
 
     private static void SetBusVolumes(AudioBus bus, float volume)
     {
-        float newVolume = bus.Volume * volume;
-        if(newVolume != bus.CombinedVolume)
+        if (bus != null)
         {
-            bus.Dirty = true; //Non serialized, so will only stick while playing, will then get updated by the runtime system
-        }
-        bus.CombinedVolume = newVolume;
+            float newVolume = bus.Volume*volume;
+            if (newVolume != bus.CombinedVolume)
+            {
+                bus.Dirty = true;
+                    //Non serialized, so will only stick while playing, will then get updated by the runtime system
+            }
+            bus.CombinedVolume = newVolume;
 
-        for (int i = 0; i < bus.Children.Count; i++)
-        {
-            SetBusVolumes(bus.Children[i], bus.CombinedVolume);
+            for (int i = 0; i < bus.Children.Count; i++)
+            {
+                SetBusVolumes(bus.Children[i], bus.CombinedVolume);
+            }
         }
     }
 }

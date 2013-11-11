@@ -1,7 +1,9 @@
+using System;
 using HDRAudio;
 using HDRAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
 {
@@ -78,18 +80,28 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
     {
         var menu = new GenericMenu();
 
-        menu.AddItem(new GUIContent(@"Create Child"), false, data => AudioBusWorker.CreateNode(audioBus), audioBus);
+        menu.AddItem(new GUIContent(@"Create Child"), false, CreateChildBus, audioBus);
 
         menu.AddSeparator("");
 
         if (!audioBus.IsRoot)
-            menu.AddItem(new GUIContent(@"Delete"), false, data => DeleteNode(audioBus), audioBus);
+            menu.AddItem(new GUIContent(@"Delete"), false, data => {
+                treeDrawer.SelectPreviousNode();
+                DeleteNode(audioBus);
+            }, audioBus);
         else
             menu.AddDisabledItem(new GUIContent(@"Delete"));
 
         menu.ShowAsContext();
     }
-     
+
+    private void CreateChildBus(object userData)
+    {
+        AudioBus bus = userData as AudioBus;
+        Undo.RegisterUndo(bus, "Bus Creation");
+        AudioBusWorker.CreateBus(bus);
+    }
+
     protected override bool OnNodeDraw(AudioBus node, bool isSelected)
     {
         return BusDrawer.Draw(node, isSelected);
@@ -97,9 +109,7 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
 
     private void DeleteNode(AudioBus bus)
     {
-        if (bus.IsRoot)
-            return;
-
+        Undo.RegisterUndo(bus.Parent, "Bus Deletion");
         AudioBusWorker.DeleteBus(bus, HDRInstanceFinder.DataManager.AudioTree);
     }
 
