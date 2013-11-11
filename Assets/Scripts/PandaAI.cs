@@ -100,7 +100,9 @@ public class PandaAI : MonoBehaviour {
 			// the slap direction is opposite to the panda's facing direction
 			ChangeDirection(null);
 		}
-		bloodOnSlap.EmmitSlapBlood();
+		//bloodOnSlap.EmmitSlapBlood();
+		bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection.normalized);
+		
 	}
 	#endregion
 	
