@@ -71,9 +71,11 @@ public class SwipeController : MonoBehaviour {
 			{
 				var collidable = hits[i].collider.GetComponent<Collidable>();
 				if (collidable != null && collidable.type == CollidableTypes.Panda)
+				{
 		            count++;
-		            Debug.Log("Hit Panda" + count);
-		        hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+		            //Debug.Log("Hit Panda" + count);
+		        	hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+				}
 			}
 		}/**/
              

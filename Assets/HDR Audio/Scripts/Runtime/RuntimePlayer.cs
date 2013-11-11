@@ -12,7 +12,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class RuntimePlayer : MonoBehaviour
 {
-    public void Play(AudioNode node, RuntimeInfo playingInfo) 
+    public void Play(AudioNode node, RuntimeInfo playingInfo)
     {
         currentIndex = 0;
         attachedToBus = RuntimeHelper.GetBus(node);

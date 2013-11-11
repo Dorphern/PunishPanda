@@ -22,7 +22,7 @@ public class RuntimeEventWorker : MonoBehaviour
     }
 
     public void StopAll(GameObject controllingObject)
-    { 
+    {
         List<RuntimeInfo> valueTupleList;
         GOAudioNodes.TryGetValue(controllingObject, out valueTupleList);
         if (valueTupleList != null)
@@ -65,7 +65,7 @@ public class RuntimeEventWorker : MonoBehaviour
                     valueTupleList.SwapRemoveAt(i);
                 }
             }
-        }
+        } 
     }
 
     private void Play(GameObject controllingObject, AudioNode audioNode, GameObject poolObject)

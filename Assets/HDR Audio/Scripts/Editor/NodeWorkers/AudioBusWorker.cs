@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HDRAudio.ExtensionMethods;
 using UnityEngine;
 
 namespace HDRAudio
@@ -53,9 +54,9 @@ public static class AudioBusWorker
         {
             affectedNodes[i].Bus = bus.Parent;
         }
+        bus.Parent.Children.Remove(bus);
         
-        
-        ActualDelete(bus);
+        //ActualDelete(bus);
     }
 
     private static void ActualDelete(AudioBus bus)
@@ -77,13 +78,23 @@ public static class AudioBusWorker
         }
     }
 
-    public static AudioBus CreateNode(AudioBus parent)
+    public static AudioBus CreateBus(AudioBus parent)
     {
         var child = CreateBus(parent.gameObject, parent, GUIDCreator.Create());
         child.FoldedOut = true;
         child.Name = parent.Name + " Child";
 
         return child;
+    }
+
+    public static AudioBus GetParentBus(AudioNode node)
+    {
+        if (node.IsRoot)
+            return node.Bus;
+        if (node.OverrideParentBus)
+            return node.Bus;
+
+        return GetParentBus(node.Parent);
     }
 }
 }
