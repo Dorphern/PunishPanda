@@ -164,7 +164,7 @@ public class AuxWindow : HDRBaseWindow
         {
             if (EditorUtility.DisplayDialog("Create new project?", "This will delete ALL data!", "Start from scratch", "Do nothing"))
             {
-                FolderSettings.DeleteFolderContent(FolderSettings.BankDeleteFolder);
+                SystemFolderHelper.DeleteFolderContent(FolderSettings.BankDeleteFolder);
 
                 int levelSize = 3;
                 GameObject go1 = new GameObject();

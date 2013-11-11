@@ -13,7 +13,7 @@ public static class AudioBankWorker {
         node.GUID = guid;
         node.Parent = parent;
         node.IsFoldedOut = true;
-        NodeWorker.AssignParent(node, parent);
+        node.AssignParent(parent);
         return node;
     }
 
@@ -55,14 +55,9 @@ public static class AudioBankWorker {
         return root;
     }
 
-    public static void AddSingleNodeToBank(AudioNode node, AudioClip clip)
-    {
-        AddNodeToBank(node, clip);
-    }
-
     public static bool SwapClipInBank(AudioNode node, AudioClip newClip)
     {
-        var bank = GetParentBank(node);
+        var bank = node.GetBank();
         
         var clipTuple = bank.LazyBankFetch.Clips;
 
@@ -81,13 +76,13 @@ public static class AudioBankWorker {
 
     public static void AddNodeToBank(AudioNode node, AudioClip clip)
     {
-        var bank = GetParentBank(node).LazyBankFetch;
+        var bank = node.GetBank().LazyBankFetch;
         bank.Clips.Add(CreateTuple(node, clip));
     }
 
     public static void RemoveNodeFromBank(AudioNode node)
     {
-        var bank = GetParentBank(node).LazyBankFetch;
+        var bank = node.GetBank().LazyBankFetch;
         bank.Clips.RemoveAll(p => p.Node == node);
     }
 
@@ -101,48 +96,39 @@ public static class AudioBankWorker {
 
     public static void ChangeBankOverriding(AudioNode node)
     {
-        
-        AudioBankLink newBank;
-        AudioBankLink currentBank = GetParentBank(node);
-
-        if (node.OverrideParentBank)
-            newBank = GetParentBank(node.Parent);
-        else
-        {
-            newBank = node.BankLink;
-        }
-
+        var currentBank = node.GetBank();
         node.OverrideParentBank = !node.OverrideParentBank;
+        var newBank = node.GetBank();
+        if (currentBank == newBank)
+            return;
 
+        //Double do this to register the correct state of the node
+        node.OverrideParentBank = !node.OverrideParentBank;
+        Undo.RegisterUndo(UndoHelper.Array(currentBank.LazyBankFetch, newBank.LazyBankFetch, node), "Undo Changing Used Bank");
+        node.OverrideParentBank = !node.OverrideParentBank;
+        
         MoveBetweenBanks(node, currentBank, newBank);
-
-        SetNewBankLink(node, newBank);
     }
 
-    private static void MoveBetweenBanks(AudioNode node, AudioBankLink oldBank, AudioBankLink newBankLink)
+    public static void MoveBetweenBanks(AudioNode node, AudioBankLink current, AudioBankLink newBankLink)
     {
-        var currentBank = oldBank.LazyBankFetch.Clips;
+        var currentBank = current.LazyBankFetch.Clips;
         var newBank = newBankLink.LazyBankFetch.Clips;
-        var nodeSet = new HashSet<AudioNode>();
-        BuildMoveSet(nodeSet, node);
-        for (int i = 0; i < currentBank.Count; ++i)
+        var toMove = new HashSet<AudioNode>();
+        BuildMoveSet(toMove, node);
+        for (int i = currentBank.Count - 1; i >= 0; --i)
         {
-            if (nodeSet.Contains(currentBank[i].Node))
+            if (toMove.Contains(currentBank[i].Node))
             {
                 newBank.Add(currentBank[i]);
-                currentBank.SwapRemoveAt(i);
+                currentBank.RemoveAt(i);
             }
         }
     }
 
-    public static void MoveNode(AudioNode movedNode, AudioBankLink oldParent)
-    {
-        MoveBetweenBanks(movedNode, oldParent, GetParentBank(movedNode));
-    }
-
     public static void SetNewBank(AudioNode node, AudioBankLink newBankLink)
     {
-        MoveBetweenBanks(node, GetParentBank(node), newBankLink);
+        MoveBetweenBanks(node, node.GetBank(), newBankLink);
 
         node.BankLink = newBankLink;
         SetNewBankLink(node, newBankLink);
@@ -181,16 +167,6 @@ public static class AudioBankWorker {
                     BuildMoveSet(nodeSet, childNode);
             }
         }
-    }
-
-    public static AudioBankLink GetParentBank(AudioNode node)
-    {
-        if (node.IsRoot)
-            return node.BankLink;
-        if (node.Type == AudioNodeType.Folder && node.OverrideParentBank)
-            return node.BankLink;
-
-        return GetParentBank(node.Parent);
     }
 }
 }

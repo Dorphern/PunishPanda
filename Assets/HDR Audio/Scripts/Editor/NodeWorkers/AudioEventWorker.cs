@@ -15,7 +15,7 @@ public static class AudioEventWorker  {
         node.Type = EventNodeType.Root;
         node.GUID = guid;
         node.FoldedOut = true;
-        node.Name = "Root Folder";
+        node.Name = "Root";
         return node;
     }
 
@@ -24,22 +24,19 @@ public static class AudioEventWorker  {
         var node = go.AddComponent<AudioEvent>();
         node.Type = EventNodeType.Folder;
         node.GUID = guid;
-        node.Name = parent.Name + " Child Folder";
+        node.Name = parent.Name + " Child";
         node.AssignParent(parent);
         return node;
     }
 
     public static void DeleteNode(AudioEvent node)
     {
+        Undo.RegisterUndo(node.Parent, "Event Deletion");
         for (int i = 0; i < node.Children.Count; ++i)
         {
             DeleteNode(node.Children[i]);
         }
         node.Parent.Children.Remove(node);
-
-        foreach (var data in node.ActionList)
-            Object.DestroyImmediate(data, true);
-        Object.DestroyImmediate(node, true);
     }
 
    
@@ -65,9 +62,9 @@ public static class AudioEventWorker  {
         return tree;
     }
 
-    public static AudioEvent CreateNode(AudioEvent audioEvent, EventNodeType type)
+    public static AudioEvent CreateNode(AudioEvent parent, EventNodeType type)
     {
-        var child = CreateEvent(audioEvent.gameObject, audioEvent, GUIDCreator.Create(), type);
+        var child = CreateEvent(parent.gameObject, parent, GUIDCreator.Create(), type);
         child.FoldedOut = true;
         
         return child;
@@ -94,6 +91,7 @@ public static class AudioEventWorker  {
 
     public static AudioEventAction AddEventAction(AudioEvent audioevent, Type eventActionType, EventActionTypes enumType) 
     {
+        Undo.RegisterUndo(audioevent, "Event Action Creation");
         var eventAction = audioevent.gameObject.AddComponent(eventActionType) as AudioEventAction;
         audioevent.ActionList.Add(eventAction);
         eventAction.EventActionType = enumType;
@@ -103,12 +101,8 @@ public static class AudioEventWorker  {
 
     public static AudioEvent DeleteActionAtIndex(AudioEvent audioevent, int index)
     {
-        AudioEventAction eventAction = audioevent.ActionList.TryGet(index);
-        if (eventAction != null)
-        {
-            audioevent.ActionList.FindSwapRemove(eventAction);
-            Object.DestroyImmediate(eventAction, true);
-        }
+        Undo.RegisterUndo(audioevent, "Event Action Creation");
+        audioevent.ActionList.RemoveAt(index);
 
         return audioevent;
     }
@@ -211,6 +205,7 @@ public static class AudioEventWorker  {
             var audioNode = objects[0] as AudioNode;
             if (audioNode != null && audioNode.IsPlayable)
             {
+                Undo.RegisterUndo(audioevent, "Adding of Audio Action");
                 var action = AddEventAction<EventAudioAction>(audioevent,
                     EventActionTypes.Play);
                 action.Node = audioNode;
@@ -219,6 +214,7 @@ public static class AudioEventWorker  {
             var audioBank = objects[0] as AudioBankLink;
             if (audioBank != null)
             {
+                Undo.RegisterUndo(audioevent, "Adding of Bank Load Action");
                 var action = AddEventAction<EventBankAction>(audioevent,
                     EventActionTypes.LoadBank);
                 action.BankLink = audioBank;
@@ -227,6 +223,7 @@ public static class AudioEventWorker  {
             var audioBus = objects[0] as AudioBus;
             if (audioBus != null)
             {
+                Undo.RegisterUndo(audioevent, "Adding of Bus Volume");
                 var action = AddEventAction<EventBusAction>(audioevent,
                     EventActionTypes.SetBusVolume);
                 action.Bus = audioBus;

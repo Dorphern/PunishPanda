@@ -37,10 +37,12 @@ public class Hotspot : MonoBehaviour {
     public void ActivateHotspot ()
     {
         hotspotActive = true;
+		renderer.material.color = Color.green;
     }
 
     public void DeactivateHotspot ()
     {
         hotspotActive = false;
+		renderer.material.color = Color.gray;
     }
 }
