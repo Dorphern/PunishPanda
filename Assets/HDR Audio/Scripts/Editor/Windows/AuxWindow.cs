@@ -45,7 +45,7 @@ public class AuxWindow : HDRBaseWindow
         KeyboardWindowControls();
         if (Manager == null)
         {
-            Manager = AudioInstanceFinder.DataManager;
+            Manager = HDRInstanceFinder.DataManager;
             if (Manager == null)
             {
                 ErrorDrawer.MissingAudioManager();
@@ -164,7 +164,7 @@ public class AuxWindow : HDRBaseWindow
         {
             if (EditorUtility.DisplayDialog("Create new project?", "This will delete ALL data!", "Start from scratch", "Do nothing"))
             {
-                FolderSettings.DeleteFolderContent(Application.dataPath + FolderSettings.BankDeleteFolder);
+                SystemFolderHelper.DeleteFolderContent(FolderSettings.BankDeleteFolder);
 
                 int levelSize = 3;
                 GameObject go1 = new GameObject();
@@ -187,9 +187,6 @@ public class AuxWindow : HDRBaseWindow
                         GUIDCreator.Create());
                     bankLink.Name = "Default - Auto loaded";
                     bankLink.AutoLoad = true;
-                    var bankLink2 = AudioBankWorker.CreateBank(Manager.BankLinkTree.gameObject, Manager.BankLinkTree,
-                        GUIDCreator.Create());
-                    bankLink2.Name = "Extra";
 
                     NodeWorker.AssignToNodes(Manager.AudioTree, node => node.BankLink = Manager.BankLinkTree.GetChildren[0]);
                 }

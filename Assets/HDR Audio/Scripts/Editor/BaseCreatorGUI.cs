@@ -53,15 +53,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
         EditorGUILayout.BeginHorizontal(CreaterGUIHelper.ToolbarStyle);
         GUI.SetNextControlName("SearchBar");
         var content = EditorGUILayout.TextField(searchingFor, CreaterGUIHelper.SearchFieldStyle);
-       /* if (GUI.GetNameOfFocusedControl() == "SearchBar" && Event.current.type == EventType.KeyDown &&
-            Event.current.keyCode == KeyCode.Escape)
-        {
-            treeDrawer.Filter(ShouldFilter);
-            searchingFor = "";
-            lowercaseSearchingFor = "";
 
-            GUI.FocusControl(null);
-        }*/
         if(content != searchingFor)
         {
             searchingFor = content;
@@ -69,7 +61,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
             treeDrawer.Filter(ShouldFilter);
         }
 
-        if (GUILayout.Button("", CreaterGUIHelper.SearchCancelStyle))
+        if (GUILayout.Button("", CreaterGUIHelper.SearchCancelStyle) && Event.current.type != EventType.Repaint)
         {
             treeDrawer.Filter(ShouldFilter);
             searchingFor = "";
@@ -101,6 +93,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
         searchingFor = node.ID.ToString(); 
         lowercaseSearchingFor = searchingFor;
         treeDrawer.Filter(ShouldFilter);
+        treeDrawer.SelectedNode = node;
     }
 
     protected virtual bool ShouldFilter(T node)

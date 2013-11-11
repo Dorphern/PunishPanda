@@ -21,10 +21,10 @@ public static class SaveAndLoad  //Only a monobehavior so that Instantiate(...) 
 
     public static void LoadManagerData(out Component[] audioData, out Component[] eventData, out Component[] busData, out Component[] bankLinkData)
     {
-        GameObject eventDataGO      = Resources.Load(FolderSettings.EventData) as GameObject;
-        GameObject audioDataGO      = Resources.Load(FolderSettings.AudioData) as GameObject;
-        GameObject busDataGO        = Resources.Load(FolderSettings.BusData) as GameObject;
-        GameObject bankLinkDataGO   = Resources.Load(FolderSettings.BankLinkData) as GameObject;
+        GameObject eventDataGO      = Resources.Load(FolderSettings.EventLoadData) as GameObject;
+        GameObject audioDataGO      = Resources.Load(FolderSettings.AudioLoadData) as GameObject;
+        GameObject busDataGO        = Resources.Load(FolderSettings.BusLoadData) as GameObject;
+        GameObject bankLinkDataGO   = Resources.Load(FolderSettings.BankLinkLoadData) as GameObject;
 
 
         busData = GetComponents(busDataGO);
@@ -59,22 +59,22 @@ public static class SaveAndLoad  //Only a monobehavior so that Instantiate(...) 
 
     public static void CreateAudioNodeRootPrefab(GameObject root)
     {
-        PrefabUtility.CreatePrefab(FolderSettings.AudioDataPath, root);
+        PrefabUtility.CreatePrefab(FolderSettings.AudioSaveDataPath, root);
         Object.DestroyImmediate(root);
     }
     public static void CreateAudioEventRootPrefab(GameObject root)
     {
-        PrefabUtility.CreatePrefab(FolderSettings.EventDataPath, root);
+        PrefabUtility.CreatePrefab(FolderSettings.EventSaveDataPath, root);
         Object.DestroyImmediate(root);
     }
     public static void CreateAudioBusRootPrefab(GameObject root)
     {
-        PrefabUtility.CreatePrefab(FolderSettings.BusDataPath, root);
+        PrefabUtility.CreatePrefab(FolderSettings.BusSaveDataPath, root);
         Object.DestroyImmediate(root);
     }
     public static void CreateAudioBankLinkPrefab(GameObject root)
     {
-        PrefabUtility.CreatePrefab(FolderSettings.BankLinkDataPath, root);
+        PrefabUtility.CreatePrefab(FolderSettings.BankLinkSaveDataPath, root);
         Object.DestroyImmediate(root);
     }
 

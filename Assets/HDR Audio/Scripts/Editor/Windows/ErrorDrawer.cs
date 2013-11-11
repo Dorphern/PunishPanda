@@ -10,8 +10,7 @@ namespace  HDRAudio
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Fix it"))
             {
-                var go = PrefabUtility.InstantiatePrefab(
-                    AssetDatabase.LoadAssetAtPath(FolderSettings.AudioManagerPath, typeof (GameObject)) as GameObject);
+                var go = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath(FolderSettings.AudioManagerPath, typeof(GameObject)) as GameObject);
                 go.name = "HDRAudioManager";
             }
             EditorGUILayout.Separator();

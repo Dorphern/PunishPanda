@@ -6,7 +6,8 @@ public enum TrapType
     Electicity,
     Spikes,
     Pounder,
-    ThrowingStars
+    ThrowingStars,
+	DoorTrap
 }
 
 public abstract class TrapBase : MonoBehaviour {

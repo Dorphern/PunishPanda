@@ -15,7 +15,7 @@ public class PandaAI : MonoBehaviour {
     public event System.Action<float, float> ApplyJump;
     public event System.Action ApplyJumpingMovement;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
-	
+	public bool boostEnabled = false;
 	
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
@@ -28,8 +28,8 @@ public class PandaAI : MonoBehaviour {
 	CollisionController collisionController;
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
-	BloodSplatter bloodSplatter;
 	BloodOnSlap bloodOnSlap;
+	
 	
 	#region Public Methods
 	public void PandaPressed()
@@ -91,16 +91,22 @@ public class PandaAI : MonoBehaviour {
 		float dot = Vector2.Dot(slapDirection.normalized, facingDirection);
 		if(dot > 0f)
 		{
+			if(boostEnabled)
+			{
 			SetBoostSpeed();
 			// the slap direction is the same as the panda's facing direction
 			pandaStateManager.ChangeState(PandaState.Boosting);
+				
+			}
 		}
 		else
 		{
 			// the slap direction is opposite to the panda's facing direction
 			ChangeDirection(null);
 		}
-		bloodOnSlap.EmmitSlapBlood();
+		//bloodOnSlap.EmmitSlapBlood();
+		bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection.normalized);
+		
 	}
 
     /**
@@ -124,7 +130,6 @@ public class PandaAI : MonoBehaviour {
 		collisionController = GetComponent<CollisionController>();
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
-		bloodSplatter = GetComponent<BloodSplatter>();
 		bloodOnSlap = GetComponent<BloodOnSlap>();
 		
 		collisionController.OnFloorHit += FloorCollision;
@@ -247,8 +252,7 @@ public class PandaAI : MonoBehaviour {
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
 		// SlapEvent. play animation + blood splatter (waitForSeconds)
-		//bloodSplatter.ProjectBlood(slapDirection.normalized);
-		
+		BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		
