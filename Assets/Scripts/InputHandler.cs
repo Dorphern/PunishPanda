@@ -194,7 +194,7 @@ public class InputHandler : MonoBehaviour {
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
-			Debug.Log("clicked");
+			//Debug.Log("clicked");
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 			{
@@ -237,7 +237,7 @@ public class InputHandler : MonoBehaviour {
 				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
 				
 				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
-				Debug.Log(mouseDelta.magnitude);
+				//Debug.Log(mouseDelta.magnitude);
 				// if we are fast enough for swiping
 				if(mouseDelta.magnitude > swipeThreshold)
 				{
