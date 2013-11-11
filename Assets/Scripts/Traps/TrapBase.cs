@@ -11,7 +11,7 @@ public enum TrapType
 
 public abstract class TrapBase : MonoBehaviour {
 
-    [SerializeField] protected bool isActivated = false;
+    [SerializeField] protected bool initActivated = false;
     [SerializeField] protected bool isPerfectTrap = false;
     [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means this has no effect
 
@@ -23,31 +23,31 @@ public abstract class TrapBase : MonoBehaviour {
 
     # region Public Methods
 
-    public bool isActive ()
+    public bool IsActive ()
     {
-        return isActivated;
+        return collider.enabled;
     }
 
     virtual public void ActivateTrap ()
     {
-        isActivated = true;
+        collider.enabled = true;
     }
 
     virtual public void DeactivateTrap ()
     {
-        isActivated = false;
+        collider.enabled = false;
     }
 
     public void SetDirty ()
     {
         dirty = true;
-        renderer.material.mainTexture = dirtyTexture;
+        if (dirtyTexture != null) renderer.material.mainTexture = dirtyTexture;
     }
 
     public void SetClean ()
     {
         dirty = false;
-        renderer.material.mainTexture = cleanTexture;
+        if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
     }
 
     public bool IsDirty ()
@@ -60,6 +60,27 @@ public abstract class TrapBase : MonoBehaviour {
     # endregion
 
     # region Private Methods
+
+    void Start ()
+    {
+        if (IsDirty())
+        {
+            SetDirty();
+        }
+        else
+        {
+            SetClean();
+        }
+
+        if (initActivated)
+        {
+            ActivateTrap();
+        }
+        else
+        {
+            DeactivateTrap();
+        }
+    }
 
     /**
      * Attempt to kill the panda, return true if the panda was in fact killed by the attempt
@@ -81,6 +102,7 @@ public abstract class TrapBase : MonoBehaviour {
             if (successful) 
             {
                 GivePointsForKill(isPerfect);
+                SetDirty();
                 pandaKillCount++;
             }
         }
