@@ -54,6 +54,11 @@ public class RuntimePlayer : MonoBehaviour
         }
     }
 
+    public void SetNewBus(AudioBus bus)
+    {
+        attachedToBus = bus;
+    }
+
     public void Initialize(AudioGOPool spawnedFrom)
     {
         

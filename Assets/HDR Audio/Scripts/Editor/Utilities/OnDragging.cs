@@ -32,7 +32,7 @@ public static class OnDragging  {
         return null;
     }
 
-    public static void OnDraggingObject(Object[] objects, Rect area, Func<Object[], bool> predicate, Action<Object[]> OnDrop)
+    public static bool OnDraggingObject(Object[] objects, Rect area, Func<Object[], bool> predicate, Action<Object[]> OnDrop)
     {
         if (area.Contains(Event.current.mousePosition) && Event.current.IsDragging() && DragAndDrop.objectReferences.Length > 0)
         {
@@ -43,6 +43,7 @@ public static class OnDragging  {
                 if (Event.current.type == EventType.DragPerform)
                 {
                     OnDrop(objects);
+                    return true;
                 }
             }
             else
@@ -50,5 +51,6 @@ public static class OnDragging  {
                 DragAndDrop.visualMode = DragAndDropVisualMode.None;
             }
         }
+        return false;
     }
 }

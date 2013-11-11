@@ -21,10 +21,10 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
     {
         BaseOnGUI();
 
-        var root = AudioInstanceFinder.DataManager.EventTree;
-        int id = AudioInstanceFinder.GuiUserPrefs.SelectedEventID;
+        var root = HDRInstanceFinder.DataManager.EventTree;
+        int id = HDRInstanceFinder.GuiUserPrefs.SelectedEventID;
         var selectedNode = UpdateSelectedNode(root, id);
-        AudioInstanceFinder.GuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
+        HDRInstanceFinder.GuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
         this.height = height;
@@ -43,7 +43,7 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, true);
         EditorGUILayout.BeginVertical();
 
-        isDirty |= treeDrawer.DrawTree(AudioInstanceFinder.DataManager.EventTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.EventTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
@@ -100,16 +100,18 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
     }
 
 
-
     protected override void OnContext(AudioEvent node)
     {
         var menu = new GenericMenu();
 
         #region Duplicate
+
         if (!node.IsRoot)
-            menu.AddItem(new GUIContent("Duplicate"), false, data => AudioEventWorker.Duplicate(data as AudioEvent), node);
+            menu.AddItem(new GUIContent("Duplicate"), false, data => AudioEventWorker.Duplicate(data as AudioEvent),
+                node);
         else
             menu.AddDisabledItem(new GUIContent("Duplicate"));
+
         #endregion
 
         menu.AddSeparator("");
@@ -118,14 +120,18 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
 
         if (node.Type == EventNodeType.Root)
         {
-            menu.AddItem(new GUIContent(@"Create Child/Folder"), false, data => { CreateChild(node, EventNodeType.Folder); }, node);
-            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false, data => { CreateChild(node, EventNodeType.EventGroup); }, node);
-            menu.AddDisabledItem(new GUIContent(@"Create Child/Event")); 
+            menu.AddItem(new GUIContent(@"Create Child/Folder"), false,
+                data => { CreateChild(node, EventNodeType.Folder); }, node);
+            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
+                data => { CreateChild(node, EventNodeType.EventGroup); }, node);
+            menu.AddDisabledItem(new GUIContent(@"Create Child/Event"));
         }
         if (node.Type == EventNodeType.Folder)
         {
-            menu.AddItem(new GUIContent(@"Create Child/Folder"), false, data => { CreateChild(node, EventNodeType.Folder); }, node);
-            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false, data => { CreateChild(node, EventNodeType.EventGroup); }, node);
+            menu.AddItem(new GUIContent(@"Create Child/Folder"), false,
+                data => { CreateChild(node, EventNodeType.Folder); }, node);
+            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
+                data => { CreateChild(node, EventNodeType.EventGroup); }, node);
             menu.AddItem(new GUIContent(@"Create Child/Event"), false,
                 data => { CreateChild(node, EventNodeType.Event); }, node);
         }
@@ -147,13 +153,17 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
 
         menu.AddSeparator("");
 
-        menu.AddItem(new GUIContent(@"Delete"), false, data => AudioEventWorker.DeleteNode(node), node);
+        menu.AddItem(new GUIContent(@"Delete"), false, data => {
+                treeDrawer.SelectPreviousNode();
+                AudioEventWorker.DeleteNode(node);
+            }, node);
 
         menu.ShowAsContext();
     }
      
     private void CreateChild(AudioEvent node, EventNodeType type)
     {
+        Undo.RegisterUndo(node, "Event Creation");
         AudioEventWorker.CreateNode(node, type);
         node.FoldedOut = true;
     }

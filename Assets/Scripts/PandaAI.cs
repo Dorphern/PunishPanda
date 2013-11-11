@@ -15,7 +15,7 @@ public class PandaAI : MonoBehaviour {
     public event System.Action<float, float> ApplyJump;
     public event System.Action ApplyJumpingMovement;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
-	
+	public bool boostEnabled = false;
 	
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
@@ -29,6 +29,7 @@ public class PandaAI : MonoBehaviour {
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
 	BloodOnSlap bloodOnSlap;
+	
 	
 	#region Public Methods
 	public void PandaPressed()
@@ -90,9 +91,13 @@ public class PandaAI : MonoBehaviour {
 		float dot = Vector2.Dot(slapDirection.normalized, facingDirection);
 		if(dot > 0f)
 		{
+			if(boostEnabled)
+			{
 			SetBoostSpeed();
 			// the slap direction is the same as the panda's facing direction
 			pandaStateManager.ChangeState(PandaState.Boosting);
+				
+			}
 		}
 		else
 		{

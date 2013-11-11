@@ -26,19 +26,19 @@ public static class NodeWorker  {
         node.GetParent.GetChildren.Remove(node);
     }
 
-    public static void AssignParent<T>(T node, T newParent) where T : Object, ITreeNode<T>
-    {
-        if (node != null && newParent != null)
-        {
-            newParent.GetChildren.Add(node);
-            node.GetParent = newParent;
-        }
-    }
+    //public static void AssignParent<T>(T node, T newParent) where T : Object, ITreeNode<T>
+    //{
+    //    if (node != null && newParent != null)
+    //    {
+    //        newParent.GetChildren.Add(node);
+    //        node.GetParent = newParent;
+    //    }
+    //}
 
     public static void ReasignNodeParent<T>(T current, T newParent) where T : Object, ITreeNode<T>
     {
         RemoveFromParent(current);
-        AssignParent(current, newParent);
+        current.AssignParent(newParent);
     }
 
     public static void ReasignNodeParent(AudioNode current, AudioNode newParent) 
@@ -50,7 +50,7 @@ public static class NodeWorker  {
             (current.Parent.NodeData as RandomData).weights.RemoveAt(currentIndexInParent);
         }
         RemoveFromParent(current);
-        AssignParent(current, newParent);
+        current.AssignParent(newParent);
         if (newParent.Type == AudioNodeType.Random)
         {
             (current.Parent.NodeData as RandomData).weights.Add(50);
@@ -131,7 +131,7 @@ public static class NodeWorker  {
     private static T CopyHierarchy<T>(T toCopy, T parent, Action<T, T> elementAction) where T : Component, ITreeNode<T>
     {
         T newNode = CopyComponent(toCopy);
-        AssignParent(newNode, parent);
+        newNode.AssignParent(parent);
         newNode.ID = GUIDCreator.Create();
 
         if(elementAction != null)
