@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SpikeTrap : TrapBase {
 
-
     override public TrapType GetTrapType ()
     {
         return TrapType.Spikes;
