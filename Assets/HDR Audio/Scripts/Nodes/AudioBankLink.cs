@@ -18,10 +18,6 @@ public class AudioBankLink : MonoBehaviour, ITreeNode<AudioBankLink>
 
     public AudioBankTypes Type;
 
-    public bool FoldedOut;
-
-    public bool Filtered = false;
-
     public string Name;
 
     public AudioBankLink Parent;
@@ -32,6 +28,12 @@ public class AudioBankLink : MonoBehaviour, ITreeNode<AudioBankLink>
 
     [System.NonSerialized]
     public AudioBank LoadedBank;
+
+#if UNITY_EDITOR
+    public bool FoldedOut;
+
+    public bool Filtered = false;
+#endif
 
     public AudioBank LazyBankFetch
     {
@@ -63,6 +65,25 @@ public class AudioBankLink : MonoBehaviour, ITreeNode<AudioBankLink>
         get { return Children; }
     }
 
+    public string GetName
+    {
+        get { return Name; }
+    }
+
+    public bool IsRoot
+    {
+        get { return Parent == null; }
+    }
+
+
+
+    public int ID
+    {
+        get { return GUID; }
+        set { GUID = value; }
+    }
+
+#if UNITY_EDITOR
     public bool IsFoldedOut
     {
         get
@@ -73,16 +94,6 @@ public class AudioBankLink : MonoBehaviour, ITreeNode<AudioBankLink>
         {
             FoldedOut = value;
         }
-    }
-
-    public string GetName
-    {
-        get { return Name; }
-    }
-
-    public bool IsRoot
-    {
-        get { return Parent == null; }
     }
 
     public bool IsFiltered
@@ -96,10 +107,5 @@ public class AudioBankLink : MonoBehaviour, ITreeNode<AudioBankLink>
             Filtered = value;
         }
     }
-
-    public int ID
-    {
-        get { return GUID; }
-        set { GUID = value; }
-    }
+#endif
 }

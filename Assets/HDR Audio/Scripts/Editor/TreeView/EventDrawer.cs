@@ -90,7 +90,7 @@ namespace HDRAudio.TreeDrawer
                 }
 
             }
-            if (node.Type != EventNodeType.Event)//As events are smaller
+            if (node.Type != EventNodeType.Event)//As Events are smaller
                 labelArea.y += 6;
             labelArea.x += 80;
             EditorGUI.LabelField(labelArea, node.Type + " - " + node.Name);
