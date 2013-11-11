@@ -106,6 +106,17 @@ public class PandaAI : MonoBehaviour {
 		}
 		bloodOnSlap.EmmitSlapBlood();
 	}
+
+    /**
+     * Attempt a kill on the panda from a death trap
+     * return true if the panda was successfully killed
+     **/
+    public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
+    {
+        Debug.Log("Hit death object: " + trap.GetTrapType());
+        pandaStateManager.ChangeState(PandaState.Died);
+        return true;
+    }
 	#endregion
 	
 	# region Private Methods
@@ -121,7 +132,6 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
-        collisionController.OnDeathTrapHit += HitDeathObject;
 	}
 	
 	// Update is called once per frame
@@ -231,12 +241,6 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.ChangeState(PandaState.Falling);
 			
 	}
-
-    public void HitDeathObject (ControllerColliderHit hit)
-    {
-        Debug.Log("Hit death object");
-        pandaStateManager.ChangeState(PandaState.Died);
-    }
 
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
