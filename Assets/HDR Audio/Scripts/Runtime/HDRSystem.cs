@@ -76,13 +76,13 @@ public class HDRSystem : MonoBehaviour
 
     public static void LoadBank(int bankID)
     {
-        var bank = TreeWalker.FindById(AudioInstanceFinder.DataManager.BankLinkTree, bankID);
+        var bank = TreeWalker.FindById(HDRInstanceFinder.DataManager.BankLinkTree, bankID);
         BankLoader.Load(bank);
     }
 
     public static void UnloadBank(int bankID)
     {
-        var bank = TreeWalker.FindById(AudioInstanceFinder.DataManager.BankLinkTree, bankID);
+        var bank = TreeWalker.FindById(HDRInstanceFinder.DataManager.BankLinkTree, bankID);
         BankLoader.Unload(bank);
     }
     #endregion
@@ -90,13 +90,13 @@ public class HDRSystem : MonoBehaviour
     #region Unity functions
     void FixedUpdate()
     {
-        AudioBusVolumeHelper.UpdateDirtyBusses(AudioInstanceFinder.DataManager.BusTree);
+        AudioBusVolumeHelper.UpdateDirtyBusses(HDRInstanceFinder.DataManager.BusTree);
     }
 
     void Start()
     {
-        if (AudioInstanceFinder.DataManager != null && AudioInstanceFinder.DataManager.BusTree != null)
-            AudioInstanceFinder.DataManager.BusTree.Dirty = true;
+        if (HDRInstanceFinder.DataManager != null && HDRInstanceFinder.DataManager.BusTree != null)
+            HDRInstanceFinder.DataManager.BusTree.Dirty = true;
     }
     #endregion
 
@@ -279,7 +279,7 @@ public class HDRSystem : MonoBehaviour
             _runtimeEventWorker = GetComponentInChildren<RuntimeEventWorker>();
             runtimeData = GetComponentInChildren<RuntimeAudioData>();
             BankLoader.LoadAutoLoadedBanks();
-            runtimeData.UpdateEvents(AudioInstanceFinder.DataManager.EventTree);
+            runtimeData.UpdateEvents(HDRInstanceFinder.DataManager.EventTree);
 
             DontDestroyOnLoad(transform.parent.gameObject);
         }

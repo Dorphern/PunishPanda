@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using HDRAudio;
+using HDRAudio.ExtensionMethods;
 using HDRAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
@@ -18,10 +19,10 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
     public bool OnGUI(int leftWidth, int height)
     {
         BaseOnGUI();
-        var root = AudioInstanceFinder.DataManager.AudioTree;
-        int id = AudioInstanceFinder.GuiUserPrefs.SelectedAudioNodeID;
+        var root = HDRInstanceFinder.DataManager.AudioTree;
+        int id = HDRInstanceFinder.GuiUserPrefs.SelectedAudioNodeID;
         var selectedNode = UpdateSelectedNode(root, id);
-        AudioInstanceFinder.GuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
+        HDRInstanceFinder.GuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
         this.height = height;
@@ -133,18 +134,16 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         {
             node.IsFoldedOut = true;
             var nodeToMove = objects[0] as AudioNode;
-            var oldBank = AudioBankWorker.GetParentBank(nodeToMove);
-            AudioBankLink newBank = null;
-            if (nodeToMove.OverrideParentBank)
-                newBank = AudioBankWorker.GetParentBank(nodeToMove);
-            else
-                newBank = AudioBankWorker.GetParentBank(node);
-            Undo.RegisterUndo(new UnityEngine.Object[]{node, nodeToMove, nodeToMove.Parent, oldBank, newBank}, "Audio Node Move");
+            var oldBank = nodeToMove.GetBank();
+            AudioBankLink newBank = node.BankLink;
+            //Save both the old and the new bank
+            Undo.RegisterUndo(new UnityEngine.Object[] { node, nodeToMove, nodeToMove.Parent, oldBank.LazyBankFetch, newBank.LazyBankFetch }, "Audio Node Move");
             NodeWorker.ReasignNodeParent(nodeToMove, node);
-            AudioBankWorker.MoveNode(nodeToMove, oldBank);
+            AudioBankWorker.MoveBetweenBanks(nodeToMove, oldBank, newBank);
         }
         else if (node.Type != AudioNodeType.Audio) //Create new audio nodes when we drop clips
         {
+            Undo.RegisterUndo(UndoHelper.Array(node, node.NodeData, node.GetBank().LazyBankFetch), "Undo Adding Nodes to " + node.Name);
             for (int i = 0; i < objects.Length; ++i)
             {
                 var clip = objects[i] as AudioClip;
@@ -162,13 +161,14 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
                 }
                 
                 (child.NodeData as AudioData).EditorClip = clip;
+
                 AudioBankWorker.AddNodeToBank(child, clip);
                 Event.current.Use();
             }
         } 
         else //Then it must be an audio clip dropped on an audio node, so assign the clip to that node
         {
-            var bank = AudioBankWorker.GetParentBank(node);
+            var bank = node.GetBank();
             Undo.RegisterUndo(new UnityEngine.Object[] { node, bank.LazyBankFetch, node.NodeData }, "Undo Changing Node In Bank");
             (node.NodeData as AudioData).EditorClip = objects[0] as AudioClip;
             AudioBankWorker.SwapClipInBank(node, objects[0] as AudioClip);
@@ -277,7 +277,10 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
 
         #region Delete
         if(node.Type != AudioNodeType.Root)
-            menu.AddItem(new GUIContent("Delete"), false, obj => AudioNodeWorker.DeleteNode(node), node);
+            menu.AddItem(new GUIContent("Delete"), false, obj =>{
+                    treeDrawer.SelectPreviousNode();
+                    AudioNodeWorker.DeleteNode(node); 
+                }, node);
         else
             menu.AddDisabledItem(new GUIContent("Delete"));
         #endregion
@@ -287,6 +290,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
 
     private void CreateChild(AudioNode parent, AudioNodeType type)
     {
+        //Undo.RegisterUndo(new UnityEngine.Object[] { parent, parent.GetBank()}, "");
         var newNode = AudioNodeWorker.CreateChild(parent, type);
         if (type == AudioNodeType.Audio)
         {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 /*
@@ -15,21 +16,16 @@ using System.Collections;
  */
 
 public class SwipeController : MonoBehaviour {
-	
-    private Vector3 endPos;
-	private Vector3 thisPos;
+
     int count = 0;
 	
-	public void InitSwipe(Vector3 initPos)
-	{
-		
-		initPos = TranslateScreenToWorldPos(initPos);
-		endPos = initPos;
-	}
 	
-	public void Swipe(Vector3 currPos)
+	public void Swipe(Vector3 currPos, Vector3 endPos)
     {
+
 		currPos = TranslateScreenToWorldPos(currPos);
+		endPos = TranslateScreenToWorldPos(endPos);
+
         Vector3 direction = endPos - currPos;
         Vector2 direction2D = new Vector2(direction.x, direction.y);
         float scrVecX = (direction2D.x * 10) / Screen.width;
@@ -42,8 +38,10 @@ public class SwipeController : MonoBehaviour {
         float speed = dist / Time.deltaTime;
 		
         Ray ray = new Ray(currPos, direction);
-
+		
         Debug.DrawLine(currPos, endPos, Color.red, 3f);
+		
+		//Drawing.DrawLine(currPos, endPos, Color.red, 3f);
 		
 		// reycast all for multiple panda hits
         /*RaycastHit hit;
@@ -73,13 +71,13 @@ public class SwipeController : MonoBehaviour {
 			{
 				var collidable = hits[i].collider.GetComponent<Collidable>();
 				if (collidable != null && collidable.type == CollidableTypes.Panda)
+				{
 		            count++;
-		            Debug.Log("Hit Panda" + count);
-		        hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+		            //Debug.Log("Hit Panda" + count);
+		        	hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+				}
 			}
 		}/**/
-		
-        endPos = currPos;
              
     }
 	

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HDRAudio.ExtensionMethods;
 using UnityEngine;
 
 namespace HDRAudio
@@ -24,6 +25,7 @@ public static class AudioBusWorker
     {
         var node = go.AddComponent<AudioBus>();
         node.GUID = guid;
+        node.name = parent.Name + " Child";
         node.AssignParent(parent);
         return node;
     }
@@ -36,8 +38,14 @@ public static class AudioBusWorker
 
     public static void DeleteBus(AudioBus bus, AudioNode root)
     {
-        HashSet<AudioBus> toDelete = new HashSet<AudioBus>();
+        HashSet<AudioBus> toDelete = new HashSet<AudioBus>(); 
         GetBussesToDelete(toDelete, bus);
+
+        var runtimePlayers = bus.GetRuntimePlayers();
+        for (int i = 0; i < runtimePlayers.Count; ++i)
+        {
+            runtimePlayers[i].SetNewBus(bus.Parent);
+        }
 
         List<AudioNode> affectedNodes = new List<AudioNode>();
         NodeWorker.FindAllNodes(root, node => toDelete.Contains(node.Bus), affectedNodes);
@@ -46,8 +54,9 @@ public static class AudioBusWorker
         {
             affectedNodes[i].Bus = bus.Parent;
         }
+        bus.Parent.Children.Remove(bus);
         
-        ActualDelete(bus);
+        //ActualDelete(bus);
     }
 
     private static void ActualDelete(AudioBus bus)
@@ -69,13 +78,23 @@ public static class AudioBusWorker
         }
     }
 
-    public static AudioBus CreateNode(AudioBus parent)
+    public static AudioBus CreateBus(AudioBus parent)
     {
         var child = CreateBus(parent.gameObject, parent, GUIDCreator.Create());
         child.FoldedOut = true;
-        child.Name = "Name";
+        child.Name = parent.Name + " Child";
 
         return child;
+    }
+
+    public static AudioBus GetParentBus(AudioNode node)
+    {
+        if (node.IsRoot)
+            return node.Bus;
+        if (node.OverrideParentBus)
+            return node.Bus;
+
+        return GetParentBus(node.Parent);
     }
 }
 }
