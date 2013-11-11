@@ -5,11 +5,9 @@ public class PressurePad : MonoBehaviour {
 	
 	public TrapBase trap;
 	private int pandaCount = 0;
-	private AnimationState trapClip;
 	
 	void Start() 
 	{
-		trapClip = trap.animation["DoorTrap"];
 	}
 	
 	void Update() 
@@ -19,9 +17,6 @@ public class PressurePad : MonoBehaviour {
 			if(trap.isActive() == false)
 			{
 				trap.ActivateTrap();
-				trapClip.speed = 1f;
-				trapClip.time = 0f;
-				trap.animation.Play();
 			}
 		}
 		else
@@ -29,9 +24,6 @@ public class PressurePad : MonoBehaviour {
 			if(trap.isActive() == true)
 			{
 				trap.DeactivateTrap();
-				trapClip.speed = -1f;
-				trapClip.time = trapClip.length;
-				trap.animation.Play();
 			}
 		}
 	}
