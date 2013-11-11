@@ -48,6 +48,16 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     private Rect _area;
 
+    public void SelectPreviousNode()
+    {
+        selectedNode = TreeWalker.FindPreviousUnfoldedNode(SelectedNode);
+    }
+
+    public void SelectNextNode()
+    {
+        selectedNode = TreeWalker.FindNextUnfoldedNode(SelectedNode);
+    }
+
     public bool DrawTree(T root, Rect area)
     {
         if (root == null || OnNodeDraw == null)
@@ -97,19 +107,22 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
     //Draw all nodes recursively 
     void DrawTree(T node, int indentLevel)
     {
-        if (node.IsFiltered)
-            return;
-        EditorGUI.indentLevel = indentLevel + 1;
-        DrawNode(node);
-        EditorGUI.indentLevel = indentLevel - 1;
-
-        if (!node.IsFoldedOut)
-            return;
-
-        for (int i = 0; i < node.GetChildren.Count; ++i)
+        if (node != null)
         {
-            T child = node.GetChildren[i];
-            DrawTree(child, indentLevel + 1);
+            if (node.IsFiltered)
+                return;
+            EditorGUI.indentLevel = indentLevel + 1;
+            DrawNode(node);
+            EditorGUI.indentLevel = indentLevel - 1;
+
+            if (!node.IsFoldedOut)
+                return;
+
+            for (int i = 0; i < node.GetChildren.Count; ++i)
+            {
+                T child = node.GetChildren[i];
+                DrawTree(child, indentLevel + 1);
+            }
         }
     }
 

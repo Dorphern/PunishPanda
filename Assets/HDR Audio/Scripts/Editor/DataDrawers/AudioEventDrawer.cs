@@ -89,7 +89,7 @@ public static class AudioEventDrawer
                 if (busAction.VolumeMode == EventBusAction.VolumeSetMode.Relative)
                     busAction.Volume = EditorGUI.Slider(buttonArea, "Relative Volume", busAction.Volume, -1.0f, 1.0f);
                 else
-                    busAction.Volume = EditorGUI.Slider(buttonArea, "Volume", busAction.Volume, 0.0f, 1.0f);
+                    busAction.Volume = EditorGUI.Slider(buttonArea, "Absolute Volume", busAction.Volume, 0.0f, 1.0f);
 
                 buttonArea.y += 25;
                 busAction.VolumeMode = (EventBusAction.VolumeSetMode)EditorGUI.EnumPopup(buttonArea, "Volume Mode", busAction.VolumeMode);
