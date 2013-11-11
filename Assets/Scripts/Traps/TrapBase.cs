@@ -13,9 +13,8 @@ public abstract class TrapBase : MonoBehaviour {
 
     [SerializeField] protected bool isActivated = false;
     [SerializeField] protected bool isPerfectTrap = false;
-    [SerializeField] protected int pandaKillGoal = 0;
+    [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means this has no effect
     protected int pandaKillCount = 0;
-    protected TrapType trapType;
 
     # region Public Methods
 
@@ -24,20 +23,17 @@ public abstract class TrapBase : MonoBehaviour {
         return isActivated;
     }
 
-    public void ActivateTrap ()
+    virtual public void ActivateTrap ()
     {
         isActivated = true;
     }
 
-    public void DeactivateTrap ()
+    virtual public void DeactivateTrap ()
     {
         isActivated = false;
     }
 
-    public TrapType GetTrapType ()
-    {
-        return trapType;
-    }
+    abstract public TrapType GetTrapType ();
 
     # endregion
 
@@ -58,7 +54,7 @@ public abstract class TrapBase : MonoBehaviour {
 
         if (collidable != null && collidable.type == CollidableTypes.Panda)
         {
-            bool isPerfect = (pandaKillCount++ < pandaKillGoal) && isPerfectTrap;
+            bool isPerfect = (pandaKillCount++ < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
             bool successful = PandaAttemptKill(collider.GetComponent<PandaAI>(), isPerfect);
             if (successful) 
             {
