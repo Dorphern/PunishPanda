@@ -255,7 +255,20 @@ Prefab:
       propertyPath: blockades.Array.data[1]
       value: 
       objectReference: {fileID: 964641816}
-    m_RemovedComponents: []
+    - target: {fileID: 11400000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
+      propertyPath: swipeController
+      value: 
+      objectReference: {fileID: 867433010}
+    - target: {fileID: 11400000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
+      propertyPath: swipeThreshold
+      value: .0320000015
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
+      propertyPath: blockadeDistanceFromFingerThreshold
+      value: 100
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 11400004, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
   m_RootGameObject: {fileID: 867433004}
   m_IsPrefabParent: 0
@@ -663,7 +676,6 @@ GameObject:
   - 4: {fileID: 867433006}
   - 114: {fileID: 867433005}
   - 114: {fileID: 867433010}
-  - 114: {fileID: 867433009}
   m_Layer: 0
   m_Name: InputHandler
   m_TagString: Untagged
@@ -686,13 +698,17 @@ MonoBehaviour:
   blockades:
   - {fileID: 769926909}
   - {fileID: 964641816}
-  swipeControllers:
-  - {fileID: 867433010}
-  - {fileID: 867433009}
+  swipeController: {fileID: 867433010}
   useMouseInput: 1
   fingerRadius: 1
-  swipeThreshold: 10
-  draggingBoxMaximumThreshold: 0
+  swipeThreshold: .0320000015
+  blocadeRepositionMaximumThreshold: 0
+  blockadeDistanceFromFingerThreshold: 100
+  controls:
+    slapping: 1
+    bouncing: 1
+    lifting: 1
+    holding: 1
 --- !u!4 &867433006
 Transform:
   m_ObjectHideFlags: 0
@@ -704,18 +720,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
---- !u!114 &867433009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400004, guid: 0f0d70d6301bb114cac8328a5122603c,
-    type: 2}
-  m_PrefabInternal: {fileID: 182077817}
-  m_GameObject: {fileID: 867433004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a817431e6ff8074bbec6251a3c6cb32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &867433010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,8 +1249,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decalsPrefab: {fileID: 100000, guid: ba08ac6b32f3b8d478fcdc612a304c4a, type: 2}
   maxSpaltCount: 100
-  decalProjectorOffset: 1.5
-  decalProjectorScale: {x: 3, y: 2, z: 3}
+  decalProjectorOffset: 2.40100694
+  decalProjectorScale: {x: 3, y: 3, z: 3}
 --- !u!4 &1247664309
 Transform:
   m_ObjectHideFlags: 0
@@ -2035,6 +2039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a9f536520d8843a57153d75f3da50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boostEnabled: 0
   slapEventLength: 2
   pandaCollisionDelay: .0199999996
 --- !u!114 &1753827537
