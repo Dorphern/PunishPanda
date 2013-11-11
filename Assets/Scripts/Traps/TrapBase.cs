@@ -14,7 +14,12 @@ public abstract class TrapBase : MonoBehaviour {
     [SerializeField] protected bool isActivated = false;
     [SerializeField] protected bool isPerfectTrap = false;
     [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means this has no effect
+
+    [SerializeField] protected Texture cleanTexture;
+    [SerializeField] protected Texture dirtyTexture;
+
     protected int pandaKillCount = 0;
+    protected bool dirty = false;
 
     # region Public Methods
 
@@ -31,6 +36,23 @@ public abstract class TrapBase : MonoBehaviour {
     virtual public void DeactivateTrap ()
     {
         isActivated = false;
+    }
+
+    public void SetDirty ()
+    {
+        dirty = true;
+        renderer.material.mainTexture = dirtyTexture;
+    }
+
+    public void SetClean ()
+    {
+        dirty = false;
+        renderer.material.mainTexture = cleanTexture;
+    }
+
+    public bool IsDirty ()
+    {
+        return dirty;
     }
 
     abstract public TrapType GetTrapType ();
@@ -54,20 +76,26 @@ public abstract class TrapBase : MonoBehaviour {
 
         if (collidable != null && collidable.type == CollidableTypes.Panda)
         {
-            bool isPerfect = (pandaKillCount++ < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
+            bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
             bool successful = PandaAttemptKill(collider.GetComponent<PandaAI>(), isPerfect);
             if (successful) 
             {
                 GivePointsForKill(isPerfect);
+                pandaKillCount++;
             }
         }
     }
 
     /**
      * Give points for the actual kill, based on it being perfect or not
+     * perfect kill: 500 pts
+     * normal kill: 20 pts
      **/
     private void GivePointsForKill (bool isPerfect) {
-
+        if (isPerfect)
+            Debug.Log("Perfect kill, give points");
+        else
+            Debug.Log("Normal kill, give points");
     }
 
     # endregion
