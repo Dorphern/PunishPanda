@@ -1,6 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 
+public class UndoHelper
+{
+    public static Object[] Array(params Object[] obj)
+    {
+        return obj;
+    }
+}
+
 public class UndoHandler : MonoBehaviour {
 
     private static bool guiChanged;
