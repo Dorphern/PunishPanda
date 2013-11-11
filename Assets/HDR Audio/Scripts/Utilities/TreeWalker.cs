@@ -1,9 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using System.Collections;
+using Object = UnityEngine.Object;
 
 public static class TreeWalker
 {
+    public static List<U> FindAll<T, U>(T node, Func<T, U> toAdd) where T : Object, ITreeNode<T> where U : class
+    {
+        var found = new HashSet<U>();
+        FindAll(node, toAdd, found);
+        return found.ToList();
+    }
+
+    private static void FindAll<T, U>(T node, Func<T, U> toAdd, HashSet<U> found) where T: Object, ITreeNode<T> where U : class
+    {
+        if (node == null)
+            return;
+        U foundObj = toAdd(node);
+        if(foundObj != null)
+        {
+            found.Add(foundObj);
+        }
+        for (int i = 0; i < node.GetChildren.Count; i++)
+        {
+            FindAll(node.GetChildren[i], toAdd, found);
+        }
+    }
+
     public static T FindById<T>(T node, int id) where T : Object, ITreeNode<T>
     {
         if (node == null)
@@ -17,6 +42,20 @@ public static class TreeWalker
                 return result;
         }
         return null;
+    }
+
+    public static int Count<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        if (node == null)
+            return 0;
+        int result = 0;
+        if (predicate(node))
+            result += 1;
+        for (int i = 0; i < node.GetChildren.Count; i++)
+        {
+            result += Count(node.GetChildren[i], predicate);
+        }
+        return result;
     }
 
     public static int FindIndexInParent<T>(T node) where T : Object, ITreeNode<T>

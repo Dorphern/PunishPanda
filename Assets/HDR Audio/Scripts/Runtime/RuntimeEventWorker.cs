@@ -65,7 +65,7 @@ public class RuntimeEventWorker : MonoBehaviour
                     valueTupleList.SwapRemoveAt(i);
                 }
             }
-        }
+        } 
     }
 
     private void Play(GameObject controllingObject, AudioNode audioNode, GameObject poolObject)

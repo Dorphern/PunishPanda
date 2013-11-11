@@ -1,15 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("HDR Audio/Manual Event Poster")]
 public class EventTester : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	[SerializeField]
+    public List<AudioEvent> Events = new List<AudioEvent>();
 }
