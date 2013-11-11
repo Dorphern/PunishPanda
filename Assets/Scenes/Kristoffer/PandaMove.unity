@@ -158,7 +158,7 @@ Transform:
   m_PrefabInternal: {fileID: 1123764542}
   m_GameObject: {fileID: 30158026}
   m_LocalRotation: {x: -.498059332, y: -.501933157, z: .501933157, w: -.498059332}
-  m_LocalPosition: {x: -7.96015692, y: -4.85426569, z: .00384129677}
+  m_LocalPosition: {x: -10.257822, y: -4.85426569, z: .0216430984}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -521,8 +521,7 @@ GameObject:
   - 114: {fileID: 602395511}
   - 114: {fileID: 602395510}
   - 114: {fileID: 602395509}
-  - 114: {fileID: 602395508}
-  - 82: {fileID: 602395513}
+  - 114: {fileID: 991851947}
   m_Layer: 0
   m_Name: Runtime
   m_TagString: Untagged
@@ -541,20 +540,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1177832126}
---- !u!114 &602395508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400014, guid: e0c5dcc87be484d4487b66b35bb59b2d,
-    type: 2}
-  m_PrefabInternal: {fileID: 897858603}
-  m_GameObject: {fileID: 602395506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 799396ec4ea44334c9c7e2bbf09ffb25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allocateSize: 10
-  initialAllocation: 10
 --- !u!114 &602395509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,65 +591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f854695d0335cba43ade40faa1ee9cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &602395513
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 8200000, guid: e0c5dcc87be484d4487b66b35bb59b2d,
-    type: 2}
-  m_PrefabInternal: {fileID: 897858603}
-  m_GameObject: {fileID: 602395506}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
 --- !u!1001 &616012707
 Prefab:
   m_ObjectHideFlags: 0
@@ -756,7 +682,7 @@ GameObject:
   - 33: {fileID: 910916948}
   - 23: {fileID: 910916947}
   - 95: {fileID: 910916946}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pandaCombined
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -823,7 +749,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 991851949}
   - 114: {fileID: 991851948}
-  - 114: {fileID: 991851947}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -837,16 +762,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 11400010, guid: e0c5dcc87be484d4487b66b35bb59b2d,
     type: 2}
   m_PrefabInternal: {fileID: 897858603}
-  m_GameObject: {fileID: 991851946}
+  m_GameObject: {fileID: 602395506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1d6ce40e2caf9a4d80c9be260c5780c, type: 3}
+  m_Script: {fileID: 11500000, guid: 799396ec4ea44334c9c7e2bbf09ffb25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectedAudioNodeID: 0
-  _selectedEventID: 0
-  _selectedBusID: 0
-  _selectedBankLinkID: 0
+  allocateSize: 10
+  initialAllocation: 10
 --- !u!114 &991851948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,10 +782,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad483674a3ba6dd46a0146fca7ff7ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioRoot: {fileID: 0}
-  EventRoot: {fileID: 0}
-  BusRoot: {fileID: 0}
-  BankLinkRoot: {fileID: 0}
+  AudioRoot: {fileID: 11400006, guid: ddaf7f3484a7b0a4b8af27084d85b6cf, type: 2}
+  EventRoot: {fileID: 11400006, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  BusRoot: {fileID: 11400000, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
+  BankLinkRoot: {fileID: 11400000, guid: e1474a8ab23b6f945ba572d4aae193f0, type: 2}
 --- !u!4 &991851949
 Transform:
   m_ObjectHideFlags: 0
@@ -883,7 +806,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: d80d1c36e44dc2b40a95ceffc8321afd, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -7.96015692
+      value: -10.257822
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d80d1c36e44dc2b40a95ceffc8321afd, type: 2}
       propertyPath: m_LocalPosition.y
@@ -891,7 +814,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d80d1c36e44dc2b40a95ceffc8321afd, type: 2}
       propertyPath: m_LocalPosition.z
-      value: .00384129677
+      value: .0216430984
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d80d1c36e44dc2b40a95ceffc8321afd, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1037,7 +960,7 @@ GameObject:
   - 33: {fileID: 1310403354}
   - 23: {fileID: 1310403353}
   - 95: {fileID: 1310403352}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pandaCombined
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1225,7 +1148,6 @@ GameObject:
   - 4: {fileID: 1478071548}
   - 114: {fileID: 1478071549}
   - 114: {fileID: 1478071551}
-  - 114: {fileID: 1478071550}
   m_Layer: 0
   m_Name: InputHandler
   m_TagString: Untagged
@@ -1260,25 +1182,12 @@ MonoBehaviour:
   - {fileID: 35922527}
   - {fileID: 0}
   - {fileID: 0}
-  swipeControllers:
-  - {fileID: 1478071551}
-  - {fileID: 1478071550}
+  swipeController: {fileID: 1478071551}
   useMouseInput: 1
   fingerRadius: .800000012
-  swipeThreshold: 0
+  swipeThreshold: .0320000015
   draggingBoxMaximumThreshold: 0
---- !u!114 &1478071550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400004, guid: 0f0d70d6301bb114cac8328a5122603c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1708830403}
-  m_GameObject: {fileID: 1478071547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a817431e6ff8074bbec6251a3c6cb32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  blockadeDistanceFromFingerThreshold: 100
 --- !u!114 &1478071551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1749,7 +1658,6 @@ GameObject:
   - 114: {fileID: 1825923610}
   - 136: {fileID: 1825923611}
   - 114: {fileID: 1825923617}
-  - 114: {fileID: 1825923613}
   m_Layer: 8
   m_Name: Panda
   m_TagString: Untagged
@@ -1787,7 +1695,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 3
+    walkSpeed: 1.5
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -1856,24 +1764,6 @@ CharacterController:
   m_SkinWidth: .0799999982
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1825923613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400012, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 2066407051}
-  m_GameObject: {fileID: 1825923606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd7b3754f1d5340469a70fd4ecbec8cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  decalsPrefab: {fileID: 100000, guid: ba08ac6b32f3b8d478fcdc612a304c4a, type: 2}
-  decalProjectorOffset: .5
-  decalProjectorScale: {x: 3, y: 2, z: 3}
-  cullingAngle: 90
-  meshOffset: .00100000005
-  maxSpaltCount: 100
 --- !u!33 &1825923614
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1906,6 +1796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a9f536520d8843a57153d75f3da50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boostEnabled: 0
   slapEventLength: 2
   pandaCollisionDelay: .0199999996
 --- !u!114 &1825923617
@@ -1938,7 +1829,6 @@ GameObject:
   - 114: {fileID: 1973116441}
   - 136: {fileID: 1973116440}
   - 114: {fileID: 1973116439}
-  - 114: {fileID: 1973116438}
   m_Layer: 8
   m_Name: Panda
   m_TagString: Untagged
@@ -1946,24 +1836,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1973116438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400012, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1997614915}
-  m_GameObject: {fileID: 1973116437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd7b3754f1d5340469a70fd4ecbec8cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  decalsPrefab: {fileID: 100000, guid: ba08ac6b32f3b8d478fcdc612a304c4a, type: 2}
-  decalProjectorOffset: .5
-  decalProjectorScale: {x: 3, y: 2, z: 3}
-  cullingAngle: 90
-  meshOffset: .00100000005
-  maxSpaltCount: 100
 --- !u!114 &1973116439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2016,6 +1888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a9f536520d8843a57153d75f3da50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boostEnabled: 0
   slapEventLength: 2
   pandaCollisionDelay: .0199999996
 --- !u!114 &1973116443
@@ -2048,7 +1921,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 3
+    walkSpeed: 1.5
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
