@@ -30,14 +30,6 @@ namespace HDRAudio
 
         public readonly static string GUIUserPrefs = "Assets/HDR Audio/Prefabs/" + "HDRGUIUserPrefs.prefab";
 
-
-        public static void DeleteFolderContent(string path)
-        {
-            System.IO.DirectoryInfo directory = new System.IO.DirectoryInfo(path);
-            foreach (System.IO.FileInfo file in directory.GetFiles()) 
-                file.Delete();
-            foreach (System.IO.DirectoryInfo subDirectory in directory.GetDirectories()) 
-                subDirectory.Delete(true);
-        }
     }
+
 }

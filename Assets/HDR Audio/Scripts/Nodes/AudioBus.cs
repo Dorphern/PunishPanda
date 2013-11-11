@@ -30,13 +30,6 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     [System.NonSerialized]
     public float RuntimeTargetVolume = 1.0f;
 
-    public List<RuntimePlayer> GetRuntimePlayers()
-    {
-        if (NodesInBus == null)
-            NodesInBus = new List<RuntimePlayer>();
-        return NodesInBus;
-    }
-
     public AudioBus Parent;
 
     //If we loose the connection, we can rebuild
@@ -50,16 +43,11 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     public bool Filtered = false;
 #endif
 
-    public void AssignParent(AudioBus node)
+    public List<RuntimePlayer> GetRuntimePlayers()
     {
-        node.Children.Add(this);
-        Parent = node;
-        ParentGUID = node.GUID;
-    }
-
-    public void RemoveFromParent()
-    {
-        Parent.Children.Remove(this);
+        if (NodesInBus == null)
+            NodesInBus = new List<RuntimePlayer>();
+        return NodesInBus;
     }
 
     public AudioBus GetParent

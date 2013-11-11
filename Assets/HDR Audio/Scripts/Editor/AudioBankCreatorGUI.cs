@@ -1,6 +1,7 @@
 using HDRAudio;
 using HDRAudio.TreeDrawer;
 using UnityEditor;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
@@ -80,8 +81,8 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
     protected override void OnDrop(AudioBankLink node, Object[] objects)
     {
+        Undo.RegisterUndo(node.Parent, "Bank Drag N Drop");
         AudioBankLink target = objects[0] as AudioBankLink;
-        //Undo.RegisterUndo(new Object[] { node, target, target.Parent}, "Drag and Drop bank move");
         NodeWorker.ReasignNodeParent(target, node);
     }
 
@@ -124,6 +125,7 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
     private void CreateBank(AudioBankLink parent, AudioBankTypes type)
     {
+        Undo.RegisterUndo(parent, "Bank " + (type == AudioBankTypes.Folder ? "Folder " : "") + "Creation");
         if (type == AudioBankTypes.Folder)
             AudioBankWorker.CreateFolder(parent.gameObject, parent, GUIDCreator.Create());
         else

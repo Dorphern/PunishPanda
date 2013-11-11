@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace HDRAudio.ExtensionMethods
@@ -73,10 +72,36 @@ namespace HDRAudio.ExtensionMethods
             return default(T);
         }
 
-        /*public static List<U> ConvertList<T, U>(this List<T> toConvert) where T : class where U : class
+        public static void ForEach<T>(this IList<T> source, Action<T> action)
         {
-            return toConvert.ConvertAll(obj => obj as U);
-        }*/
+            foreach (T element in source)
+            {
+                action(element);
+            }
+        }
+
+
+        public static void ThrowIfNull(this UnityEngine.Object obj)
+        {
+            if(obj == null)
+                throw new NullReferenceException("");
+        }
+
+        public static void ThrowIfNull<T>(this T obj) where T : class
+        {
+            if (obj == null)
+                throw new NullReferenceException(typeof(T).FullName);
+        }
+
+        public static List<U> ConvertList<T, U>(this List<T> toConvert) where T : UnityEngine.Object where U : class
+        {
+            List<U> newList = new List<U>(toConvert.Count);
+            for (int i = 0; i < toConvert.Count; ++i)
+            {
+                newList.Add(toConvert[i] as U);
+            }
+            return newList;
+        }
     }
 
     public static class EnumUtil
@@ -123,4 +148,6 @@ namespace HDRAudio.ExtensionMethods
             return unityEvent.type == EventType.MouseDown && area.Contains(unityEvent.mousePosition) ;
         }
     }
+
+
 }
