@@ -2,7 +2,10 @@
 using System.Collections;
 
 public class Settings : MonoBehaviour {
-
+	
+	public GameObject settingsMenu;
+	public GameObject mainMenu;
+	
 	public void OnCalibrateFingerClicked()
 	{
 		Debug.Log("Calibrate!");
@@ -15,6 +18,7 @@ public class Settings : MonoBehaviour {
 	
 	public void OnReturnClicked()
 	{
-		Debug.Log("Return!");
+		settingsMenu.SetActive(false);
+		mainMenu.SetActive(true);
 	}
 }
