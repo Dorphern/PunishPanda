@@ -169,102 +169,6 @@ static public class NGUITools
 	}
 
 	/// <summary>
-	/// Parse a RrGgBb color encoded in the string.
-	/// </summary>
-
-	static public Color ParseColor (string text, int offset)
-	{
-		int r = (NGUIMath.HexToDecimal(text[offset])	 << 4) | NGUIMath.HexToDecimal(text[offset + 1]);
-		int g = (NGUIMath.HexToDecimal(text[offset + 2]) << 4) | NGUIMath.HexToDecimal(text[offset + 3]);
-		int b = (NGUIMath.HexToDecimal(text[offset + 4]) << 4) | NGUIMath.HexToDecimal(text[offset + 5]);
-		float f = 1f / 255f;
-		return new Color(f * r, f * g, f * b);
-	}
-
-	/// <summary>
-	/// The reverse of ParseColor -- encodes a color in RrGgBb format.
-	/// </summary>
-
-	static public string EncodeColor (Color c)
-	{
-		int i = 0xFFFFFF & (NGUIMath.ColorToInt(c) >> 8);
-		return NGUIMath.DecimalToHex(i);
-	}
-
-	static Color mInvisible = new Color(0f, 0f, 0f, 0f);
-
-	/// <summary>
-	/// Parse an embedded symbol, such as [FFAA00] (set color) or [-] (undo color change)
-	/// </summary>
-
-	static public int ParseSymbol (string text, int index, List<Color> colors, bool premultiply)
-	{
-		int length = text.Length;
-
-		if (index + 2 < length)
-		{
-			if (text[index + 1] == '-')
-			{
-				if (text[index + 2] == ']')
-				{
-					if (colors != null && colors.Count > 1) colors.RemoveAt(colors.Count - 1);
-					return 3;
-				}
-			}
-			else if (index + 7 < length)
-			{
-				if (text[index + 7] == ']')
-				{
-					if (colors != null)
-					{
-						Color c = ParseColor(text, index + 1);
-
-						if (EncodeColor(c) != text.Substring(index + 1, 6).ToUpper())
-							return 0;
-
-						c.a = colors[colors.Count - 1].a;
-						if (premultiply && c.a != 1f)
-							c = Color.Lerp(mInvisible, c, c.a);
-
-						colors.Add(c);
-					}
-					return 8;
-				}
-			}
-		}
-		return 0;
-	}
-
-	/// <summary>
-	/// Runs through the specified string and removes all color-encoding symbols.
-	/// </summary>
-
-	static public string StripSymbols (string text)
-	{
-		if (text != null)
-		{
-			for (int i = 0, imax = text.Length; i < imax; )
-			{
-				char c = text[i];
-
-				if (c == '[')
-				{
-					int retVal = ParseSymbol(text, i, null, false);
-
-					if (retVal > 0)
-					{
-						text = text.Remove(i, retVal);
-						imax = text.Length;
-						continue;
-					}
-				}
-				++i;
-			}
-		}
-		return text;
-	}
-
-	/// <summary>
 	/// Find all scene components, active or inactive.
 	/// </summary>
 
@@ -404,9 +308,22 @@ static public class NGUITools
 	/// Helper function that returns the string name of the type.
 	/// </summary>
 
-	static public string GetName<T> () where T : Component
+	static public string GetTypeName<T> ()
 	{
 		string s = typeof(T).ToString();
+		if (s.StartsWith("UI")) s = s.Substring(2);
+		else if (s.StartsWith("UnityEngine.")) s = s.Substring(12);
+		return s;
+	}
+
+	/// <summary>
+	/// Helper function that returns the string name of the type.
+	/// </summary>
+
+	static public string GetTypeName (UnityEngine.Object obj)
+	{
+		if (obj == null) return "Null";
+		string s = obj.GetType().ToString();
 		if (s.StartsWith("UI")) s = s.Substring(2);
 		else if (s.StartsWith("UnityEngine.")) s = s.Substring(12);
 		return s;
@@ -471,9 +388,13 @@ static public class NGUITools
 		UIWidget[] widgets = go.GetComponentsInChildren<UIWidget>();
 		if (widgets.Length == 0) return 0;
 
-		int depth = widgets[0].raycastDepth;
-		for (int i = 1, imax = widgets.Length; i < imax; ++i)
-			depth = Mathf.Min(depth, widgets[i].raycastDepth);
+		int depth = int.MaxValue;
+		
+		for (int i = 0, imax = widgets.Length; i < imax; ++i)
+		{
+			if (widgets[i].enabled)
+				depth = Mathf.Min(depth, widgets[i].raycastDepth);
+		}
 		return depth;
 	}
 
@@ -524,7 +445,13 @@ static public class NGUITools
 
 			if (panel != null)
 			{
-				panel.depth = panel.depth + adjustment;
+				UIPanel[] panels = go.GetComponentsInChildren<UIPanel>(true);
+				
+				for (int i = 0; i < panels.Length; ++i)
+				{
+					UIPanel p = panels[i];
+					p.depth = p.depth + adjustment;
+				}
 				return 1;
 			}
 			else
@@ -651,7 +578,7 @@ static public class NGUITools
 	static public T AddChild<T> (GameObject parent) where T : Component
 	{
 		GameObject go = AddChild(parent);
-		go.name = GetName<T>();
+		go.name = GetTypeName<T>();
 		return go.AddComponent<T>();
 	}
 
@@ -716,6 +643,28 @@ static public class NGUITools
 		if (comp == null)
 		{
 			Transform t = go.transform.parent;
+
+			while (t != null && comp == null)
+			{
+				comp = t.gameObject.GetComponent<T>();
+				t = t.parent;
+			}
+		}
+		return (T)comp;
+	}
+
+	/// <summary>
+	/// Finds the specified component on the game object or one of its parents.
+	/// </summary>
+
+	static public T FindInParents<T> (Transform trans) where T : Component
+	{
+		if (trans == null) return null;
+		object comp = trans.GetComponent<T>();
+
+		if (comp == null)
+		{
+			Transform t = trans.transform.parent;
 
 			while (t != null && comp == null)
 			{
@@ -890,6 +839,19 @@ static public class NGUITools
 	}
 
 	/// <summary>
+	/// Helper function that returns whether the specified MonoBehaviour is active.
+	/// </summary>
+
+	static public bool IsActive (MonoBehaviour mb)
+	{
+#if UNITY_3_5
+		return mb != null && mb.enabled && mb.gameObject.active;
+#else
+		return mb != null && mb.enabled && mb.gameObject.activeInHierarchy;
+#endif
+	}
+
+	/// <summary>
 	/// Unity4 has changed GameObject.active to GameObject.activeself.
 	/// </summary>
 
@@ -1060,48 +1022,32 @@ static public class NGUITools
 	}
 
 	/// <summary>
-	/// Clipboard access via reflection.
-	/// http://answers.unity3d.com/questions/266244/how-can-i-add-copypaste-clipboard-support-to-my-ga.html
+	/// Access to the clipboard via undocumented APIs.
 	/// </summary>
 
-#if UNITY_WEBPLAYER || UNITY_FLASH || UNITY_METRO
-	/// <summary>
-	/// Access to the clipboard is not supported on this platform.
-	/// </summary>
-
-	public static string clipboard
-	{
-		get { return null; }
-		set { }
-	}
-#else
-	static PropertyInfo mSystemCopyBuffer = null;
-	static PropertyInfo GetSystemCopyBufferProperty ()
-	{
-		if (mSystemCopyBuffer == null)
-		{
-			Type gui = typeof(GUIUtility);
-			mSystemCopyBuffer = gui.GetProperty("systemCopyBuffer", BindingFlags.Static | BindingFlags.NonPublic);
-		}
-		return mSystemCopyBuffer;
-	}
-
-	/// <summary>
-	/// Access to the clipboard via a hacky method of accessing Unity's internals. Won't work in the web player.
-	/// </summary>
-
-	public static string clipboard
+	static public string clipboard
 	{
 		get
 		{
-			PropertyInfo copyBuffer = GetSystemCopyBufferProperty();
-			return (copyBuffer != null) ? (string)copyBuffer.GetValue(null, null) : null;
+			TextEditor te = new TextEditor();
+			te.Paste();
+			return te.content.text;
 		}
 		set
 		{
-			PropertyInfo copyBuffer = GetSystemCopyBufferProperty();
-			if (copyBuffer != null) copyBuffer.SetValue(null, value, null);
+			TextEditor te = new TextEditor();
+			te.content = new GUIContent(value);
+			te.OnFocus();
+			te.Copy();
 		}
 	}
-#endif
+
+	[System.Obsolete("Use NGUIText.EncodeColor instead")]
+	static public string EncodeColor (Color c) { return NGUIText.EncodeColor(c); }
+
+	[System.Obsolete("Use NGUIText.ParseColor instead")]
+	static public Color ParseColor (string text, int offset) { return NGUIText.ParseColor(text, offset); }
+
+	[System.Obsolete("Use NGUIText.StripSymbols instead")]
+	static public string StripSymbols (string text) { return NGUIText.StripSymbols(text); }
 }
