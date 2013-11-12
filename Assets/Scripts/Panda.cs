@@ -3,13 +3,12 @@ using System.Collections;
 
 public class Panda : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda(this);
-	}
-
-    void OnDestroy()
+    public void PandaKilled (bool fromTrap, bool perfect)
     {
-        InstanceFinder.GameManager.ActiveLevel.OnPandaDeath(this);
+        InstanceFinder.GameManager.ActiveLevel.OnPandaDeath(fromTrap, perfect);
     }
+
+	void Start () {
+	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda();
+	}
 }
