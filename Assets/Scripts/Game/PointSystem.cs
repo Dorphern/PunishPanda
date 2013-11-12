@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PointSystem : MonoBehaviour
 {
-
     public int PerfectKill = 500;
     public int PerKill = 20;
 }

@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400000}
-  - 65: {fileID: 6500000}
+  - 135: {fileID: 13500000}
   m_Layer: 0
   m_Name: Spike Trap
   m_TagString: Untagged
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -.498059332, y: -.501933157, z: .501933157, w: -.498059332}
-  m_LocalPosition: {x: -7.46436262, y: -4.69423294, z: 6.4028427e-10}
+  m_LocalPosition: {x: -10.257822, y: -4.85426569, z: .0216430984}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: ae30e6ad959b920428016e4cfdd66c14, type: 2}
+  - {fileID: 2100000, guid: 4f4be00dd64f9bb429f61a85b565af08, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -56,18 +56,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_Mesh: {fileID: 4300000, guid: 95ae60e4099d5d04e8c823c7f4f0f060, type: 3}
---- !u!65 &6500000
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: .354532629, y: 1.30654466, z: 1.18513513}
-  m_Center: {x: -.00485563278, y: .644328177, z: -.048550874}
 --- !u!95 &9500000
 Animator:
   m_ObjectHideFlags: 1
@@ -91,9 +79,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1d2362667d0d54890bd7480589aa33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActivated: 1
-  isPerfectTrap: 1
+  initActivated: 1
+  isPerfectTrap: 0
   maxPerfectPandaKills: -1
+  cleanTexture: {fileID: 0}
+  dirtyTexture: {fileID: 0}
+--- !u!135 &13500000
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: .349999994
+  m_Center: {x: -.00999999978, y: .610000014, z: .0399999991}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
