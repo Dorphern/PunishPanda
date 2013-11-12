@@ -2,19 +2,27 @@
 using System.Collections;
 
 public class PauseGame : MonoBehaviour {
+	
+	private float savedTimeScale;	
 
-	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+	{
+		savedTimeScale = Time.timeScale;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
+
 	public void StopTime()
 	{
-		Debug.Log("pause button hit");
+		Time.timeScale = 0;
+		//we also may need to pause Audio here..
+	}
+	
+	public void ResumeGame()
+	{
+		Time.timeScale = savedTimeScale;
+	}
+	
+	public void RestartLevel()
+	{
 	}
 }
