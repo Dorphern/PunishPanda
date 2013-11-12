@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HDRAudio.Runtime;
 using UnityEngine;
 
 public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
@@ -13,6 +14,14 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
 
     public string Name;
 
+
+    public AudioBus Parent;
+
+    //If we loose the connection, we can rebuild
+    public int ParentGUID;
+
+    public List<AudioBus> Children = new List<AudioBus>();
+
     //Do we need to update the attach audio players?
     [System.NonSerialized]
     public bool Dirty;
@@ -25,17 +34,13 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     [System.NonSerialized]
     public float RuntimeVolume = 1.0f;
 
-
     //What the volume should be
     [System.NonSerialized]
     public float RuntimeTargetVolume = 1.0f;
 
-    public AudioBus Parent;
+    [System.NonSerialized]
+    public Fader Fader = null;
 
-    //If we loose the connection, we can rebuild
-    public int ParentGUID;
-
-    public List<AudioBus> Children = new List<AudioBus>();
 
 #if UNITY_EDITOR
     public bool FoldedOut;
@@ -104,5 +109,4 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
         }
     }
     #endif
-
 }
