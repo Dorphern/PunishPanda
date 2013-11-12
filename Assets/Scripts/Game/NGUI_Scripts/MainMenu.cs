@@ -3,6 +3,9 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 	
+	public GameObject settingsMenu;
+	public GameObject mainMenu;
+	
 	public void OnPlayClicked()
 	{
 		Debug.Log("Play Pressed!");	
@@ -20,6 +23,11 @@ public class MainMenu : MonoBehaviour {
 	
 	public void OnSettingsClicked()
 	{
-		Debug.Log("Settings Pressed!");	
+		if(settingsMenu!=null)
+		{
+			//mainMenu.SetActive(false);
+			//settingsMenu.SetActive(true);
+		}
 	}
+	
 }
