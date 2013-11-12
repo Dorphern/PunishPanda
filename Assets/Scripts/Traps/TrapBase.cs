@@ -98,15 +98,20 @@ public abstract class TrapBase : MonoBehaviour {
 
         if (collidable != null && collidable.type == CollidableTypes.Panda)
         {
-            bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-            bool successful = PandaAttemptKill(collider.GetComponent<PandaAI>(), isPerfect);
-            if (successful) 
-            {
-                SetDirty();
-                pandaKillCount++;
-            }
+            TryPandaKill(collider.GetComponent<PandaAI>());
         }
     }
+	
+	public void TryPandaKill(PandaAI pandaAI)
+	{
+		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
+        bool successful = PandaAttemptKill(pandaAI, isPerfect);
+        if (successful) 
+        {
+            SetDirty();
+            pandaKillCount++;
+        }
+	}
 
     # endregion
 }
