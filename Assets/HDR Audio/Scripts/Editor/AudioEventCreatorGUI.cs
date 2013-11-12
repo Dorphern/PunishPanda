@@ -99,16 +99,19 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
         return AudioEventWorker.CanDropObjects(audioEvent, objects);
     }
 
-    
+
     protected override void OnContext(AudioEvent node)
     {
         var menu = new GenericMenu();
 
         #region Duplicate
+
         if (!node.IsRoot)
-            menu.AddItem(new GUIContent("Duplicate"), false, data => AudioEventWorker.Duplicate(data as AudioEvent), node);
+            menu.AddItem(new GUIContent("Duplicate"), false, data => AudioEventWorker.Duplicate(data as AudioEvent),
+                node);
         else
             menu.AddDisabledItem(new GUIContent("Duplicate"));
+
         #endregion
 
         menu.AddSeparator("");
@@ -117,14 +120,18 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
 
         if (node.Type == EventNodeType.Root)
         {
-            menu.AddItem(new GUIContent(@"Create Child/Folder"), false, data => { CreateChild(node, EventNodeType.Folder); }, node);
-            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false, data => { CreateChild(node, EventNodeType.EventGroup); }, node);
-            menu.AddDisabledItem(new GUIContent(@"Create Child/Event")); 
+            menu.AddItem(new GUIContent(@"Create Child/Folder"), false,
+                data => { CreateChild(node, EventNodeType.Folder); }, node);
+            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
+                data => { CreateChild(node, EventNodeType.EventGroup); }, node);
+            menu.AddDisabledItem(new GUIContent(@"Create Child/Event"));
         }
         if (node.Type == EventNodeType.Folder)
         {
-            menu.AddItem(new GUIContent(@"Create Child/Folder"), false, data => { CreateChild(node, EventNodeType.Folder); }, node);
-            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false, data => { CreateChild(node, EventNodeType.EventGroup); }, node);
+            menu.AddItem(new GUIContent(@"Create Child/Folder"), false,
+                data => { CreateChild(node, EventNodeType.Folder); }, node);
+            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
+                data => { CreateChild(node, EventNodeType.EventGroup); }, node);
             menu.AddItem(new GUIContent(@"Create Child/Event"), false,
                 data => { CreateChild(node, EventNodeType.Event); }, node);
         }
@@ -146,13 +153,17 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
 
         menu.AddSeparator("");
 
-        menu.AddItem(new GUIContent(@"Delete"), false, data => AudioEventWorker.DeleteNode(node), node);
+        menu.AddItem(new GUIContent(@"Delete"), false, data => {
+                treeDrawer.SelectPreviousNode();
+                AudioEventWorker.DeleteNode(node);
+            }, node);
 
         menu.ShowAsContext();
     }
      
     private void CreateChild(AudioEvent node, EventNodeType type)
     {
+        Undo.RegisterUndo(node, "Event Creation");
         AudioEventWorker.CreateNode(node, type);
         node.FoldedOut = true;
     }

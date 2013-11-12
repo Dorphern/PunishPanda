@@ -551,13 +551,13 @@ MonoBehaviour:
   worldToLocal:
     e00: 347.733307
     e01: 0
-    e02: -93.1748657
+    e02: 93.1748657
     e03: 0
     e10: 0
     e11: 360
     e12: 0
     e13: 0
-    e20: 93.1748657
+    e20: -93.1748657
     e21: 0
     e22: 347.733307
     e23: 0
@@ -569,6 +569,7 @@ MonoBehaviour:
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 0, w: 0}
   mClipSoftness: {x: 40, y: 40}
+  mDepth: 0
 --- !u!114 &39
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,7 +581,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a92b5d748695fd44aac9feef17ba415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventReceiverMask: {}
+  eventType: 1
+  eventReceiverMask:
+    serializedVersion: 2
+    m_Bits: 1
   debug: 0
   useMouse: 1
   useTouch: 1
@@ -588,7 +592,6 @@ MonoBehaviour:
   useKeyboard: 1
   useController: 1
   stickyPress: 1
-  clipRaycasts: 1
   stickyTooltip: 1
   tooltipDelay: 1
   mouseDragThreshold: 4
@@ -596,9 +599,9 @@ MonoBehaviour:
   touchDragThreshold: 40
   touchClickThreshold: 40
   rangeDistance: -1
-  scrollAxisName: 4d6f757365205363726f6c6c576865656c
-  verticalAxisName: 566572746963616c
-  horizontalAxisName: 486f72697a6f6e74616c
+  scrollAxisName: Mouse ScrollWheel
+  verticalAxisName: Vertical
+  horizontalAxisName: Horizontal
   submitKey0: 13
   submitKey1: 330
   cancelKey0: 27
@@ -629,17 +632,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: .384615421
-    g: 1
-    b: 0
-    a: 1
+  mColor: {r: .384615421, g: 1, b: 0, a: 1}
   mPivot: 4
   mWidth: 490
   mHeight: 30
   mDepth: 5
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 486967686c69676874
+  mSpriteName: Highlight
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -656,27 +655,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 0
   mWidth: 480
   mHeight: 20
   mDepth: 6
   mFont: {fileID: 11400000, guid: ac44b8a25154a9d40a172ab5851e0986, type: 2}
-  mText: 596f752063616e20747970652068657265
+  mText: You can type here
   mEncoding: 1
   mMaxLineCount: 1
   mPassword: 0
   mShowLastChar: 0
   mEffectStyle: 0
-  mEffectColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 1
@@ -698,21 +689,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: {fileID: 42}
   maxChars: 0
-  caratChar: 7c
+  caratChar: '|'
   playerPrefsField: 
   type: 0
   isPassword: 0
   autoCorrect: 0
   useLabelTextAtStart: 0
-  activeColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  activeColor: {r: 1, g: 1, b: 1, a: 1}
   selectOnTab: {fileID: 0}
   onSubmit: []
   eventReceiver: {fileID: 8}
-  functionName: 4f6e5375626d6974
+  functionName: OnSubmit
 --- !u!114 &44
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,17 +711,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 0
-    g: 0
-    b: 0
-    a: .752941191
+  mColor: {r: 0, g: 0, b: 0, a: .752941191}
   mPivot: 4
   mWidth: 494
   mHeight: 457
   mDepth: 4
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 486f6e6579636f6d62
+  mSpriteName: Honeycomb
   mFillCenter: 1
   mType: 2
   mFillDirection: 4
@@ -751,27 +734,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 0
   mWidth: 460
   mHeight: 280
   mDepth: 10
   mFont: {fileID: 11400000, guid: ac44b8a25154a9d40a172ab5851e0986, type: 2}
-  mText: 496e2074686973207475746f7269616c2077652074616b65207468652077696e646f772066726f6d207468652070726576696f7573206f6e6520616e642074696c7420697420627920313520646567726565732e20576520616c736f206372656174652061203344205549207363656e65206279207573696e6720746865205b3939464630305d554920546f6f6c5b2d5d2077697a61726420616e64206d6f7665207468652077696e646f772066726f6d2074686520324420554920746f20746865203344206f6e652e0a0a4a75737420746f206164642061206c6974746c6520626974206d6f726520666c61766f75722c2020776520616464205b3939464630305d50616e576974684d6f7573655b2d5d2073637269707420746f2074686520334420554927732063616d65726120616e642067657420726964206f6620746865205b3939464630305d416e63686f725b2d5d206e6f646520616c746f6765746865722c20736565696e6720617320776520646f6e27742077616e742074686520554920746f20737461792077697468207468652063616d6572612e0a0a5b3939464630305d5469703a5b2d5d20497427732067656e6572616c6c792065617369657220746f2063726561746520796f757220554920696e2032442c2073617665207468656d20617320707265666162732c207468656e2073696d706c79207573652074686f7365207072656661627320696e20796f75722033442055492773206869657261726368792e
+  mText: 'In this tutorial we take the window from the previous one and tilt it by
+    15 degrees. We also create a 3D UI scene by using the [99FF00]UI Tool[-] wizard
+    and move the window from the 2D UI to the 3D one.
+
+
+    Just to add a little bit more flavour,  we add [99FF00]PanWithMouse[-] script
+    to the 3D UI''s camera and get rid of the [99FF00]Anchor[-] node altogether, seeing
+    as we don''t want the UI to stay with the camera.
+
+
+    [99FF00]Tip:[-] It''s generally easier to create your UI in 2D, save them as prefabs,
+    then simply use those prefabs in your 3D UI''s hierarchy.'
   mEncoding: 1
   mMaxLineCount: 0
   mPassword: 0
   mShowLastChar: 0
   mEffectStyle: 0
-  mEffectColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 3
@@ -791,27 +777,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 260
   mHeight: 28
   mDepth: 10
   mFont: {fileID: 11400000, guid: 7a48ea22e80d1ac4b97fdd87f9009546, type: 2}
-  mText: 5475746f7269616c203130202d203344
+  mText: Tutorial 10 - 3D
   mEncoding: 1
   mMaxLineCount: 0
   mPassword: 0
   mShowLastChar: 0
   mEffectStyle: 0
-  mEffectColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 2
@@ -831,17 +809,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: .908151567
-    b: .589552283
-    a: 1
+  mColor: {r: 1, g: .908151567, b: .589552283, a: 1}
   mPivot: 4
   mWidth: 500
   mHeight: 40
   mDepth: -1
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4c69676874
+  mSpriteName: Light
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -858,17 +832,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 500
   mHeight: 500
   mDepth: -2
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -885,17 +855,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 0
-    g: .328671694
-    b: 1
-    a: 1
+  mColor: {r: 0, g: .328671694, b: 1, a: 1}
   mPivot: 4
   mWidth: 200
   mHeight: 200
   mDepth: 3
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 0
   mFillDirection: 4
@@ -912,17 +878,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 0
-    g: 1
-    b: .0769231319
-    a: 1
+  mColor: {r: 0, g: 1, b: .0769231319, a: 1}
   mPivot: 4
   mWidth: 200
   mHeight: 200
   mDepth: 2
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 0
   mFillDirection: 4
@@ -939,17 +901,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  mColor: {r: 1, g: 0, b: 0, a: 1}
   mPivot: 4
   mWidth: 200
   mHeight: 200
   mDepth: 1
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 0
   mFillDirection: 4

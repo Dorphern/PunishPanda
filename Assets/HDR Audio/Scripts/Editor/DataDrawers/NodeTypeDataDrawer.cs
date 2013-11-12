@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using HDRAudio;
 using UnityEditor;
 using UnityEngine;
 
@@ -115,7 +116,6 @@ public static class NodeTypeDataDrawer
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
 
-
             #region Audio bus
 
             bool overrideParent = EditorGUILayout.Toggle("Override Parent Bus", node.OverrideParentBus);
@@ -127,7 +127,7 @@ public static class NodeTypeDataDrawer
                 GUI.enabled = false;
 
             if (node.Bus != null)
-                EditorGUILayout.TextField("Name", node.Bus.Name);
+                EditorGUILayout.TextField("Used Bus", AudioBusWorker.GetParentBus(node).Name);
             else
             {
                 GUILayout.Label("Missing node");

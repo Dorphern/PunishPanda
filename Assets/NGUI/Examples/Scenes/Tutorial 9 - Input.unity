@@ -542,7 +542,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a92b5d748695fd44aac9feef17ba415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventReceiverMask: {}
+  eventType: 1
+  eventReceiverMask:
+    serializedVersion: 2
+    m_Bits: 1
   debug: 0
   useMouse: 1
   useTouch: 1
@@ -550,7 +553,6 @@ MonoBehaviour:
   useKeyboard: 1
   useController: 1
   stickyPress: 1
-  clipRaycasts: 1
   stickyTooltip: 1
   tooltipDelay: 1
   mouseDragThreshold: 4
@@ -558,9 +560,9 @@ MonoBehaviour:
   touchDragThreshold: 40
   touchClickThreshold: 40
   rangeDistance: -1
-  scrollAxisName: 4d6f757365205363726f6c6c576865656c
-  verticalAxisName: 566572746963616c
-  horizontalAxisName: 486f72697a6f6e74616c
+  scrollAxisName: Mouse ScrollWheel
+  verticalAxisName: Vertical
+  horizontalAxisName: Horizontal
   submitKey0: 13
   submitKey1: 330
   cancelKey0: 27
@@ -603,23 +605,24 @@ MonoBehaviour:
     e00: 360
     e01: 0
     e02: 0
-    e03: 0
+    e03: .5
     e10: 0
     e11: 360
     e12: 0
-    e13: 0
+    e13: -.5
     e20: 0
     e21: 0
     e22: 360
     e23: 0
-    e30: .5
-    e31: -.5
+    e30: 0
+    e31: 0
     e32: 0
     e33: 1
   mAlpha: 1
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 0, w: 0}
   mClipSoftness: {x: 40, y: 40}
+  mDepth: 0
 --- !u!114 &45
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,17 +634,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
+  mColor: {r: 1, g: 0, b: 0, a: 1}
   mPivot: 4
   mWidth: 200
   mHeight: 200
   mDepth: 1
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 0
   mFillDirection: 4
@@ -658,17 +657,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 0
-    g: 1
-    b: .0769231319
-    a: 1
+  mColor: {r: 0, g: 1, b: .0769231319, a: 1}
   mPivot: 4
   mWidth: 200
   mHeight: 200
   mDepth: 2
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 0
   mFillDirection: 4
@@ -685,17 +680,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 0
-    g: .328671694
-    b: 1
-    a: 1
+  mColor: {r: 0, g: .328671694, b: 1, a: 1}
   mPivot: 4
   mWidth: 200
   mHeight: 200
   mDepth: 3
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 0
   mFillDirection: 4
@@ -712,17 +703,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 500
   mHeight: 500
   mDepth: -2
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4461726b
+  mSpriteName: Dark
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -739,17 +726,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: .908151567
-    b: .589552283
-    a: 1
+  mColor: {r: 1, g: .908151567, b: .589552283, a: 1}
   mPivot: 4
   mWidth: 500
   mHeight: 40
   mDepth: -1
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 4c69676874
+  mSpriteName: Light
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -766,27 +749,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 281
   mHeight: 28
   mDepth: 10
   mFont: {fileID: 11400000, guid: 7a48ea22e80d1ac4b97fdd87f9009546, type: 2}
-  mText: 5475746f7269616c20393a20496e707574
+  mText: 'Tutorial 9: Input'
   mEncoding: 1
   mMaxLineCount: 0
   mPassword: 0
   mShowLastChar: 0
   mEffectStyle: 0
-  mEffectColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 2
@@ -806,27 +781,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 0
   mWidth: 465
   mHeight: 320
   mDepth: 10
   mFont: {fileID: 11400000, guid: ac44b8a25154a9d40a172ab5851e0986, type: 2}
-  mText: 496e2074686973206578616d706c652077652061646420616e20696e707574206669656c642e0a0a416e20696e707574206669656c64206973206a757374206120736c6963656420737072697465206261636b67726f756e6420776974682061206c6162656c206f6e20746f702e205b3939464630305d5549496e7075745b2d5d2073637269707420617474616368656420746f2074686520636f6c6c696465722077696c6c207265636569766520696e707574206576656e747320616e64206d6f6469667920746865206c6162656c206173206e656365737361727920746f207265666c65637420746865206368616e67652e0a0a596f752063616e206c696d697420746865206d6178696d756d206e756d626572206f662063686172616374657273206f6e2074686520696e7075742073637269707420616e64207475726e20697420696e746f20612070617373776f7264206669656c6420766961206120636865636b626f78206f6e20746865206c6162656c20697473656c662e0a0a5b3939464630305d4e4755495b2d5d277320696e707574206669656c647320616c736f2074616b6520616476616e74616765206f6620556e69747920332e342e312773205b3939464630305d494d455b2d5d20737570706f727420666f72206561737465726e206c616e6775616765732e0a0a4a75737420646f6e27742074727920746f207465737420746861742068657265202d2d207468697320666f6e7420686173206f6e6c79206265656e206578706f727465642077697468207765737465726e20636861726163746572732e
+  mText: 'In this example we add an input field.
+
+
+    An input field is just a sliced sprite background with a label on top. [99FF00]UIInput[-]
+    script attached to the collider will receive input events and modify the label
+    as necessary to reflect the change.
+
+
+    You can limit the maximum number of characters on the input script and turn it
+    into a password field via a checkbox on the label itself.
+
+
+    [99FF00]NGUI[-]''s input fields also take advantage of Unity 3.4.1''s [99FF00]IME[-]
+    support for eastern languages.
+
+
+    Just don''t try to test that here -- this font has only been exported with western
+    characters.'
   mEncoding: 1
   mMaxLineCount: 0
   mPassword: 0
   mShowLastChar: 0
   mEffectStyle: 0
-  mEffectColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 3
@@ -846,17 +830,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 0
-    g: 0
-    b: 0
-    a: .752941191
+  mColor: {r: 0, g: 0, b: 0, a: .752941191}
   mPivot: 4
   mWidth: 494
   mHeight: 457
   mDepth: 4
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 486f6e6579636f6d62
+  mSpriteName: Honeycomb
   mFillCenter: 1
   mType: 2
   mFillDirection: 4
@@ -873,27 +853,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 3
   mWidth: 480
   mHeight: 20
   mDepth: 6
   mFont: {fileID: 11400000, guid: ac44b8a25154a9d40a172ab5851e0986, type: 2}
-  mText: 596f752063616e20747970652068657265
+  mText: You can type here
   mEncoding: 0
   mMaxLineCount: 1
   mPassword: 0
   mShowLastChar: 0
   mEffectStyle: 0
-  mEffectColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 1
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 1
@@ -913,17 +885,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor:
-    r: .384615421
-    g: 1
-    b: 0
-    a: 1
+  mColor: {r: .384615421, g: 1, b: 0, a: 1}
   mPivot: 3
   mWidth: 490
   mHeight: 30
   mDepth: 5
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
-  mSpriteName: 486967686c69676874
+  mSpriteName: Highlight
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -957,21 +925,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: {fileID: 53}
   maxChars: 0
-  caratChar: 7c
+  caratChar: '|'
   playerPrefsField: 
   type: 0
   isPassword: 0
   autoCorrect: 0
   useLabelTextAtStart: 0
-  activeColor:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
+  activeColor: {r: 1, g: 1, b: 1, a: 1}
   selectOnTab: {fileID: 0}
   onSubmit: []
   eventReceiver: {fileID: 20}
-  functionName: 4f6e5375626d6974
+  functionName: OnSubmit
 --- !u!65 &57
 BoxCollider:
   m_ObjectHideFlags: 0

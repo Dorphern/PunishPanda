@@ -6,6 +6,7 @@
 //
 
 using UnityEngine;
+
 using System.Collections;
 using System.Collections.Generic;
 using Edelweiss.DecalSystem;
@@ -40,7 +41,7 @@ public class BloodSplatter : MonoBehaviour {
 	private DecalsMeshCutter m_DecalsMeshCutter;
 	
 	private float cullingAngle = 90.0f;
-	private float meshOffset = 0.001f;
+	private float meshOffset = 0.003f;
 	
 		// We iterate through all the defined uv rectangles. This one inicates which index we are using at
 		// the moment.
@@ -97,6 +98,7 @@ public class BloodSplatter : MonoBehaviour {
 		
 		layerMask = ( 1 << LayerMask.NameToLayer("Panda") );
 		layerMask |= ( 1 << LayerMask.NameToLayer("FingerBlockade") );
+		layerMask |= ( 1 << LayerMask.NameToLayer("Ignore Raycast") );
 		layerMask = ~layerMask;
 		
 		// We instantiate a blood splatter in order to avoid a huge spike in performance caused by the first slap
@@ -104,7 +106,27 @@ public class BloodSplatter : MonoBehaviour {
 		if(m_DecalProjectors.Count > 0)
 			ClearProjectors();
 		else
-			Debug.LogException(new System.Exception("Attempt to project a texture at " + transform.position + " because there was no mesh to project onto!"));
+		{
+			Debug.LogException(new System.Exception("Failed to project a texture from " + gameObject.name + " because there was no mesh to project onto!" +
+				"\n<b> The object's Z axis must be facing an object within " + rayDistance + " meters! </b>"), this.gameObject);
+		}
+		// Code required for polishing projection offset (DO NOT REMOVE)
+//		float max = 20;
+//		for(int i = 0; i <= 2 * max + 1; i++)
+//		{
+//			Vector3 dir = Vector3.zero;
+//			if(i <  max + 1)
+//			{
+//				dir = Vector3.Slerp(Vector3.up, Vector3.right, i / max);
+//			}
+//			else
+//			{
+//				 dir = Vector3.Slerp(Vector3.right, Vector3.down,(i - max - 1) / max);
+//			}
+//			Debug.LogWarning(dir);
+//			Debug.DrawRay(Vector3.zero, dir * 3f, Color.red, 100f);
+//			ProjectBlood(new Vector3(i*5f, 1.55f, 0), new Vector2(dir.x, dir.y));
+//		}
 	}
 	
 	private void Update () 
@@ -148,8 +170,8 @@ public class BloodSplatter : MonoBehaviour {
 				m_DecalProjectors.RemoveAt (0);
 				m_DecalsMesh.RemoveProjector (l_DecalProjector);
 			}
-			//Debug.DrawRay(hitInfo.point, - projectionDirection, Color.blue, 1000f);
 			
+			//Debug.DrawRay(hitInfo.point, - projectionDirection, Color.blue, 1000f);
 				// Calculate the position and rotation for the new decal projector.
 			Vector3 l_ProjectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
@@ -159,10 +181,24 @@ public class BloodSplatter : MonoBehaviour {
 			{
 				angle = 360 - angle;
 			}
-			//Debug.Log(angle);
+			
 			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
 			
 			projectionDirection.x = 0f;
+			if(projectionDirection.y > 0f)
+			{
+				projectionDirection.y = 0f;	
+				decalProjectorOffset = 1f;
+			}
+			else if(projectionDirection.y < -0.7f && projectionDirection.y > - 0.90f)
+			{
+				decalProjectorOffset = 3f;
+			}
+			else
+			{
+				decalProjectorOffset = 2.7f;
+			}
+			
 			Quaternion l_ProjectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 
 			l_ProjectorRotation = l_ProjectorRotation * slapRotation;
@@ -174,7 +210,6 @@ public class BloodSplatter : MonoBehaviour {
 			
 			MeshCollider l_MeshCollider = hitInfo.transform.parent.GetComponent <MeshCollider> ();
 			MeshFilter l_MeshFilter = hitInfo.transform.parent.GetComponent <MeshFilter> ();
-			
 			
 			if (l_MeshCollider != null || l_MeshFilter != null) 
 			{
