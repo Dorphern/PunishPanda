@@ -54,6 +54,8 @@ public class UIImageButtonInspector : Editor
 				NGUIEditorTools.SpriteField("Hover", mSprite.atlas, mButton.hoverSprite, OnHover);
 				NGUIEditorTools.SpriteField("Pressed", mSprite.atlas, mButton.pressedSprite, OnPressed);
 				NGUIEditorTools.SpriteField("Disabled", mSprite.atlas, mButton.disabledSprite, OnDisabled);
+				NGUIEditorTools.DrawEvents("On Click", mButton, mButton.onClick);
+
 			}
 		}
 	}
