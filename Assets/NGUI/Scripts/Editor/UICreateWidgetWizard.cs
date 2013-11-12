@@ -3,6 +3,10 @@
 // Copyright © 2011-2013 Tasharen Entertainment
 //----------------------------------------------
 
+#if !UNITY_3_5 && !UNITY_FLASH
+#define DYNAMIC_FONT
+#endif
+
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -29,7 +33,7 @@ public class UICreateWidgetWizard : EditorWindow
 		ScrollBar,
 	}
 
-	static WidgetType mType = WidgetType.Button;
+	static WidgetType mWidgetType = WidgetType.Button;
 	static string mSprite = "";
 	static string mButton = "";
 	static string mImage0 = "";
@@ -81,7 +85,7 @@ public class UICreateWidgetWizard : EditorWindow
 
 	static void Save ()
 	{
-		EditorPrefs.SetInt("NGUI Widget Type", (int)mType);
+		EditorPrefs.SetInt("NGUI Widget Type", (int)mWidgetType);
 		EditorPrefs.SetInt("NGUI Color", NGUIMath.ColorToInt(mColor));
 		EditorPrefs.SetBool("NGUI ScrollCL", mScrollCL);
 		EditorPrefs.SetInt("NGUI Scroll Dir", (int)mScrollDir);
@@ -112,7 +116,7 @@ public class UICreateWidgetWizard : EditorWindow
 
 	static void Load ()
 	{
-		mType = (WidgetType)EditorPrefs.GetInt("NGUI Widget Type", 0);
+		mWidgetType = (WidgetType)EditorPrefs.GetInt("NGUI Widget Type", 0);
 		mScrollDir = (UIScrollBar.Direction)EditorPrefs.GetInt("NGUI Scroll Dir", 0);
 
 		int color = EditorPrefs.GetInt("NGUI Color", -1);
@@ -142,7 +146,7 @@ public class UICreateWidgetWizard : EditorWindow
 	/// Atlas selection function.
 	/// </summary>
 
-	void OnSelectAtlas (MonoBehaviour obj)
+	void OnSelectAtlas (Object obj)
 	{
 		NGUISettings.atlas = obj as UIAtlas;
 		Repaint();
@@ -152,9 +156,9 @@ public class UICreateWidgetWizard : EditorWindow
 	/// Font selection function.
 	/// </summary>
 
-	void OnSelectFont (MonoBehaviour obj)
+	void OnSelectFont (Object obj)
 	{
-		NGUISettings.font = obj as UIFont;
+		NGUISettings.bitmapFont = obj as UIFont;
 		Repaint();
 	}
 
@@ -200,10 +204,11 @@ public class UICreateWidgetWizard : EditorWindow
 			Save();
 		}
 
-		if (ShouldCreate(go, NGUISettings.font != null))
+		if (ShouldCreate(go, NGUISettings.ambigiousFont != null))
 		{
 			UILabel lbl = NGUITools.AddWidget<UILabel>(go);
-			lbl.font = NGUISettings.font;
+			lbl.ambigiousFont = NGUISettings.ambigiousFont;
+			lbl.fontSize = NGUISettings.fontSize;
 			lbl.text = "New Label";
 			lbl.color = mColor;
 			lbl.AssumeNaturalSize();
@@ -219,7 +224,7 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Sprite", "Sprite that will be created", NGUISettings.atlas, field, OnSprite);
+			NGUIEditorTools.DrawSpriteField("Sprite", "Sprite that will be created", NGUISettings.atlas, field, OnSprite, GUILayout.Width(120f));
 
 			if (!string.IsNullOrEmpty(field))
 			{
@@ -266,7 +271,7 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Background", "Sliced Sprite for the background", NGUISettings.atlas, mButton, OnButton);
+			NGUIEditorTools.DrawSpriteField("Background", "Sliced Sprite for the background", NGUISettings.atlas, mButton, OnButton, GUILayout.Width(120f));
 		}
 
 		if (ShouldCreate(go, NGUISettings.atlas != null))
@@ -285,13 +290,12 @@ public class UICreateWidgetWizard : EditorWindow
 			bg.height = 50;
 			bg.MakePixelPerfect();
 
-			if (NGUISettings.font != null)
+			if (NGUISettings.ambigiousFont != null)
 			{
 				UILabel lbl = NGUITools.AddWidget<UILabel>(go);
-				lbl.font = NGUISettings.font;
+				lbl.ambigiousFont = NGUISettings.ambigiousFont;
 				lbl.text = go.name;
 				lbl.AssumeNaturalSize();
-				Debug.Log(lbl.height);
 			}
 
 			// Add a collider
@@ -315,10 +319,10 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Normal", "Normal state sprite", NGUISettings.atlas, mImage0, OnImage0);
-			NGUIEditorTools.SpriteField("Hover", "Hover state sprite", NGUISettings.atlas, mImage1, OnImage1);
-			NGUIEditorTools.SpriteField("Pressed", "Pressed state sprite", NGUISettings.atlas, mImage2, OnImage2);
-			NGUIEditorTools.SpriteField("Disabled", "Disabled state sprite", NGUISettings.atlas, mImage3, OnImage3);
+			NGUIEditorTools.DrawSpriteField("Normal", "Normal state sprite", NGUISettings.atlas, mImage0, OnImage0, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Hover", "Hover state sprite", NGUISettings.atlas, mImage1, OnImage1, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Pressed", "Pressed state sprite", NGUISettings.atlas, mImage2, OnImage2, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Disabled", "Disabled state sprite", NGUISettings.atlas, mImage3, OnImage3, GUILayout.Width(120f));
 		}
 
 		if (ShouldCreate(go, NGUISettings.atlas != null))
@@ -338,10 +342,10 @@ public class UICreateWidgetWizard : EditorWindow
 			sprite.height = 40;
 			sprite.MakePixelPerfect();
 
-			if (NGUISettings.font != null)
+			if (NGUISettings.ambigiousFont != null)
 			{
 				UILabel lbl = NGUITools.AddWidget<UILabel>(go);
-				lbl.font = NGUISettings.font;
+				lbl.ambigiousFont = NGUISettings.ambigiousFont;
 				lbl.text = go.name;
 				lbl.AssumeNaturalSize();
 			}
@@ -375,8 +379,8 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Background", "Sprite used for the background", NGUISettings.atlas, mCheckBG, OnCheckBG);
-			NGUIEditorTools.SpriteField("Checkmark", "Sprite used for the checkmark", NGUISettings.atlas, mCheck, OnCheck);
+			NGUIEditorTools.DrawSpriteField("Background", "Sprite used for the background", NGUISettings.atlas, mCheckBG, OnCheckBG, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Checkmark", "Sprite used for the checkmark", NGUISettings.atlas, mCheck, OnCheck, GUILayout.Width(120f));
 		}
 
 		if (ShouldCreate(go, NGUISettings.atlas != null))
@@ -401,10 +405,10 @@ public class UICreateWidgetWizard : EditorWindow
 			fg.spriteName = mCheck;
 			fg.MakePixelPerfect();
 
-			if (NGUISettings.font != null)
+			if (NGUISettings.ambigiousFont != null)
 			{
 				UILabel lbl = NGUITools.AddWidget<UILabel>(go);
-				lbl.font = NGUISettings.font;
+				lbl.ambigiousFont = NGUISettings.ambigiousFont;
 				lbl.text = go.name;
 				lbl.pivot = UIWidget.Pivot.Left;
 				lbl.transform.localPosition = new Vector3(16f, 0f, 0f);
@@ -435,8 +439,8 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Background", "Sprite used for the background", NGUISettings.atlas, mScrollBG, OnScrollBG);
-			NGUIEditorTools.SpriteField("Foreground", "Sprite used for the foreground (thumb)", NGUISettings.atlas, mScrollFG, OnScrollFG);
+			NGUIEditorTools.DrawSpriteField("Background", "Sprite used for the background", NGUISettings.atlas, mScrollBG, OnScrollBG, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Foreground", "Sprite used for the foreground (thumb)", NGUISettings.atlas, mScrollFG, OnScrollFG, GUILayout.Width(120f));
 
 			GUILayout.BeginHorizontal();
 			UIScrollBar.Direction dir = (UIScrollBar.Direction)EditorGUILayout.EnumPopup("Direction", mScrollDir, GUILayout.Width(200f));
@@ -505,12 +509,12 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Empty", "Sprite for the background (empty bar)", NGUISettings.atlas, mSliderBG, OnSliderBG);
-			NGUIEditorTools.SpriteField("Full", "Sprite for the foreground (full bar)", NGUISettings.atlas, mSliderFG, OnSliderFG);
+			NGUIEditorTools.DrawSpriteField("Empty", "Sprite for the background (empty bar)", NGUISettings.atlas, mSliderBG, OnSliderBG, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Full", "Sprite for the foreground (full bar)", NGUISettings.atlas, mSliderFG, OnSliderFG, GUILayout.Width(120f));
 
 			if (slider)
 			{
-				NGUIEditorTools.SpriteField("Thumb", "Sprite for the thumb indicator", NGUISettings.atlas, mSliderTB, OnSliderTB);
+				NGUIEditorTools.DrawSpriteField("Thumb", "Sprite for the thumb indicator", NGUISettings.atlas, mSliderTB, OnSliderTB, GUILayout.Width(120f));
 			}
 		}
 
@@ -595,10 +599,10 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Background", "Sliced Sprite for the background", NGUISettings.atlas, mInputBG, OnInputBG);
+			NGUIEditorTools.DrawSpriteField("Background", "Sliced Sprite for the background", NGUISettings.atlas, mInputBG, OnInputBG, GUILayout.Width(120f));
 		}
 
-		if (ShouldCreate(go, NGUISettings.atlas != null && NGUISettings.font != null))
+		if (ShouldCreate(go, NGUISettings.atlas != null && NGUISettings.ambigiousFont != null))
 		{
 			int depth = NGUITools.CalculateNextDepth(go);
 			go = NGUITools.AddChild(go);
@@ -613,12 +617,12 @@ public class UICreateWidgetWizard : EditorWindow
 			bg.spriteName = mInputBG;
 			bg.pivot = UIWidget.Pivot.Left;
 			bg.width = 400;
-			bg.height = NGUISettings.font.size + padding * 2;
+			bg.height = NGUISettings.fontSize + padding * 2;
 			bg.transform.localPosition = Vector3.zero;
 			bg.MakePixelPerfect();
 
 			UILabel lbl = NGUITools.AddWidget<UILabel>(go);
-			lbl.font = NGUISettings.font;
+			lbl.ambigiousFont = NGUISettings.ambigiousFont;
 			lbl.pivot = UIWidget.Pivot.Left;
 			lbl.transform.localPosition = new Vector3(padding, 0f, 0f);
 			lbl.multiLine = false;
@@ -649,12 +653,12 @@ public class UICreateWidgetWizard : EditorWindow
 	{
 		if (NGUISettings.atlas != null)
 		{
-			NGUIEditorTools.SpriteField("Foreground", "Foreground sprite (shown on the button)", NGUISettings.atlas, mListFG, OnListFG);
-			NGUIEditorTools.SpriteField("Background", "Background sprite (envelops the options)", NGUISettings.atlas, mListBG, OnListBG);
-			NGUIEditorTools.SpriteField("Highlight", "Sprite used to highlight the selected option", NGUISettings.atlas, mListHL, OnListHL);
+			NGUIEditorTools.DrawSpriteField("Foreground", "Foreground sprite (shown on the button)", NGUISettings.atlas, mListFG, OnListFG, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Background", "Background sprite (envelops the options)", NGUISettings.atlas, mListBG, OnListBG, GUILayout.Width(120f));
+			NGUIEditorTools.DrawSpriteField("Highlight", "Sprite used to highlight the selected option", NGUISettings.atlas, mListHL, OnListHL, GUILayout.Width(120f));
 		}
 
-		if (ShouldCreate(go, NGUISettings.atlas != null && NGUISettings.font != null))
+		if (ShouldCreate(go, NGUISettings.atlas != null && NGUISettings.ambigiousFont != null))
 		{
 			int depth = NGUITools.CalculateNextDepth(go);
 			go = NGUITools.AddChild(go);
@@ -672,13 +676,14 @@ public class UICreateWidgetWizard : EditorWindow
 			sprite.atlas = NGUISettings.atlas;
 			sprite.pivot = UIWidget.Pivot.Left;
 			sprite.width = Mathf.RoundToInt(150f + fgPadding.x * 2f);
-			sprite.height = Mathf.RoundToInt(NGUISettings.font.size + fgPadding.y * 2f);
+			sprite.height = Mathf.RoundToInt(NGUISettings.fontSize + fgPadding.y * 2f);
 			sprite.transform.localPosition = Vector3.zero;
 			sprite.MakePixelPerfect();
 
 			// Text label
 			UILabel lbl = NGUITools.AddWidget<UILabel>(go);
-			lbl.font = NGUISettings.font;
+			lbl.ambigiousFont = NGUISettings.ambigiousFont;
+			lbl.fontSize = NGUISettings.fontSize;
 			lbl.text = go.name;
 			lbl.pivot = UIWidget.Pivot.Left;
 			lbl.cachedTransform.localPosition = new Vector3(fgPadding.x, 0f, 0f);
@@ -690,7 +695,9 @@ public class UICreateWidgetWizard : EditorWindow
 			// Add the popup list
 			UIPopupList list = go.AddComponent<UIPopupList>();
 			list.atlas = NGUISettings.atlas;
-			list.font = NGUISettings.font;
+			if (NGUISettings.bitmapFont != null) list.bitmapFont = NGUISettings.bitmapFont;
+			else list.trueTypeFont = NGUISettings.trueTypeFont;
+			list.fontSize = NGUISettings.fontSize;
 			list.backgroundSprite = mListBG;
 			list.highlightSprite = mListHL;
 			list.padding = hlPadding;
@@ -715,6 +722,24 @@ public class UICreateWidgetWizard : EditorWindow
 
 	void OnSelectionChange () { Repaint(); }
 
+#if DYNAMIC_FONT
+	UILabelInspector.FontType mType = UILabelInspector.FontType.Dynamic;
+#else
+	UILabelInspector.FontType mType = UILabelInspector.FontType.Bitmap;
+#endif
+
+	void OnBitmapFont (Object obj)
+	{
+		NGUISettings.bitmapFont = obj as UIFont;
+		NGUISettings.trueTypeFont = null;
+	}
+
+	void OnDynamicFont (Object obj)
+	{
+		NGUISettings.trueTypeFont = obj as Font;
+		NGUISettings.bitmapFont = null;
+	}
+
 	/// <summary>
 	/// Draw the custom wizard.
 	/// </summary>
@@ -722,7 +747,16 @@ public class UICreateWidgetWizard : EditorWindow
 	void OnGUI ()
 	{
 		// Load the saved preferences
-		if (!mLoaded) { mLoaded = true; Load(); }
+		if (!mLoaded)
+		{
+			mLoaded = true;
+			Load();
+#if DYNAMIC_FONT
+			mType = (NGUISettings.bitmapFont != null) ? UILabelInspector.FontType.Bitmap : UILabelInspector.FontType.Dynamic;
+#else
+			mType = UILabelInspector.FontType.Bitmap;
+#endif
+		}
 
 		NGUIEditorTools.SetLabelWidth(80f);
 		GameObject go = NGUIEditorTools.SelectedRoot();
@@ -741,27 +775,59 @@ public class UICreateWidgetWizard : EditorWindow
 			GUILayout.Space(4f);
 
 			GUILayout.BeginHorizontal();
-			ComponentSelector.Draw<UIAtlas>(NGUISettings.atlas, OnSelectAtlas, GUILayout.Width(140f));
-			GUILayout.Label("Texture atlas used by widgets", GUILayout.MinWidth(10000f));
+			ComponentSelector.Draw<UIAtlas>(NGUISettings.atlas, OnSelectAtlas, false, GUILayout.Width(140f));
+			GUILayout.Label("Texture atlas used by widgets", GUILayout.Width(10000f));
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-			ComponentSelector.Draw<UIFont>(NGUISettings.font, OnSelectFont, GUILayout.Width(140f));
-			GUILayout.Label("Font used by labels", GUILayout.MinWidth(10000f));
-			GUILayout.EndHorizontal();
 
-			GUILayout.Space(-2f);
+			if (NGUIEditorTools.DrawPrefixButton("Font"))
+			{
+				if (mType == UILabelInspector.FontType.Bitmap)
+				{
+					ComponentSelector.Show<UIFont>(OnBitmapFont);
+				}
+				else
+				{
+					ComponentSelector.Show<Font>(OnDynamicFont);
+				}
+			}
+
+#if DYNAMIC_FONT
+			GUI.changed = false;
+
+			if (mType == UILabelInspector.FontType.Dynamic)
+			{
+				NGUISettings.trueTypeFont = (Font)EditorGUILayout.ObjectField(NGUISettings.trueTypeFont, typeof(Font), false, GUILayout.Width(140f));
+				if (GUI.changed) NGUISettings.bitmapFont = null;
+			}
+			else
+			{
+				NGUISettings.bitmapFont = (UIFont)EditorGUILayout.ObjectField(NGUISettings.bitmapFont, typeof(UIFont), false, GUILayout.Width(140f));
+				if (GUI.changed) NGUISettings.trueTypeFont = null;
+			}
+			mType = (UILabelInspector.FontType)EditorGUILayout.EnumPopup(mType, GUILayout.Width(62f));
+#else
+			NGUISettings.bitmapFont = (UIFont)EditorGUILayout.ObjectField(NGUISettings.bitmapFont, typeof(UIFont), false, GUILayout.Width(140f));
+			mType = UILabelInspector.FontType.Bitmap;
+#endif
+			GUILayout.Label("size", GUILayout.Width(30f));
+			EditorGUI.BeginDisabledGroup(mType == UILabelInspector.FontType.Bitmap);
+			NGUISettings.fontSize = EditorGUILayout.IntField(NGUISettings.fontSize, GUILayout.Width(30f));
+			EditorGUI.EndDisabledGroup();
+			GUILayout.Label("font used by the labels");
+			GUILayout.EndHorizontal();
 			NGUIEditorTools.DrawSeparator();
 
 			GUILayout.BeginHorizontal();
-			WidgetType wt = (WidgetType)EditorGUILayout.EnumPopup("Template", mType, GUILayout.Width(200f));
+			WidgetType wt = (WidgetType)EditorGUILayout.EnumPopup("Template", mWidgetType, GUILayout.Width(200f));
 			GUILayout.Space(20f);
 			GUILayout.Label("Select a widget template to use");
 			GUILayout.EndHorizontal();
 
-			if (mType != wt) { mType = wt; Save(); }
+			if (mWidgetType != wt) { mWidgetType = wt; Save(); }
 
-			switch (mType)
+			switch (mWidgetType)
 			{
 				case WidgetType.Label:			CreateLabel(go); break;
 				case WidgetType.Sprite:			CreateSprite(go, mSprite); break;

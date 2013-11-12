@@ -37,6 +37,9 @@ public class UISprite : UIWidget
 	[HideInInspector][SerializeField] bool mFillCenter = true;
 	[HideInInspector][SerializeField] Type mType = Type.Simple;
 	[HideInInspector][SerializeField] FillDirection mFillDirection = FillDirection.Radial360;
+#if !UNITY_3_5
+	[Range(0f, 1f)]
+#endif
 	[HideInInspector][SerializeField] float mFillAmount = 1.0f;
 	[HideInInspector][SerializeField] bool mInvert = false;
 
@@ -250,7 +253,9 @@ public class UISprite : UIWidget
 			if (type == Type.Sliced)
 			{
 				Vector4 b = border;
-				return Mathf.RoundToInt(b.x + b.z);
+				if (atlas != null) b *= atlas.pixelSize;
+				int min = Mathf.RoundToInt(b.x + b.z);
+				return Mathf.Max(base.minWidth, ((min & 1) == 1) ? min + 1 : min);
 			}
 			return base.minWidth;
 		}
@@ -267,10 +272,22 @@ public class UISprite : UIWidget
 			if (type == Type.Sliced)
 			{
 				Vector4 b = border;
-				return Mathf.RoundToInt(b.y + b.w);
+				if (atlas != null) b *= atlas.pixelSize;
+				int min = Mathf.RoundToInt(b.y + b.w);
+				return Mathf.Max(base.minHeight, ((min & 1) == 1) ? min + 1 : min);
 			}
 			return base.minHeight;
 		}
+	}
+
+	/// <summary>
+	/// Keep sane values.
+	/// </summary>
+
+	protected override void OnValidate ()
+	{
+		base.OnValidate();
+		mFillAmount = Mathf.Clamp01(mFillAmount);
 	}
 
 	/// <summary>
