@@ -78,7 +78,7 @@ public class SwipeController : MonoBehaviour {
 				}
 			}
 		}/**/
-             
+      
     }
 	
 	Vector3 TranslateScreenToWorldPos(Vector3 mousePos)

@@ -8,7 +8,8 @@ public class MenuGUI : MonoBehaviour {
     }
 
     private LevelManager levelManager;
-
+	
+	/*
     void OnGUI()
     {
         if (!levelManager.IsLoadingLevel)
@@ -55,4 +56,5 @@ public class MenuGUI : MonoBehaviour {
             }
         }
     }
+    */
 }
