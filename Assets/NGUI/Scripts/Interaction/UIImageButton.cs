@@ -4,6 +4,7 @@
 //----------------------------------------------
 
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Sample script showing how easy it is to implement a standard button that swaps sprites.
@@ -17,6 +18,12 @@ public class UIImageButton : MonoBehaviour
 	public string hoverSprite;
 	public string pressedSprite;
 	public string disabledSprite;
+	
+	/// <summary>
+	/// Click event listener.
+	/// </summary>
+
+	public List<EventDelegate> onClick = new List<EventDelegate>();
 	
 	public bool isEnabled
 	{
@@ -42,6 +49,14 @@ public class UIImageButton : MonoBehaviour
 	{
 		if (target == null) target = GetComponentInChildren<UISprite>();
 		UpdateImage();
+	}
+	
+	void OnClick ()
+	{
+		if (isEnabled)
+		{
+			EventDelegate.Execute(onClick);
+		}
 	}
 	
 	void UpdateImage()
