@@ -8,6 +8,15 @@ public class Level : MonoBehaviour
 {
     [SerializeField] private LevelScore levelScore = new LevelScore();
 
+    private float elapsedTime;
+    private bool paused;
+    private int totalPandaCount;
+    private int alivePandas;
+    private int normalPandaKills;
+    private int perfectPandaKills;
+
+    # region Public Methods
+
     public void Pause()
     {
         paused = true;
@@ -18,16 +27,25 @@ public class Level : MonoBehaviour
         paused = false;
     }
 
-    public void RegisterPanda(Panda panda)
+    public void RegisterPanda()
     {
         totalPandaCount += 1;
         alivePandas += 1;
     }
 
-    public void OnPandaDeath(Panda panda)
+    public void OnPandaDeath(bool fromTrap, bool perfect)
     {
         alivePandas -= 1;
-        pandaKills += 1;
+        if (perfect)
+        {
+            perfectPandaKills += 1;
+        }
+        else
+        {
+            normalPandaKills += 1;
+        }
+        Debug.Log("normal: " + normalPandaKills + " perfect: " + perfectPandaKills);
+         Debug.Log("score: " + PunishPanda.Game.ScoreCalculator.PandaKillScore(perfectPandaKills, normalPandaKills));
     }
 
 
@@ -39,12 +57,9 @@ public class Level : MonoBehaviour
         }
     }
 
-    private float elapsedTime;
-    private bool paused;
-    private int totalPandaCount;
-    private int alivePandas;
-    private int pandaKills;
+    # endregion
 
+    # region Private Methods
     private void OnEnable()
     {
         //This code only exists to enable that the game will work correctly when working in the editor and loading a random map
@@ -65,6 +80,7 @@ public class Level : MonoBehaviour
 
     private void OnGUI()
     {
+        return;
         var levelManger = InstanceFinder.LevelManager;
 
         if (alivePandas > 0)
@@ -90,19 +106,20 @@ public class Level : MonoBehaviour
             Rect killButton = new Rect(50, 50, 100, 80);
             if (GUI.Button(killButton, "(Fake) Kill Panda"))
             {
-                OnPandaDeath(null);
+                OnPandaDeath(false, false);
             }
         }
         else
         {
+            int kills = normalPandaKills + perfectPandaKills;
             int heightOffset = 30; 
             Rect nextRect = new Rect(Screen.width/2 - 75, 50, 100, 40);
-            int score = ScoreCalculator.Score(levelScore, pandaKills, alivePandas, elapsedTime);
+            int score = ScoreCalculator.Score(levelScore, perfectPandaKills, normalPandaKills, elapsedTime);
             string scoreString = LanguageManager.Instance.GetTextValue("Score.Score");
             GUI.Label(nextRect, scoreString + score);
             nextRect.y += heightOffset;
             string pandaKillsString = LanguageManager.Instance.GetTextValue("Score.PandaKills");
-            GUI.Label(nextRect, pandaKillsString + pandaKills);
+            GUI.Label(nextRect, pandaKillsString + kills);
             nextRect.y += heightOffset;
 
             string timeScoreString = LanguageManager.Instance.GetTextValue("Score.TimeScore");
@@ -142,4 +159,6 @@ public class Level : MonoBehaviour
             }
         }
     }
+
+    # endregion
 }

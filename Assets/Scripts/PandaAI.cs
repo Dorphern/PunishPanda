@@ -117,6 +117,7 @@ public class PandaAI : MonoBehaviour {
     {
         float direction = Vector3.Angle(trap.transform.position, transform.position);
         pandaStateManager.ChangeState(PandaState.Died);
+        GetComponent<Panda>().PandaKilled(true, isPerfect);
         Debug.Log("Panda died from " + trap.GetTrapType() + "; direction: " + direction);
         return true;
     }
