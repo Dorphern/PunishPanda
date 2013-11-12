@@ -29,7 +29,7 @@ public class UIAtlasMaker : EditorWindow
 	/// Atlas selection callback.
 	/// </summary>
 
-	void OnSelectAtlas (MonoBehaviour obj)
+	void OnSelectAtlas (Object obj)
 	{
 		NGUISettings.atlas = obj as UIAtlas;
 		Repaint();
@@ -89,7 +89,7 @@ public class UIAtlasMaker : EditorWindow
 		if (a == null && b != null) return 1;
 
 		// A is not null b is null a is greater so put it at the front of the list
-		if (a == null && b != null) return -1;
+		if (a != null && b == null) return -1;
 
 		// Get the total pixels used for each sprite
 		int aPixels = a.width * a.height;
@@ -368,7 +368,7 @@ public class UIAtlasMaker : EditorWindow
 
 		// Sort the sprites so that they are alphabetical within the atlas
 		atlas.SortAlphabetically();
-		atlas.MarkAsDirty();
+		atlas.MarkAsChanged();
 	}
 
 	/// <summary>
@@ -590,7 +590,7 @@ public class UIAtlasMaker : EditorWindow
 			if (!string.IsNullOrEmpty(path)) AssetDatabase.DeleteAsset(path);
 		}
 
-		atlas.MarkAsDirty();
+		atlas.MarkAsChanged();
 		Selection.activeGameObject = (NGUISettings.atlas != null) ? NGUISettings.atlas.gameObject : null;
 	}
 
@@ -690,7 +690,7 @@ public class UIAtlasMaker : EditorWindow
 			}
 		}
 
-		ComponentSelector.Draw<UIAtlas>("Select", NGUISettings.atlas, OnSelectAtlas);
+		ComponentSelector.Draw<UIAtlas>("Select", NGUISettings.atlas, OnSelectAtlas, true);
 
 		List<Texture> textures = GetSelectedTextures();
 
