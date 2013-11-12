@@ -13,10 +13,12 @@ public class CameraController : MonoBehaviour
         transform.position = positionContainObject(backgroundObject);
     }
 
+
     void Update ()
     {
 
     }
+
 
     Vector3 positionContainObject (GameObject gObject)
     {
