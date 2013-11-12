@@ -75,31 +75,16 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
         IsDirty = false;
 
-        //Find a node to select
-        /*if (selectedNode == null)
-        {
-            if (root.GetChildren.Count > 0)
-            {
-                selectedNode = root.Node;
-            }
-        }*/
-
         bool canDropObject = HandleDragging();
-        
+
         DrawTree(root, EditorGUI.indentLevel);
 
         PostDrawDragHandle(canDropObject);
 
         ContextHandle();
 
-        if (Event.current.type == EventType.MouseDown)
-        {
-            GUIUtility.keyboardControl = 0;
-        }
-
-        KeyboardControl();
-        
-        
+        if (GUI.GetNameOfFocusedControl() == "TreeDrawer")
+            KeyboardControl();
 
         return IsDirty;
     }
@@ -165,6 +150,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     private void DrawNode(T child)
     {
+        GUI.SetNextControlName("TreeDrawer");
         bool previousState = child.IsFoldedOut;
 
         

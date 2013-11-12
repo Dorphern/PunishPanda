@@ -7,8 +7,6 @@ public static class AudioBankLinkDrawer
 {
     public static void Draw(AudioBankLink node)
     {
-       
-        //UndoCheck.Instance.CheckUndo(node, "Audio Bank:" + node.Name);
         EditorGUILayout.BeginVertical();
         UndoCheck.Instance.CheckUndo(node);
         node.Name = EditorGUILayout.TextField("Name", node.Name);

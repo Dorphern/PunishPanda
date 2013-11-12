@@ -42,6 +42,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
 
     public virtual void OnEnable()
     {
+        treeDrawer.Filter(n => false);
         treeDrawer.OnContext = OnContext;
         treeDrawer.OnDrop = OnDrop;
         treeDrawer.CanDropObjects = CanDropObjects;
