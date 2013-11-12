@@ -44,8 +44,6 @@ public class Level : MonoBehaviour
         {
             normalPandaKills += 1;
         }
-        Debug.Log("normal: " + normalPandaKills + " perfect: " + perfectPandaKills);
-         Debug.Log("score: " + PunishPanda.Game.ScoreCalculator.PandaKillScore(perfectPandaKills, normalPandaKills));
     }
 
 
