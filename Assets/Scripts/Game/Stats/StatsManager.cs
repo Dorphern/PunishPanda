@@ -11,7 +11,7 @@ public class StatsManager : MonoBehaviour
     private const string gamesKey = "Levels";
 
     private const string fingerSizeKey = "FingerSize";
-    
+
     private const string musicEnabledKey = "MusicEnabled";
     private const string soundEffectsEnabledKey = "soundEffectsEnabled";
 
@@ -24,9 +24,9 @@ public class StatsManager : MonoBehaviour
     public int pandaSlaps;
     public int totalScore;
     public int gamesPlayed;
-    
+
     public float fingerSize;
-    
+
     public bool musicEnabled;
     public bool soundEffectsEnabled;
 
@@ -42,15 +42,15 @@ public class StatsManager : MonoBehaviour
 
     public void Load()
     {
-        literBlood   = PlayerPrefs.GetFloat(bloodKey);
+        literBlood = PlayerPrefs.GetFloat(bloodKey);
         pandasKilled = PlayerPrefs.GetInt(pandaKillsKey);
-        pandaSlaps   = PlayerPrefs.GetInt(pandaSlapsKey);
-        totalScore   = PlayerPrefs.GetInt(totalScoreKey);
-        gamesPlayed  = PlayerPrefs.GetInt(gamesKey);
+        pandaSlaps = PlayerPrefs.GetInt(pandaSlapsKey);
+        totalScore = PlayerPrefs.GetInt(totalScoreKey);
+        gamesPlayed = PlayerPrefs.GetInt(gamesKey);
 
-        FingerSize  = PlayerPrefs.GetFloat(fingerSizeKey);
+        FingerSize = PlayerPrefs.GetFloat(fingerSizeKey);
 
-        MusicEnabled        = PlayerPrefs.GetInt(musicEnabledKey) == 1;
+        MusicEnabled = PlayerPrefs.GetInt(musicEnabledKey) == 1;
         SoundEffectsEnabled = PlayerPrefs.GetInt(soundEffectsEnabledKey) == 1;
 
         var levels = InstanceFinder.LevelManager.GetWorld(0).Levels;
@@ -67,7 +67,7 @@ public class StatsManager : MonoBehaviour
         PlayerPrefs.SetFloat(bloodKey, LiterBlood);
         PlayerPrefs.SetInt(pandaKillsKey, PandasKilled);
         PlayerPrefs.SetInt(pandaSlapsKey, PandaSlaps);
-        
+
         PlayerPrefs.SetInt(gamesKey, gamesPlayed);
 
         PlayerPrefs.SetFloat(fingerSizeKey, FingerSize);

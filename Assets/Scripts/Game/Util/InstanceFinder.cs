@@ -3,7 +3,8 @@ using System.Collections;
 
 public class InstanceFinder : MonoBehaviour
 {
-    [SerializeField] private GameObject gameManagerPrefab;
+    [SerializeField]
+    private GameObject gameManagerPrefab;
 
     public static LevelManager LevelManager { get; set; }
     public static GameManager GameManager { get; set; }
