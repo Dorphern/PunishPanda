@@ -27,16 +27,6 @@ public class StarSpawner : TrapBase
 		return pandaAI.AttemptDeathTrapKill(this, isPerfect);	
 	}
 	
-	public void TryPandaKill(PandaAI pandaAI)
-	{
-		bool isPerfect = (pandaKillCount++ < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-        bool successful = PandaAttemptKill(pandaAI, isPerfect);
-        if (successful) 
-        {
-            GivePointsForKill(isPerfect);
-        }
-	}
-	
 	public override void ActivateTrap ()
 	{
 		base.ActivateTrap ();
@@ -50,7 +40,7 @@ public class StarSpawner : TrapBase
 	
 	IEnumerator SpawnStars()
 	{
-		while(this.isActivated)
+		while(collider.enabled)
 		{
 			if(starsPool.Count < maxStarCount)
 			{
@@ -76,5 +66,13 @@ public class StarSpawner : TrapBase
 		star.transform.position = transform.position;
 		star.starSpawner = this;
 		star.ShootStar(transform.forward, force, torque);
+	}
+	
+	void OnGUI()
+	{
+		if(GUI.Button(GUILayoutUtility.GetRect(100, 100), "Restart"))
+		{
+			Application.LoadLevel(Application.loadedLevelName);	
+		}
 	}
 }
