@@ -104,11 +104,25 @@ public class PandaAI : MonoBehaviour {
 			// the slap direction is opposite to the panda's facing direction
 			ChangeDirection(null);
 		}
-		bloodOnSlap.EmmitSlapBlood();
+		//bloodOnSlap.EmmitSlapBlood();
+		bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection.normalized);
+		
 	}
+
+    /**
+     * Attempt a kill on the panda from a death trap
+     * return true if the panda was successfully killed
+     **/
+    public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
+    {
+        float direction = Vector3.Angle(trap.transform.position, transform.position);
+        pandaStateManager.ChangeState(PandaState.Died);
+        Debug.Log("Panda died from " + trap.GetTrapType() + "; direction: " + direction);
+        return true;
+    }
 	#endregion
 	
-	# region Private Methods
+    # region Private Methods
 	// Use this for initialization
 	void Start()
 	{
@@ -121,7 +135,6 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
-        collisionController.OnDeathTrapHit += HitDeathObject;
 	}
 	
 	// Update is called once per frame
@@ -181,7 +194,7 @@ public class PandaAI : MonoBehaviour {
 		// make sure some time has passed since the last collision
 		if(Time.time - timeSinceLastCollisionWithPanda < pandaCollisionDelay)
 			return;
-	
+
 		timeSinceLastCollisionWithPanda = Time.time;
 		
 		
@@ -222,6 +235,10 @@ public class PandaAI : MonoBehaviour {
 			// if we hit a panda that is holding on to the finger we want this panda to change direction
 			else if(otherPandaSM.GetState() ==  PandaState.HoldingOntoFinger)
 				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+
+            else if (otherPandaSM.GetState() == PandaState.Died)
+                pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+
 		}
 	}
 	
@@ -231,12 +248,6 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.ChangeState(PandaState.Falling);
 			
 	}
-
-    public void HitDeathObject (ControllerColliderHit hit)
-    {
-        Debug.Log("Hit death object");
-        pandaStateManager.ChangeState(PandaState.Died);
-    }
 
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{

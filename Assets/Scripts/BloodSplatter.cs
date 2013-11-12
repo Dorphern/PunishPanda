@@ -6,7 +6,7 @@
 //
 
 using UnityEngine;
-using UnityEditor;
+
 using System.Collections;
 using System.Collections.Generic;
 using Edelweiss.DecalSystem;
@@ -98,6 +98,7 @@ public class BloodSplatter : MonoBehaviour {
 		
 		layerMask = ( 1 << LayerMask.NameToLayer("Panda") );
 		layerMask |= ( 1 << LayerMask.NameToLayer("FingerBlockade") );
+		layerMask |= ( 1 << LayerMask.NameToLayer("Ignore Raycast") );
 		layerMask = ~layerMask;
 		
 		// We instantiate a blood splatter in order to avoid a huge spike in performance caused by the first slap
@@ -209,7 +210,6 @@ public class BloodSplatter : MonoBehaviour {
 			
 			MeshCollider l_MeshCollider = hitInfo.transform.parent.GetComponent <MeshCollider> ();
 			MeshFilter l_MeshFilter = hitInfo.transform.parent.GetComponent <MeshFilter> ();
-			
 			
 			if (l_MeshCollider != null || l_MeshFilter != null) 
 			{
