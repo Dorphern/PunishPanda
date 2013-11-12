@@ -13,6 +13,7 @@ public class HDRBaseWindow : EditorWindow
 
     protected void BaseEnable()
     {
+
         autoRepaintOnSceneChange = true;
         EditorApplication.modifierKeysChanged += Repaint;
 
