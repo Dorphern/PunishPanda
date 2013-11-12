@@ -23,7 +23,7 @@ public class SideWallButton : MonoBehaviour {
 		
 		if(colliderType.type == CollidableTypes.Panda)
 		{
-			if(trap.isActive() == false)
+			if(trap.IsActive() == false)
 			{
 				trap.ActivateTrap();
 				StartCoroutine(DeactivateTrap());
