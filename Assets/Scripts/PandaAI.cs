@@ -25,6 +25,7 @@ public class PandaAI : MonoBehaviour {
 	float timeSinceLastCollisionWithPanda = 0f;
 	
 	PandaStateManager pandaStateManager;
+    Panda pandaController;
 	CollisionController collisionController;
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
@@ -117,7 +118,11 @@ public class PandaAI : MonoBehaviour {
     {
         float direction = Vector3.Angle(trap.transform.position, transform.position);
         pandaStateManager.ChangeState(PandaState.Died);
-        GetComponent<Panda>().PandaKilled(true, isPerfect);
+        pandaController.PandaKilled(true, isPerfect);
+        if (trap.GetTrapType() == TrapType.Electicity)
+        {
+            pandaController.EnableColliders( false );
+        }
         Debug.Log("Panda died from " + trap.GetTrapType() + "; direction: " + direction);
         return true;
     }
@@ -131,6 +136,7 @@ public class PandaAI : MonoBehaviour {
 		collisionController = GetComponent<CollisionController>();
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
+        pandaController = GetComponent<Panda>();
 		bloodOnSlap = GetComponent<BloodOnSlap>();
 		
 		collisionController.OnFloorHit += FloorCollision;
@@ -260,7 +266,6 @@ public class PandaAI : MonoBehaviour {
 		pandaStateManager.ChangeState(PandaState.Walking);
 		SetDefaultSpeed();
 	}
-	
 
 	# endregion
 		

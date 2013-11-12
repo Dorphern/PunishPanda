@@ -11,4 +11,13 @@ public class Panda : MonoBehaviour {
 	void Start () {
 	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda();
 	}
+
+    public void EnableColliders (bool enable)
+    {
+        Collider[] colliders = GetComponents<Collider>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            colliders[i].enabled = enable;
+        }
+    }
 }
