@@ -1,5 +1,5 @@
 using HDRAudio;
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
 
 public class HDRInstanceFinder : MonoBehaviour

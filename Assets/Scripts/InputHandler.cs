@@ -237,7 +237,6 @@ public class InputHandler : MonoBehaviour {
 				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
 				
 				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
-				Debug.Log(mouseDelta.magnitude);
 				// if we are fast enough for swiping
 				if(mouseDelta.magnitude > swipeThreshold)
 				{
