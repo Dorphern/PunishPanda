@@ -24,5 +24,6 @@ public class PauseGame : MonoBehaviour {
 	
 	public void RestartLevel()
 	{
+		Application.LoadLevel(0);
 	}
 }
