@@ -4,6 +4,7 @@ using System.Collections;
 public class Lever : MonoBehaviour {
 	
 	public TrapBase trap;
+	private Collidable colliderType;
 	
 	void Start () 
 	{
@@ -16,7 +17,10 @@ public class Lever : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider collider)
 	{
-		if(collider.GetComponent<Collidable>().type == CollidableTypes.Panda)
+		colliderType = collider.GetComponent<Collidable>();
+		if(colliderType == null) return;
+		
+		if(colliderType.type == CollidableTypes.Panda)
 		{
 			if(trap.IsActive() == true)
 			{

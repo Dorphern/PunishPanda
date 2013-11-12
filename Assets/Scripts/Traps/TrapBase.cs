@@ -92,34 +92,26 @@ public abstract class TrapBase : MonoBehaviour {
     /**
      * Handle collision with the panda.
      **/
-    protected void OnTriggerEnter (Collider collider)
+    virtual protected void OnTriggerEnter (Collider collider)
     {
         Collidable collidable = collider.GetComponent<Collidable>();
 
         if (collidable != null && collidable.type == CollidableTypes.Panda)
         {
-            bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-            bool successful = PandaAttemptKill(collider.GetComponent<PandaAI>(), isPerfect);
-            if (successful) 
-            {
-                GivePointsForKill(isPerfect);
-                SetDirty();
-                pandaKillCount++;
-            }
+            TryPandaKill(collider.GetComponent<PandaAI>());
         }
     }
-
-    /**
-     * Give points for the actual kill, based on it being perfect or not
-     * perfect kill: 500 pts
-     * normal kill: 20 pts
-     **/
-    private void GivePointsForKill (bool isPerfect) {
-        if (isPerfect)
-            Debug.Log("Perfect kill, give points");
-        else
-            Debug.Log("Normal kill, give points");
-    }
+	
+	public void TryPandaKill(PandaAI pandaAI)
+	{
+		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
+        bool successful = PandaAttemptKill(pandaAI, isPerfect);
+        if (successful) 
+        {
+            SetDirty();
+            pandaKillCount++;
+        }
+	}
 
     # endregion
 }
