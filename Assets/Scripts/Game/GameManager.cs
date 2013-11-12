@@ -2,21 +2,22 @@
 using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
-	LevelManager levelManager;
+public class GameManager : MonoBehaviour
+{
+    LevelManager levelManager;
 
-	void Awake()
-	{
-	    var instance = InstanceFinder.GameManager;
-	    if (instance == null)
-	    {
-	        Initialize();
-	    }
-	    else
-	    {
-	        Object.Destroy(gameObject);   
-	    }
-	}
+    void Awake()
+    {
+        var instance = InstanceFinder.GameManager;
+        if (instance == null)
+        {
+            Initialize();
+        }
+        else
+        {
+            Object.Destroy(gameObject);
+        }
+    }
 
     public void Initialize()
     {
@@ -30,10 +31,12 @@ public class GameManager : MonoBehaviour {
         InstanceFinder.GameManager = this;
         InstanceFinder.LevelManager = levelManager;
         InstanceFinder.PointSystem = GetComponent<PointSystem>();
+        InstanceFinder.StatsManager = GetComponent<StatsManager>();
     }
 
     public Level ActiveLevel
     {
-        get; set;
+        get;
+        set;
     }
 }
