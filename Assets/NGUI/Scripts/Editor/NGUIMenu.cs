@@ -143,7 +143,7 @@ static public class NGUIMenu
 #endif
 			UILabel lbl = NGUITools.AddWidget<UILabel>(go);
 			lbl.name = "Label";
-			lbl.font = NGUISettings.font;
+			lbl.bitmapFont = NGUISettings.bitmapFont;
 			lbl.text = "New Label";
 			lbl.pivot = NGUISettings.pivot;
 			lbl.width = 120;
@@ -180,6 +180,29 @@ static public class NGUIMenu
 		}
 	}
 
+	[MenuItem("NGUI/Create/Widget &#w")]
+	static public void AddWidget ()
+	{
+		GameObject go = NGUIEditorTools.SelectedRoot(true);
+
+		if (go != null)
+		{
+#if UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
+			Undo.RegisterSceneUndo("Add a Widget");
+#endif
+			UIWidget w = NGUITools.AddWidget<UIWidget>(go);
+			w.name = "Widget";
+			w.pivot = NGUISettings.pivot;
+			w.width = 100;
+			w.height = 100;
+			Selection.activeGameObject = w.gameObject;
+		}
+		else
+		{
+			Debug.Log("You must select a game object first.");
+		}
+	}
+
 	[MenuItem("NGUI/Create/Panel")]
 	static public void AddPanel ()
 	{
@@ -189,7 +212,7 @@ static public class NGUIMenu
 		{
 			NGUIEditorTools.RegisterUndo("Add a child UI Panel", go);
 
-			GameObject child = new GameObject(NGUITools.GetName<UIPanel>());
+			GameObject child = new GameObject(NGUITools.GetTypeName<UIPanel>());
 			child.layer = go.layer;
 
 			Transform ct = child.transform;

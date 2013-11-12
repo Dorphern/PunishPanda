@@ -28,6 +28,7 @@ GameObject:
   - 95: {fileID: 9500000}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400014}
+  - 114: {fileID: 11400016}
   m_Layer: 0
   m_Name: prop_roundSaw
   m_TagString: Untagged
@@ -543,7 +544,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.93897629, y: -.98549962, z: .930090249}
+  m_LocalPosition: {x: 3.93897629, y: -.771039248, z: .930090249}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 400026}
@@ -1060,7 +1061,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.51999998, y: 2.47000003, z: 1}
@@ -1072,7 +1073,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100032}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -1327,10 +1328,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 100032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ffb6784079290148940ec9c7021973f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a1d2362667d0d54890bd7480589aa33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  initActivated: 1
+  isPerfectTrap: 0
+  maxPerfectPandaKills: -1
+  cleanTexture: {fileID: 0}
+  dirtyTexture: {fileID: 0}
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1343,6 +1348,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a1d2362667d0d54890bd7480589aa33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initActivated: 1
+  isPerfectTrap: 1
+  maxPerfectPandaKills: -1
+  cleanTexture: {fileID: 0}
+  dirtyTexture: {fileID: 0}
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
