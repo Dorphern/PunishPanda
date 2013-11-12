@@ -10,6 +10,12 @@ using System.Collections.Generic;
 [CustomEditor(typeof(UIPanel))]
 public class UIPanelInspector : Editor
 {
+	enum Visibility
+	{
+		Visible,
+		Hidden,
+	}
+
 	/// <summary>
 	/// Handles & interaction.
 	/// </summary>
@@ -24,7 +30,7 @@ public class UIPanelInspector : Editor
 			{
 				if (e.keyCode == KeyCode.Escape)
 				{
-					Tools.current = Tool.Move;
+					UnityEditor.Tools.current = Tool.Move;
 					Selection.activeGameObject = null;
 					e.Use();
 				}
@@ -234,7 +240,7 @@ public class UIPanelInspector : Editor
 				GUI.color = (dc.panel == panel) ? Color.white : new Color(0.8f, 0.8f, 0.8f);
 
 				NGUIEditorTools.BeginContents();
-				EditorGUILayout.ObjectField("Material", dc.material, typeof(Material), false);
+				EditorGUILayout.ObjectField("Material", dc.baseMaterial, typeof(Material), false);
 
 				int count = 0;
 
@@ -284,6 +290,18 @@ public class UIPanelInspector : Editor
 				}
 
 				GUILayout.BeginHorizontal();
+				EditorGUILayout.LabelField("Render Q", dc.finalRenderQueue.ToString(), GUILayout.Width(120f));
+				bool draw = (Visibility)EditorGUILayout.EnumPopup(dc.isActive ? Visibility.Visible : Visibility.Hidden) == Visibility.Visible;
+				GUILayout.Space(18f);
+				GUILayout.EndHorizontal();
+
+				if (dc.isActive != draw)
+				{
+					dc.isActive = draw;
+					UnityEditor.EditorUtility.SetDirty(dc.panel);
+				}
+
+				GUILayout.BeginHorizontal();
 				EditorGUILayout.LabelField("Triangles", dc.triangles.ToString(), GUILayout.Width(120f));
 
 				if (dc.panel != panel)
@@ -295,14 +313,6 @@ public class UIPanelInspector : Editor
 					GUILayout.Space(18f);
 				}
 				GUILayout.EndHorizontal();
-
-				bool draw = !EditorGUILayout.Toggle("Hide", !dc.isActive);
-
-				if (dc.isActive != draw)
-				{
-					dc.isActive = draw;
-					UnityEditor.EditorUtility.SetDirty(dc.panel);
-				}
 
 				if (dc.panel.clipping != UIDrawCall.Clipping.None && !dc.isClipped)
 				{

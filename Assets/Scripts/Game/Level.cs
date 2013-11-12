@@ -6,7 +6,8 @@ using PunishPanda.Game;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField] private LevelScore levelScore = new LevelScore();
+
+    
 
     public void Pause()
     {
@@ -38,7 +39,8 @@ public class Level : MonoBehaviour
             return elapsedTime;
         }
     }
-
+	
+	[SerializeField] private LevelScore levelScore = new LevelScore();
     private float elapsedTime;
     private bool paused;
     private int totalPandaCount;

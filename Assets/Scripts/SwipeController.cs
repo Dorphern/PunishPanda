@@ -76,7 +76,7 @@ public class SwipeController : MonoBehaviour {
 		        hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
 			}
 		}/**/
-             
+      
     }
 	
 	Vector3 TranslateScreenToWorldPos(Vector3 mousePos)

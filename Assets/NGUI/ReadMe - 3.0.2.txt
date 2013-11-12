@@ -1,7 +1,7 @@
 ----------------------------------------------
             NGUI: Next-Gen UI kit
  Copyright © 2011-2013 Tasharen Entertainment
-                Version 3.0.2
+                Version 3.0.5
     http://www.tasharen.com/?page_id=197
             support@tasharen.com
 ----------------------------------------------
@@ -35,15 +35,64 @@ Using NGUI with JavaScript (UnityScript)? Read this first: http://www.tasharen.c
  Version History
 -----------------
 
-*** WARNING ***
-PLEASE BACK UP YOUR PROJECT BEFORE UPDATING!
-3.0.0 is a major changeset. You will need to open and re-save all of your scenes and prefabs after updating!
-After updating, expect some things to no longer work the same way they used to. Widgets scale is no longer
-used as its size, so any code that you had relying on this will need to change to use 'width' and 'height'.
-You can also expect compile errors related to delegate usage. The following links may help you:
+3.0.5
+- NEW: Added a way to set Localization's language using specified name and dictionary combo
+- NEW: Added UIInput.onChange that gets called whenever the input field's text changes for any reason.
+- NEW: Right-clicking in the scene view with a UI element selected now presents the hierarchy list underneath.
+- FIX: Widget selection logic had a bug in it that would select the wrong widget in some cases.
+- FIX: Label "Max Lines" setting now works correctly with the "Shrink Content" overflow setting.
+- FIX: Draggable panel now uses whole numbers, keeping itself pixel-perfect.
+- FIX: UIPlayAnimation will now work fine with multiple OnFinished calls.
+- FIX: Made UITextList work with dynamic font-using labels.
+- FIX: Popup list was not serializing dynamic fonts correctly.
+- FIX: UILabel will no longer use minimum size of zero.
+- FIX: Color symbols were not recognized quite right.
+- FIX: BetterList.Sort now uses Array.Sort.
+- FIX: Removed warnings in Unity 4.5.
+- FIX: Null check on UIInput.Append.
+- FIX: Flash platform compile fixes.
 
-http://www.youtube.com/watch?v=uNSZsMnhS1o&list=UUQGZdUwzE8gmvgjomZSNFJg
-http://www.tasharen.com/forum/index.php?topic=11.msg27296#msg27296
+3.0.4 (merged 3.0.3 letter updates)
+- NEW: UIPanel will now show the render queue number used to draw the geometry.
+- NEW: You can now specify a bitmap font in the widget wizard.
+- NEW: Added the ability to auto-resize the widget's box collider.
+- FIX: Draggable panel's scroll bars will now hide correctly when they should be hidden.
+- FIX: Scroll bar will no longer force the sprite to be pixel perfect.
+- FIX: UIInput was not hiding the password characters on deselect.
+- FIX: Additional checks to ensure the UILabel cleans up texture rebuild callbacks.
+- FIX: Adjusting the depth of a panel via NGUITools.AdjustDepth will now affect child panels.
+- FIX: UILabel.ProcessAndRequest was not calling ProcessText for labels using bitmap fonts.
+- FIX: Labels with encoded colors will now wrap properly.
+- FIX: It's no longer possible to set the sprite width and height to zero before assigning a sprite.
+- FIX: Raycasts that hit no widgets will now be ignored.
+- FIX: Fixed out of bounds exception when labels ended with [-].
+- FIX: UIWidget.ResizeCollider no longer does anything if the widget is disabled.
+- FIX: UIInput will no longer clear the text of multiple labels on mobile platforms.
+- FIX: UIInput.Submit() now sets the UIInput.current correctly.
+- FIX: Backwards compatibility additions.
+- FIX: Event delegate setting fix.
+- FIX: Unity 3.5 fixes.
+- FIX: WP8 fixes.
+
+3.0.3:
+- NEW: You no longer need to create UIFonts for dynamic fonts and can now specify font size and style directly on your labels.
+- NEW: As dynamic font-using label shrinks, it can automatically print with lower font size, maintaining its crispness.
+- NEW: You can now multi-edit sprites and labels.
+- NEW: UIInput has been redone, and now supports moving the caret as well as copy/paste keys in the editor.
+- NEW: UIInputValidator script's functionality is now a part of UIInput.
+- NEW: You can now create invisible widgets in case you want a simple way of intercepting events.
+- NEW: You can now use anonymous delegates with the EventDelegate.
+- FIX: UICamera.selectedObject changes are now delayed until end of frame.
+- FIX: GUI/Text shader is no longer used, replaced with an Unlit/Text shader instead.
+- FIX: Added a by-material sorting clause to widgets with conflicting depth, automatically reducing draw calls.
+- FIX: Some UITextures were still mistakenly referencing the Unlit/Texture shader.
+- FIX: Mouse events will no longer be processed if there are active touch events.
+- FIX: Popup list was not respecting the text scale correctly.
+- FIX: CalculateRaycastDepth will now ignore disabled widgets.
+- FIX: WP8 compile fix.
+- EDT: UILabel.font is now UILabel.bitmapFont, for clarity.
+- DEL: UILabel no longer has the 'password' option since it never made sense to have it there to begin with.
+- DEL: Got rid of the UpdateManager. It really should have been killed 2 years ago.
 
 3.0.2:
 - NEW: Added a "depth" property to the panels to make it possible to easily order panels.
@@ -53,7 +102,7 @@ http://www.tasharen.com/forum/index.php?topic=11.msg27296#msg27296
 - NEW: UIPanels now can show all draw calls instead of just their own.
 - NEW: UIStretch can now stretch clipped panels.
 - FIX: UITable was bugged with the "Up" direction.
-- FIX: FIX: Labels will process their text before returning the corners.
+- FIX: Labels will process their text before returning the corners.
 - FIX: UIAnchor was not calculating widget-related anchoring properly.
 
 3.0.1:
@@ -63,6 +112,16 @@ http://www.tasharen.com/forum/index.php?topic=11.msg27296#msg27296
 - FIX: UILabels will no longer MakePixelPerfect when their text is assigned.
 - FIX: Marking widgets as changed will now mark them as edited in Unity.
 - FIX: Sliced sprite border will again take pixel size into consideration.
+
+*** WARNING ***
+PLEASE BACK UP YOUR PROJECT BEFORE UPDATING!
+3.0.0 is a major changeset. You will need to open and re-save all of your scenes and prefabs after updating!
+After updating, expect some things to no longer work the same way they used to. Widgets scale is no longer
+used as its size, so any code that you had relying on this will need to change to use 'width' and 'height'.
+You can also expect compile errors related to delegate usage. The following links may help you:
+
+http://www.youtube.com/watch?v=uNSZsMnhS1o&list=UUQGZdUwzE8gmvgjomZSNFJg
+http://www.tasharen.com/forum/index.php?topic=11.msg27296#msg27296
 
 3.0.0:
 - NEW: Changed the way widgets get batched, properly fixing all remaining Z/depth issues.
