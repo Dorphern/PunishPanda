@@ -25,8 +25,10 @@ public class AuxWindow : HDRBaseWindow
     public void OnEnable()
     {
         BaseEnable();
-        busGUI = new AudioBusCreatorGUI(this);
-        bankGUI = new AudioBankCreatorGUI(this);
+        if(bankGUI == null)
+            busGUI = new AudioBusCreatorGUI(this);
+        if(bankGUI == null)
+            bankGUI = new AudioBankCreatorGUI(this);
 
         busGUI.OnEnable();
         bankGUI.OnEnable();
