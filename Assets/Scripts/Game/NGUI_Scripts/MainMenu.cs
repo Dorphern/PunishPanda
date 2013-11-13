@@ -13,7 +13,8 @@ public class MainMenu : MonoBehaviour {
 	
 	public void OnPlayClicked()
 	{
-		Debug.Log("Play Pressed!");	
+		//Debug.Log("Play Pressed!");	
+		menuMan.SwitchToMenu (MenuTypes.Levels);
 	}
 	
 	public void OnAchievementsClicked()

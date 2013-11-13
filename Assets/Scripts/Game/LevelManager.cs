@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour
     public void LoadMainMenu()
     {
         isInMainMenu = true;
-        LoadLevelWithTransition("MainMenu");
+        LoadLevelWithTransition(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
@@ -161,4 +161,9 @@ public class LevelManager : MonoBehaviour
             currentLevelIndex = -1;
         }
     }
+	
+	public void LoadLevel1()
+	{
+		InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
+	}
 }
