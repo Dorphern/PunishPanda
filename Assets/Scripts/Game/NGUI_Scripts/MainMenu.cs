@@ -3,8 +3,13 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 	
-	public GameObject settingsMenu;
-	public GameObject mainMenu;
+	MenuManager menuMan;
+	
+	void Start()
+	{
+		menuMan = GetComponent<MenuManager>();	
+	}
+	
 	
 	public void OnPlayClicked()
 	{
@@ -23,11 +28,7 @@ public class MainMenu : MonoBehaviour {
 	
 	public void OnSettingsClicked()
 	{
-		if(settingsMenu!=null)
-		{
-			//mainMenu.SetActive(false);
-			//settingsMenu.SetActive(true);
-		}
+		menuMan.SwitchToMenu(MenuTypes.Settings);
 	}
 	
 }

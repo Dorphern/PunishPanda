@@ -2,9 +2,13 @@
 using System.Collections;
 
 public class Settings : MonoBehaviour {
+
+	MenuManager menuMan;
 	
-	public GameObject settingsMenu;
-	public GameObject mainMenu;
+	void Start()
+	{
+		menuMan = GetComponent<MenuManager>();	
+	}
 	
 	public void OnCalibrateFingerClicked()
 	{
@@ -18,7 +22,6 @@ public class Settings : MonoBehaviour {
 	
 	public void OnReturnClicked()
 	{
-		settingsMenu.SetActive(false);
-		mainMenu.SetActive(true);
+		menuMan.SwitchToMenu(MenuTypes.MainMenu);
 	}
 }
