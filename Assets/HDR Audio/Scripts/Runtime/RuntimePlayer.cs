@@ -103,13 +103,13 @@ public class RuntimePlayer : MonoBehaviour
         breakLoop = false;
         current.Bus.GetRuntimePlayers().Add(this);
 
-        yield return StartCoroutine(FindNext(root, current, endTime));
+        yield return StartCoroutine(NextNode(root, current, endTime));
         yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime));
         //Clean up object
         StopAndCleanup();
     }
 
-    private IEnumerator FindNext(AudioNode root, AudioNode current, DSPTime endTime)
+    private IEnumerator NextNode(AudioNode root, AudioNode current, DSPTime endTime)
     {
         byte loops = 0;
         var nodeData = current.NodeData;
@@ -150,13 +150,13 @@ public class RuntimePlayer : MonoBehaviour
             }
             else if (current.Type == AudioNodeType.Random)
             {
-                yield return StartCoroutine(FindNext(root, RuntimeHelper.SelectRandom(current), endTime));
+                yield return StartCoroutine(NextNode(root, RuntimeHelper.SelectRandom(current), endTime));
             }
             else if (current.Type == AudioNodeType.Sequence)
             {
                 for (int j = 0; j < current.Children.Count; ++j)
                 {
-                    yield return StartCoroutine(FindNext(root, current.Children[j], endTime));
+                    yield return StartCoroutine(NextNode(root, current.Children[j], endTime));
                 }
             }
             else if (current.Type == AudioNodeType.Multi)
@@ -170,7 +170,7 @@ public class RuntimePlayer : MonoBehaviour
                 }
                 for (int j = 0; j < current.Children.Count; ++j)
                 {
-                    toStart[j] = StartCoroutine(FindNext(root, current.Children[j], childTimes[j]));
+                    toStart[j] = StartCoroutine(NextNode(root, current.Children[j], childTimes[j]));
                 }
                 for (int j = 0; j < childTimes.Length; ++j)
                 {
