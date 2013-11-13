@@ -126,6 +126,12 @@ public class PandaAI : MonoBehaviour {
         Debug.Log("Panda died from " + trap.GetTrapType() + "; direction: " + direction);
         return true;
     }
+
+    public bool IsAlive ()
+    {
+        PandaState state = pandaStateManager.GetState();
+        return state != PandaState.Died;
+    }
 	#endregion
 	
     # region Private Methods
