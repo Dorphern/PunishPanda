@@ -35,6 +35,7 @@ public class ElectricityTrap : TrapBase {
         {
             electricity.renderer.material.mainTextureOffset = new Vector2(electricityTextureTileWidth * electricIndex, 0);
             electricIndex++;
+            //electricIndex = Random.Range(0, electricTextureCount);
             if (electricIndex == electricTextureCount) electricIndex = 0;
             yield return new WaitForSeconds(0.07f);
         }
