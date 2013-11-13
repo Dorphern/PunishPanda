@@ -32,10 +32,11 @@ public class PounderTrap : TrapBase
 
     IEnumerator PlayPoundingAnimation ()
     {
+        yield return new WaitForSeconds(sleepTime);
         while (IsActive())
         {
             parentPounder.animation.Play();
-            yield return new WaitForSeconds(parentPounder.animation[animationName].length 
+            yield return new WaitForSeconds(parentPounder.animation[animationName].length
                 + Time.fixedDeltaTime + sleepTime);
         }
     }
