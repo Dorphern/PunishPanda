@@ -5,6 +5,7 @@ public class SideWallButton : MonoBehaviour {
 
 	public TrapBase trap;
 	public float activationTimeLength = 3f;
+	private Collidable colliderType;
 	
 	void Start () 
 	{
@@ -17,7 +18,10 @@ public class SideWallButton : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider collider)
 	{
-		if(collider.GetComponent<Collidable>().type == CollidableTypes.Panda)
+		colliderType = collider.GetComponent<Collidable>();
+		if(colliderType == null) return;
+		
+		if(colliderType.type == CollidableTypes.Panda)
 		{
 			if(trap.IsActive() == false)
 			{
