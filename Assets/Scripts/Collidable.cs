@@ -8,7 +8,8 @@ public enum CollidableTypes {
 	DeathTrap,
 	Wall,
     Hotspot,
-	Floor
+	Floor,
+	ThrowingStar
 	
 }
 
