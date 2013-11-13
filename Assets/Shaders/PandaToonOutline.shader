@@ -41,7 +41,7 @@ Shader "PunishPanda/Toon Outline" {
 		Pass {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
-			Cull Front
+			Cull Off
 			ZWrite Off
 			ColorMask RGB
 			Blend SrcAlpha OneMinusSrcAlpha
@@ -60,7 +60,7 @@ Shader "PunishPanda/Toon Outline" {
 		Pass {
 			Name "OUTLINE"
 			Tags { "LightMode" = "Always" }
-			Cull Front
+			Cull Off
 			ZWrite Off
 			ColorMask RGB
 			Blend SrcAlpha OneMinusSrcAlpha
