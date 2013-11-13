@@ -32,7 +32,11 @@ public class PandaAI : MonoBehaviour {
 	BloodOnSlap bloodOnSlap;
 
     [SerializeField] [EventHookAttribute("Slap")]
-    List<AudioEvent> slapAudioEvents = new List<AudioEvent>(); 
+    List<AudioEvent> slapAudioEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Jump")]
+    private List<AudioEvent> jumpEvents;
 	
 	
 	#region Public Methods
@@ -69,6 +73,10 @@ public class PandaAI : MonoBehaviour {
         if (ApplyJump != null)
         {
             pandaStateManager.ChangeState(PandaState.Jumping);
+            for (int i = 0; i < jumpEvents.Count; i++)
+            {
+                HDRSystem.PostEvent(gameObject, jumpEvents[i]);
+            }
             ApplyJump(force, direction);
         }
     }

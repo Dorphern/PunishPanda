@@ -19,8 +19,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	bool withinRange = false;
 
-    [SerializeField] [EventHookAttribute("Jump")] 
-    private List<AudioEvent> jumpEvents;
+
 
  
         #region SerializedClasses
@@ -154,10 +153,7 @@ public class PandaMovementController : MonoBehaviour {
 
     void JumpingMovement ()
     {
-        for (int i = 0; i < jumpEvents.Count; i++)
-        {
-            HDRSystem.PostEvent(gameObject, jumpEvents[i]);
-        }
+        
         ApplyGravity();
     }
 	 
