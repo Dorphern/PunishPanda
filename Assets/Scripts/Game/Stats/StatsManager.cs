@@ -137,4 +137,8 @@ public class StatsManager : MonoBehaviour
     {
         Save();
     }
+	public void saveStats()
+	{
+		Save();
+	}
 }
