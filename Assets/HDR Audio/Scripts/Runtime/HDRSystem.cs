@@ -264,7 +264,7 @@ public class HDRSystem : MonoBehaviour
 
     private IEnumerator PostDelayedActions(GameObject controllingObject, AudioEventAction eventData, Vector3 postAt)
     {
-        yield return new WaitForSeconds(eventData.Delay + eventData.Delay);
+        yield return new WaitForSeconds(eventData.Delay);
         HandleEventAction(controllingObject, eventData, null, postAt);
     }
     #endregion
