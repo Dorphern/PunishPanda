@@ -7,9 +7,9 @@ public class ElectricityTrap : TrapBase {
     [SerializeField] GameObject electricityBox0;
     [SerializeField] GameObject electricityBox1;
 
-    [SerializeField] Texture[] electricTextures;
+    [SerializeField] int electricTextureCount = 5;
     protected int electricIndex = 0;
-    protected int baseRotation = 45;
+    protected float electricityTextureTileWidth = 0.166f;
 
     override public TrapType GetTrapType ()
     {
@@ -33,12 +33,9 @@ public class ElectricityTrap : TrapBase {
     {
         while (IsActive())
         {
-            electricity.renderer.material.mainTexture = electricTextures[electricIndex];
+            electricity.renderer.material.mainTextureOffset = new Vector2(electricityTextureTileWidth * electricIndex, 0);
             electricIndex++;
-            if (electricIndex == electricTextures.Length) electricIndex = 0;
-            electricity.transform.eulerAngles = 
-                new Vector3(0, 0, Random.Range(0, 2) * 180 + baseRotation);
-            //electricIndex = Random.Range(0, electricTextures.Length);
+            if (electricIndex == electricTextureCount) electricIndex = 0;
             yield return new WaitForSeconds(0.07f);
         }
     }
