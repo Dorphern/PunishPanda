@@ -7,7 +7,8 @@ public enum MenuTypes
 	MainMenu,
 	Settings,
 	Achievements,
-	Unlocks
+	Unlocks,
+	Levels
 }
 
 public class MenuType : MonoBehaviour {

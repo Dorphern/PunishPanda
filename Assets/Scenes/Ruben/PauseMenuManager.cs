@@ -3,15 +3,17 @@ using System.Collections;
 
 public class PauseMenuManager : MonoBehaviour {
 	
+	//Attach this script to Buttons(objects with box colliders)
+	//in the In-Game-GUI
+	PauseGame pausegame; 
+	
 	public GameObject PauseMenu; 
 	public GameObject HintScreen;
 	public GameObject LevelsScreen; 
 	
 	void Start()
 	{
-	    //HintScreen = GameObject.Find("Hint(Goal)Screen");
-	    //PauseMenu = GameObject.Find("PauseMENU");
-		//HintScreen.SetActiveRecursively(false);
+		pausegame = GetComponent<PauseGame>();
 	}
 	
 	void OnClick()
@@ -40,6 +42,20 @@ public class PauseMenuManager : MonoBehaviour {
 			LevelsScreen.SetActiveRecursively(false);
 	    	PauseMenu.SetActiveRecursively(true);
 		}
+		
+		//case for going to MAIN MENU
+		if(gameObject.name == "MainMenuButtonOffset")
+		{
+			OnMainMenuClick();
+		}
+		
 	}
 	
+	
+	public void OnMainMenuClick()
+	{
+		//Unpause game to get the normal TimeScale back
+		pausegame.ResumeGame();
+		InstanceFinder.LevelManager.LoadMainMenu();
+	}
 }
