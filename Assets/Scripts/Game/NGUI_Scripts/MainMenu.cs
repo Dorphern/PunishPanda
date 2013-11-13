@@ -31,4 +31,5 @@ public class MainMenu : MonoBehaviour {
 		menuMan.SwitchToMenu(MenuTypes.Settings);
 	}
 	
+	
 }
