@@ -49,4 +49,5 @@ public class Settings : MonoBehaviour {
 			Debug.Log("efx Slider val: " + _soundEFXSlider.value);
 		}
 	}
+	
 }
