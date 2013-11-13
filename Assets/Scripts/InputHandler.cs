@@ -29,7 +29,12 @@ public class InputHandler : MonoBehaviour {
 		selectedHotSpots = new Dictionary<int, Hotspot>();
 		lastMousePos = new Vector3[2];
 		
+		float fingerSize = InstanceFinder.StatsManager.FingerSize;
 		
+		for(int i = 0; i < blockades.Count; i++)
+		{
+			blockades[i].transform.localScale = new Vector3(fingerSize, fingerSize, fingerSize);	
+		}
 	}
 	
 	
