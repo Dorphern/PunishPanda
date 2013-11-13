@@ -63,8 +63,9 @@ GameObject:
   - 4: {fileID: 400006}
   - 33: {fileID: 3300004}
   - 23: {fileID: 2300004}
+  - 95: {fileID: 9500004}
   m_Layer: 0
-  m_Name: Electricity
+  m_Name: Electricity Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,9 +81,9 @@ Transform:
   m_LocalPosition: {x: 1.3709718, y: -3.01862454, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 400006}
   - {fileID: 400004}
   - {fileID: 400002}
+  - {fileID: 400006}
   m_Father: {fileID: 0}
 --- !u!4 &400002
 Transform:
@@ -112,9 +113,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_LocalRotation: {x: 0, y: 0, z: .382683486, w: .923879564}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5, y: 3.5, z: .100000001}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
+  m_LocalPosition: {x: -1.1920929e-07, y: -2.41034913, z: -.227564573}
+  m_LocalScale: {x: 4.7857461, y: 4.7857461, z: 4.7857461}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -165,7 +166,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 83844fa8f3ec03a4ba49210b91950c7a, type: 2}
+  - {fileID: 2100000, guid: c3cf758d074e84d4885c9e9f3c41e817, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -191,7 +192,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 4370d4d5a0c7207469ce6471d0c1a1e0, type: 3}
 --- !u!65 &6500000
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -228,6 +229,18 @@ Animator:
   m_CullingMode: 1
   m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
+--- !u!95 &9500004
+Animator:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 4370d4d5a0c7207469ce6471d0c1a1e0, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 1
+  m_ApplyRootMotion: 1
+  m_AnimatePhysics: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -244,13 +257,10 @@ MonoBehaviour:
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
-  electricity: {fileID: 100006}
+  electricity: {fileID: 0}
   electricityBox0: {fileID: 100004}
   electricityBox1: {fileID: 100002}
-  electricTextures:
-  - {fileID: 2800000, guid: 301792675c82f6b4fa14b9291cbd17f8, type: 3}
-  - {fileID: 2800000, guid: 56d9fc769eada594096eb8291431965c, type: 3}
-  - {fileID: 2800000, guid: 31e24105edf69d74cbc317a924ac7619, type: 3}
+  electricTextureCount: 5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
