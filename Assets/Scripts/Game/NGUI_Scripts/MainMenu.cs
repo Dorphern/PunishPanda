@@ -3,9 +3,18 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 	
+	MenuManager menuMan;
+	
+	void Start()
+	{
+		menuMan = GetComponent<MenuManager>();	
+	}
+	
+	
 	public void OnPlayClicked()
 	{
-		Debug.Log("Play Pressed!");	
+		//Debug.Log("Play Pressed!");	
+		menuMan.SwitchToMenu (MenuTypes.Levels);
 	}
 	
 	public void OnAchievementsClicked()
@@ -20,6 +29,8 @@ public class MainMenu : MonoBehaviour {
 	
 	public void OnSettingsClicked()
 	{
-		Debug.Log("Settings Pressed!");	
+		menuMan.SwitchToMenu(MenuTypes.Settings);
 	}
+	
+	
 }

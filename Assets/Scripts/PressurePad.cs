@@ -5,6 +5,7 @@ public class PressurePad : MonoBehaviour {
 	
 	public TrapBase trap;
 	private int pandaCount = 0;
+	private Collidable colliderType;
 	
 	void Start() 
 	{
@@ -30,7 +31,10 @@ public class PressurePad : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider collider)
 	{
-		if(collider.GetComponent<Collidable>().type == CollidableTypes.Panda)
+		colliderType = collider.GetComponent<Collidable>();
+		if(colliderType == null) return;
+		
+		if(colliderType.type == CollidableTypes.Panda)
 		{
 			pandaCount++;
 		}
@@ -38,8 +42,11 @@ public class PressurePad : MonoBehaviour {
 	
 	void OnTriggerExit(Collider collider)
 	{
-		if(collider.GetComponent<Collidable>().type == CollidableTypes.Panda)
-		{
+		colliderType = collider.GetComponent<Collidable>();
+		if(colliderType == null) return;
+		
+		if(colliderType.type == CollidableTypes.Panda)
+		{	
 			pandaCount--;
 		}
 	}
