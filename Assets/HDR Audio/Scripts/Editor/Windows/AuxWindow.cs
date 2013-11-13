@@ -162,9 +162,9 @@ public class AuxWindow : HDRBaseWindow
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("Start over from scratch", GUILayout.Height(30)))
+        if (GUILayout.Button("Initialize over from scratch", GUILayout.Height(30)))
         {
-            if (EditorUtility.DisplayDialog("Create new project?", "This will delete ALL data!", "Start from scratch", "Do nothing"))
+            if (EditorUtility.DisplayDialog("Create new project?", "This will delete ALL data!", "Initialize from scratch", "Do nothing"))
             {
                 SystemFolderHelper.DeleteFolderContent(FolderSettings.BankDeleteFolder);
 
