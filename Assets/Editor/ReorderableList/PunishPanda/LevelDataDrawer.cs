@@ -61,6 +61,7 @@ public class LevelDataDrawer : IReorderableListAdaptor
 
     public void DrawItem(Rect position, int index)
     {
+		position.height = 17;
         var currentLevel = levelDataList[index];
         Rect togglePos = position;
         togglePos.height = 17;
@@ -70,7 +71,6 @@ public class LevelDataDrawer : IReorderableListAdaptor
         position.x += totalWidth - 60;
         position.width = 60;
         currentLevel.Mode = (PunishPanda.Game.GameModes) EditorGUI.EnumPopup(position, currentLevel.Mode);
-        
     }
 
     public float GetItemHeight(int index)
