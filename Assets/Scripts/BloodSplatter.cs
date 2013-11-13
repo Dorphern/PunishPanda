@@ -52,7 +52,7 @@ public class BloodSplatter : MonoBehaviour {
 	// 3D vector controlling the direction of the splat
 	private Vector3 projectionDirection = Vector3.right;
 	
-	private Vector3 rayStartYOffset = new Vector3(0,1,0);
+	public Vector3 rayStartYOffset = new Vector3(0,1,0);
 	private float rayDistance = 10f;
 	
 		// Move on to the next uv rectangle index.
@@ -156,7 +156,6 @@ public class BloodSplatter : MonoBehaviour {
 		projectionDirection.x = slapDirection.x;
 		projectionDirection.y = slapDirection.y;
 		projectionDirection.z = Mathf.Abs(slapDirection.x);
-		
 		if(Physics.Raycast (rayStart + rayStartYOffset, projectionDirection, out hitInfo, rayDistance, layerMask) )
 		{
 				// Collider hit.
@@ -186,19 +185,19 @@ public class BloodSplatter : MonoBehaviour {
 			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
 			
 			projectionDirection.x = 0f;
-			if(projectionDirection.y > 0f)
-			{
-				projectionDirection.y = 0f;	
-				decalProjectorOffset = 1f;
-			}
-			else if(projectionDirection.y < -0.7f && projectionDirection.y > - 0.90f)
-			{
-				decalProjectorOffset = 3f;
-			}
-			else
-			{
-				decalProjectorOffset = 2.7f;
-			}
+//			if(projectionDirection.y > 0f)
+//			{
+//				projectionDirection.y = 0f;	
+//				decalProjectorOffset = 1f;
+//			}
+//			else if(projectionDirection.y < -0.7f && projectionDirection.y > - 0.90f)
+//			{
+//				decalProjectorOffset = 3f;
+//			}
+//			else
+//			{
+//				decalProjectorOffset = 2.7f;
+//			}
 			
 			Quaternion l_ProjectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 
