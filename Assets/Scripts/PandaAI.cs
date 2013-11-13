@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -29,6 +30,9 @@ public class PandaAI : MonoBehaviour {
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
 	BloodOnSlap bloodOnSlap;
+
+    [SerializeField] [EventHookAttribute("Slap")]
+    List<AudioEvent> slapAudioEvents = new List<AudioEvent>(); 
 	
 	
 	#region Public Methods
@@ -77,6 +81,11 @@ public class PandaAI : MonoBehaviour {
 		// play animation + splatter ( texture projection + particles)
 		StartCoroutine(PlaySlap(slapEventLength, slapDirection));
         pandaStateManager.IncrementSlapCount();
+
+        for (int i = 0; i < slapAudioEvents.Count; i++)
+        {
+            HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
+        }
 		
 		Vector2 facingDirection;
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
