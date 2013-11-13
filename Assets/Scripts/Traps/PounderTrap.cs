@@ -21,11 +21,6 @@ public class PounderTrap : TrapBase
         StartCoroutine(PlayPoundingAnimation());
     }
 
-    public override void DeactivateTrap ()
-    {
-        base.DeactivateTrap();
-    }
-
     # endregion
 
     # region Private Methods
