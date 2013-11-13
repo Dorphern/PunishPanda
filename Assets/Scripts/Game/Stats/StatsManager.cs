@@ -51,7 +51,6 @@ public class StatsManager : MonoBehaviour
         gamesPlayed = PlayerPrefs.GetInt(gamesKey);
 
         fingerSize = PlayerPrefs.GetFloat(fingerSizeKey, defaultFingerSize);
-		Debug.Log(fingerSize);
         musicEnabled = PlayerPrefs.GetInt(musicEnabledKey) == 1;
         soundEffectsEnabled = PlayerPrefs.GetInt(soundEffectsEnabledKey) == 1;
 
