@@ -7,8 +7,7 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     //Volume set in the editor
     public float Volume = 1.0f;
 
-    //The volume in the hiarchy
-    public float CombinedVolume = 1.0f;
+
 
     public int GUID;
 
@@ -24,22 +23,27 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
 
     //Do we need to update the attach audio players?
     [System.NonSerialized]
-    public bool Dirty;
+    public bool Dirty = true;
 
     //The nodes during runtime that is in this bus
     [System.NonSerialized]
     public List<RuntimePlayer> NodesInBus = new List<RuntimePlayer>();
 
-    //Current volume
+    //The volume to set it's children to
     [System.NonSerialized]
     public float RuntimeVolume = 1.0f;
 
-    //What the volume should be
+    //What the volume for itself is
     [System.NonSerialized]
-    public float RuntimeTargetVolume = 1.0f;
+    public float RuntimeSelfVolume = 1.0f;
+
+    //The volume in the hiarchy
+    [System.NonSerialized]
+    public float CombinedVolume = 1.0f;
+
 
     [System.NonSerialized]
-    public Fader Fader = null;
+    public Fader Fader = new Fader();
 
 
 #if UNITY_EDITOR

@@ -29,7 +29,7 @@ namespace HDRAudio.TreeDrawer
                 picture = EditorResources.Minus;
             else
                 picture = EditorResources.Plus;
-
+            
             GUILayout.Label(picture, noMargain, GUILayout.Height(EditorResources.Minus.height),
                 GUILayout.Width(EditorResources.Minus.width));
             Rect foldRect = GUILayoutUtility.GetLastRect();
