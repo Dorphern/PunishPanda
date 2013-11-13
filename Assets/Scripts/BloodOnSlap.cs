@@ -37,7 +37,6 @@ public class BloodOnSlap : MonoBehaviour {
 	public void EmmitSlapBlood()
 	{
 		GameObject BloodSplat;
-		Debug.Log("af");
 		for(int i = 0; i < slapAudioEvents.Count; ++i)
 		{
 			

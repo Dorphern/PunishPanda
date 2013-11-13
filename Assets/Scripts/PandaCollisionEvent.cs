@@ -13,8 +13,7 @@ public class PandaCollisionEvent : MonoBehaviour
     private List<AudioEvent> pandaCollideEvents = new List<AudioEvent>();
 
     void OnTriggerEnter(Collider collision)
-    {
-        Debug.Log(collision.gameObject.layer);
+	{
         if (collision.gameObject.layer == 8)
         {
             if (onlyPlayOnce && !hasPlayed)
