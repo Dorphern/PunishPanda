@@ -367,7 +367,7 @@ public class UIPanel : MonoBehaviour
 			UIDrawCall dc = UIDrawCall.list.buffer[index];
 
 			// If the material and texture match, keep using the same draw call
-			if (dc != null && dc.panel == this && dc.material == mat && dc.mainTexture == mat.mainTexture) return dc;
+			if (dc != null && dc.panel == this && dc.baseMaterial == mat && dc.mainTexture == mat.mainTexture) return dc;
 
 			// Otherwise we need to destroy all the draw calls that follow
 			for (int i = UIDrawCall.list.size; i > index; )
@@ -390,7 +390,7 @@ public class UIPanel : MonoBehaviour
 		
 		// Create the draw call
 		UIDrawCall drawCall = go.AddComponent<UIDrawCall>();
-		drawCall.material = mat;
+		drawCall.baseMaterial = mat;
 		drawCall.renderQueue = UIDrawCall.list.size;
 		drawCall.panel = this;
 		//Debug.Log("Added DC " + mat.name + " as " + UIDrawCall.list.size);
@@ -660,14 +660,14 @@ public class UIPanel : MonoBehaviour
 	public void Refresh ()
 	{
 		mFullRebuild = true;
-		list[0].LateUpdate();
+		if (list.size > 0) list[0].LateUpdate();
 	}
 
 	/// <summary>
 	/// Calculate the offset needed to be constrained within the panel's bounds.
 	/// </summary>
 
-	public Vector3 CalculateConstrainOffset (Vector2 min, Vector2 max)
+	public virtual Vector3 CalculateConstrainOffset (Vector2 min, Vector2 max)
 	{
 		float offsetX = clipRange.z * 0.5f;
 		float offsetY = clipRange.w * 0.5f;
@@ -917,34 +917,31 @@ public class UIPanel : MonoBehaviour
 		GameObject go = UnityEditor.Selection.activeGameObject;
 		bool selected = (go != null) && (NGUITools.FindInParents<UIPanel>(go) == this);
 
-		//if (selected || clip)
+		if (size.x == 0f) size.x = mScreenWidth;
+		if (size.y == 0f) size.y = mScreenHeight;
+
+		if (!clip)
 		{
-			if (size.x == 0f) size.x = mScreenWidth;
-			if (size.y == 0f) size.y = mScreenHeight;
+			UIRoot root = NGUITools.FindInParents<UIRoot>(cachedGameObject);
+			if (root != null) size *= root.GetPixelSizeAdjustment(mScreenHeight);
+		}
 
-			if (!clip)
+		Transform t = clip ? transform : (mCam != null ? mCam.transform : null);
+
+		if (t != null)
+		{
+			Vector3 pos = clip ? new Vector3(mClipRange.x, mClipRange.y) : Vector3.zero;
+			Gizmos.matrix = t.localToWorldMatrix;
+
+			if (selected)
 			{
-				UIRoot root = NGUITools.FindInParents<UIRoot>(cachedGameObject);
-				if (root != null) size *= root.GetPixelSizeAdjustment(mScreenHeight);
+				Gizmos.color = new Color(1f, 0f, 0.5f);
+				Gizmos.DrawWireCube(pos, size);
 			}
-
-			Transform t = clip ? transform : (mCam != null ? mCam.transform : null);
-
-			if (t != null)
+			else
 			{
-				Vector3 pos = clip ? new Vector3(mClipRange.x, mClipRange.y) : Vector3.zero;
-				Gizmos.matrix = t.localToWorldMatrix;
-
-				if (selected)
-				{
-					Gizmos.color = new Color(1f, 0f, 0.5f);
-					Gizmos.DrawWireCube(pos, size);
-				}
-				else
-				{
-					Gizmos.color = new Color(0.5f, 0f, 0.5f);
-					Gizmos.DrawWireCube(pos, size);
-				}
+				Gizmos.color = new Color(0.5f, 0f, 0.5f);
+				Gizmos.DrawWireCube(pos, size);
 			}
 		}
 	}

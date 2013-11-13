@@ -305,7 +305,7 @@ Transform:
   m_GameObject: {fileID: 9}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00277777785, y: .00277777785, z: .00277777785}
+  m_LocalScale: {x: .00380952377, y: .00380952377, z: .00380952377}
   m_Children:
   - {fileID: 22}
   m_Father: {fileID: 0}
@@ -328,7 +328,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 11}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.5, y: .5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 24}
@@ -447,12 +447,15 @@ MonoBehaviour:
   mWidth: 293
   mHeight: 28
   mDepth: 6
+  autoResizeBoxCollider: 0
+  keepCrispWhenShrunk: 1
+  mTrueTypeFont: {fileID: 0}
   mFont: {fileID: 11400000, guid: 7a48ea22e80d1ac4b97fdd87f9009546, type: 2}
   mText: 'Tutorial 5: Label'
+  mFontSize: 28
+  mFontStyle: 0
   mEncoding: 1
   mMaxLineCount: 0
-  mPassword: 0
-  mShowLastChar: 0
   mEffectStyle: 0
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
@@ -477,24 +480,28 @@ MonoBehaviour:
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 0
   mWidth: 480
-  mHeight: 180
+  mHeight: 275
   mDepth: 5
+  autoResizeBoxCollider: 0
+  keepCrispWhenShrunk: 1
+  mTrueTypeFont: {fileID: 0}
   mFont: {fileID: 11400000, guid: ac44b8a25154a9d40a172ab5851e0986, type: 2}
   mText: '[99ff00]NGUI[-]''s labels can have [ff0000]embedded[-] [0099ff]colors[-],
 
 
-    The labels can be mult-line, can be turned into a
-
-    password field with a checkbox, and can even support automatic word wrapping if
-    you specify a Line Width.
+    The labels can be mult-line, can word wrap, shrink font size to fit the text content,
+    and can have effects on them such as shadow and outline.
 
 
-    And since the font is a part of the texture atlas, the UI is still just one draw
-    call.'
+    Bitmap fonts can exist inside an atlas, and will end up in the same draw call
+    as the rest of the UI. Bitmap fonts can also have emoticons (symbols).
+
+
+    Dynamic fonts use a separate draw call.'
+  mFontSize: 20
+  mFontStyle: 0
   mEncoding: 1
   mMaxLineCount: 0
-  mPassword: 0
-  mShowLastChar: 0
   mEffectStyle: 0
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
@@ -521,6 +528,7 @@ MonoBehaviour:
   mWidth: 500
   mHeight: 40
   mDepth: 3
+  autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
   mSpriteName: Light
   mFillCenter: 1
@@ -544,6 +552,7 @@ MonoBehaviour:
   mWidth: 500
   mHeight: 500
   mDepth: -1
+  autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
   mSpriteName: Dark
   mFillCenter: 1
@@ -637,6 +646,7 @@ MonoBehaviour:
   mWidth: 182
   mHeight: 182
   mDepth: 2
+  autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
   mSpriteName: Dark
   mFillCenter: 1
@@ -660,6 +670,7 @@ MonoBehaviour:
   mWidth: 182
   mHeight: 182
   mDepth: 1
+  autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
   mSpriteName: Dark
   mFillCenter: 1
@@ -683,6 +694,7 @@ MonoBehaviour:
   mWidth: 182
   mHeight: 182
   mDepth: 0
+  autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
   mSpriteName: Dark
   mFillCenter: 1
@@ -706,6 +718,7 @@ MonoBehaviour:
   mWidth: 494
   mHeight: 457
   mDepth: 4
+  autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
   mSpriteName: Honeycomb
   mFillCenter: 1
@@ -729,17 +742,17 @@ MonoBehaviour:
   widgetsAreStatic: 0
   cullWhileDragging: 0
   worldToLocal:
-    e00: 360
+    e00: 262.5
     e01: 0
     e02: 0
-    e03: .5
+    e03: 0
     e10: 0
-    e11: 360
+    e11: 262.5
     e12: 0
-    e13: -.5
+    e13: 0
     e20: 0
     e21: 0
-    e22: 360
+    e22: 262.5
     e23: 0
     e30: 0
     e31: 0
