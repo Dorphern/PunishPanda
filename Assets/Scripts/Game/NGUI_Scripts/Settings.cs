@@ -15,7 +15,7 @@ public class Settings : MonoBehaviour {
 	
 	public void OnCalibrateFingerClicked()
 	{
-		Debug.Log("Calibrate!");
+		menuMan.SwitchToMenu(MenuTypes.Finger);
 	}
 	
 	public void OnCreditsClicked()
