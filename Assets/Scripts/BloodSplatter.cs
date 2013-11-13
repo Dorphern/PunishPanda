@@ -99,6 +99,7 @@ public class BloodSplatter : MonoBehaviour {
 		layerMask = ( 1 << LayerMask.NameToLayer("Panda") );
 		layerMask |= ( 1 << LayerMask.NameToLayer("FingerBlockade") );
 		layerMask |= ( 1 << LayerMask.NameToLayer("Ignore Raycast") );
+		layerMask |= ( 1 << LayerMask.NameToLayer("PandaBodyParts") );
 		layerMask = ~layerMask;
 		
 		// We instantiate a blood splatter in order to avoid a huge spike in performance caused by the first slap
