@@ -24,6 +24,11 @@ public class ComboSystem : MonoBehaviour
     private int displayedKills = 0;
     private bool perfectKill;
 
+    void OnEnable()
+    {
+        InstanceFinder.ComboSystem = this;
+    }
+
     private void Reset()
     {
         perfectKill = false;
@@ -54,7 +59,6 @@ public class ComboSystem : MonoBehaviour
                 killObject.SetActive(false);
 	            StartCoroutine(ShowComboScreen());
 	        }
-	        
 	    }
 	}
 
@@ -113,17 +117,5 @@ public class ComboSystem : MonoBehaviour
         Reset();
         comboObject.SetActive(false);
         killObject.SetActive(false);
-    }
-
-    void OnGUI()
-    {
-        if (GUI.Button(new Rect(50, 200, 150, 50), "Kill normal panda"))
-        {
-           OnPandaDeath(false);
-        }
-        if (GUI.Button(new Rect(50, 270, 150, 50), "Kill panda"))
-        {
-            OnPandaDeath(true);
-        }
     }
 }
