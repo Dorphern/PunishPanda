@@ -150,6 +150,11 @@ public class BloodSplatter : MonoBehaviour {
 		m_Decals.UpdateDecalsMeshes (m_DecalsMesh);		
 	}
 	
+//	void OnDrawGizmosSelected() {
+//        Gizmos.color = new Color(1, 0, 0, 0.5F);
+//        Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
+//    }
+	
 	public void ProjectBlood(Vector3 rayStart ,Vector2 slapDirection)
 	{
 		// set the angle of the splat to be the same in both XY and XZ planes
@@ -185,19 +190,19 @@ public class BloodSplatter : MonoBehaviour {
 			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
 			
 			projectionDirection.x = 0f;
-//			if(projectionDirection.y > 0f)
-//			{
-//				projectionDirection.y = 0f;	
-//				decalProjectorOffset = 1f;
-//			}
-//			else if(projectionDirection.y < -0.7f && projectionDirection.y > - 0.90f)
-//			{
-//				decalProjectorOffset = 3f;
-//			}
-//			else
-//			{
-//				decalProjectorOffset = 2.7f;
-//			}
+			if(projectionDirection.y > 0f)
+			{
+				projectionDirection.y = 0f;	
+				decalProjectorOffset = 1f;
+			}
+			else if(projectionDirection.y < -0.7f && projectionDirection.y > - 0.90f)
+			{
+				decalProjectorOffset = 3f;
+			}
+			else
+			{
+				decalProjectorOffset = 2.7f;
+			}
 			
 			Quaternion l_ProjectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 
@@ -229,6 +234,7 @@ public class BloodSplatter : MonoBehaviour {
 				{
 						// Create the decal projector.
 					DecalProjector l_DecalProjector = new DecalProjector (l_ProjectorPosition, l_ProjectorRotation, decalProjectorScale, cullingAngle, meshOffset, m_UVRectangleIndex, m_UVRectangleIndex);
+					
 					
 						// Add the projector to our list and the decals mesh, such that both are
 						// synchronized. All the mesh data that is now added to the decals mesh
