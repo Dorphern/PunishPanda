@@ -9,7 +9,8 @@ public class Panda : MonoBehaviour {
         InstanceFinder.ComboSystem.OnPandaDeath(perfect);
     }
 
-	void Start () {
+	void Start () 
+	{
 	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda();
 	}
 

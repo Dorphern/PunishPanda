@@ -4,7 +4,7 @@ using System.Collections;
 public class ComboSystem : MonoBehaviour
 {
     [SerializeField] private float maxTimeBetweenKills = 1.0f;
-    [SerializeField] private float showDelayTime = 0.2f;
+    [SerializeField] private float showDelayTime = 0.0f;
 
     [SerializeField] private GameObject comboObject;
     [SerializeField] private UILabel comboLabel;
