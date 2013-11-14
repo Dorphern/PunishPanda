@@ -6,11 +6,45 @@ public class Settings : MonoBehaviour {
 	MenuManager menuMan;
 	public UISlider _musicSlider;
 	public UISlider _soundEFXSlider;
+	public UILabel languageLabel;
 	
-	void Start()
+	void Awake()
 	{
 		menuMan = GetComponent<MenuManager>();	
-
+		
+		bool music = InstanceFinder.StatsManager.musicEnabled;
+		bool sound = InstanceFinder.StatsManager.soundEffectsEnabled;
+		string lang = InstanceFinder.StatsManager.language;
+		
+		if(music)
+			_musicSlider.value = 1;
+		else
+			_musicSlider.value = 0;
+		
+		if(sound)
+			_soundEFXSlider.value = 1;
+		else
+			_soundEFXSlider.value = 0;
+		
+		if(languageLabel!=null)
+		{
+			bool initflag = true;
+			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
+			{
+				if(InstanceFinder.Localization.languages[i].name==lang)
+				{
+					languageLabel.text = lang;
+					initflag = false;
+				}
+			}
+			//if the language file is not found default to the default value
+			if(initflag)
+			{
+				languageLabel.text = InstanceFinder.StatsManager.language;
+			}
+		}
+		// language button initialization goes here
+		
 	}
 	
 	public void OnCalibrateFingerClicked()
@@ -28,17 +62,53 @@ public class Settings : MonoBehaviour {
 		menuMan.SwitchToMenu(MenuTypes.MainMenu);
 	}
 	
+	// placeholder code for the placeholder button
 	public void OnLanguageClicked()
 	{
-		Debug.Log("Language Changed!");
+		if(languageLabel!=null)
+		{
+			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
+			{
+				Debug.Log(InstanceFinder.Localization.languages[i].name);
+				if(InstanceFinder.Localization.languages[i].name!=languageLabel.text)
+				{
+					if(InstanceFinder.Localization.languages.Length == i-1)
+					{
+						InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[0].name;
+						languageLabel.text = InstanceFinder.Localization.languages[0].name;
+						InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[0].name;
+						InstanceFinder.StatsManager.Save();
+						break;
+					}
+					else
+					{
+						InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
+						languageLabel.text = InstanceFinder.Localization.languages[i].name;
+						InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[i].name;
+						InstanceFinder.StatsManager.Save();
+						break;
+					}
+				}
+			}
+		}
 	}
+			
 	
 	// crappy workaround, there is no delegate that returns the value ffs!
 	public void OnMusicSliderChanged()
 	{
 		if(_musicSlider!=null)
 		{
-			Debug.Log("music Slider val: " + _musicSlider.value);
+			if(_musicSlider.value==0)
+			{
+				InstanceFinder.StatsManager.musicEnabled = false;
+				InstanceFinder.StatsManager.Save();
+			}
+			else
+			{
+				InstanceFinder.StatsManager.musicEnabled = true;
+				InstanceFinder.StatsManager.Save();
+			}
 		}
 	}
 	
@@ -46,7 +116,16 @@ public class Settings : MonoBehaviour {
 	{
 		if(_musicSlider!=null)
 		{
-			Debug.Log("efx Slider val: " + _soundEFXSlider.value);
+			if(_soundEFXSlider.value==0)
+			{
+				InstanceFinder.StatsManager.soundEffectsEnabled = false;
+				InstanceFinder.StatsManager.Save();
+			}
+			else
+			{
+				InstanceFinder.StatsManager.soundEffectsEnabled = true;
+				InstanceFinder.StatsManager.Save();
+			}
 		}
 	}
 	
