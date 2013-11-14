@@ -46,9 +46,6 @@ public class CombineChildren : MonoBehaviour {
 				}
 				
 				curRenderer.enabled = false;
-				Destroy(filter);
-				Destroy(curRenderer);
-				
 			}
 		}
 	

@@ -2,14 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public class Controls 
+{
+	public bool slapping = true;
+	public bool bouncing = true;
+	public bool lifting = true;
+	public bool holding = true;
+}
+
+
 public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
 	public SwipeController swipeController;
 	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
 	public float swipeThreshold = 10f;
-	public float draggingBoxMaximumThreshold = 0f;
+	public float blocadeRepositionMaximumThreshold = 0f;
 	public float blockadeDistanceFromFingerThreshold = 1f;
+	public Controls controls;
 	
 	private Ray ray;
 	private RaycastHit hitInfo;
@@ -21,12 +31,21 @@ public class InputHandler : MonoBehaviour {
 	private Dictionary<int, FingerBlocking> selectedBlockades; 
 	private Vector3 [] lastMousePos;
 	
+	[System.Serializable]
+	public class Controls 
+	{
+		public bool slapping = true;
+		public bool bouncing = true;
+		public bool lifting = true;
+		public bool holding = true;
+	}
 	
 	void Start () 
 	{
 		selectedPandas = new Dictionary<int, PandaAI>();
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
 		selectedHotSpots = new Dictionary<int, Hotspot>();
+		
 		lastMousePos = new Vector3[2];
 		
 		
@@ -88,7 +107,7 @@ public class InputHandler : MonoBehaviour {
 		
 			if(collidable != null)
 			{
-				if(collidable.type == CollidableTypes.Panda)
+				if(controls.lifting == true && collidable.type == CollidableTypes.Panda)
 				{
 					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
 					tempPanda.PandaPressed();
@@ -97,7 +116,7 @@ public class InputHandler : MonoBehaviour {
 					hitflag = true;
 					return;
 				}
-				else if(collidable.type == CollidableTypes.Hotspot)
+				else if(controls.bouncing == true && collidable.type == CollidableTypes.Hotspot)
 				{
 					tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
 					tempHotSpot.ActivateHotspot();
@@ -142,14 +161,14 @@ public class InputHandler : MonoBehaviour {
 			float magnitude = mouseDelta.magnitude;//touch.deltaPosition.magnitude;
 			
 			// if we are fast enough for swiping
-			if(magnitude > swipeThreshold)
+			if(controls.slapping == true && magnitude > swipeThreshold)
 			{				
 				swipeController.Swipe(touch.position, lastMousePos[touch.fingerId]);
 			}
 			
-			// if we are slow enough for dragging
+			// if we are slow enough for repositioning the blockade
 			
-			if(magnitude <= draggingBoxMaximumThreshold)
+			if(controls.holding == true && magnitude <= blocadeRepositionMaximumThreshold)
 			{
 				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
 				Vector3 distanceFromFinger = blockades[0].transform.position - Input.mousePosition;
@@ -194,7 +213,6 @@ public class InputHandler : MonoBehaviour {
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
-			//Debug.Log("clicked");
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 			{
@@ -202,13 +220,13 @@ public class InputHandler : MonoBehaviour {
 			
 				if(collidable != null)
 				{
-					if(collidable.type == CollidableTypes.Panda)
+					if(controls.lifting == true && collidable.type == CollidableTypes.Panda)
 					{
 						tempPanda = hitInfo.collider.GetComponent<PandaAI>();
 						tempPanda.touchPosition = Input.mousePosition;
 						tempPanda.PandaPressed();
 					}
-					else if(collidable.type == CollidableTypes.Hotspot)
+					else if(controls.bouncing == true && collidable.type == CollidableTypes.Hotspot)
 					{
 						tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
                         tempHotSpot.ActivateHotspot();	
@@ -237,15 +255,14 @@ public class InputHandler : MonoBehaviour {
 				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
 				
 				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
-				//Debug.Log(mouseDelta.magnitude);
 				// if we are fast enough for swiping
-				if(mouseDelta.magnitude > swipeThreshold)
+				if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
 				{
 					swipeController.Swipe(Input.mousePosition, lastMousePos[0]);
 				}
 		
-				// if we are slow enough for dragging
-				if(mouseDelta.magnitude <= draggingBoxMaximumThreshold)
+				// if we are slow enough for repositioning the blockade
+				if(controls.holding == true && mouseDelta.magnitude <= blocadeRepositionMaximumThreshold)
 				{
 					Vector3 distanceFromFinger = blockades[0].transform.position - Input.mousePosition;
 					if(!blockades[0].IsEnabled()|| distanceFromFinger.magnitude > blockadeDistanceFromFingerThreshold)
