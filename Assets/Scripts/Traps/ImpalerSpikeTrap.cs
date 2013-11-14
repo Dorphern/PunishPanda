@@ -1,41 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PounderTrap : TrapBase
-{
+public class ImpalerSpikeTrap : TrapBase {
 
     [SerializeField] float sleepTime = 2f;
-    protected string animationName = "Pounder Animation";
-    protected GameObject parentPounder;
+    protected string animationName = "Spike Animation";
+    protected float inactivePositionY = -2.377f;
+
 
     # region Public Methods
 
+    void Awake ()
+    {
+        transform.position = new Vector3(
+            transform.position.x,
+            transform.position.y + inactivePositionY, 
+            transform.position.z
+        );
+    }
+
     override public TrapType GetTrapType ()
     {
-        return TrapType.Pounder;
+        return TrapType.ImpalerSpikes;
     }
 
     override public void ActivateTrap ()
     {
         base.ActivateTrap();
-        StartCoroutine(PlayPoundingAnimation());
+        StartCoroutine(PlayImpalingAnimation());
     }
 
     # endregion
 
     # region Private Methods
 
-    void Awake ()
-    {
-        parentPounder = transform.parent.gameObject;
-    }
-
-    IEnumerator PlayPoundingAnimation ()
+    IEnumerator PlayImpalingAnimation ()
     {
         while (IsActive())
         {
-            parentPounder.animation.Play();
-            yield return new WaitForSeconds(parentPounder.animation[animationName].length
+            animation.Play();
+            yield return new WaitForSeconds(animation[animationName].length
                 + Time.fixedDeltaTime + sleepTime);
         }
     }

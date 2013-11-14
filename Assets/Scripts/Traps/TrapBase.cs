@@ -4,7 +4,8 @@ using System.Collections;
 public enum TrapType
 {
     Electicity,
-    Spikes,
+    StaticSpikes,
+    ImpalerSpikes,
     Pounder,
     ThrowingStars,
 	DoorTrap
@@ -14,7 +15,7 @@ public abstract class TrapBase : MonoBehaviour {
 
     [SerializeField] protected bool initActivated = false;
     [SerializeField] protected bool isPerfectTrap = false;
-    [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means this has no effect
+    [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means there is no max
 
     [SerializeField] protected Texture cleanTexture;
     [SerializeField] protected Texture dirtyTexture;
