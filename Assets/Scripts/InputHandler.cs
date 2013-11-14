@@ -194,7 +194,6 @@ public class InputHandler : MonoBehaviour {
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
-			Debug.Log("clicked");
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
 			{
