@@ -76,7 +76,8 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         IsDirty = false;
 
         bool canDropObject = false;
-        if (area.Contains(Event.current.mousePosition))
+        Vector2 mousePos = Event.current.mousePosition;
+        if (mousePos.x > area.x && mousePos.x < area.x + area.width)
         {
             canDropObject = HandleDragging();
         }

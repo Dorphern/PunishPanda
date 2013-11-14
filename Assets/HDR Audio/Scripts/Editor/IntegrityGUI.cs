@@ -9,11 +9,8 @@ using Object = UnityEngine.Object;
 
 public class IntegrityGUI
 {
-    HDRBaseWindow window;
-
     public IntegrityGUI(HDRBaseWindow window)
     {
-        this.window = window;
     }
 
     public void OnEnable()
