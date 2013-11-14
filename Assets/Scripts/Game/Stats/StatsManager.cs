@@ -31,6 +31,11 @@ public class StatsManager : MonoBehaviour
 
     public bool musicEnabled;
     public bool soundEffectsEnabled;
+	
+	void Start()
+	{
+		Load();	
+	}
 
     void OnEnable()
     {

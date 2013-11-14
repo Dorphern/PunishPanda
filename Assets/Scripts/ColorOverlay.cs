@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿/*	Filter to add a tint on the screen
+*/
+
+using UnityEngine;
 using System.Collections;
 
 public class ColorOverlay : MonoBehaviour
