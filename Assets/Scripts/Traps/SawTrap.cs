@@ -3,15 +3,13 @@ using System.Collections;
 
 public class SawTrap : TrapBase {
 
-    [SerializeField] protected float turnSpeed = 0f;
     [SerializeField] protected float acceleration = 0.5f;
     [SerializeField] protected float killThreshold = 0.3f; // Determine min speed for killing
-    protected float baseAcc = 0.2f;
-    protected float maxTurnSpeed = 5f;
-    protected bool isActive = false;
+    [SerializeField] protected float maxTurnSpeed = 5f;
 
-    protected string animationInName  = "StaticSpikeIn Animation";
-    protected string animationOutName = "StaticSpikeOut Animation";
+    protected float turnSpeed = 0f;
+    protected float baseAcc = 0.2f;
+    protected bool isActive = false;
 
     # region Public Methods
 
