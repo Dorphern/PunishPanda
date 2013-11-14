@@ -5,12 +5,13 @@ using UnityEngine;
 public class AuxWindow : HDRBaseWindow
 {
     private int selectedToolbar = 0;
-    private readonly string[] toolbarOptions = {"Busses", "Banks", "Project Data"};
+    private readonly string[] toolbarOptions = {"Busses", "Banks", "Integrity", "Project Data"};
 
     private AudioBus selectedBus;
 
     private AudioBankCreatorGUI bankGUI;
     private AudioBusCreatorGUI busGUI;
+    private IntegrityGUI integrityGUI;
 
     [MenuItem("Window/HDR Audio System/Bus, Banks and Settings")]
     public static void Launch()
@@ -29,10 +30,13 @@ public class AuxWindow : HDRBaseWindow
             busGUI = new AudioBusCreatorGUI(this);
         if(bankGUI == null)
             bankGUI = new AudioBankCreatorGUI(this);
+        if (integrityGUI == null)
+            integrityGUI = new IntegrityGUI(this);
 
         busGUI.OnEnable();
         bankGUI.OnEnable();
-        
+        integrityGUI.OnEnable();
+
     }
 
     void Update()
@@ -91,6 +95,9 @@ public class AuxWindow : HDRBaseWindow
         }
 
         if (selectedToolbar == 2)
+            isDirty |= integrityGUI.OnGUI();
+
+        if (selectedToolbar == 3)
         {
             DrawMissingDataCreation();
 
@@ -216,11 +223,16 @@ public class AuxWindow : HDRBaseWindow
         selectedToolbar = 1;
     }
 
-    public void SelectDataCreation()
+    public void SelectIntegrity()
     {
         selectedToolbar = 2;
     }
-   
+
+    public void SelectDataCreation()
+    {
+        selectedToolbar = 3;
+    }
+    
     public void FindBank(AudioBankLink bankLink)
     {
         selectedToolbar = 1;
