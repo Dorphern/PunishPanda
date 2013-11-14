@@ -22,16 +22,14 @@ public class GameManager : MonoBehaviour
     public void Initialize()
     {
         InstanceFinder.GameManager = this;
-        InstanceFinder.LevelManager = levelManager;
-        //LanguageManager.Instance = GetComponent<LanguageManager>();
-        LanguageManager.Instance.ChangeLanguage("da");
+		
         DontDestroyOnLoad(transform.gameObject);
         levelManager = GetComponent<LevelManager>();
-        GetComponentInChildren<MenuGUI>().Initialize(levelManager);
         InstanceFinder.GameManager = this;
         InstanceFinder.LevelManager = levelManager;
         InstanceFinder.PointSystem = GetComponent<PointSystem>();
         InstanceFinder.StatsManager = GetComponent<StatsManager>();
+		InstanceFinder.Localization = GetComponent<Localization>();
     }
 
     public Level ActiveLevel

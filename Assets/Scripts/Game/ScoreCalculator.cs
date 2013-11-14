@@ -6,12 +6,15 @@ namespace PunishPanda.Game
 
     public static class ScoreCalculator
     {
-        public static int Score(LevelScore level, int pandaKills, int alivePandas, float elapsedTime)
+        public static int Score(LevelScore level, int perfectPandaKills, int normalPandaKills, float elapsedTime)
         {
-            int perfectKill = InstanceFinder.PointSystem.PerfectKill;
-            if (alivePandas > 0)
-                perfectKill = 0;
-            return TimeScore(level, elapsedTime) + pandaKills * InstanceFinder.PointSystem.PerKill + perfectKill;
+            return TimeScore(level, elapsedTime) + PandaKillScore(perfectPandaKills, normalPandaKills);
+        }
+
+        public static int PandaKillScore (int perfectPandaKills, int normalPandaKills)
+        {
+            return normalPandaKills * InstanceFinder.PointSystem.PerKill
+                + perfectPandaKills * InstanceFinder.PointSystem.PerfectKill;
         }
 
         public static int TimeScore(LevelScore score, float elapsedTime)

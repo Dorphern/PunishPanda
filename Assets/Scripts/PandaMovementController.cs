@@ -118,14 +118,17 @@ public class PandaMovementController : MonoBehaviour {
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
-		pandaAI.ApplyWalkingMovement += WalkingMovement;
-		pandaAI.ApplyLiftMovement += LiftMovement;
-		pandaAI.ApplyFalling += FallingMovement;
-		pandaAI.BoostingMovement += BoostedMovement;
-		pandaAI.SetBoostSpeed += SetBoostSpeed;
-		pandaAI.SetDefaultSpeed += SetDefaultSpeed;
-        pandaAI.ApplyJump += ApplyJump;
-        pandaAI.ApplyJumpingMovement += JumpingMovement;
+		if(pandaAI != null)
+		{
+			pandaAI.ApplyWalkingMovement += WalkingMovement;
+			pandaAI.ApplyLiftMovement += LiftMovement;
+			pandaAI.ApplyFalling += FallingMovement;
+			pandaAI.BoostingMovement += BoostedMovement;
+			pandaAI.SetBoostSpeed += SetBoostSpeed;
+			pandaAI.SetDefaultSpeed += SetDefaultSpeed;
+	        pandaAI.ApplyJump += ApplyJump;
+	        pandaAI.ApplyJumpingMovement += JumpingMovement;
+		}
 	}
 	 
 	void FixedUpdate ()
@@ -154,7 +157,7 @@ public class PandaMovementController : MonoBehaviour {
     }
 	 
 	// Move the character using Unity's CharacterController.Move function
-	void WalkingMovement(PandaDirection direction)
+	void WalkingMovement(PandaDirection direction, bool standStill)
 	{
 		if(controller.isGrounded)
 		{
@@ -163,17 +166,21 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
-		if(direction == PandaDirection.Right)
-		{	
-			movement.offset.x = movement.currentSpeed;
-			transform.rotation = Quaternion.LookRotation(Vector3.forward);
+		if(standStill == false)
+		{
+			if(direction == PandaDirection.Right)
+			{	
+				movement.offset.x = movement.currentSpeed;
+				transform.rotation = Quaternion.LookRotation(Vector3.forward);
+			}
+			
+			if(direction == PandaDirection.Left)
+			{
+				movement.offset.x = - movement.currentSpeed;
+				transform.rotation = Quaternion.LookRotation(Vector3.back);
+			}
 		}
 		
-		if(direction == PandaDirection.Left)
-		{
-			movement.offset.x = - movement.currentSpeed;
-			transform.rotation = Quaternion.LookRotation(Vector3.back);
-		}
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
@@ -244,7 +251,7 @@ public class PandaMovementController : MonoBehaviour {
 	void BoostedMovement(PandaDirection direction)
 	{
 		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.fixedDeltaTime * boosting.rollOffSpeed);
-		WalkingMovement(direction);
+		WalkingMovement(direction, false);
 	}
 	
 	void SetBoostSpeed()
