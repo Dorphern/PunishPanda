@@ -1,19 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Lever : MonoBehaviour {
+public class Lever : TrapActivator {
 	
 	public TrapBase trap;
 	private Collidable colliderType;
-	
-	void Start () 
-	{
-	}
-	
-	void Update () 
-	{
-		
-	}
 	
 	void OnTriggerEnter(Collider collider)
 	{
@@ -22,14 +13,7 @@ public class Lever : MonoBehaviour {
 		
 		if(colliderType.type == CollidableTypes.Panda)
 		{
-			if(trap.IsActive() == true)
-			{
-				trap.DeactivateTrap();
-			}
-			else
-			{
-				trap.ActivateTrap();
-			}
+            TriggerTraps();
 		}
 	}
 }

@@ -1,34 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PressurePad : MonoBehaviour {
+public class PressurePad : TrapActivator {
 	
-	public TrapBase trap;
 	private int pandaCount = 0;
 	private Collidable colliderType;
 	
-	void Start() 
-	{
-	}
-	
+
 	void Update() 
 	{
 		if(pandaCount > 0)
 		{
-			if(trap.IsActive() == false)
-			{
-				trap.ActivateTrap();
-			}
+            ActivateTraps();
 		}
 		else
 		{
-			if(trap.IsActive() == true)
-			{
-				trap.DeactivateTrap();
-			}
+            DeactivateTraps();
 		}
 	}
-	
+
 	void OnTriggerEnter(Collider collider)
 	{
 		colliderType = collider.GetComponent<Collidable>();
