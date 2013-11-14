@@ -8,7 +8,8 @@ public class Panda : MonoBehaviour {
         InstanceFinder.GameManager.ActiveLevel.OnPandaDeath(fromTrap, perfect);
     }
 
-	void Start () {
+	void Start () 
+	{
 	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda();
 	}
 
