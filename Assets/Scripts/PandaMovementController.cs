@@ -11,6 +11,7 @@ public class PandaMovementController : MonoBehaviour {
 	public Falling falling;
 	public Boosting boosting;
 	public JumpingOff jumpOff;
+    public float hangingOffSet = 30f;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
@@ -137,8 +138,8 @@ public class PandaMovementController : MonoBehaviour {
 	
 	void LiftMovement(Vector3 position)
 	{
-		
-		lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, transform.position.z - Camera.main.transform.position.z));
+
+        lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y - hangingOffSet, transform.position.z - Camera.main.transform.position.z));
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.minMoveDistance)
 		{

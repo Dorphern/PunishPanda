@@ -16,11 +16,15 @@ public class PandaAI : MonoBehaviour {
     public event System.Action ApplyJumpingMovement;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
+    
 	
-	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
 	public Vector3 touchPosition;
 	public float pandaCollisionDelay = 0.02f;
+
+    private Animator anim;
+    private PandaState lastPandaState;
+    private bool isSplatFall = false;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -29,6 +33,7 @@ public class PandaAI : MonoBehaviour {
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
 	BloodOnSlap bloodOnSlap;
+    Animations animations;
 	
 	
 	#region Public Methods
@@ -53,6 +58,7 @@ public class PandaAI : MonoBehaviour {
 		{
 			pandaMovementController.movement.offset.x = 0f;
 			pandaStateManager.ChangeState(PandaState.Falling);
+            distanceToFloor();
 		}
 	}
 
@@ -74,8 +80,9 @@ public class PandaAI : MonoBehaviour {
 		// we can slap the panda only in walking and standing state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing)
 			return;
+        
 		// play animation + splatter ( texture projection + particles)
-		StartCoroutine(PlaySlap(slapEventLength, slapDirection));
+		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
 		
 		Vector2 facingDirection;
@@ -91,18 +98,25 @@ public class PandaAI : MonoBehaviour {
 		float dot = Vector2.Dot(slapDirection.normalized, facingDirection);
 		if(dot > 0f)
 		{
+            pandaStateManager.ChangeState(PandaState.Slapped);
+            animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), false, lastPandaState);
 			if(boostEnabled)
 			{
 			SetBoostSpeed();
 			// the slap direction is the same as the panda's facing direction
-			pandaStateManager.ChangeState(PandaState.Boosting);
+			
 				
 			}
 		}
 		else
 		{
 			// the slap direction is opposite to the panda's facing direction
-			ChangeDirection(null);
+            pandaStateManager.ChangeState(PandaState.Slapped);
+            animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), true, lastPandaState);
+
+			//ChangeDirection(null);
+            
+
 		}
 		bloodOnSlap.EmmitSlapBlood();
 	}
@@ -115,6 +129,9 @@ public class PandaAI : MonoBehaviour {
     {
         Debug.Log("Hit death object: " + trap.GetTrapType());
         pandaStateManager.ChangeState(PandaState.Died);
+        // change state from playAnimation PlayDeathAnimation
+        gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap.GetTrapType(), true);
+
         return true;
     }
 	#endregion
@@ -128,6 +145,8 @@ public class PandaAI : MonoBehaviour {
 		characterController = GetComponent<CharacterController>();
 		pandaMovementController = GetComponent<PandaMovementController>();
 		bloodOnSlap = GetComponent<BloodOnSlap>();
+        animations = GetComponent<Animations>();
+        lastPandaState = pandaStateManager.GetState();
 		
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
@@ -136,50 +155,86 @@ public class PandaAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate() 
-	{	
+	{
+       // Debug.Log(pandaStateManager.GetState());
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.HoldingOntoFinger:
 				if(ApplyLiftMovement!=null)
-				{	
-					ApplyLiftMovement(touchPosition);
+				{
+                    ApplyLiftMovement(touchPosition);
+                   // animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
 					CheckLiftThreshold();
 				}
 				break;
-			case PandaState.Walking:
-				
+			case PandaState.Walking:                
 				if(ApplyWalkingMovement!=null)
+                {
+                  //  animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
+                    Debug.Log(lastPandaState + "  Walk");
 					ApplyWalkingMovement(pandaStateManager.GetDirection());
+                }
 				break;
             case PandaState.Jumping:
-                if (ApplyJumpingMovement != null) ApplyJumpingMovement();
-				if(characterController.isGrounded)
-					pandaStateManager.ChangeState(PandaState.Walking);
+                if (ApplyJumpingMovement != null)
+                {
+                  //  animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
+                    ApplyJumpingMovement();
+                }
+
+                if (characterController.isGrounded)
+                {
+                    pandaStateManager.ChangeState(PandaState.Walking);
+                }
                 break;
 			case PandaState.Falling:
-				if(ApplyFalling!=null)
-					ApplyFalling();
+                if (ApplyFalling != null)
+                {
+                 //   animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
+                    ApplyFalling();
+                }
 				//if(characterController.isGrounded)
 				//	pandaStateManager.ChangeState(PandaState.Walking);
 				break;
-			case PandaState.Boosting:
+			case PandaState.Slapped:                
 				BoostingMovement(pandaStateManager.GetDirection());
 				break;
 			case PandaState.FallTransition:
-				if(ApplyWalkingMovement!=null)
-					ApplyWalkingMovement(pandaStateManager.GetDirection());
+                if (ApplyWalkingMovement != null)
+                {
+                    ApplyWalkingMovement(pandaStateManager.GetDirection());
+                }
 				break;
 				
 		}
+
+        if (lastPandaState != pandaStateManager.GetState())
+        {
+           animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
+            if (pandaStateManager.GetState() == PandaState.Slapped)
+            {
+
+                // PlaySlappedAnimation(currentStatePanda, true, currentDirection, , lastPandaState)
+            }
+            lastPandaState = pandaStateManager.GetState();
+        }
+
 	}
 	
 	void FloorCollision(ControllerColliderHit hit)
 	{
 		if(pandaStateManager.GetState() == PandaState.FallTransition || pandaStateManager.GetState() == PandaState.Falling)
-			pandaStateManager.ChangeState(PandaState.Walking);
+        {
+            if (isSplatFall == true)
+            {
+                BloodSplatter.Instance.ProjectBlood(transform.position, Vector3.right);
+                isSplatFall = false;
+            }     
+            pandaStateManager.ChangeState(PandaState.Walking);
+        }
 	}
 	
-	void ChangeDirection(ControllerColliderHit hit)
+	public void ChangeDirection(ControllerColliderHit hit)
 	{
 		pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 	}
@@ -238,20 +293,40 @@ public class PandaAI : MonoBehaviour {
 	void CheckLiftThreshold()
 	{
 		if(pandaMovementController.IsExceedingLiftThreshold(this.touchPosition))
-			pandaStateManager.ChangeState(PandaState.Falling);
+        {
+            pandaStateManager.ChangeState(PandaState.Falling);
+            distanceToFloor();
+        }
+			
 			
 	}
 
-	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
+	void PlaySlap( Vector2 slapDirection)
 	{
-		// SlapEvent. play animation + blood splatter (waitForSeconds)
 		BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
-		
-		yield return new WaitForSeconds(waitForSeconds);
-		
 		pandaStateManager.ChangeState(PandaState.Walking);
 		SetDefaultSpeed();
 	}
+    
+    void distanceToFloor()
+    {
+        
+        RaycastHit hit;
+        if(Physics.Raycast(new Vector3(transform.position.x, transform.position.y, 0.5f), Vector3.down, out hit))
+        {
+            if (hit.collider.GetComponent<Collidable>().type != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
+            {
+                float distance = (hit.transform.position - transform.position).magnitude;
+                Debug.Log("Distance: " + distance);
+                if(distance > 7)
+                {
+                    isSplatFall = true;
+                }
+                
+
+            }
+        }
+    }
 	
 
 	# endregion

@@ -18,7 +18,8 @@ public enum PandaState
     Died,               /* The panda is DEAD! (hahahah) */
 	Jumping,
     Falling,
-	Boosting,
+    FallSplat,
+    Slapped,
 	FallTransition
 }
 
