@@ -10,6 +10,7 @@ public class InstanceFinder : MonoBehaviour
     public static GameManager GameManager { get; set; }
     public static PointSystem PointSystem { get; set; }
     public static StatsManager StatsManager { get; set; }
+    public static ComboSystem ComboSystem { get; set; }
 
     public bool SetupIfMissing()
     {
