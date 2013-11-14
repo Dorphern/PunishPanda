@@ -16,7 +16,8 @@ using System.Collections.Generic;
  */
 
 public class SwipeController : MonoBehaviour {
-
+	
+	public bool mainMenuSwipe = false;
     int count = 0;
 	
 	
@@ -73,10 +74,17 @@ public class SwipeController : MonoBehaviour {
 				if (collidable != null && collidable.type == CollidableTypes.Panda)
 		            count++;
 		            //Debug.Log("Hit Panda" + count);
-		        hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+				if(mainMenuSwipe)
+				{
+		        	hits[i].collider.GetComponent<PandaAIMainMenu>().PandaSlapped(-direction2D, speed);
+				}
+				else
+				{
+					hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+				}
 			}
 		}/**/
-             
+      
     }
 	
 	Vector3 TranslateScreenToWorldPos(Vector3 mousePos)
