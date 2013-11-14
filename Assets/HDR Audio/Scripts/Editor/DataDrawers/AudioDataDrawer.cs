@@ -6,7 +6,7 @@ using UnityEngine;
 public static class AudioDataDrawer {
     public static void Draw(AudioNode node)
     {
-        UndoHandler.CheckUndo(new Object[] { node, node.NodeData });
+        UndoHandler.CheckUndo(new Object[] { node});
         node.Name = EditorGUILayout.TextField("Name", node.Name);
         UndoHandler.CheckGUIChange();
         EditorGUILayout.Separator();
