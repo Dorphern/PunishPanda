@@ -4,7 +4,8 @@ using System.Collections;
 public enum TrapType
 {
     Electicity,
-    Spikes,
+    StaticSpikes,
+    ImpalerSpikes,
     Pounder,
     ThrowingStars,
 	DoorTrap
