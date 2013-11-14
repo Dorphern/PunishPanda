@@ -19,12 +19,12 @@ public class MainMenu : MonoBehaviour {
 	
 	public void OnAchievementsClicked()
 	{
-		Debug.Log("Achievements Pressed!");	
+		menuMan.SwitchToMenu(MenuTypes.Achievements);
 	}
 	
 	public void OnUnlocksClicked()
 	{
-		Debug.Log("Unlocks Pressed!");	
+		menuMan.SwitchToMenu(MenuTypes.Unlocks);
 	}
 	
 	public void OnSettingsClicked()
