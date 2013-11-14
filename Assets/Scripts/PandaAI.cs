@@ -73,7 +73,8 @@ public class PandaAI : MonoBehaviour {
     public void PandaSlapped(Vector2 slapDirection, float force)
 	{
 		// we can slap the panda only in walking and standing state
-		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing)
+		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing
+			&& pandaStateManager.GetState() != PandaState.Falling)
 			return;
 		// play animation + splatter ( texture projection + particles)
 		StartCoroutine(PlaySlap(slapEventLength, slapDirection));
