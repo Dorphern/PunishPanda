@@ -121,14 +121,17 @@ public class PandaMovementController : MonoBehaviour {
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
-		pandaAI.ApplyWalkingMovement += WalkingMovement;
-		pandaAI.ApplyLiftMovement += LiftMovement;
-		pandaAI.ApplyFalling += FallingMovement;
-		pandaAI.BoostingMovement += BoostedMovement;
-		pandaAI.SetBoostSpeed += SetBoostSpeed;
-		pandaAI.SetDefaultSpeed += SetDefaultSpeed;
-        pandaAI.ApplyJump += ApplyJump;
-        pandaAI.ApplyJumpingMovement += JumpingMovement;
+		if(pandaAI != null)
+		{
+			pandaAI.ApplyWalkingMovement += WalkingMovement;
+			pandaAI.ApplyLiftMovement += LiftMovement;
+			pandaAI.ApplyFalling += FallingMovement;
+			pandaAI.BoostingMovement += BoostedMovement;
+			pandaAI.SetBoostSpeed += SetBoostSpeed;
+			pandaAI.SetDefaultSpeed += SetDefaultSpeed;
+	        pandaAI.ApplyJump += ApplyJump;
+	        pandaAI.ApplyJumpingMovement += JumpingMovement;
+		}
 	}
 	 
 	void FixedUpdate ()

@@ -52,7 +52,7 @@ public class BloodSplatter : MonoBehaviour {
 	// 3D vector controlling the direction of the splat
 	private Vector3 projectionDirection = Vector3.right;
 	
-	private Vector3 rayStartYOffset = new Vector3(0,1,0);
+	public Vector3 rayStartYOffset = new Vector3(0,1,0);
 	private float rayDistance = 10f;
 	
 		// Move on to the next uv rectangle index.
@@ -150,13 +150,17 @@ public class BloodSplatter : MonoBehaviour {
 		m_Decals.UpdateDecalsMeshes (m_DecalsMesh);		
 	}
 	
+//	void OnDrawGizmosSelected() {
+//        Gizmos.color = new Color(1, 0, 0, 0.5F);
+//        Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
+//    }
+	
 	public void ProjectBlood(Vector3 rayStart ,Vector2 slapDirection)
 	{
 		// set the angle of the splat to be the same in both XY and XZ planes
 		projectionDirection.x = slapDirection.x;
 		projectionDirection.y = slapDirection.y;
 		projectionDirection.z = Mathf.Abs(slapDirection.x);
-		
 		if(Physics.Raycast (rayStart + rayStartYOffset, projectionDirection, out hitInfo, rayDistance, layerMask) )
 		{
 				// Collider hit.
@@ -230,6 +234,7 @@ public class BloodSplatter : MonoBehaviour {
 				{
 						// Create the decal projector.
 					DecalProjector l_DecalProjector = new DecalProjector (l_ProjectorPosition, l_ProjectorRotation, decalProjectorScale, cullingAngle, meshOffset, m_UVRectangleIndex, m_UVRectangleIndex);
+					
 					
 						// Add the projector to our list and the decals mesh, such that both are
 						// synchronized. All the mesh data that is now added to the decals mesh
