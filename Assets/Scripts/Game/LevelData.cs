@@ -9,9 +9,7 @@ public class LevelData
     [SerializeField] public GameModes Mode;
 
 	
-	public Texture2D funFactPicture;
-	public Texture2D objectiveScreen;
-	public string funFact;
+	
 	public LevelScore score;
 	
 

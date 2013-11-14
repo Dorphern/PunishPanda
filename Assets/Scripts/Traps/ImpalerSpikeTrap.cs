@@ -36,7 +36,6 @@ public class ImpalerSpikeTrap : TrapBase {
 
     IEnumerator PlayImpalingAnimation ()
     {
-        yield return new WaitForSeconds(sleepTime);
         while (IsActive())
         {
             animation.Play();
