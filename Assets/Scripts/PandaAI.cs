@@ -176,7 +176,6 @@ public class PandaAI : MonoBehaviour {
         {
             pandaController.EnableColliders( false );
         }
-        Debug.Log("Panda died from " + trap.GetTrapType() + "; direction: " + direction);
 
         return true;
     }
