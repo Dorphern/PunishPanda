@@ -92,6 +92,11 @@ public class HDRBaseWindow : EditorWindow
         }
         if (IsKeyDown(KeyCode.Alpha5) && Event.current.alt)
         {
+            (EditorWindow.GetWindow(typeof(AuxWindow)) as AuxWindow).SelectIntegrity();
+            Event.current.Use();
+        }
+        if (IsKeyDown(KeyCode.Alpha6) && Event.current.alt)
+        {
             (EditorWindow.GetWindow(typeof(AuxWindow)) as AuxWindow).SelectDataCreation();
             Event.current.Use();
         }
