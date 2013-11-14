@@ -7,7 +7,7 @@ using System.Collections;
 public class PandaAI : MonoBehaviour {
 
 	public event Action<Vector3> ApplyLiftMovement;
-	public event System.Action<PandaDirection> ApplyWalkingMovement;
+	public event System.Action<PandaDirection, bool> ApplyWalkingMovement;
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
@@ -20,6 +20,8 @@ public class PandaAI : MonoBehaviour {
 	public float slapEventLength = 2f;
 	[System.NonSerializedAttribute]
 	public Vector3 touchPosition;
+	[System.NonSerializedAttribute]
+	public bool standStill = false;
 	public float pandaCollisionDelay = 0.02f;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
@@ -46,6 +48,16 @@ public class PandaAI : MonoBehaviour {
 			pandaMovementController.ResetGravity();
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
+	}
+	
+	public void PandaPushingFinger()
+	{
+		pandaStateManager.ChangeState(PandaState.PushingFinger);	
+	}
+	
+	public void PandaPushingToWalking()
+	{
+		pandaStateManager.ChangeState(PandaState.Walking);	
 	}
 	
 	public void PandaReleased()
@@ -109,6 +121,29 @@ public class PandaAI : MonoBehaviour {
 		bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection.normalized);
 		
 	}
+	
+	public bool IsFacingFinger(Vector3 fingerPosition)
+	{
+		Vector2 facingDirection;
+		if(pandaStateManager.GetDirection() == PandaDirection.Right)
+		{
+			facingDirection = Vector2.right;
+		}
+		else
+		{
+			facingDirection = -Vector2.right;
+		}
+		
+		float dot = Vector2.Dot((fingerPosition - transform.position).normalized, facingDirection);
+		if(dot > 0f)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
     /**
      * Attempt a kill on the panda from a death trap
@@ -165,7 +200,7 @@ public class PandaAI : MonoBehaviour {
 			case PandaState.Walking:
 				
 				if(ApplyWalkingMovement!=null)
-					ApplyWalkingMovement(pandaStateManager.GetDirection());
+					ApplyWalkingMovement(pandaStateManager.GetDirection(), standStill);
 				break;
             case PandaState.Jumping:
                 if (ApplyJumpingMovement != null) ApplyJumpingMovement();
@@ -183,7 +218,7 @@ public class PandaAI : MonoBehaviour {
 				break;
 			case PandaState.FallTransition:
 				if(ApplyWalkingMovement!=null)
-					ApplyWalkingMovement(pandaStateManager.GetDirection());
+					ApplyWalkingMovement(pandaStateManager.GetDirection(), standStill);
 				break;
 				
 		}
