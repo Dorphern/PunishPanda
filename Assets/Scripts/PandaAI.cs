@@ -279,7 +279,7 @@ public class PandaAI : MonoBehaviour {
 		{
 		
 			// if both pandas are walking just bounce off of each other
-			if(otherPandaSM.GetState() == PandaState.Walking)
+			if(otherPandaSM.GetState() == PandaState.Walking || otherPandaSM.GetState() == PandaState.PushingFinger)
 				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 			// if we hit a panda that is holding on to the finger we want this panda to change direction
 			else if(otherPandaSM.GetState() ==  PandaState.HoldingOntoFinger)
