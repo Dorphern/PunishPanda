@@ -202,6 +202,15 @@ public class PandaAI : MonoBehaviour {
 
         return true;
     }
+	public string debug = "a";
+	void OnGUI()
+	{
+		if(gameObject.name == "Pandaa")
+		{
+			GUI.color = Color.black;
+			GUI.Label(new Rect(100, 100, 200, 100), debug);
+		}
+	}
 
     public bool IsAlive ()
     {
@@ -288,7 +297,7 @@ public class PandaAI : MonoBehaviour {
 				
 		}
 
-        if (lastPandaState != pandaStateManager.GetState())
+        if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
         {
            animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
             if (pandaStateManager.GetState() == PandaState.Slapped)
