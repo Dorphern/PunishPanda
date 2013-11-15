@@ -69,7 +69,6 @@ public class Settings : MonoBehaviour {
 		{
 			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
 			{
-				Debug.Log(InstanceFinder.Localization.languages[i].name);
 				if(InstanceFinder.Localization.languages[i].name!=languageLabel.text)
 				{
 					if(InstanceFinder.Localization.languages.Length == i-1)
