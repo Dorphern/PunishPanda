@@ -10,7 +10,6 @@ public class MainMenu : MonoBehaviour {
 		menuMan = GetComponent<MenuManager>();	
 	}
 	
-	
 	public void OnPlayClicked()
 	{
 		//Debug.Log("Play Pressed!");	
