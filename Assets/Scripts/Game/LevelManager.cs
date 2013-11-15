@@ -170,9 +170,4 @@ public class LevelManager : MonoBehaviour
             currentLevelIndex = -1;
         }
     }
-	
-	public void LoadLevel1()
-	{
-		InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
-	}
 }

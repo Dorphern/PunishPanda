@@ -38,8 +38,7 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(smallToggle!=null && smallToggle.value)
 		{
-			InstanceFinder.StatsManager.fingerSize = smallFingerSize;
-			InstanceFinder.StatsManager.Save();
+			InstanceFinder.StatsManager.FingerSize = smallFingerSize;
 		}
 		
 	}
@@ -48,8 +47,8 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(mediumToggle!=null && mediumToggle.value)
 		{
-			InstanceFinder.StatsManager.fingerSize = mediumFingerSize;
-			InstanceFinder.StatsManager.Save();		}	
+			InstanceFinder.StatsManager.FingerSize = mediumFingerSize;
+		}	
 		
 	}
 	
@@ -57,8 +56,7 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(largeToggle!=null && largeToggle.value)
 		{
-			InstanceFinder.StatsManager.fingerSize = largeFingerSize;
-			InstanceFinder.StatsManager.Save();
+			InstanceFinder.StatsManager.FingerSize = largeFingerSize;
 		}
 		
 	}
@@ -67,8 +65,7 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(xlToggle!=null && xlToggle.value)
 		{
-			InstanceFinder.StatsManager.fingerSize = XL_Finger_Size;
-			InstanceFinder.StatsManager.Save();
+			InstanceFinder.StatsManager.FingerSize = XL_Finger_Size;
 		}
 		
 	}
