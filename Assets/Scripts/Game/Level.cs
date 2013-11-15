@@ -48,6 +48,7 @@ public class Level : MonoBehaviour
         {
             normalPandaKills += 1;
         }
+		InstanceFinder.StatsManager.PandasKilled++;
     }
 
 
@@ -87,6 +88,12 @@ public class Level : MonoBehaviour
 			onLevelComplete();
 		}	
     }
+	
+	// save stat info on level completion
+	private void SaveData()
+	{
+		InstanceFinder.StatsManager.Save();	
+	}
 
     # endregion
 
