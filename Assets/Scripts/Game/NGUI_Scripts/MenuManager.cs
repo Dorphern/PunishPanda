@@ -9,6 +9,24 @@ public class MenuManager: MonoBehaviour {
 	public Dictionary<MenuTypes, GameObject> menuDict;
 	
 	private MenuTypes currentMenu;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentMenu == MenuTypes.Levels)
+            {
+                SwitchToMenu(MenuTypes.MainMenu);
+            }
+            else if (currentMenu == MenuTypes.MainMenu)
+            {
+                Application.Quit();
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #endif
+            }
+        }
+    }
 	
 	// Use this for initialization
 	void Start () {
