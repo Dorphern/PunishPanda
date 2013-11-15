@@ -15,7 +15,6 @@ public class InstanceFinder : MonoBehaviour
 
     public bool SetupIfMissing()
     {
-#if UNITY_EDITOR
         if (GameManager == null)
         {
             GameManager = (Object.Instantiate(gameManagerPrefab) as GameObject).GetComponent<GameManager>();
@@ -23,7 +22,6 @@ public class InstanceFinder : MonoBehaviour
             LevelManager.TransitionIntoLevel();
             return true;
         }
-#endif
         return false;
     }
 }
