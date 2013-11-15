@@ -17,6 +17,7 @@ public class StatsManager : MonoBehaviour
 
     private const string levelScore = "Score";
     private const string levelUnlocked = "Unlocked";
+	private const string languageKey = "Language";
 	
 	private float defaultFingerSize = 2f;
 
@@ -31,6 +32,8 @@ public class StatsManager : MonoBehaviour
 
     public bool musicEnabled;
     public bool soundEffectsEnabled;
+	
+	public string language;
 	
 	void Start()
 	{
@@ -56,9 +59,11 @@ public class StatsManager : MonoBehaviour
         gamesPlayed = PlayerPrefs.GetInt(gamesKey);
 
         fingerSize = PlayerPrefs.GetFloat(fingerSizeKey, defaultFingerSize);
-        musicEnabled = PlayerPrefs.GetInt(musicEnabledKey) == 1;
-        soundEffectsEnabled = PlayerPrefs.GetInt(soundEffectsEnabledKey) == 1;
-
+        musicEnabled = PlayerPrefs.GetInt(musicEnabledKey, 1) == 1;
+        soundEffectsEnabled = PlayerPrefs.GetInt(soundEffectsEnabledKey, 1) == 1;
+		
+		language = PlayerPrefs.GetString(languageKey);
+		
         var levels = InstanceFinder.LevelManager.GetWorld(0).Levels;
 
         for (int i = 0; i < levels.Count; i++)

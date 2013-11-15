@@ -45,7 +45,16 @@ public class LevelManager : MonoBehaviour
     public void LoadMainMenu()
     {
         isInMainMenu = true;
-        LoadLevelWithTransition(mainMenuName);
+        Application.LoadLevel(mainMenuName);
+    }
+	
+	public bool loadLevelsScreenFlag = false;
+	
+	public void LoadLevelsMenu()
+    {
+        isInMainMenu = true;
+		loadLevelsScreenFlag = true;
+        Application.LoadLevel(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
@@ -54,14 +63,14 @@ public class LevelManager : MonoBehaviour
         {
             isInMainMenu = false;
             currentLevelIndex = index;
-            LoadLevelWithTransition(CurrentLevel.LevelName);
+            Application.LoadLevel(CurrentLevel.LevelName);
         }
     }
 
     public void Reload()
     {
         isInMainMenu = false;
-        LoadLevelWithTransition(CurrentLevel.LevelName);
+        Application.LoadLevel(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
@@ -71,13 +80,13 @@ public class LevelManager : MonoBehaviour
         ++currentLevelIndex;
         if (MoreLevelsInWorld)
         {
-            LoadLevelWithTransition(CurrentLevel.LevelName);
+            Application.LoadLevel(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
             isInMainMenu = true;
-            LoadLevelWithTransition("MainMenu");
+            Application.LoadLevel("MainMenu");
         }
     }
 
