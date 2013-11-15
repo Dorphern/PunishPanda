@@ -23,7 +23,7 @@ public class MainMenu : MonoBehaviour {
 	
 	public void OnUnlocksClicked()
 	{
-		Debug.Log("Unlocks Pressed!");	
+        menuMan.SwitchToMenu(MenuTypes.Unlocks);
 	}
 	
 	public void OnSettingsClicked()
