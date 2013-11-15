@@ -34,8 +34,7 @@ public class PauseMenuManager : MonoBehaviour {
 		//case for going In and out of LEVELS SCREEN
 		if(gameObject.name == "LevelsButtonOffset")
 		{
-			LevelsScreen.SetActiveRecursively(true);
-	    	PauseMenu.SetActiveRecursively(false);
+			InstanceFinder.LevelManager.LoadLevelsMenu();
 		}
 		if(gameObject.name == "LevelsBackButton")
 		{
