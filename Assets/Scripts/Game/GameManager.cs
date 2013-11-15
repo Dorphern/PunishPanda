@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-		
-		
         var instance = InstanceFinder.GameManager;
         if (instance == null)
         {
@@ -23,8 +21,6 @@ public class GameManager : MonoBehaviour
 
     public void Initialize()
     {
-		//Object.DontDestroyOnLoad(gameObject);
-		
         InstanceFinder.GameManager = this;
 		
         DontDestroyOnLoad(transform.gameObject);

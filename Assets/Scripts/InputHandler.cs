@@ -30,6 +30,11 @@ public class InputHandler : MonoBehaviour {
 	private Dictionary<int, Hotspot> selectedHotSpots; 
 	private Dictionary<int, FingerBlocking> selectedBlockades; 
 	private Vector3 [] lastMousePos;
+	private Collider[] overlappingObjects;
+	private float fingerSize;
+	private string debugLine;
+	Queue<float> mouseQueue = new Queue<float>();
+	private int mouseQueueMax = 10;
 	
 	[System.Serializable]
 	public class Controls 
@@ -48,7 +53,12 @@ public class InputHandler : MonoBehaviour {
 		
 		lastMousePos = new Vector3[2];
 		
+		fingerSize = 4f;// InstanceFinder.StatsManager.FingerSize;
 		
+		for(int i = 0; i < blockades.Count; i++)
+		{
+			blockades[i].transform.localScale = new Vector3(fingerSize, fingerSize, fingerSize);	
+		}
 	}
 	
 	
@@ -158,22 +168,30 @@ public class InputHandler : MonoBehaviour {
 			
 			Vector3 mouseDelta = (relativCurrPos - relativLastPos);
 			
-			float magnitude = mouseDelta.magnitude;//touch.deltaPosition.magnitude;
+			if(mouseQueue.Count > mouseQueueMax)
+					mouseQueue.Dequeue();
+				mouseQueue.Enqueue(mouseDelta.magnitude);
+				
+				float mouseAverage = 0f;
+				foreach(float mousePos in mouseQueue)
+					mouseAverage += mousePos;
+				mouseAverage = mouseAverage / mouseQueue.Count;
 			
 			// if we are fast enough for swiping
-			if(controls.slapping == true && magnitude > swipeThreshold)
+			if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
 			{				
 				swipeController.Swipe(touch.position, lastMousePos[touch.fingerId]);
 			}
 			
 			// if we are slow enough for repositioning the blockade
 			
-			if(controls.holding == true && magnitude <= blocadeRepositionMaximumThreshold)
+			if(controls.holding == true && mouseAverage <= blocadeRepositionMaximumThreshold)
 			{
 				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
-				Vector3 distanceFromFinger = blockades[0].transform.position - Input.mousePosition;
-				if(!tempBlockade.IsEnabled() || distanceFromFinger.magnitude > blockadeDistanceFromFingerThreshold)
-					tempBlockade.RepositionBlockade(touch.position);
+				
+				tempBlockade.RepositionBlockade(touch.position);
+				UpdatePandasAroundBlockade(tempBlockade);	
+				
 				tempBlockade.ActivateBlockade();	
 			}
 			// otherwise disable the blockade
@@ -181,6 +199,7 @@ public class InputHandler : MonoBehaviour {
 			{
 				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
 				tempBlockade.DeactivateBlockade();
+				EnablePandasOnBlockadeRelease(tempBlockade);
 			}
 			lastMousePos[touch.fingerId] = touch.position;
 		}
@@ -198,6 +217,9 @@ public class InputHandler : MonoBehaviour {
 		{
 			selectedBlockades.TryGetValue(fingerId, out tempBlockade);
 			tempBlockade.DeactivateBlockade();
+			
+			EnablePandasOnBlockadeRelease(tempBlockade);
+			
 			blockades.Add(tempBlockade);
 			selectedBlockades.Remove(fingerId);
 		}
@@ -207,6 +229,63 @@ public class InputHandler : MonoBehaviour {
 			tempHotSpot.DeactivateHotspot();
 			selectedHotSpots.Remove(fingerId);
 		}	
+	}
+	
+	void OnGUI()
+	{
+		GUI.Label(GUILayoutUtility.GetRect(100, 1000), debugLine);
+	}
+	
+	void UpdatePandasAroundBlockade(FingerBlocking blockade)
+	{
+		// New way of blocking the pandas ( based on distance)
+		overlappingObjects = Physics.OverlapSphere(blockade.transform.position, fingerSize, 1 << LayerMask.NameToLayer("Panda"));
+		for(int i = 0; i < overlappingObjects.Length; i++)
+		{
+			Collidable collidable = overlappingObjects[i].GetComponent<Collidable>();
+			if(collidable != null)
+			{
+				if(collidable.type == CollidableTypes.Panda)
+				{
+					PandaAI panda = overlappingObjects[i].GetComponent<PandaAI>();
+					
+					if(panda.IsFacingFinger(blockade.transform.position) && 
+						Vector3.Distance(blockade.transform.position, collidable.transform.position) < fingerSize / 2f)
+					{
+						panda.standStill = true;
+						panda.PandaPushingFinger();
+					}
+					else
+					{
+						panda.standStill = false;
+						panda.PandaPushingToWalking();
+					}
+				}
+			}
+		}
+	}
+	
+	void EnablePandasOnBlockadeRelease(FingerBlocking blockade)
+	{
+		// Enable panda movement
+		overlappingObjects = Physics.OverlapSphere(blockade.transform.position, fingerSize, 1 << LayerMask.NameToLayer("Panda"));
+		for(int i = 0; i < overlappingObjects.Length; i++)
+		{
+			Collidable collidable = overlappingObjects[i].GetComponent<Collidable>();
+			if(collidable != null)
+			{
+				if(collidable.type == CollidableTypes.Panda)
+				{
+					PandaAI panda = overlappingObjects[i].GetComponent<PandaAI>();
+					if(panda.IsFacingFinger(blockade.transform.position) && 
+						Vector3.Distance(blockade.transform.position, collidable.transform.position) < fingerSize)
+					{
+						panda.standStill = false;
+						panda.PandaPushingToWalking();
+					}
+				}
+			}
+		}
 	}
 	
 	void MouseUpdate()
@@ -255,6 +334,16 @@ public class InputHandler : MonoBehaviour {
 				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
 				
 				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
+				
+				if(mouseQueue.Count > mouseQueueMax)
+					mouseQueue.Dequeue();
+				mouseQueue.Enqueue(mouseDelta.magnitude);
+				
+				float mouseAverage = 0f;
+				foreach(float mousePos in mouseQueue)
+					mouseAverage += mousePos;
+				mouseAverage = mouseAverage / mouseQueue.Count;
+				
 				// if we are fast enough for swiping
 				if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
 				{
@@ -262,19 +351,21 @@ public class InputHandler : MonoBehaviour {
 				}
 		
 				// if we are slow enough for repositioning the blockade
-				if(controls.holding == true && mouseDelta.magnitude <= blocadeRepositionMaximumThreshold)
+				if(controls.holding == true &&  mouseAverage <= blocadeRepositionMaximumThreshold)
 				{
-					Vector3 distanceFromFinger = blockades[0].transform.position - Input.mousePosition;
-					if(!blockades[0].IsEnabled()|| distanceFromFinger.magnitude > blockadeDistanceFromFingerThreshold)
-						blockades[0].RepositionBlockade (Input.mousePosition);
+					blockades[0].RepositionBlockade (Input.mousePosition);
+					UpdatePandasAroundBlockade(blockades[0]);
 					blockades[0].ActivateBlockade();
 				}
 				// otherwise disable the blockade
 				else
+				{
 					blockades[0].DeactivateBlockade();
+					EnablePandasOnBlockadeRelease(blockades[0]);	
+				}
 				
 			}
-						
+			
 			lastMousePos[0] = Input.mousePosition;
 		}
 		
@@ -293,6 +384,7 @@ public class InputHandler : MonoBehaviour {
 			else
 			{
 				blockades[0].DeactivateBlockade();
+				EnablePandasOnBlockadeRelease(blockades[0]);	
 			}
 		}	
 	}
