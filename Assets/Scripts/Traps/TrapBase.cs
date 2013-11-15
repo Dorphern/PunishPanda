@@ -8,7 +8,8 @@ public enum TrapType
     ImpalerSpikes,
     Pounder,
     ThrowingStars,
-	DoorTrap
+	DoorTrap,
+    RoundSaw
 }
 
 public abstract class TrapBase : MonoBehaviour {
@@ -25,7 +26,7 @@ public abstract class TrapBase : MonoBehaviour {
 
     # region Public Methods
 
-    public bool IsActive ()
+    virtual public bool IsActive ()
     {
         return collider.enabled;
     }

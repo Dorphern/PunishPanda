@@ -16,6 +16,8 @@ public class PandaAI : MonoBehaviour {
     public event System.Action ApplyJumpingMovement;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
+
+    [SerializeField] protected GameObject dismemberedPanda;
     
 	
 	[System.NonSerializedAttribute]
@@ -169,12 +171,16 @@ public class PandaAI : MonoBehaviour {
 
         // change state from playAnimation PlayDeathAnimation
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap.GetTrapType(), true);
-
-
+        
         pandaController.PandaKilled(true, isPerfect);
         if (trap.GetTrapType() == TrapType.Electicity)
         {
             pandaController.EnableColliders( false );
+        }
+        else if (trap.GetTrapType() == TrapType.Pounder)
+        {
+            Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
 
         return true;
