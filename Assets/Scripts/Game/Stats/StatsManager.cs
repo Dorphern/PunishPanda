@@ -105,8 +105,7 @@ public class StatsManager : MonoBehaviour
     public int GamesPlayed
     {
         get { return gamesPlayed; }
-        set { gamesPlayed = value; 
-			  PlayerPrefs.SetInt(gamesKey, gamesPlayed);}
+        set { gamesPlayed = value; }
     }
 
     public int PandasKilled
