@@ -68,12 +68,4 @@ public class StarSpawner : TrapBase
 		star.starSpawner = this;
 		star.ShootStar(transform.forward, force, torque);
 	}
-	
-	void OnGUI()
-	{
-		if(GUI.Button(GUILayoutUtility.GetRect(100, 100), "Restart"))
-		{
-			Application.LoadLevel(Application.loadedLevelName);	
-		}
-	}
 }
