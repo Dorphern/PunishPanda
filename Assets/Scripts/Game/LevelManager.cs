@@ -45,6 +45,7 @@ public class LevelManager : MonoBehaviour
     public void LoadMainMenu()
     {
         isInMainMenu = true;
+		SaveData();
         Application.LoadLevel(mainMenuName);
     }
 	

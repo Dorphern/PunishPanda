@@ -83,6 +83,7 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
 
     public override void OnEnable()
     {
+        treeDrawer.Filter(n => false);
         treeDrawer.OnNodeDraw = EventDrawer.EventFoldout;
         treeDrawer.OnContext = OnContext;
         treeDrawer.CanDropObjects = CanDropObjects;
@@ -118,34 +119,26 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
 
         #region Create child
 
-        if (node.Type == EventNodeType.Root)
+        if (node.Type == EventNodeType.Root || node.Type == EventNodeType.Folder)
         {
             menu.AddItem(new GUIContent(@"Create Child/Folder"), false,
                 data => { CreateChild(node, EventNodeType.Folder); }, node);
-            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
-                data => { CreateChild(node, EventNodeType.EventGroup); }, node);
-            menu.AddDisabledItem(new GUIContent(@"Create Child/Event"));
-        }
-        if (node.Type == EventNodeType.Folder)
-        {
-            menu.AddItem(new GUIContent(@"Create Child/Folder"), false,
-                data => { CreateChild(node, EventNodeType.Folder); }, node);
-            menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
-                data => { CreateChild(node, EventNodeType.EventGroup); }, node);
+            /*menu.AddItem(new GUIContent(@"Create Child/Event Group"), false,
+                data => { CreateChild(node, EventNodeType.EventGroup); }, node);*/
             menu.AddItem(new GUIContent(@"Create Child/Event"), false,
                 data => { CreateChild(node, EventNodeType.Event); }, node);
         }
         if (node.Type == EventNodeType.EventGroup)
         {
             menu.AddDisabledItem(new GUIContent(@"Create Child/Folder"));
-            menu.AddDisabledItem(new GUIContent(@"Create Child/Event Group"));
+            //menu.AddDisabledItem(new GUIContent(@"Create Child/Event Group"));
             menu.AddItem(new GUIContent(@"Create Child/Event"), false,
                 data => { CreateChild(node, EventNodeType.Event); }, node);
         }
         if (node.Type == EventNodeType.Event)
         {
             menu.AddDisabledItem(new GUIContent(@"Create Child/Folder"));
-            menu.AddDisabledItem(new GUIContent(@"Create Child/Event Group"));
+            //menu.AddDisabledItem(new GUIContent(@"Create Child/Event Group"));
             menu.AddDisabledItem(new GUIContent(@"Create Child/Event"));
         }
 
