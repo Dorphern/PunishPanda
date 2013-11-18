@@ -245,7 +245,6 @@ public class PandaAI : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() 
 	{
-       // Debug.Log(pandaStateManager.GetState());
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.HoldingOntoFinger:
@@ -404,7 +403,7 @@ public class PandaAI : MonoBehaviour {
         RaycastHit hit;
         if(Physics.Raycast(new Vector3(transform.position.x, transform.position.y, 0.5f), Vector3.down, out hit))
         {
-            if (hit.collider.GetComponent<Collidable>().type != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
+            if (hit.collider.GetComponent<Collidable>() != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
             {
                 float distance = (hit.transform.position - transform.position).magnitude;
                 Debug.Log("Distance: " + distance);
@@ -417,10 +416,5 @@ public class PandaAI : MonoBehaviour {
             }
         }
     }
-	
-
-
-
-	# endregion
-		
+	# endregion		
 }
