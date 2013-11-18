@@ -15,6 +15,7 @@ public class StarSpawner : TrapBase
 	void Start () 
 	{
 		starsPool = new Queue<ThrowingStar>();
+		base.Start();
 	}
 	
 	public override TrapType GetTrapType ()
