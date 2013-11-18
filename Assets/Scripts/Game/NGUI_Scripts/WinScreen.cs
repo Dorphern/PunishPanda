@@ -25,9 +25,13 @@ public class WinScreen : MonoBehaviour {
 		InstanceFinder.GameManager.ActiveLevel.onLevelComplete += OnLevelComplete;
 	}
 	
+	
+	
 	private void OnLevelComplete()
 	{
-		winScreen.SetActive(true);	
+		//this is where calcualtions for score, stars and adding to lifetime score happens
+		//  .GameManager.ActiveLevel.
+		winScreen.SetActive(true);
 	}
 	
 }

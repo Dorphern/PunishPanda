@@ -45,20 +45,24 @@ public class LevelManager : MonoBehaviour
     public void LoadMainMenu()
     {
         isInMainMenu = true;
+		SaveData();
         Application.LoadLevel(mainMenuName);
     }
 	
+	[HideInInspector]
 	public bool loadLevelsScreenFlag = false;
 	
 	public void LoadLevelsMenu()
     {
         isInMainMenu = true;
 		loadLevelsScreenFlag = true;
+		SaveData();
         Application.LoadLevel(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
     {
+		SaveData();
         if (currentWorld.Levels.Count > index)
         {
             isInMainMenu = false;
@@ -70,13 +74,14 @@ public class LevelManager : MonoBehaviour
     public void Reload()
     {
         isInMainMenu = false;
+		SaveData();
         Application.LoadLevel(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
     {
         isInMainMenu = false;
-
+		SaveData();
         ++currentLevelIndex;
         if (MoreLevelsInWorld)
         {
@@ -170,4 +175,11 @@ public class LevelManager : MonoBehaviour
             currentLevelIndex = -1;
         }
     }
+	
+	// adding this to ensure that data is saved when a level change occurs
+	void SaveData()
+	{
+		InstanceFinder.StatsManager.gamesPlayed++;
+		InstanceFinder.StatsManager.Save();	
+	}
 }

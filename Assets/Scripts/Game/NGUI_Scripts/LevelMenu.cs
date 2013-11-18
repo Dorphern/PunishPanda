@@ -7,7 +7,6 @@ public class LevelMenu : MonoBehaviour {
 	
 	public void LoadLevel1()
 	{
-		InstanceFinder.StatsManager.gamesPlayed++;
 		InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
 	}
 	
