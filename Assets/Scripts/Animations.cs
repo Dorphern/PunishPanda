@@ -7,18 +7,14 @@ public class Animations : MonoBehaviour {
     private PandaStateManager stateManager;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
-    private PandaState lastPandaState;
     private PandaDirection currentDirection;
-    private float rotationSpeed = 50f;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
         anim = gameObject.GetComponentInChildren<Animator>();
-        lastPandaState = gameObject.GetComponent<PandaStateManager>().GetState();
         stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();
-
-        
+        pandaAI = gameObject.GetComponent<PandaAI>();       
 	}
 
 
@@ -45,7 +41,7 @@ public class Animations : MonoBehaviour {
     public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
     {
        // anim.SetBool(pandaStateLast.ToString(), false);
-        anim.SetBool(typeTrap.ToString(), hitTrap);
+       // anim.SetBool(typeTrap.ToString(), hitTrap);
     }
 
     public void PlaySlappedAnimation(PandaState statePanda, bool pandaStateBool, PandaDirection dir, bool isInFace, PandaState pandaStateLast)

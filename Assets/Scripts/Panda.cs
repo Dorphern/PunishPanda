@@ -14,7 +14,7 @@ public class Panda : MonoBehaviour {
 
 	void Start () 
 	{
-	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda();
+	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda(this.GetComponent<PandaAI>());
 	}
 
     public void EnableColliders (bool enable)

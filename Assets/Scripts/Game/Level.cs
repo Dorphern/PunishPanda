@@ -15,6 +15,8 @@ public class Level : MonoBehaviour
     private int normalPandaKills;
     private int perfectPandaKills;
 	private bool onLevelCompleteFlag = false;
+	[System.NonSerializedAttribute]
+	public List<PandaAI> pandas = new List<PandaAI>();  
 	
 	public delegate void levelCompleteDelegate();
 	public event levelCompleteDelegate onLevelComplete;
@@ -31,10 +33,11 @@ public class Level : MonoBehaviour
         paused = false;
     }
 
-    public void RegisterPanda()
+    public void RegisterPanda(PandaAI panda)
     {
         totalPandaCount += 1;
         alivePandas += 1;
+		pandas.Add(panda);
     }
 
     public void OnPandaDeath(bool fromTrap, bool perfect)

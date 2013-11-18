@@ -27,11 +27,7 @@ public class DebugGUI : MonoBehaviour {
 	
 	
 	public InputHandler ih;
-	float maxSliderVal = 0.2F;
-	float minSliderVal = 0F;
-	
-	float maxSlider2Val = 1F;
-	float minSlider2Val = 0F;
+
 
     void Start()
     {
@@ -96,16 +92,6 @@ public class DebugGUI : MonoBehaviour {
 			swipeThresholdSlider.text = "Swipe Threshold: " + ih.swipeThreshold;
 			ih.swipeThreshold = swipeThresholdSlider.DrawSlider(ih.swipeThreshold);
 		}
-		
-		
-//		if(ih != null)
-//		{
-//			
-//			GUI.Box(new Rect(Screen.width * bbox2X, Screen.height * bbox2Y, Screen.width * bbox2Width, Screen.height * bbox2Height), "Dragging minimum Threshold: " + ih.draggingBoxMaximumThreshold);
-//			
-//			ih.draggingBoxMaximumThreshold = GUI.HorizontalSlider(new Rect(Screen.width * (bbox2X + slider2X), Screen.height * (bbox2Y + slider2Y), Screen.width * (slider2Width), Screen.height * slider2Height), ih.draggingBoxMaximumThreshold, minSlider2Val, maxSlider2Val);
-//		}
-//		
     }
 
 }
@@ -221,10 +207,8 @@ class GuiLabel
 
 class GuiBox
 {
-	
-	
-	public string text;
-	Color textColor;
+	public string text = "";
+	Color? textColor;
 	
 	private Rect box;
 		
@@ -237,7 +221,7 @@ class GuiBox
 	{
 		Color temp = GUI.contentColor;
 		if(textColor!=null)
-			GUI.contentColor = textColor;
+			GUI.contentColor = textColor.Value;
 		GUI.Box(box, text);
 		GUI.contentColor = temp;
 	}
