@@ -7,6 +7,20 @@ using Object = UnityEngine.Object;
 
 public static class TreeWalker
 {
+    public static void ForEach<T>(T node, Action<T> action)
+        where T : Object, ITreeNode<T>
+    {
+        if (node == null)
+            return;
+
+        action(node);
+
+        for (int i = 0; i < node.GetChildren.Count; i++)
+        {
+            ForEach<T>(node.GetChildren[i], action);
+        }
+    }
+
     public static List<U> FindAll<T, U>(T node, Func<T, U> toAdd) where T : Object, ITreeNode<T> where U : class
     {
         var found = new HashSet<U>();
