@@ -98,6 +98,8 @@ public class PandaAI : MonoBehaviour {
 			return;
         
 		// play animation + splatter ( texture projection + particles)
+		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
+		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
 		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
 		
@@ -134,7 +136,7 @@ public class PandaAI : MonoBehaviour {
             
 
 		}
-		bloodOnSlap.EmmitSlapBlood();
+		bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
 	}
 	
 	public bool IsFacingFinger(Vector3 fingerPosition)

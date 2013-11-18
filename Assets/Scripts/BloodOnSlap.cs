@@ -45,7 +45,7 @@ public class BloodOnSlap : MonoBehaviour {
 		}	
 	}
 	
-	//Method for emmiting blood in the same direction as slap.
+	//Method for emmiting blood in the same direction(and angle) as slap.
 	public void EmmitSlapBloodWithAngle(Vector2 slapDirection)
 	{
 		// set the angle of the splat to be the same in both XY and XZ planes
