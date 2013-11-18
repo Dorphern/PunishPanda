@@ -9,11 +9,13 @@ public class AudioWindow : HDRBaseWindow
     void OnEnable()
     {
         BaseEnable();
+
         if (audioCreatorGUI == null)
         {
             audioCreatorGUI = new AudioCreatorGUI(this);
-            audioCreatorGUI.OnEnable();
+            
         }
+        audioCreatorGUI.OnEnable();
     }
 
     public void Find(Func<AudioNode, bool> filter)

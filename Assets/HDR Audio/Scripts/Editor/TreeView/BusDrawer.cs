@@ -39,11 +39,11 @@ public class BusDrawer
         Rect labelArea = GUILayoutUtility.GetLastRect();
         Rect buttonArea = labelArea;
         Rect sliderArea = buttonArea;
-        
-        
+
+        buttonArea.x = buttonArea.x + 45 + EditorGUI.indentLevel * 16;
         if (!node.IsRoot)
         {
-            buttonArea.x = buttonArea.x + 45 + EditorGUI.indentLevel * 16;
+            //buttonArea.x = buttonArea.x + 45 + EditorGUI.indentLevel * 16;
             buttonArea.width = 20;
             buttonArea.height = 14;
             GUI.Label(buttonArea, EditorResources.Up, noMargain);
@@ -60,9 +60,22 @@ public class BusDrawer
                 Event.current.Use();
             }
         }
+        else
+        {
+            buttonArea.y += 15;
+        }
+
+        buttonArea.height = 36;
+        buttonArea.width = 36;
+        buttonArea.y -= 18;
+        buttonArea.x -= 26;
+
+        GUI.Label(buttonArea, EditorResources.Bus, noMargain);
+
         labelArea.y += 6;
         labelArea.x += 80;
         EditorGUI.LabelField(labelArea, node.Name);
+        
         GUI.enabled = false;
         sliderArea.y += 6;
         sliderArea.x = labelArea.x + 100;
@@ -70,6 +83,7 @@ public class BusDrawer
         sliderArea.width = 180;
         node.CombinedVolume = EditorGUI.Slider(sliderArea, node.CombinedVolume, 0.0f, 1.0f);
         GUI.enabled = true;
+
 
         return folded;
     }

@@ -1,26 +1,71 @@
 using HDRAudio.ExtensionMethods;
+using HDRAudio.Runtime;
 using UnityEngine;
 
 public static class AudioBusVolumeHelper {
-    public static void SetTargetVolume(AudioBus bus, float volume, EventBusAction.VolumeSetMode setMode)
+    public static void SetTargetVolume(AudioBus bus, float targetVolume, EventBusAction.VolumeSetMode setMode, float duration, FadeCurveType curveType)
     {
+        bus.Dirty = true;
         if (setMode == EventBusAction.VolumeSetMode.Absolute)
         {
-            bus.RuntimeTargetVolume = volume;
-            bus.Dirty = true;
+            if (duration == 0)
+                bus.RuntimeSelfVolume = targetVolume;
+            else
+            {
+                bus.Fader.Activated = true;
+                double currentTime = AudioSettings.dspTime;
+                bus.Fader.Initialize(curveType, currentTime, currentTime + duration, bus.RuntimeSelfVolume, targetVolume);
+            }
+            
         }
         else
         {
-            bus.RuntimeTargetVolume = Mathf.Clamp(bus.RuntimeTargetVolume + volume, 0.0f, 1.0f);
-            bus.Dirty = true;
+            if (duration == 0)
+                bus.RuntimeSelfVolume = Mathf.Clamp(bus.RuntimeSelfVolume + targetVolume, 0.0f, 1.0f);
+            else
+            {
+                bus.Fader.Activated = true;
+                double currentTime = AudioSettings.dspTime;
+                float newVolume = Mathf.Clamp(bus.RuntimeSelfVolume + targetVolume, 0.0f, 1.0f);
+                bus.Fader.Initialize(curveType, currentTime, currentTime + duration, bus.RuntimeSelfVolume, newVolume);
+            }
         }
+        
     }
 
-    public static void UpdateDirtyBusses(AudioBus bus)
+    public static void UpdateBusVolumes(AudioBus bus)
     {
+        double currentTime = AudioSettings.dspTime;
+        Fader fader = bus.Fader;
+        if (fader.Activated)
+        {
+            bus.Dirty = true;
+            bus.RuntimeSelfVolume = (float)fader.Lerp(AudioSettings.dspTime);
+
+            if (bus.RuntimeSelfVolume == fader.EndValue || fader.EndTime <= currentTime)
+            {
+                //Debug.Log(bus.RuntimeSelfVolume +"=="+ fader.EndValue +"||"+ fader.EndTime +"<="+ currentTime);
+                fader.Activated = false;
+            }
+        }
         if (bus.Dirty)
         {
-            bus.RuntimeVolume = bus.RuntimeTargetVolume*bus.CombinedVolume;
+            if (bus.Parent != null)
+            {
+                bus.CombinedVolume = bus.Parent.RuntimeVolume;
+            }
+            else
+            {
+                bus.CombinedVolume = 1.0f;
+            }
+            
+            double currentVolume = bus.RuntimeVolume;
+            
+            bus.RuntimeVolume = bus.RuntimeSelfVolume*bus.CombinedVolume;
+            if (bus.RuntimeVolume == currentVolume)
+            {
+                bus.Dirty = false;
+            }
             var nodes = bus.GetRuntimePlayers();
             for (int i = 0; i < nodes.Count; ++i)
             {
@@ -31,21 +76,23 @@ public static class AudioBusVolumeHelper {
                     nodes.SwapRemoveAt(i);
                 }
             }
+           
         }
+
         for (int i = 0; i < bus.Children.Count; ++i)
         {
             if (bus.Dirty)
                 bus.Children[i].Dirty = true;
-            UpdateDirtyBusses(bus.Children[i]);
-        }  
+            UpdateBusVolumes(bus.Children[i]);
+        }
     }
 
-    public static void SetBusVolumes(AudioBus bus)
+    public static void UpdateCombinedVolume(AudioBus bus)
     {
-        SetBusVolumes(bus, 1.0f);
+        UpdateCombinedVolume(bus, 1.0f);
     }
 
-    private static void SetBusVolumes(AudioBus bus, float volume)
+    private static void UpdateCombinedVolume(AudioBus bus, float volume)
     {
         if (bus != null)
         {
@@ -56,10 +103,12 @@ public static class AudioBusVolumeHelper {
                     //Non serialized, so will only stick while playing, will then get updated by the runtime system
             }
             bus.CombinedVolume = newVolume;
+            bus.Volume = newVolume;
+            bus.RuntimeSelfVolume = bus.Volume;
 
             for (int i = 0; i < bus.Children.Count; i++)
             {
-                SetBusVolumes(bus.Children[i], bus.CombinedVolume);
+                UpdateCombinedVolume(bus.Children[i], bus.CombinedVolume);
             }
         }
     }

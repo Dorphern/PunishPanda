@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FingerBlocking : MonoBehaviour {
 
@@ -10,10 +11,12 @@ public class FingerBlocking : MonoBehaviour {
     //private Vector2 direction;
     //private float speed;
 	private Collider [] childColliders;
+	public List<PandaAI> pushingPandas;
 	
 	
 	void Start () {
-
+		
+		pushingPandas = new List<PandaAI>();
 		collider.enabled = false;
 		childColliders = GetComponentsInChildren<Collider>();
 	}

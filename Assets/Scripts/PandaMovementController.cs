@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 // Require a character controller to be attached to the same game object
@@ -12,6 +13,7 @@ public class PandaMovementController : MonoBehaviour {
 	public Boosting boosting;
 	public JumpingOff jumpOff;
     public float hangingOffSet = 30f;
+	public float pushingForce = 15f;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
@@ -19,8 +21,10 @@ public class PandaMovementController : MonoBehaviour {
 	
 	bool withinRange = false;
 
+
+
  
-	#region SerializedClasses
+        #region SerializedClasses
 	[System.Serializable]
 	public class Boosting
 	{
@@ -103,6 +107,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public void JumpOff()
 	{
+
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
 	
@@ -121,6 +126,7 @@ public class PandaMovementController : MonoBehaviour {
 		if(pandaAI != null)
 		{
 			pandaAI.ApplyWalkingMovement += WalkingMovement;
+			pandaAI.PushingMovement += PushingMovement;
 			pandaAI.ApplyLiftMovement += LiftMovement;
 			pandaAI.ApplyFalling += FallingMovement;
 			pandaAI.BoostingMovement += BoostedMovement;
@@ -137,6 +143,20 @@ public class PandaMovementController : MonoBehaviour {
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
 		// Store the last position of the character;
 		lastPos = transform.position;
+		
+		
+	}
+	
+	void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.W))
+		{
+			pushingForce += 0.1f;	
+		}
+		else if(Input.GetKeyDown(KeyCode.S))
+		{
+			pushingForce -= 0.1f;	
+		}	
 	}
 	
 	void LiftMovement(Vector3 position)
@@ -153,11 +173,37 @@ public class PandaMovementController : MonoBehaviour {
 
     void JumpingMovement ()
     {
+        
         ApplyGravity();
     }
+	
+	void PushingMovement(PandaDirection direction, float pushingMagnitude)
+	{
+		
+		if(controller.isGrounded)
+		{
+			movement.offset = Vector3.zero;
+		}
+		// in order for the isGrounded flag to work we always need to apply gravity
+		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
+		
+		if(direction == PandaDirection.Right)
+		{	
+			movement.offset.x = movement.currentSpeed * pushingMagnitude * pushingForce;
+			transform.rotation = Quaternion.LookRotation(Vector3.forward);
+		}
+		
+		if(direction == PandaDirection.Left)
+		{
+			movement.offset.x = - movement.currentSpeed * pushingMagnitude * pushingForce;
+			transform.rotation = Quaternion.LookRotation(Vector3.back);
+		}
+		
+		controller.Move(movement.offset * Time.fixedDeltaTime);
+	}
 	 
 	// Move the character using Unity's CharacterController.Move function
-	void WalkingMovement(PandaDirection direction, bool standStill)
+	void WalkingMovement(PandaDirection direction)
 	{
 		if(controller.isGrounded)
 		{
@@ -166,21 +212,18 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
-		if(standStill == false)
-		{
-			if(direction == PandaDirection.Right)
-			{	
-				movement.offset.x = movement.currentSpeed;
-				transform.rotation = Quaternion.LookRotation(Vector3.forward);
-			}
-			
-			if(direction == PandaDirection.Left)
-			{
-				movement.offset.x = - movement.currentSpeed;
-				transform.rotation = Quaternion.LookRotation(Vector3.back);
-			}
+		if(direction == PandaDirection.Right)
+		{	
+			movement.offset.x = movement.currentSpeed;
+			transform.rotation = Quaternion.LookRotation(Vector3.forward);
 		}
 		
+		if(direction == PandaDirection.Left)
+		{
+			movement.offset.x = - movement.currentSpeed;
+			transform.rotation = Quaternion.LookRotation(Vector3.back);
+		}
+	
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
@@ -251,7 +294,7 @@ public class PandaMovementController : MonoBehaviour {
 	void BoostedMovement(PandaDirection direction)
 	{
 		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.fixedDeltaTime * boosting.rollOffSpeed);
-		WalkingMovement(direction, false);
+		WalkingMovement(direction);
 	}
 	
 	void SetBoostSpeed()
