@@ -73,7 +73,7 @@ public class LevelDataDrawer : IReorderableListAdaptor
         levelTypePos.width = 60;
         position.y += 17;
         currentLevel.Mode = (PunishPanda.Game.GameModes) EditorGUI.EnumPopup(levelTypePos, currentLevel.Mode);
-        currentLevel.Unlocked = EditorGUI.Toggle(position, "Unlocked", currentLevel.Unlocked);
+        currentLevel.UnlockedLevel = EditorGUI.Toggle(position, "Unlocked", currentLevel.UnlockedLevel);
     }
 
     public float GetItemHeight(int index)
