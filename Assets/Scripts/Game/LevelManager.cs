@@ -64,6 +64,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevelByWorldIndex(int index)
     {
+        
 		SaveData();
         System.GC.Collect();
         if (currentWorld.Levels.Count > index)

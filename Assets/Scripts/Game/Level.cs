@@ -83,7 +83,8 @@ public class Level : MonoBehaviour
 		if(alivePandas <= 0 && onLevelCompleteFlag==false)
 		{
 			onLevelCompleteFlag = true;
-			onLevelComplete();
+            if(onLevelComplete != null)
+			    onLevelComplete();
 		}	
     }
 	

@@ -47,13 +47,21 @@ public class UISwipeControl : MonoBehaviour
     private Transform startClosetsChild;
     private int startClosetsChildIndex;
 
+    public bool HasReachedRightEnd
+    {
+        get
+        {
+            return startClosetsChildIndex == transform.childCount - 1;
+        }
+    }
+
     public float SwipeMinimum;
 
     /// <summary>
     /// Recenter the draggable list on the center-most child.
     /// </summary>
 
-    public void Recenter()
+    public void Recenter(bool buttonNext = false)
     {
         if (mDrag == null)
         {
@@ -95,33 +103,49 @@ public class UISwipeControl : MonoBehaviour
 
         float min = float.MaxValue;
         Transform target = null;
-        if (Vector2.Distance(touchEndPos, touchStartPos) >= SwipeMinimum)
+
+        if (!buttonNext)
         {
-            if (touchStartPos.x < touchEndPos.x) //Move left
+            if (Vector2.Distance(touchEndPos, touchStartPos) >= SwipeMinimum)
             {
-                if (startClosetsChildIndex == 0) //We are at the left end of the panel, target ourself
+                if (touchStartPos.x < touchEndPos.x) //Move left
                 {
-                    target = startClosetsChild;
+                    if (startClosetsChildIndex == 0) //We are at the left end of the panel, target ourself
+                    {
+                        target = startClosetsChild;
+                    }
+                    else //Else Move one to the left
+                    {
+                        startClosetsChildIndex -= 1;
+                        target = transform.GetChild(startClosetsChildIndex);
+                    }
                 }
-                else //Else Move one to the left
+                else if (touchStartPos.x >= touchEndPos.x) //Move left
                 {
-                    startClosetsChildIndex -= 1;
-                    target = transform.GetChild(startClosetsChildIndex);
+                    if (startClosetsChildIndex == transform.childCount - 1) //We are at the right end of the panel, target ourself
+                    {
+                        target = startClosetsChild;
+                    }
+                    else //Else Move one to the left
+                    {
+                        startClosetsChildIndex += 1;
+                        target = transform.GetChild(startClosetsChildIndex);
+
+                    }
                 }
             }
-            else if (touchStartPos.x >= touchEndPos.x) //Move left
+        }
+        else
+        {
+            if (startClosetsChildIndex == transform.childCount - 1) //We are at the right end of the panel, target ourself
             {
-                if (startClosetsChildIndex == transform.childCount - 1)
-                    //We are at the right end of the panel, target ourself
-                {
-                    target = startClosetsChild;
-                }
-                else //Else Move one to the left
-                {
-                    startClosetsChildIndex += 1;
-                    target = transform.GetChild(startClosetsChildIndex);
-                    
-                }
+                target = startClosetsChild;
+            }
+            else //Else Move one to the left
+            {
+                startClosetsChildIndex += 1;
+                target = transform.GetChild(startClosetsChildIndex);
+
             }
         }
 
@@ -180,6 +204,11 @@ public class UISwipeControl : MonoBehaviour
         }
         
         return target;
+    }
+
+    public void GoToNext()
+    {
+        Recenter(true);
     }
 
     private void OnDragStarted()
