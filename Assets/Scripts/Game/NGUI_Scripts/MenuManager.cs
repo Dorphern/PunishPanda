@@ -4,11 +4,31 @@ using System.Collections.Generic;
 
 
 public class MenuManager: MonoBehaviour {
-	
+
+	public MenuTypes StartMenu;
 	public List<GameObject> menus;
-	public Dictionary<MenuTypes, GameObject> menuDict;
+		
+	private Dictionary<MenuTypes, GameObject> menuDict;
 	
 	private MenuTypes currentMenu;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentMenu == MenuTypes.Levels)
+            {
+                SwitchToMenu(MenuTypes.MainMenu);
+            }
+            else if (currentMenu == MenuTypes.MainMenu)
+            {
+                Application.Quit();
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #endif
+            }
+        }
+    }
 	
 	// Use this for initialization
 	void Start () {
@@ -22,7 +42,7 @@ public class MenuManager: MonoBehaviour {
 			{
 				if(menuDict.ContainsKey(mt.type))
 				{
-					Debug.Log("Menu type has already been inserted into the menu manager");	
+					Debug.Log("Menu type has already been inserted into the menu manager: " + mt.type);	
 				}
 				else if(mt.type==MenuTypes.None)
 				{
@@ -30,7 +50,8 @@ public class MenuManager: MonoBehaviour {
 				}
 				else
 				{	
-					menuDict.Add(mt.type, menus[i]);	
+					menuDict.Add(mt.type, menus[i]);
+					menus[i].SetActive(false);
 				}
 			}
 			else
@@ -39,14 +60,22 @@ public class MenuManager: MonoBehaviour {
 			}
 		}
 		
+		//makeshift solution for loading the levels screen rather than the main screen on startup
+		if(InstanceFinder.LevelManager.loadLevelsScreenFlag)
+		{
+			GameObject menu;
+			menuDict.TryGetValue(MenuTypes.Levels, out menu);
+			menu.SetActive(true);
+			currentMenu = MenuTypes.Levels;
+			InstanceFinder.LevelManager.loadLevelsScreenFlag = false;	
+		} 
 		// initialize the Main Menu if it is in the dictionary
-		
-		if(menuDict.ContainsKey(MenuTypes.MainMenu))
+		else if(menuDict.ContainsKey(StartMenu))
 		{	
 			GameObject menu;
-			menuDict.TryGetValue(MenuTypes.MainMenu, out menu);
+			menuDict.TryGetValue(StartMenu, out menu);
 			menu.SetActive(true);
-			currentMenu = MenuTypes.MainMenu;
+			currentMenu = StartMenu;
 		}
 		
 	}
@@ -73,5 +102,10 @@ public class MenuManager: MonoBehaviour {
 			newMenu.SetActive(true);
 			currentMenu = type;
 		}
+	}
+	
+	public void ReturnToMainMenu()
+	{
+		SwitchToMenu(MenuTypes.MainMenu);
 	}
 }

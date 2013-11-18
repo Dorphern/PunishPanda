@@ -45,39 +45,52 @@ public class LevelManager : MonoBehaviour
     public void LoadMainMenu()
     {
         isInMainMenu = true;
-        LoadLevelWithTransition(mainMenuName);
+        Application.LoadLevel(mainMenuName);
+    }
+	
+	[HideInInspector]
+	public bool loadLevelsScreenFlag = false;
+	
+	public void LoadLevelsMenu()
+    {
+        isInMainMenu = true;
+		loadLevelsScreenFlag = true;
+		SaveData();
+        Application.LoadLevel(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
     {
+		SaveData();
         if (currentWorld.Levels.Count > index)
         {
             isInMainMenu = false;
             currentLevelIndex = index;
-            LoadLevelWithTransition(CurrentLevel.LevelName);
+            Application.LoadLevel(CurrentLevel.LevelName);
         }
     }
 
     public void Reload()
     {
         isInMainMenu = false;
-        LoadLevelWithTransition(CurrentLevel.LevelName);
+		SaveData();
+        Application.LoadLevel(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
     {
         isInMainMenu = false;
-
+		SaveData();
         ++currentLevelIndex;
         if (MoreLevelsInWorld)
         {
-            LoadLevelWithTransition(CurrentLevel.LevelName);
+            Application.LoadLevel(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
             isInMainMenu = true;
-            LoadLevelWithTransition("MainMenu");
+            Application.LoadLevel("MainMenu");
         }
     }
 
@@ -162,8 +175,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 	
-	public void LoadLevel1()
+	// adding this to ensure that data is saved when a level change occurs
+	void SaveData()
 	{
-		InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
+		InstanceFinder.StatsManager.gamesPlayed++;
+		InstanceFinder.StatsManager.Save();	
 	}
 }
