@@ -55,7 +55,7 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         if (treeDrawer.SelectedNode != null)
         {
             AudioBusDrawer.Draw(treeDrawer.SelectedNode);
-            AudioBusVolumeHelper.SetBusVolumes(HDRInstanceFinder.DataManager.BusTree);
+            //AudioBusVolumeHelper.UpdateCombinedVolume(HDRInstanceFinder.DataManager.BusTree);
             
         }
     }

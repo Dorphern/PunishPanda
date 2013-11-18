@@ -12,10 +12,10 @@ public class InstanceFinder : MonoBehaviour
     public static StatsManager StatsManager { get; set; }
     public static ComboSystem ComboSystem { get; set; }
     public static Localization Localization { get; set; }
+	public static AchievementManager AchievementManager { get; set; }
 
     public bool SetupIfMissing()
     {
-#if UNITY_EDITOR
         if (GameManager == null)
         {
             GameManager = (Object.Instantiate(gameManagerPrefab) as GameObject).GetComponent<GameManager>();
@@ -23,7 +23,6 @@ public class InstanceFinder : MonoBehaviour
             LevelManager.TransitionIntoLevel();
             return true;
         }
-#endif
         return false;
     }
 }

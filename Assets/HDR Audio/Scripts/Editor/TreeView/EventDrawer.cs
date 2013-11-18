@@ -34,11 +34,17 @@ namespace HDRAudio.TreeDrawer
                     picture = EditorResources.Plus;
 
                 GUILayout.Label(picture, noMargain, GUILayout.Height(EditorResources.Minus.height), GUILayout.Width(EditorResources.Minus.width));
+                
                 Rect foldRect = GUILayoutUtility.GetLastRect();
                 if (Event.current.ClickedWithin(foldRect))
                 {
                     folded = !folded;
                     Event.current.Use();
+                }
+
+                if (!node.IsRoot)
+                {
+                    TreeNodeDrawerHelper.DrawIcon(GUILayoutUtility.GetLastRect(), EditorResources.Folder, noMargain);
                 }
                 EditorGUILayout.LabelField("");
             }
@@ -49,10 +55,10 @@ namespace HDRAudio.TreeDrawer
             EditorGUILayout.EndHorizontal();
 
             Rect labelArea = GUILayoutUtility.GetLastRect();
-            Rect buttonArea = labelArea;
+            Rect buttonArea = GUILayoutUtility.GetLastRect();
             if (!node.IsRoot)
             {
-                buttonArea.x = buttonArea.x + 45 + EditorGUI.indentLevel*16;
+                buttonArea.x = buttonArea.x + 56 + EditorGUI.indentLevel*16;
                 buttonArea.width = 20;
                 buttonArea.height = 14;
                 if (node.Type != EventNodeType.Event)
@@ -92,8 +98,8 @@ namespace HDRAudio.TreeDrawer
             }
             if (node.Type != EventNodeType.Event)//As Events are smaller
                 labelArea.y += 6;
-            labelArea.x += 80;
-            EditorGUI.LabelField(labelArea, node.Type + " - " + node.Name);
+            labelArea.x += 90;
+            EditorGUI.LabelField(labelArea, node.Name);
 
             return folded;
         }
