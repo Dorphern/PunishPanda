@@ -180,6 +180,7 @@ public class LevelManager : MonoBehaviour
 	void SaveData()
 	{
 		InstanceFinder.StatsManager.gamesPlayed++;
+		InstanceFinder.AchievementManager.SaveAchievements();
 		InstanceFinder.StatsManager.Save();	
 	}
 }
