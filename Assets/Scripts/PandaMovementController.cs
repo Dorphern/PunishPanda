@@ -16,11 +16,15 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
+    Vector3 dampedVelocity;
 	
 	bool withinRange = false;
 
+
+    [SerializeField] float velocityDampingSpeed = 0.1f;
+    [SerializeField] float velocityRotation = 3f;
  
-	#region SerializedClasses
+    #region SerializedClasses
 	[System.Serializable]
 	public class Boosting
 	{
@@ -115,6 +119,7 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
+        dampedVelocity = new Vector3(0, 0, 0);
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -135,8 +140,19 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-		// Store the last position of the character;
-		lastPos = transform.position;
+
+        Vector3 velocity = transform.position - lastPos;
+        dampedVelocity = dampedVelocity * (1f - velocityDampingSpeed)
+            + velocity * velocityDampingSpeed;
+        Vector3 rot = controller.transform.eulerAngles;
+        if (rot.y < 91f && rot.y > 89f)
+        {
+            rot.x = dampedVelocity.x * velocityRotation * 100f;
+        }
+        controller.transform.eulerAngles = rot;
+
+        // Store the last position of the character;
+        lastPos = transform.position;
 	}
 	
 	void LiftMovement(Vector3 position)
@@ -146,8 +162,8 @@ public class PandaMovementController : MonoBehaviour {
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.minMoveDistance)
 		{
-			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);			
-		}
+			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
+        }
 	}
 
 
