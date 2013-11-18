@@ -152,7 +152,8 @@ public class LevelManager : MonoBehaviour
 
 
     private GameWorld currentWorld;
-    private int currentLevelIndex;
+     
+    public int currentLevelIndex;
 
     private bool MoreLevelsInWorld
     {
