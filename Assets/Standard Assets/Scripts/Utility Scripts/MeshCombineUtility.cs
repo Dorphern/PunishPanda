@@ -1,5 +1,7 @@
+#pragma warning disable 0618
 using UnityEngine;
 using System.Collections;
+
 
 public class MeshCombineUtility {
 	
