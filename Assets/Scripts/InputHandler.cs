@@ -182,7 +182,7 @@ public class InputHandler : MonoBehaviour {
 					
 					if(panda.IsFacingFinger(tempBlockade.transform.position))
 					{
-						float distanceToFinger = Vector3.Distance(tempBlockade.transform.position, panda.transform.position);
+						float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
 						if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.4f)
 						{
 							panda.PandaPushingFinger();
@@ -282,7 +282,7 @@ public class InputHandler : MonoBehaviour {
 		}
 		else
 		{
-			float distanceToFinger = Vector3.Distance(tempBlockade.transform.position, pushedPanda.transform.position);
+			float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, pushedPanda.transform.position);
 			
 			if(distanceToFinger > fingerSize / 2f + 0.8f)
 			{
@@ -378,7 +378,7 @@ public class InputHandler : MonoBehaviour {
 						
 						if(panda.IsFacingFinger(tempBlockade.transform.position))
 						{
-							float distanceToFinger = Vector3.Distance(tempBlockade.transform.position, panda.transform.position);
+							float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
 							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.4f)
 							{
 								panda.PandaPushingFinger();
