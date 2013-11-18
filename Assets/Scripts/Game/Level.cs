@@ -72,8 +72,6 @@ public class Level : MonoBehaviour
         }
         InstanceFinder.GameManager.ActiveLevel = this;
     }
-	
-	
 
     private void Update()
     {
