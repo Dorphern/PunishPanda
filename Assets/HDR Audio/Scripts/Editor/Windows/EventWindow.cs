@@ -8,8 +8,9 @@ public class EventWindow : HDRBaseWindow
     void OnEnable()
     {
         BaseEnable();
-
-        audioEventCreatorGUI = new AudioEventCreatorGUI(this);
+        
+        if(audioEventCreatorGUI == null)
+            audioEventCreatorGUI = new AudioEventCreatorGUI(this);
         audioEventCreatorGUI.OnEnable();
     }
 

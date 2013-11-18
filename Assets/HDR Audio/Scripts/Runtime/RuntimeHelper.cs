@@ -112,12 +112,28 @@ public static class RuntimeHelper
 
     public static float ApplyPitch(AudioNode root, AudioNode current)
     {
+        NodeTypeData nodeData = current.NodeData;
+        float minPitch = nodeData.MinPitch;
+        float maxPitch = nodeData.MaxPitch;
+        bool isRandom = nodeData.RandomPitch;
         if (current == root)
         {
-            return current.NodeData.MinPitch;
+            if(!isRandom)
+                return minPitch;
+            else
+            {
+                return Random.Range(minPitch, maxPitch);
+            }
         }
 
-        return current.NodeData.MinPitch + ApplyPitch(root, current.Parent) - 1;
+        if (!isRandom)
+            return current.NodeData.MinPitch + ApplyPitch(root, current.Parent) - 1;
+        else
+        {
+            return Random.Range(minPitch, maxPitch) + ApplyPitch(root, current.Parent) - 1;
+        }
+
+        
     }
 
     public static float LengthFromPitch(float length, float pitch)
