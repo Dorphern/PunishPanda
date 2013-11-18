@@ -103,6 +103,11 @@ public class UIRunTween : MonoBehaviour
 #endif
 		}
 	}
+	
+		void OnClick ()
+	{
+			Play(true);
+	}
 
 	public void RunTween ()
 	{
