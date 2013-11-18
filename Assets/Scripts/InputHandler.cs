@@ -2,15 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Controls 
-{
-	public bool slapping = true;
-	public bool bouncing = true;
-	public bool lifting = true;
-	public bool holding = true;
-}
-
-
 public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
 	public SwipeController swipeController;
@@ -31,10 +22,8 @@ public class InputHandler : MonoBehaviour {
 	private PandaAI pushedPanda; 
 	private Vector3 [] lastMousePos;
 	private Collider[] overlappingObjects;
-	public float fingerSize;
+	private float fingerSize;
 	private string debugLine;
-	Queue<float> mouseQueue = new Queue<float>();
-	public int mouseQueueMax = 10;
 	
 	[System.Serializable]
 	public class Controls 
@@ -53,7 +42,7 @@ public class InputHandler : MonoBehaviour {
 		
 		lastMousePos = new Vector3[2];
 		
-		//fingerSize = 4f;// InstanceFinder.StatsManager.FingerSize;
+		fingerSize = 2f;// InstanceFinder.StatsManager.FingerSize;
 		
 		for(int i = 0; i < blockades.Count; i++)
 		{
@@ -170,15 +159,6 @@ public class InputHandler : MonoBehaviour {
 			Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
 			
 			Vector3 mouseDelta = (relativCurrPos - relativLastPos);
-			
-			if(mouseQueue.Count > mouseQueueMax)
-					mouseQueue.Dequeue();
-				mouseQueue.Enqueue(mouseDelta.magnitude);
-				
-				float mouseAverage = 0f;
-				foreach(float mousePos in mouseQueue)
-					mouseAverage += mousePos;
-				mouseAverage = mouseAverage / mouseQueue.Count;
 			
 			// if we are fast enough for swiping
 			if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
@@ -376,8 +356,6 @@ public class InputHandler : MonoBehaviour {
 				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
 				
 				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
-				
-				
 				
 				// if we are fast enough for swiping
 				if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)

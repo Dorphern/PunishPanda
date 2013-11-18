@@ -67,7 +67,7 @@ public class PandaStateManager : MonoBehaviour {
     public void ChangeState (PandaState state)
     {
 		// Debug
-		this.GetComponentInChildren<TextMesh>().text = state.ToString();
+		//this.GetComponentInChildren<TextMesh>().text = state.ToString();
 		
         if (state == currentState)
         {
