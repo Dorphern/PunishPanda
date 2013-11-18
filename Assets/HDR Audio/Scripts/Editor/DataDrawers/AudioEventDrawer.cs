@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using HDRAudio;
 using HDRAudio.ExtensionMethods;
+using HDRAudio.Runtime;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -74,7 +75,7 @@ public static class AudioEventDrawer
         {
             UndoCheck.Instance.CheckUndo(eventAction);
             //UndoCheck.Instance.CheckUndo(eventAction, "Audio Event Action Change");    
-            Rect thisArea = EditorGUILayout.BeginVertical(GUILayout.Height(100));
+            Rect thisArea = EditorGUILayout.BeginVertical(GUILayout.Height(120));
             EditorGUILayout.LabelField("");
             var buttonArea = thisArea;
             buttonArea.height = 16;
@@ -91,8 +92,12 @@ public static class AudioEventDrawer
                 else
                     busAction.Volume = EditorGUI.Slider(buttonArea, "Absolute Volume", busAction.Volume, 0.0f, 1.0f);
 
-                buttonArea.y += 25;
+                buttonArea.y += 21;
                 busAction.VolumeMode = (EventBusAction.VolumeSetMode)EditorGUI.EnumPopup(buttonArea, "Volume Mode", busAction.VolumeMode);
+                buttonArea.y += 26;
+                busAction.Duration = Mathf.Max(EditorGUI.FloatField(buttonArea, "Fade Duration", busAction.Duration), 0);
+                buttonArea.y += 21;
+                busAction.FadeCurve = (FadeCurveType)EditorGUI.EnumPopup(buttonArea, "Fade Curve", busAction.FadeCurve);
             }
             EditorGUILayout.EndVertical();
             UndoCheck.Instance.CheckDirty(eventAction);    

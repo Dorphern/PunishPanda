@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public enum Version {v1, v2}
 public class BloodOnSlap : MonoBehaviour {
@@ -16,6 +16,9 @@ public class BloodOnSlap : MonoBehaviour {
 	
 	// 3D vector controlling the direction of the blood particle object
 	private Vector3 projectionDirection = Vector3.right;
+
+	[EventHookAttribute("Slap")]
+	[SerializeField] List<AudioEvent> slapAudioEvents = new List<AudioEvent>();
 	
 	void Start ()
     {
@@ -34,7 +37,11 @@ public class BloodOnSlap : MonoBehaviour {
 	public void EmmitSlapBlood()
 	{
 		GameObject BloodSplat;
-				
+		for(int i = 0; i < slapAudioEvents.Count; ++i)
+		{
+			
+			HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
+		}
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
 		{
 			BloodSplat = Instantiate(Resources.Load(objectName),transform.position, Quaternion.identity) as GameObject;		

@@ -47,7 +47,7 @@ public class Animations : MonoBehaviour {
     public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
     {
        // anim.SetBool(pandaStateLast.ToString(), false);
-        anim.SetBool(typeTrap.ToString(), hitTrap);
+       // anim.SetBool(typeTrap.ToString(), hitTrap);
     }
 
     public void PlaySlappedAnimation(PandaState statePanda, bool pandaStateBool, PandaDirection dir, bool isInFace, PandaState pandaStateLast)
