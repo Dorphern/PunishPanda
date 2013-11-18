@@ -5,7 +5,7 @@ using UnityEngine;
 /// Handles swipe control 
 /// </summary>
 
-[AddComponentMenu("NGUI/Interaction/Panda Swipe Control")]
+[AddComponentMenu("NGUI/PunishPanda/Panda Swipe Control")]
 public class UISwipeControl : MonoBehaviour
 {
     /// <summary>
