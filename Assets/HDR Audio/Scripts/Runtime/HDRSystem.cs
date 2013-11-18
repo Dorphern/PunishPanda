@@ -87,10 +87,11 @@ public class HDRSystem : MonoBehaviour
     }
     #endregion
 
+    #region Internal
     #region Unity functions
     void FixedUpdate()
     {
-        AudioBusVolumeHelper.UpdateDirtyBusses(HDRInstanceFinder.DataManager.BusTree);
+        AudioBusVolumeHelper.UpdateBusVolumes(HDRInstanceFinder.DataManager.BusTree);
     }
 
     void Start()
@@ -131,7 +132,7 @@ public class HDRSystem : MonoBehaviour
                 var busData = eventData as EventBusAction;
                 if (busData != null && busData.Bus != null)
                 {
-                    AudioBusVolumeHelper.SetTargetVolume(busData.Bus, busData.Volume, busData.VolumeMode);
+                    AudioBusVolumeHelper.SetTargetVolume(busData.Bus, busData.Volume, busData.VolumeMode, busData.Duration, busData.FadeCurve);
                 }
                 break;
             case EventActionTypes.LoadBank:
@@ -203,7 +204,7 @@ public class HDRSystem : MonoBehaviour
 
     private IEnumerator PostDelayedActions(GameObject controllingObject, AudioEventAction eventData, GameObject attachedToOther)
     {
-        yield return new WaitForSeconds(eventData.Delay + eventData.Delay);
+        yield return new WaitForSeconds(eventData.Delay);
         HandleEventAction(controllingObject, eventData, attachedToOther);
     }
     #endregion
@@ -263,7 +264,7 @@ public class HDRSystem : MonoBehaviour
 
     private IEnumerator PostDelayedActions(GameObject controllingObject, AudioEventAction eventData, Vector3 postAt)
     {
-        yield return new WaitForSeconds(eventData.Delay + eventData.Delay);
+        yield return new WaitForSeconds(eventData.Delay);
         HandleEventAction(controllingObject, eventData, null, postAt);
     }
     #endregion
@@ -280,7 +281,7 @@ public class HDRSystem : MonoBehaviour
             runtimeData = GetComponentInChildren<RuntimeAudioData>();
             BankLoader.LoadAutoLoadedBanks();
             runtimeData.UpdateEvents(HDRInstanceFinder.DataManager.EventTree);
-
+            AudioBusVolumeHelper.UpdateCombinedVolume(HDRInstanceFinder.DataManager.BusTree);
             DontDestroyOnLoad(transform.parent.gameObject);
         }
         else
@@ -310,5 +311,6 @@ public class HDRSystem : MonoBehaviour
         }
     }
 
+    #endregion
     #endregion
 }

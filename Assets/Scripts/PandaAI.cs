@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -38,6 +39,13 @@ public class PandaAI : MonoBehaviour {
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
 	BloodOnSlap bloodOnSlap;
+
+    [SerializeField] [EventHookAttribute("Slap")]
+    List<AudioEvent> slapAudioEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Jump")]
+    private List<AudioEvent> jumpEvents;
     Animations animations;
 	
 	
@@ -86,6 +94,10 @@ public class PandaAI : MonoBehaviour {
         if (ApplyJump != null)
         {
             pandaStateManager.ChangeState(PandaState.Jumping);
+            for (int i = 0; i < jumpEvents.Count; i++)
+            {
+                HDRSystem.PostEvent(gameObject, jumpEvents[i]);
+            }
             ApplyJump(force, direction);
         }
     }
@@ -100,6 +112,11 @@ public class PandaAI : MonoBehaviour {
 		// play animation + splatter ( texture projection + particles)
 		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
+
+        for (int i = 0; i < slapAudioEvents.Count; i++)
+        {
+            HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
+        }
 		
 		Vector2 facingDirection;
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
@@ -185,6 +202,15 @@ public class PandaAI : MonoBehaviour {
 
         return true;
     }
+	public string debug = "a";
+	void OnGUI()
+	{
+		if(gameObject.name == "Pandaa")
+		{
+			GUI.color = Color.black;
+			GUI.Label(new Rect(100, 100, 200, 100), debug);
+		}
+	}
 
     public bool IsAlive ()
     {
@@ -271,7 +297,7 @@ public class PandaAI : MonoBehaviour {
 				
 		}
 
-        if (lastPandaState != pandaStateManager.GetState())
+        if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
         {
            animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
             if (pandaStateManager.GetState() == PandaState.Slapped)

@@ -7,7 +7,7 @@ public class BankHook : MonoBehaviour
 {
     [BankHookAttribute("Load On Enable")]
     public List<AudioBankLink> OnEnableEvents = new List<AudioBankLink>();
-    [BankHookAttribute("Load On Start")]
+    [BankHookAttribute("Load On Initialize")]
     public List<AudioBankLink> OnStartEvents = new List<AudioBankLink>();
     [BankHookAttribute("Load On Disable")]
     public List<AudioBankLink> OnDisableEvents = new List<AudioBankLink>();
@@ -16,7 +16,7 @@ public class BankHook : MonoBehaviour
 
     [BankHookAttribute("Unload On Enable")]
     public List<AudioBankLink> OnEnableUnloadEvents = new List<AudioBankLink>();
-    [BankHookAttribute("Unload On Start")]
+    [BankHookAttribute("Unload On Initialize")]
     public List<AudioBankLink> OnStartUnloadEvents = new List<AudioBankLink>();
     [BankHookAttribute("Unload On Disable")]
     public List<AudioBankLink> OnDisableUnloadEvents = new List<AudioBankLink>();

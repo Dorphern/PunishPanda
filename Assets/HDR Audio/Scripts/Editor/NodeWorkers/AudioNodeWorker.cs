@@ -129,18 +129,21 @@ public static class AudioNodeWorker  {
 
         if (audioNode.Parent.Type == AudioNodeType.Random)
         {
-            (audioNode.Parent.NodeData as RandomData).weights.Add(50);
+            (audioNode.Parent.NodeData as RandomData).weights.Add(50);   
         }
         return NodeWorker.DuplicateHierarchy(audioNode, (@oldNode, newNode) =>
-        {
+        { 
             var gameObject = audioNode.gameObject;
-            Type type = newNode.NodeData.GetType();
-            newNode.NodeData = gameObject.AddComponent(type) as NodeTypeData;
-            if (newNode.Type == AudioNodeType.Audio)
-            {
-                AudioBankWorker.AddNodeToBank(newNode, (newNode.NodeData as AudioData).Clip);
+            if(oldNode.NodeData != null)
+            { 
+                Type type = oldNode.NodeData.GetType();
+                newNode.NodeData = gameObject.AddComponent(type) as NodeTypeData;
+                EditorUtility.CopySerialized(oldNode.NodeData, newNode.NodeData);
+                if (newNode.Type == AudioNodeType.Audio)
+                {
+                    AudioBankWorker.AddNodeToBank(newNode, (oldNode.NodeData as AudioData).Clip);
+                }
             }
-            EditorUtility.CopySerialized(oldNode.NodeData, newNode.NodeData);
         });
     }
 
