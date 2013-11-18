@@ -7,10 +7,10 @@ namespace HDRAudio
     {
         Play            = 1,
         Stop            = 2,
-        Break           = 3, //Not implemented
+        Break           = 3, 
         //Pause = 4, //Not implemented
         StopAll         = 5,
-        //SetVolume     = 6,
+        //SetVolume     = 6, //Not implemented
         SetBusVolume    = 7,
         LoadBank        = 8,
         UnloadBank      = 9,

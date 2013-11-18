@@ -70,10 +70,7 @@ public class SwipeController : MonoBehaviour {
 			}
 			if(!doubleCollisionFlag)
 			{
-				var collidable = hits[i].collider.GetComponent<Collidable>();
-				if (collidable != null && collidable.type == CollidableTypes.Panda)
-		            count++;
-		            //Debug.Log("Hit Panda" + count);
+				var collidable = hits[i].collider.GetComponent<Collidable>();		           
 				if(mainMenuSwipe)
 				{
 		        	hits[i].collider.GetComponent<PandaAIMainMenu>().PandaSlapped(-direction2D, speed);

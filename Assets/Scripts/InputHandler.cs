@@ -53,7 +53,7 @@ public class InputHandler : MonoBehaviour {
 		
 		lastMousePos = new Vector3[2];
 		
-		fingerSize = 4f;// InstanceFinder.StatsManager.FingerSize;
+		fingerSize = 3f;// InstanceFinder.StatsManager.FingerSize;
 		
 		for(int i = 0; i < blockades.Count; i++)
 		{
@@ -239,9 +239,10 @@ public class InputHandler : MonoBehaviour {
 	void UpdatePandasAroundBlockade(FingerBlocking blockade)
 	{
 		// New way of blocking the pandas ( based on distance)
-		overlappingObjects = Physics.OverlapSphere(blockade.transform.position, fingerSize, 1 << LayerMask.NameToLayer("Panda"));
+		overlappingObjects = Physics.OverlapSphere(blockade.transform.position, fingerSize / 2, 1 << LayerMask.NameToLayer("Panda"));
 		for(int i = 0; i < overlappingObjects.Length; i++)
 		{
+			Debug.Log(overlappingObjects[i].name);
 			Collidable collidable = overlappingObjects[i].GetComponent<Collidable>();
 			if(collidable != null)
 			{
@@ -268,7 +269,7 @@ public class InputHandler : MonoBehaviour {
 	void EnablePandasOnBlockadeRelease(FingerBlocking blockade)
 	{
 		// Enable panda movement
-		overlappingObjects = Physics.OverlapSphere(blockade.transform.position, fingerSize, 1 << LayerMask.NameToLayer("Panda"));
+		overlappingObjects = Physics.OverlapSphere(blockade.transform.position, fingerSize / 2, 1 << LayerMask.NameToLayer("Panda"));
 		for(int i = 0; i < overlappingObjects.Length; i++)
 		{
 			Collidable collidable = overlappingObjects[i].GetComponent<Collidable>();

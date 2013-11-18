@@ -102,7 +102,7 @@ public class RuntimeEventWorker : MonoBehaviour
     {
         if (audioGOPool == null)
         {
-            audioGOPool = GetComponent<AudioGOPool>();
+            audioGOPool = GetComponent<AudioGOPool>(); 
         }
         if (runtimeInfoPool == null)
         {
