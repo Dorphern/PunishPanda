@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
         InstanceFinder.PointSystem = GetComponent<PointSystem>();
         InstanceFinder.StatsManager = GetComponent<StatsManager>();
 		InstanceFinder.Localization = GetComponent<Localization>();
+		InstanceFinder.AchievementManager = GetComponent<AchievementManager>();
     }
 
     public Level ActiveLevel

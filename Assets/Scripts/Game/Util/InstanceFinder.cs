@@ -12,6 +12,7 @@ public class InstanceFinder : MonoBehaviour
     public static StatsManager StatsManager { get; set; }
     public static ComboSystem ComboSystem { get; set; }
     public static Localization Localization { get; set; }
+	public static AchievementManager AchievementManager { get; set; }
 
     public bool SetupIfMissing()
     {
