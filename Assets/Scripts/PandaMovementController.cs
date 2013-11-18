@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 // Require a character controller to be attached to the same game object
@@ -19,8 +20,10 @@ public class PandaMovementController : MonoBehaviour {
 	
 	bool withinRange = false;
 
+
+
  
-	#region SerializedClasses
+        #region SerializedClasses
 	[System.Serializable]
 	public class Boosting
 	{
@@ -103,6 +106,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public void JumpOff()
 	{
+
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
 	
@@ -153,6 +157,7 @@ public class PandaMovementController : MonoBehaviour {
 
     void JumpingMovement ()
     {
+        
         ApplyGravity();
     }
 	 

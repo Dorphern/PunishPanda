@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HDRAudio.Runtime;
 using UnityEngine;
 
 public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
@@ -6,29 +7,12 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     //Volume set in the editor
     public float Volume = 1.0f;
 
-    //The volume in the hiarchy
-    public float CombinedVolume = 1.0f;
+
 
     public int GUID;
 
     public string Name;
 
-    //Do we need to update the attach audio players?
-    [System.NonSerialized]
-    public bool Dirty;
-
-    //The nodes during runtime that is in this bus
-    [System.NonSerialized]
-    public List<RuntimePlayer> NodesInBus = new List<RuntimePlayer>();
-
-    //Current volume
-    [System.NonSerialized]
-    public float RuntimeVolume = 1.0f;
-
-
-    //What the volume should be
-    [System.NonSerialized]
-    public float RuntimeTargetVolume = 1.0f;
 
     public AudioBus Parent;
 
@@ -36,6 +20,31 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     public int ParentGUID;
 
     public List<AudioBus> Children = new List<AudioBus>();
+
+    //Do we need to update the attach audio players?
+    [System.NonSerialized]
+    public bool Dirty = true;
+
+    //The nodes during runtime that is in this bus
+    [System.NonSerialized]
+    public List<RuntimePlayer> NodesInBus = new List<RuntimePlayer>();
+
+    //The volume to set it's children to
+    [System.NonSerialized]
+    public float RuntimeVolume = 1.0f;
+
+    //What the volume for itself is
+    [System.NonSerialized]
+    public float RuntimeSelfVolume = 1.0f;
+
+    //The volume in the hiarchy
+    [System.NonSerialized]
+    public float CombinedVolume = 1.0f;
+
+
+    [System.NonSerialized]
+    public Fader Fader = new Fader();
+
 
 #if UNITY_EDITOR
     public bool FoldedOut;
@@ -104,5 +113,4 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
         }
     }
     #endif
-
 }
