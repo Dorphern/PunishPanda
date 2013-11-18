@@ -7,8 +7,10 @@ public class MainMenu : MonoBehaviour {
 	
 	void Start()
 	{
-		menuMan = GetComponent<MenuManager>();	
+		menuMan = GetComponent<MenuManager>();
+
 	}
+
 	
 	public void OnPlayClicked()
 	{

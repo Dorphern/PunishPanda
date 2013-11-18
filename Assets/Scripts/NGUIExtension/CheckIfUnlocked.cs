@@ -23,7 +23,7 @@ public class CheckIfUnlocked : MonoBehaviour
         }
 
         var levels = InstanceFinder.LevelManager.CurrentWorld.Levels;
-        if (levels.Count > index && !levels[index].Unlocked)
+        if (levels.Count > index && !levels[index].UnlockedLevel)
         {
             GetComponent<UITexture>().mainTexture = LockScreen;
         }

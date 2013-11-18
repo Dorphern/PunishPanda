@@ -17,7 +17,8 @@ public class WinScreen : MonoBehaviour {
 	
 	public void OnNextLevelButtonClicked()
 	{
-		InstanceFinder.LevelManager.LoadNextLevel();
+	    var levelManger = InstanceFinder.LevelManager;
+		levelManger.LoadNextLevel();
 	}
 	
 	void Start()
@@ -29,9 +30,19 @@ public class WinScreen : MonoBehaviour {
 	
 	private void OnLevelComplete()
 	{
-		//this is where calcualtions for score, stars and adding to lifetime score happens
-		//  .GameManager.ActiveLevel.
-		winScreen.SetActive(true);
+		//this is where calcualtions for score, stars and adding to lifetime score happens 
+        //  .GameManager.ActiveLevel.
+        #region Unlock next level & current level funfact
+        var levelManger = InstanceFinder.LevelManager;
+	    levelManger.CurrentLevel.UnlockedFunFact = true;
+	    var levels = levelManger.CurrentWorld.Levels;
+	    if (levels.Count - 1 > levelManger.CurrentLevelIndex)
+	    {
+	        levels[levelManger.CurrentLevelIndex + 1].UnlockedLevel = true;
+        }
+        #endregion
+
+        winScreen.SetActive(true);
 	}
 	
 }
