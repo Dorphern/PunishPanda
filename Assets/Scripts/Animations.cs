@@ -7,18 +7,14 @@ public class Animations : MonoBehaviour {
     private PandaStateManager stateManager;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
-    private PandaState lastPandaState;
     private PandaDirection currentDirection;
-    private float rotationSpeed = 50f;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
         anim = gameObject.GetComponentInChildren<Animator>();
-        lastPandaState = gameObject.GetComponent<PandaStateManager>().GetState();
         stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();
-
-        
+        pandaAI = gameObject.GetComponent<PandaAI>();       
 	}
 
 

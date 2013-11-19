@@ -18,10 +18,10 @@ public class InputHandler : MonoBehaviour {
 	private FingerBlocking tempBlockade;
 	private Dictionary<int, PandaAI> selectedPandas; 
 	private Dictionary<int, Hotspot> selectedHotSpots; 
-	private Dictionary<int, FingerBlocking> selectedBlockades; 
-	private PandaAI pushedPanda; 
+	private Dictionary<int, FingerBlocking> selectedBlockades;  
 	private Vector3 [] lastMousePos;
 	private Collider[] overlappingObjects;
+//	private PandaAI pushedPanda;
 	private float fingerSize;
 	private string debugLine;
 	
@@ -384,7 +384,7 @@ public class InputHandler : MonoBehaviour {
 					
 					foreach(PandaAI panda in InstanceFinder.GameManager.ActiveLevel.pandas)
 					{
-						if(tempBlockade.pushingPandas.Contains(pushedPanda)) continue;
+						if(tempBlockade.pushingPandas.Contains(panda)) continue;
 						
 						if(panda.IsFacingFinger(tempBlockade.transform.position))
 						{

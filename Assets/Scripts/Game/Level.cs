@@ -75,8 +75,6 @@ public class Level : MonoBehaviour
         }
         InstanceFinder.GameManager.ActiveLevel = this;
     }
-	
-	
 
     private void Update()
     {
@@ -88,7 +86,8 @@ public class Level : MonoBehaviour
 		if(alivePandas <= 0 && onLevelCompleteFlag==false)
 		{
 			onLevelCompleteFlag = true;
-			onLevelComplete();
+            if(onLevelComplete != null)
+			    onLevelComplete();
 		}	
     }
 	

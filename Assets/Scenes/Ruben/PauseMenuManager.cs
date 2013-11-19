@@ -21,14 +21,14 @@ public class PauseMenuManager : MonoBehaviour {
 		//case for going In and out of HINT SCREEN
 		if(gameObject.name == "GoalButtonOffset")
 		{
-	    	HintScreen.SetActiveRecursively(true);
-	    	PauseMenu.SetActiveRecursively(false);
+	    	HintScreen.SetActive(true);
+	    	PauseMenu.SetActive(false);
 		}
 		
 		if(gameObject.name == "HintBackButton")
 		{
-			HintScreen.SetActiveRecursively(false);
-	    	PauseMenu.SetActiveRecursively(true);
+			HintScreen.SetActive(false);
+	    	PauseMenu.SetActive(true);
 		}
 		
 		//case for going In and out of LEVELS SCREEN
@@ -38,8 +38,8 @@ public class PauseMenuManager : MonoBehaviour {
 		}
 		if(gameObject.name == "LevelsBackButton")
 		{
-			LevelsScreen.SetActiveRecursively(false);
-	    	PauseMenu.SetActiveRecursively(true);
+			LevelsScreen.SetActive(false);
+	    	PauseMenu.SetActive(true);
 		}
 		
 		//case for going to MAIN MENU
