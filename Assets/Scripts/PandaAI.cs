@@ -63,6 +63,7 @@ public class PandaAI : MonoBehaviour {
 		{
 			pandaMovementController.ResetHolding();
 			pandaMovementController.ResetGravity();
+			
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
 	}
@@ -200,7 +201,7 @@ public class PandaAI : MonoBehaviour {
         {
             pandaController.EnableColliders( false );
         }
-        else if (trap.GetTrapType() == TrapType.Pounder)
+        else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
         {
             Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
             Destroy(gameObject);
