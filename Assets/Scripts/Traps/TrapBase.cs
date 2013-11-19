@@ -64,7 +64,7 @@ public abstract class TrapBase : MonoBehaviour {
 
     # region Private Methods
 
-    void Start ()
+    protected void Start ()
     {
         if (IsDirty())
         {
