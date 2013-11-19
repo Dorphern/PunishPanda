@@ -3418,6 +3418,7 @@ MonoBehaviour:
   mainMenuName: MainMenu
   worlds:
   - {fileID: 1653744188}
+  currentLevelIndex: 0
 --- !u!114 &421293978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4780,8 +4781,7 @@ MonoBehaviour:
   useMouseInput: 1
   fingerRadius: .800000012
   swipeThreshold: .0320000015
-  blocadeRepositionMaximumThreshold: .000500000024
-  blockadeDistanceFromFingerThreshold: 100
+  pushingMaxMagnitude: .00999999978
   controls:
     slapping: 1
     bouncing: 1
@@ -8729,6 +8729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -8765,7 +8766,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 2
+    walkSpeed: 1
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -8781,6 +8782,7 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
 --- !u!114 &1205307932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9601,6 +9603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushingPandas: []
 --- !u!135 &1300623366
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10873,6 +10876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushingPandas: []
 --- !u!135 &1514324901
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11830,7 +11834,8 @@ MonoBehaviour:
       Two: 0
       Three: 0
     HighScore: 0
-    Unlocked: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
   - LevelName: level2-holdtutorial
     Mode: 0
     score:
@@ -11840,7 +11845,8 @@ MonoBehaviour:
       Two: 0
       Three: 0
     HighScore: 0
-    Unlocked: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
   - LevelName: level3-bouncetutorial
     Mode: 0
     score:
@@ -11850,7 +11856,8 @@ MonoBehaviour:
       Two: 0
       Three: 0
     HighScore: 0
-    Unlocked: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
   - LevelName: level4-lifttutorial
     Mode: 0
     score:
@@ -11860,8 +11867,9 @@ MonoBehaviour:
       Two: 0
       Three: 0
     HighScore: 0
-    Unlocked: 0
-  - LevelName: levelb
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: level5
     Mode: 0
     score:
       MaxTimeScore: 0
@@ -11870,8 +11878,9 @@ MonoBehaviour:
       Two: 0
       Three: 0
     HighScore: 0
-    Unlocked: 0
-  - LevelName: workingshit
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: level6
     Mode: 0
     score:
       MaxTimeScore: 0
@@ -11880,7 +11889,30 @@ MonoBehaviour:
       Two: 0
       Three: 0
     HighScore: 0
-    Unlocked: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: levelk
+    Mode: 0
+    score:
+      MaxTimeScore: 0
+      LevelLength: 0
+      One: 0
+      Two: 0
+      Three: 0
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: leveli
+    Mode: 0
+    score:
+      MaxTimeScore: 0
+      LevelLength: 0
+      One: 0
+      Two: 0
+      Three: 0
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
 --- !u!4 &1653744189
 Transform:
   m_ObjectHideFlags: 0
