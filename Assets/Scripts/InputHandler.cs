@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
 	public SwipeController swipeController;
-	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
 	public float swipeThreshold = 10f;
 	public float pushingMaxMagnitude = 0f;
@@ -53,14 +52,11 @@ public class InputHandler : MonoBehaviour {
 	
 	void Update () 
 	{
-		if(useMouseInput)
-		{
-			MouseUpdate();
-		}
-		else
-		{
-			TouchUpdate();
-		}
+#if UNITY_EDITOR
+		MouseUpdate();
+#else
+        TouchUpdate();
+#endif
 	}
 	
 	#region Touch Input Handling

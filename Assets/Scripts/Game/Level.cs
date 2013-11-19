@@ -7,6 +7,8 @@ using PunishPanda.Game;
 public class Level : MonoBehaviour
 {
     [SerializeField] private LevelScore levelScore = new LevelScore();
+	public Texture2D FunFactsTexture;
+	public string    FunFactsText;
 
     private float elapsedTime;
     private bool paused;
@@ -62,7 +64,17 @@ public class Level : MonoBehaviour
             return elapsedTime;
         }
     }
-
+	
+	public int GetScore()
+	{
+		return ScoreCalculator.Score(levelScore, perfectPandaKills, normalPandaKills, elapsedTime);	
+	}
+	
+	public int Stars()
+	{
+		return ScoreCalculator.Stars(levelScore, GetScore());	
+	}
+	
     # endregion
 
     # region Private Methods
@@ -83,7 +95,7 @@ public class Level : MonoBehaviour
             elapsedTime += PandaTime.deltaTime;
         }
 		
-		if(alivePandas <= 0 && onLevelCompleteFlag==false)
+		if(alivePandas <= 0 && onLevelCompleteFlag==false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
             if(onLevelComplete != null)
@@ -96,89 +108,6 @@ public class Level : MonoBehaviour
 	{
 		InstanceFinder.StatsManager.Save();	
 	}
-
+	
     # endregion
-
-//    private void OnGUI()
-//    {
-//        return;
-//        var levelManger = InstanceFinder.LevelManager;
-//
-//        if (alivePandas > 0)
-//        {
-//            if (levelManger != null)
-//            {
-//                Rect nextRect = new Rect(Screen.width - 150, 50, 100, 80);
-//                string nextLevelString = LanguageManager.Instance.GetTextValue("Game.NextLevel");
-//                if (GUI.Button(nextRect, nextLevelString))
-//                {
-//                    levelManger.LoadNextLevel();
-//                }
-//
-//                nextRect = new Rect(Screen.width - 300, 50, 100, 80);
-//                string mainMenuString = LanguageManager.Instance.GetTextValue("Game.MainMenu");
-//                if (GUI.Button(nextRect, mainMenuString))
-//                {
-//                    levelManger.LoadMainMenu();
-//                }
-//
-//            }
-//
-//            Rect killButton = new Rect(50, 50, 100, 80);
-//            if (GUI.Button(killButton, "(Fake) Kill Panda"))
-//            {
-//                OnPandaDeath(false, false);
-//            }
-//        }
-//        else
-//        {
-//            int kills = normalPandaKills + perfectPandaKills;
-//            int heightOffset = 30; 
-//            Rect nextRect = new Rect(Screen.width/2 - 75, 50, 100, 40);
-//            int score = ScoreCalculator.Score(levelScore, perfectPandaKills, normalPandaKills, elapsedTime);
-//            string scoreString = LanguageManager.Instance.GetTextValue("Score.Score");
-//            GUI.Label(nextRect, scoreString + score);
-//            nextRect.y += heightOffset;
-//            string pandaKillsString = LanguageManager.Instance.GetTextValue("Score.PandaKills");
-//            GUI.Label(nextRect, pandaKillsString + kills);
-//            nextRect.y += heightOffset;
-//
-//            string timeScoreString = LanguageManager.Instance.GetTextValue("Score.TimeScore");
-//            GUI.Label(nextRect, timeScoreString + ScoreCalculator.TimeScore(levelScore, elapsedTime));
-//            nextRect.y += heightOffset;
-//
-//            string starsString = LanguageManager.Instance.GetTextValue("Score.Stars");
-//            GUI.Label(nextRect, starsString + ScoreCalculator.Stars(levelScore, score));
-//            if (alivePandas == 0)
-//            {
-//                nextRect.y += heightOffset;
-//                nextRect.width += 20;
-//                string perfectPandaKill = LanguageManager.Instance.GetTextValue("Score.PerfectKill");
-//                GUI.Label(nextRect, perfectPandaKill);
-//                nextRect.width -= 20;
-//            }
-//            nextRect.y += heightOffset*2;
-//
-//            string nextLevelString = LanguageManager.Instance.GetTextValue("Game.NextLevel");
-//            if (GUI.Button(nextRect, nextLevelString))
-//            {
-//                levelManger.LoadNextLevel();
-//            }
-//
-//            string replayString = LanguageManager.Instance.GetTextValue("Game.Replay");
-//            nextRect.y += heightOffset * 2;
-//            if (GUI.Button(nextRect, replayString))
-//            {
-//                levelManger.Reload();
-//            }
-//            
-//            string mainMenuString = LanguageManager.Instance.GetTextValue("Game.MainMenu");
-//            nextRect.y += heightOffset * 2;
-//            if (GUI.Button(nextRect, mainMenuString))
-//            {
-//                levelManger.LoadMainMenu();
-//            }
-//        }
-//    }
-//
 }

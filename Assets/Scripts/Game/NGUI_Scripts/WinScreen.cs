@@ -4,6 +4,13 @@ using System.Collections;
 public class WinScreen : MonoBehaviour {
 	
 	public GameObject winScreen;
+	public UITexture funFactsTexture;
+	public UISprite oneStarTexture;
+	public UISprite twoStarTexture;
+	public UISprite threeStarTexture;
+	public UILabel   FunFactsLabel;
+	public UILabel   scoreLabel;
+	public UILabel   highScoreLabel;
 	
 	public void OnLevelsButtonClicked()
 	{
@@ -17,8 +24,7 @@ public class WinScreen : MonoBehaviour {
 	
 	public void OnNextLevelButtonClicked()
 	{
-        var levelManager = InstanceFinder.LevelManager;
-        levelManager.LoadNextLevel();
+		InstanceFinder.LevelManager.LoadNextLevel();
 	}
 	
 	void Start()
@@ -30,12 +36,50 @@ public class WinScreen : MonoBehaviour {
 	
 	private void OnLevelComplete()
 	{
-	    //this is where calcualtions for score, stars and adding to lifetime score happens 
-        //  .GameManager.ActiveLevel.
-        
-	    UnLockLevels();
-
-        winScreen.SetActive(true);
+		
+		/*// we also need to deactivate controls
+		//this is where calcualtions for score, stars and adding to lifetime score happens
+		
+		Level level = InstanceFinder.GameManager.ActiveLevel;
+		
+		//Set win screen
+		
+		funFactsTexture.mainTexture = level.FunFactsTexture;
+		FunFactsLabel.text = level.FunFactsText;
+		
+		// score calculation
+		int score = level.GetScore();
+		int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
+		scoreLabel.text = score.ToString();
+		
+		if(score > highScore)
+		{
+			highScoreLabel.text = "New High Score!";
+		}
+		else
+		{
+			highScoreLabel.text = "HighScore: " + highScore;
+		}
+		
+		// star calculation
+		int stars = level.Stars();
+		if(stars==1)
+		{
+			oneStarTexture.enabled = true;	
+		}
+		else if(stars==1)
+		{
+			oneStarTexture.enabled = true;	
+			twoStarTexture.enabled = true;	
+		}
+		else if(stars==1)
+		{
+			oneStarTexture.enabled = true;	
+			twoStarTexture.enabled = true;	
+			threeStarTexture.enabled = true;
+		}*/
+		UnLockLevels();
+		winScreen.SetActive(true);
 	}
 
     private static void UnLockLevels()
