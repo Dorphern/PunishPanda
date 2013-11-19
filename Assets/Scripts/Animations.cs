@@ -9,6 +9,7 @@ public class Animations : MonoBehaviour {
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
 
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -23,19 +24,39 @@ public class Animations : MonoBehaviour {
 
         anim.SetBool(pandaStateLast.ToString(), false);
 
-        Vector3 targetDirection = new Vector3(transform.eulerAngles.x, 90, transform.eulerAngles.z);
-        Vector3 targetDirectionX = new Vector3(180, 90, transform.eulerAngles.z);
+        Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
 
-        if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Left)
+        Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
+
+
+        if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Right)
+            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
+        else if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Left)
+            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
+
+        if (statePanda == PandaState.Falling && currentDirection == PandaDirection.Right)
+            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
+        else if (statePanda == PandaState.Falling && currentDirection == PandaDirection.Left)
+            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
+
+        if (statePanda == PandaState.PushingFinger)
+            transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
+
+        if (currentDirection == PandaDirection.Left)
         {
-            transform.GetComponentInChildren<Transform>().eulerAngles = targetDirection;
+            anim.SetBool(currentDirection.ToString(), pandaStateBool);
+            anim.SetBool("Right", false);
         }
-        else if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Right)
+        else
         {
-            transform.GetComponentInChildren<Transform>().eulerAngles = targetDirectionX;
+            anim.SetBool(currentDirection.ToString(), pandaStateBool);
+            anim.SetBool("Left", false);
         }
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
+
+
+        
 
     }
     public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
@@ -47,26 +68,44 @@ public class Animations : MonoBehaviour {
     public void PlaySlappedAnimation(PandaState statePanda, bool pandaStateBool, PandaDirection dir, bool isInFace, PandaState pandaStateLast)
     {
 
-        Vector3 targetDirection = new Vector3(transform.eulerAngles.x, 90, transform.eulerAngles.z);
-        transform.eulerAngles = targetDirection;
 
+        //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+        //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
+
+        //Quaternion targetChildDirectionQua = transform.FindChild("WalkExport_2").transform.rotation;
+
+
+        
         anim.SetBool(statePanda.ToString(), pandaStateBool);
         anim.SetBool(dir.ToString(), pandaStateBool);
         anim.SetBool("Face", isInFace);
-        
-        StartCoroutine(EndSlap(dir));
+
+       // anim.MatchTarget(transform.position, targetChildDirectionQua, AvatarTarget.Root, new MatchTargetWeightMask (new Vector3(0f, 1f, 0f), 0f), 0f, 0.64f);
+        StartCoroutine(EndSlap(dir, isInFace));
 
     }
-    IEnumerator EndSlap(PandaDirection dir)
+    IEnumerator EndSlap(PandaDirection dir, bool isInFace)
     {
+
+
 
         yield return new WaitForSeconds(0.6f);
 
-        
-        stateManager.ChangeState(PandaState.Walking);
+        //Vector3 targetChildDirection = new Vector3(0f, -180f, 0f);
+        //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirection;
+
         anim.SetBool(dir.ToString(), false);
-        anim.SetBool("Slapped", false);        
+        anim.SetBool("Slapped", false);
         anim.SetBool("Face", false);
-        pandaAI.ChangeDirection(null);
+        if (isInFace)
+            pandaAI.ChangeDirection(null);
+        stateManager.ChangeState(PandaState.Walking);
+ 
+
+        
+        
+        
+
+
     }
 }

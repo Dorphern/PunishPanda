@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 // Require a character controller to be attached to the same game object
@@ -19,13 +18,15 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
+    Vector3 dampedVelocity;
 	
 	bool withinRange = false;
 
 
-
+    [SerializeField] float velocityDampingSpeed = 0.1f;
+    [SerializeField] float velocityRotation = 3f;
  
-        #region SerializedClasses
+    #region SerializedClasses
 	[System.Serializable]
 	public class Boosting
 	{
@@ -80,7 +81,6 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public bool IsExceedingLiftThreshold(Vector3 position)
 	{
-		
 		// these checks ensure that the panda is within the threshold before it starts checking for it
 		if(lifting.difference.magnitude < lifting.releaseMagnitudeThreshold && !withinRange)
 		{
@@ -88,7 +88,12 @@ public class PandaMovementController : MonoBehaviour {
 			return false;
 		}
 		else if(!withinRange)
-			return false;
+		{
+			if(lifting.difference.magnitude > lifting.releaseMagnitudeThreshold * 3f)
+				return true;
+			else
+				return false;
+		}
 		else
 			return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
 	}
@@ -108,7 +113,6 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public void JumpOff()
 	{
-
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
 	
@@ -121,6 +125,7 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
+        dampedVelocity = new Vector3(0, 0, 0);
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -142,22 +147,21 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-		// Store the last position of the character;
-		lastPos = transform.position;
 		
 		
-	}
-	
-	void Update()
-	{
-		if(Input.GetKeyDown(KeyCode.W))
-		{
-			pushingForce += 0.1f;	
-		}
-		else if(Input.GetKeyDown(KeyCode.S))
-		{
-			pushingForce -= 0.1f;	
-		}	
+
+        Vector3 velocity = transform.position - lastPos;
+        dampedVelocity = dampedVelocity * (1f - velocityDampingSpeed)
+            + velocity * velocityDampingSpeed;
+        Vector3 rot = controller.transform.eulerAngles;
+        if (rot.y < 91f && rot.y > 89f)
+        {
+            rot.x = dampedVelocity.x * velocityRotation * 100f;
+        }
+        controller.transform.eulerAngles = rot;
+
+        // Store the last position of the character;
+        lastPos = transform.position;
 	}
 	
 	void LiftMovement(Vector3 position)
@@ -167,20 +171,19 @@ public class PandaMovementController : MonoBehaviour {
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.minMoveDistance)
 		{
-			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);			
-		}
+			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
+        }
 	}
 
 
     void JumpingMovement ()
     {
-        
         ApplyGravity();
     }
 	
 	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{
-		currentPushingMagnitude = Mathf.Lerp(lastMag, pushingMagnitude, Time.fixedDeltaTime * 40);
+		currentPushingMagnitude = Mathf.Lerp(lastMag, pushingMagnitude, Time.fixedDeltaTime * 100);
 		
 		if(controller.isGrounded)
 		{
@@ -188,8 +191,6 @@ public class PandaMovementController : MonoBehaviour {
 		}
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
-		
-		
 		
 		if(direction == PandaDirection.Right)
 		{	
