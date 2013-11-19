@@ -20,6 +20,7 @@ public class PandaAI : MonoBehaviour {
 	public bool boostEnabled = false;
 
     [SerializeField] protected GameObject dismemberedPanda;
+    [SerializeField] protected GameObject electricutedPanda;
     
 	
 	[System.NonSerializedAttribute]
@@ -198,7 +199,8 @@ public class PandaAI : MonoBehaviour {
         pandaController.PandaKilled(true, isPerfect);
         if (trap.GetTrapType() == TrapType.Electicity)
         {
-            pandaController.EnableColliders( false );
+            Instantiate(electricutedPanda, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.Pounder)
         {
@@ -224,7 +226,7 @@ public class PandaAI : MonoBehaviour {
         return state != PandaState.Died;
     }
 	#endregion
-	
+
 	# region Private Methods
 	// Use this for initialization
 	void Start()
