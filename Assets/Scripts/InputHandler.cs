@@ -238,11 +238,11 @@ public class InputHandler : MonoBehaviour {
 	
 	#endregion
 	
-//	void OnGUI()
-//	{
-//		GUI.color = Color.black;
-//		GUI.Label(new Rect(100, 400, 200, 100), debugLine);
-//	}
+	void OnGUI()
+	{
+		GUI.color = Color.black;
+		GUI.Label(new Rect(100, 400, 200, 100), debugLine);
+	}
 
 	// for each panda in the list 
 	// if magnitude > break threshold 
@@ -289,8 +289,12 @@ public class InputHandler : MonoBehaviour {
 				EnablePandasOnBlockadeRelease();
 				return;
 			}
-			
-			pushedPanda.pushingMagnitude = distanceToFinger - (fingerSize / 2f + 0.5f);
+			float mag = distanceToFinger - (fingerSize / 2f + 0.5f);
+			if(mag != pushedPanda.pushingMagnitude)
+			{
+				pushedPanda.lastPushingMagnitude = pushedPanda.pushingMagnitude;
+			}
+			pushedPanda.pushingMagnitude = mag;
 			
 			//debugLine = distanceToFinger.ToString("0.0000");
 		}
@@ -298,8 +302,14 @@ public class InputHandler : MonoBehaviour {
 	
 	void EnablePandasOnBlockadeRelease()
 	{
+		if(tempBlockade == null) return;
+		
 		for(int i= 0; i < tempBlockade.pushingPandas.Count; i++)
 		{
+			if(tempBlockade.pushingPandas[i].pushingMagnitude != 0f)
+			{
+				tempBlockade.pushingPandas[i].lastPushingMagnitude = tempBlockade.pushingPandas[i].pushingMagnitude;
+			}
 			tempBlockade.pushingPandas[i].pushingMagnitude = 0f;
 			tempBlockade.pushingPandas[i].PandaPushingToWalking();
 		}
@@ -379,7 +389,7 @@ public class InputHandler : MonoBehaviour {
 						if(panda.IsFacingFinger(tempBlockade.transform.position))
 						{
 							float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
-							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.4f)
+							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f )
 							{
 								panda.PandaPushingFinger();
 								tempBlockade.pushingPandas.Add(panda);
@@ -399,7 +409,8 @@ public class InputHandler : MonoBehaviour {
 				// otherwise disable the blockade
 				else
 				{
-					tempBlockade.DeactivateBlockade();
+					if(tempBlockade != null)
+						tempBlockade.DeactivateBlockade();
 					EnablePandasOnBlockadeRelease();	
 				}
 				

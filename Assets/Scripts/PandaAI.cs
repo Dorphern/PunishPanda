@@ -9,7 +9,7 @@ public class PandaAI : MonoBehaviour {
 
 	public event Action<Vector3> ApplyLiftMovement;
 	public event System.Action<PandaDirection> ApplyWalkingMovement;
-	public event System.Action<PandaDirection, float> PushingMovement;
+	public event System.Action<PandaDirection, float, float> PushingMovement;
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
@@ -26,6 +26,7 @@ public class PandaAI : MonoBehaviour {
 	public Vector3 touchPosition;
 	[System.NonSerializedAttribute]
 	public float pushingMagnitude;
+	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
 
     private Animator anim;
@@ -265,7 +266,7 @@ public class PandaAI : MonoBehaviour {
 			case PandaState.PushingFinger:                
 				if(PushingMovement!=null)
                 {
-					PushingMovement(pandaStateManager.GetDirection(), pushingMagnitude);
+					PushingMovement(pandaStateManager.GetDirection(), pushingMagnitude, lastPushingMagnitude);
                 }
 				break;
             case PandaState.Jumping:
@@ -407,7 +408,7 @@ public class PandaAI : MonoBehaviour {
             if (hit.collider.GetComponent<Collidable>().type != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
             {
                 float distance = (hit.transform.position - transform.position).magnitude;
-                Debug.Log("Distance: " + distance);
+                //Debug.Log("Distance: " + distance);
                 if(distance > 7)
                 {
                     isSplatFall = true;
