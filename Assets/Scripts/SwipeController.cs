@@ -18,7 +18,7 @@ using System.Collections.Generic;
 public class SwipeController : MonoBehaviour {
 	
 	public bool mainMenuSwipe = false;
-    int count = 0;
+    
 	
 	
 	public void Swipe(Vector3 currPos, Vector3 endPos)
@@ -42,19 +42,6 @@ public class SwipeController : MonoBehaviour {
 		
         Debug.DrawLine(currPos, endPos, Color.red, 3f);
 		
-		//Drawing.DrawLine(currPos, endPos, Color.red, 3f);
-		
-		// reycast all for multiple panda hits
-        /*RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, direction.magnitude + 0.01f, 1 << 8))
-        {
-			var collidable = hit.collider.GetComponent<Collidable>();
-            if (collidable != null && collidable.type == CollidableTypes.Panda)
-                count++;
-                //Debug.Log("Hit Panda" + count);
-            hit.collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
-        }/**/
-		
 		RaycastHit[] hits = Physics.RaycastAll(ray, direction.magnitude + 0.01f, 1 << 8);
 		for(int i=0; i<hits.Length;i ++)
 		{
@@ -69,8 +56,7 @@ public class SwipeController : MonoBehaviour {
 				}
 			}
 			if(!doubleCollisionFlag)
-			{
-				var collidable = hits[i].collider.GetComponent<Collidable>();		           
+			{		           
 				if(mainMenuSwipe)
 				{
 		        	hits[i].collider.GetComponent<PandaAIMainMenu>().PandaSlapped(-direction2D, speed);
@@ -80,8 +66,7 @@ public class SwipeController : MonoBehaviour {
 					hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
 				}
 			}
-		}/**/
-      
+		}      
     }
 	
 	Vector3 TranslateScreenToWorldPos(Vector3 mousePos)
