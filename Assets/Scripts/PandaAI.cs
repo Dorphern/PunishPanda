@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -7,7 +8,8 @@ using System.Collections;
 public class PandaAI : MonoBehaviour {
 
 	public event Action<Vector3> ApplyLiftMovement;
-	public event System.Action<PandaDirection, bool> ApplyWalkingMovement;
+	public event System.Action<PandaDirection> ApplyWalkingMovement;
+	public event System.Action<PandaDirection, float, float> PushingMovement;
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
@@ -18,12 +20,14 @@ public class PandaAI : MonoBehaviour {
 	public bool boostEnabled = false;
 
     [SerializeField] protected GameObject dismemberedPanda;
+    [SerializeField] protected GameObject electricutedPanda;
     
 	
 	[System.NonSerializedAttribute]
 	public Vector3 touchPosition;
 	[System.NonSerializedAttribute]
-	public bool standStill = false;
+	public float pushingMagnitude;
+	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
 
     private Animator anim;
@@ -38,6 +42,13 @@ public class PandaAI : MonoBehaviour {
 	CharacterController characterController;
 	PandaMovementController pandaMovementController;
 	BloodOnSlap bloodOnSlap;
+
+    [SerializeField] [EventHookAttribute("Slap")]
+    List<AudioEvent> slapAudioEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Jump")]
+    private List<AudioEvent> jumpEvents;
     Animations animations;
 	
 	
@@ -86,6 +97,10 @@ public class PandaAI : MonoBehaviour {
         if (ApplyJump != null)
         {
             pandaStateManager.ChangeState(PandaState.Jumping);
+            for (int i = 0; i < jumpEvents.Count; i++)
+            {
+                HDRSystem.PostEvent(gameObject, jumpEvents[i]);
+            }
             ApplyJump(force, direction);
         }
     }
@@ -102,6 +117,11 @@ public class PandaAI : MonoBehaviour {
 		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
 		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
+
+        for (int i = 0; i < slapAudioEvents.Count; i++)
+        {
+            HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
+        }
 		
 		Vector2 facingDirection;
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
@@ -141,15 +161,7 @@ public class PandaAI : MonoBehaviour {
 	
 	public bool IsFacingFinger(Vector3 fingerPosition)
 	{
-		Vector2 facingDirection;
-		if(pandaStateManager.GetDirection() == PandaDirection.Right)
-		{
-			facingDirection = Vector2.right;
-		}
-		else
-		{
-			facingDirection = -Vector2.right;
-		}
+		Vector2 facingDirection = GetPandaFacingDirection();
 		
 		float dot = Vector2.Dot((fingerPosition - transform.position).normalized, facingDirection);
 		if(dot > 0f)
@@ -159,6 +171,18 @@ public class PandaAI : MonoBehaviour {
 		else
 		{
 			return false;
+		}
+	}
+	
+	public Vector3 GetPandaFacingDirection()
+	{
+		if(pandaStateManager.GetDirection() == PandaDirection.Right)
+		{
+			return Vector2.right;
+		}
+		else
+		{
+			return - Vector2.right;
 		}
 	}
 
@@ -177,7 +201,8 @@ public class PandaAI : MonoBehaviour {
         pandaController.PandaKilled(true, isPerfect);
         if (trap.GetTrapType() == TrapType.Electicity)
         {
-            pandaController.EnableColliders( false );
+            Instantiate(electricutedPanda, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.Pounder)
         {
@@ -187,6 +212,15 @@ public class PandaAI : MonoBehaviour {
 
         return true;
     }
+	public string debug = "a";
+	void OnGUI()
+	{
+		if(gameObject.name == "Pandaa")
+		{
+			GUI.color = Color.black;
+			GUI.Label(new Rect(100, 100, 200, 100), debug);
+		}
+	}
 
     public bool IsAlive ()
     {
@@ -194,7 +228,7 @@ public class PandaAI : MonoBehaviour {
         return state != PandaState.Died;
     }
 	#endregion
-	
+
 	# region Private Methods
 	// Use this for initialization
 	void Start()
@@ -216,7 +250,6 @@ public class PandaAI : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() 
 	{
-       // Debug.Log(pandaStateManager.GetState());
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.HoldingOntoFinger:
@@ -229,14 +262,15 @@ public class PandaAI : MonoBehaviour {
 				break;
 			case PandaState.Walking:                
 				if(ApplyWalkingMovement!=null)
-
                 {
-                  //  animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
-
-					ApplyWalkingMovement(pandaStateManager.GetDirection(), standStill);
+					ApplyWalkingMovement(pandaStateManager.GetDirection());
                 }
-
-					
+				break;
+			case PandaState.PushingFinger:                
+				if(PushingMovement!=null)
+                {
+					PushingMovement(pandaStateManager.GetDirection(), pushingMagnitude, lastPushingMagnitude);
+                }
 				break;
             case PandaState.Jumping:
                 if (ApplyJumpingMovement != null)
@@ -263,24 +297,18 @@ public class PandaAI : MonoBehaviour {
 				BoostingMovement(pandaStateManager.GetDirection());
 				break;
 			case PandaState.FallTransition:
-
-
-
 				if(ApplyWalkingMovement!=null)
-					ApplyWalkingMovement(pandaStateManager.GetDirection(), standStill);
+					ApplyWalkingMovement(pandaStateManager.GetDirection());
 
 				break;
 				
 		}
 
-        if (lastPandaState != pandaStateManager.GetState())
+        if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
         {
-           animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
-            if (pandaStateManager.GetState() == PandaState.Slapped)
-            {
-
-                // PlaySlappedAnimation(currentStatePanda, true, currentDirection, , lastPandaState)
-            }
+			if(pandaStateManager.GetState() != PandaState.PushingFinger)
+           		animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
+            
             lastPandaState = pandaStateManager.GetState();
         }
 
@@ -380,10 +408,10 @@ public class PandaAI : MonoBehaviour {
         RaycastHit hit;
         if(Physics.Raycast(new Vector3(transform.position.x, transform.position.y, 0.5f), Vector3.down, out hit))
         {
-            if (hit.collider.GetComponent<Collidable>().type != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
+            if (hit.collider.GetComponent<Collidable>() != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
             {
                 float distance = (hit.transform.position - transform.position).magnitude;
-                Debug.Log("Distance: " + distance);
+                //Debug.Log("Distance: " + distance);
                 if(distance > 7)
                 {
                     isSplatFall = true;
@@ -393,10 +421,5 @@ public class PandaAI : MonoBehaviour {
             }
         }
     }
-	
-
-
-
-	# endregion
-		
+	# endregion		
 }

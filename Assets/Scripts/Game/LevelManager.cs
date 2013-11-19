@@ -44,6 +44,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        System.GC.Collect();
         isInMainMenu = true;
 		SaveData();
         Application.LoadLevel(mainMenuName);
@@ -54,6 +55,7 @@ public class LevelManager : MonoBehaviour
 	
 	public void LoadLevelsMenu()
     {
+        System.GC.Collect();
         isInMainMenu = true;
 		loadLevelsScreenFlag = true;
 		SaveData();
@@ -62,7 +64,9 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevelByWorldIndex(int index)
     {
+        
 		SaveData();
+        System.GC.Collect();
         if (currentWorld.Levels.Count > index)
         {
             isInMainMenu = false;
@@ -73,6 +77,7 @@ public class LevelManager : MonoBehaviour
 
     public void Reload()
     {
+        System.GC.Collect();
         isInMainMenu = false;
 		SaveData();
         Application.LoadLevel(CurrentLevel.LevelName);
@@ -80,6 +85,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        System.GC.Collect();
         isInMainMenu = false;
 		SaveData();
         ++currentLevelIndex;
@@ -147,7 +153,8 @@ public class LevelManager : MonoBehaviour
 
 
     private GameWorld currentWorld;
-    private int currentLevelIndex;
+     
+    public int currentLevelIndex;
 
     private bool MoreLevelsInWorld
     {

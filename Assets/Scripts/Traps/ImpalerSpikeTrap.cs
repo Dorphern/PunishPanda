@@ -5,19 +5,10 @@ public class ImpalerSpikeTrap : TrapBase {
 
     [SerializeField] float sleepTime = 2f;
     protected string animationName = "Spike Animation";
-    protected float inactivePositionY = -2.377f;
+    protected float inactivePosition = -2.377f;
 
 
     # region Public Methods
-
-    void Awake ()
-    {
-        transform.position = new Vector3(
-            transform.position.x,
-            transform.position.y + inactivePositionY, 
-            transform.position.z
-        );
-    }
 
     override public TrapType GetTrapType ()
     {
@@ -33,6 +24,15 @@ public class ImpalerSpikeTrap : TrapBase {
     # endregion
 
     # region Private Methods
+
+    void Awake ()
+    {
+        transform.position = new Vector3(
+            transform.position.x,
+            transform.position.y + inactivePosition,
+            transform.position.z
+        );
+    }
 
     IEnumerator PlayImpalingAnimation ()
     {

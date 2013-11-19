@@ -20,18 +20,18 @@ public class PauseMenuManager : MonoBehaviour {
 	public void OnPauseClick()
 	{
 		//Enable Screen tint
-		PauseTint.SetActiveRecursively(true);
+		PauseTint.SetActive(true);
 	}
 	
 	public void OnResumeClick()
 	{
-		PauseTint.SetActiveRecursively(false);		
+		PauseTint.SetActive(false);		
 	}
 	
 	public void OnHintClick()
 	{
-		HintScreen.SetActiveRecursively(true);
-	    PauseMenu.SetActiveRecursively(false);
+		HintScreen.SetActive(true);
+	    PauseMenu.SetActive(false);
 	}
 	
 	public void OnLevelsClick()
@@ -72,8 +72,8 @@ public class PauseMenuManager : MonoBehaviour {
 		
 		if(gameObject.name == "HintBackButton")
 		{
-			HintScreen.SetActiveRecursively(false);
-	    	PauseMenu.SetActiveRecursively(true);
+			HintScreen.SetActive(false);
+	    	PauseMenu.SetActive(true);
 		}
 		
 		//case for going to LEVELS SCREEN

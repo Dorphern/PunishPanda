@@ -74,8 +74,8 @@ public class UIRunTween : MonoBehaviour
 	[HideInInspector][SerializeField] string callWhenFinished;
 
 	UITweener[] mTweens;
-	bool mStarted = false;
-	bool mHighlighted = false;
+//	bool mStarted = false;
+//	bool mHighlighted = false;
 	int mActive = 0;
 
 	void Awake ()
@@ -93,7 +93,7 @@ public class UIRunTween : MonoBehaviour
 
 	void Start()
 	{
-		mStarted = true;
+//		mStarted = true;
 
 		if (tweenTarget == null)
 		{
