@@ -36,7 +36,6 @@ public class BloodOnSlap : MonoBehaviour {
 	//Method for emmiting blood simply -- left or right.
 	public void EmmitSlapBlood()
 	{
-		GameObject BloodSplat;
 		for(int i = 0; i < slapAudioEvents.Count; ++i)
 		{
 			
@@ -44,11 +43,11 @@ public class BloodOnSlap : MonoBehaviour {
 		}
 		if(pandaStateManager.GetDirection() == PandaDirection.Right)
 		{
-			BloodSplat = Instantiate(Resources.Load(objectName),transform.position, Quaternion.identity) as GameObject;		
+			Instantiate(Resources.Load(objectName),transform.position, Quaternion.identity);
 		}
 		else
 		{
-			BloodSplat = Instantiate(Resources.Load(objectName),transform.position, Quaternion.LookRotation(Vector3.back)) as GameObject;
+			Instantiate(Resources.Load(objectName),transform.position, Quaternion.LookRotation(Vector3.back));
 		}	
 	}
 	
@@ -60,9 +59,8 @@ public class BloodOnSlap : MonoBehaviour {
 		projectionDirection.y = slapDirection.y;
 		projectionDirection.z = Mathf.Abs(slapDirection.x);
 		
-		GameObject BloodSplat;
-		//Object instantiates facing the Z-axis direction
-		BloodSplat = Instantiate(Resources.Load(objectName),transform.position, Quaternion.LookRotation(projectionDirection)) as GameObject;	
+		//Object instantiates facing the Z-axis direction	
+		Instantiate(Resources.Load(objectName),transform.position, Quaternion.LookRotation(projectionDirection));
 		
 
 	} 
