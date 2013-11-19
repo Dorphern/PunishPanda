@@ -29,7 +29,6 @@ public class BloodSplatter : MonoBehaviour {
 	
 		// The reference to the instantiated prefab's DS_Decals instance.
 	private DS_Decals m_Decals;
-	private Matrix4x4 m_WorldToDecalsMatrix;
 	
 		// All the projectors that were created at runtime.
 	[System.NonSerializedAttribute]
@@ -93,7 +92,6 @@ public class BloodSplatter : MonoBehaviour {
 				// Further we need a decals mesh cutter instance and the world to decals matrix.
 			m_DecalsMesh = new DecalsMesh (m_Decals);
 			m_DecalsMeshCutter = new DecalsMeshCutter ();
-			m_WorldToDecalsMatrix = m_Decals.CachedTransform.worldToLocalMatrix;
 		}
 		
 		layerMask = ( 1 << LayerMask.NameToLayer("Panda") );
@@ -176,8 +174,6 @@ public class BloodSplatter : MonoBehaviour {
 				m_DecalsMesh.RemoveProjector (l_DecalProjector);
 			}
 			
-			//Debug.DrawRay(hitInfo.point, - projectionDirection, Color.blue, 1000f);
-				// Calculate the position and rotation for the new decal projector.
 			Vector3 l_ProjectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
 			Vector2 projectionDirection2D = new Vector2(projectionDirection.x, projectionDirection.y).normalized;

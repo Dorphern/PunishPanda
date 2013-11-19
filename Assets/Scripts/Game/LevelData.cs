@@ -12,6 +12,9 @@ public class LevelData
     [HideInInspector] [SerializeField] 
     public int HighScore;
     [HideInInspector] [SerializeField]
-    public bool Unlocked; //1 == unlocked, 0 = locked
+    public bool UnlockedLevel; //1 == unlocked, 0 = locked
+
+    [HideInInspector] [SerializeField] 
+    public bool UnlockedFunFact; //1 == unlocked, 0 = locked
 }
 

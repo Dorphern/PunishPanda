@@ -1,12 +1,17 @@
+using HDRAudio.Runtime;
+
 public class EventBusAction : AudioEventAction
 {
     public AudioBus Bus;
     public float Volume = 1.0f;
     public VolumeSetMode VolumeMode = VolumeSetMode.Absolute;
 
+    public FadeCurveType FadeCurve = FadeCurveType.SmoothLerp;
+    public float Duration;
+
     public enum VolumeSetMode
     {
-        Relative, Absolute
+        Absolute, Relative
     }
 
     public override string ObjectName

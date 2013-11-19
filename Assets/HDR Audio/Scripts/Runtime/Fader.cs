@@ -3,54 +3,68 @@ using System.Collections.Generic;
 
 namespace HDRAudio.Runtime
 {
-    public enum CurveType
+    public enum FadeCurveType
     {
         Lerp,
-        SLerp
+        SmoothLerp
     }
 
     public class Fader
     {
-        public CurveType CurveType;
+        public FadeCurveType FadeCurveType;
         public double StartTime;
         public double EndTime;
 
         public double EndValue;
         public double StartValue;
 
-        public double LastTime;
-        public double CurrentTime;
+        public bool Activated;
 
-        public double Duration;
-        
-        
-        public void Start(CurveType type, double startTime, float endTime)
+        private double duration;
+        public double Duration
         {
-            Duration = endTime - startTime;
-            CurveType = type;
+            get
+            {
+                return duration;
+            }
+        }
+        
+        public void Initialize(FadeCurveType type, double startTime, double endTime, double startValue, double endValue)
+        {
+            Activated = true;
+            duration = endTime - startTime;
+            FadeCurveType = type;
             StartTime = startTime;
             EndTime = endTime;
+
+            StartValue = startValue;
+            EndValue = endValue;
         }
 
-        void Update()
+        public double Lerp(double currentTime)
         {
-            
-            CurrentTime += LastTime - StartTime;
-        }
+            double t = (currentTime - EndTime) / Duration;
+            if (t < 0)
+                t = -t;
+            if (FadeCurveType == FadeCurveType.Lerp)
+            {
+                if (t < 0.0f)
+                    return StartValue;
+                else if (t > 1.0f)
+                    return EndValue;
+                return (StartValue - EndValue)*t + EndValue;
+            }
+            else
+            {   
+                if (t < 0.0f)
+                    return StartValue;
+                else if (t > 1.0f)
+                    return EndValue;
 
-        /*public float Evaluate()
-        {
-            Lerp(StartValue, EndValue, Duration / (EndTime - StartTime));
-            LastTime = AudioSettings.dspTime;
-        }*/
-
-        public static double Lerp(double from, double to, double value)
-        {
-            if (value < 0.0f)
-                return from;
-            else if (value > 1.0f)
-                return to;
-            return (to - from) * value + from;
+                float ft = Mathf.SmoothStep(0.0f, 1.0f, (float)t);
+                return (StartValue - EndValue) * Mathf.SmoothStep(0.0f, 1.0f, ft) + EndValue;
+                
+            }
         }
         
     }

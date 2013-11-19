@@ -1,5 +1,7 @@
+#pragma warning disable 0618
 using UnityEngine;
 using System.Collections;
+
 
 public class MeshCombineUtility {
 	
@@ -51,7 +53,7 @@ public class MeshCombineUtility {
 			{
 				if (combine.mesh)
 				{
-					triangleCount += combine.mesh.GetTriangles(combine.subMeshIndex).Length;
+					triangleCount += combine.mesh.GetTriangleStrip(combine.subMeshIndex).Length;
 				}
 			}
 		}
@@ -153,7 +155,7 @@ public class MeshCombineUtility {
 				}
 				else
 				{
-					int[]  inputtriangles = combine.mesh.GetTriangles(combine.subMeshIndex);
+					int[]  inputtriangles = combine.mesh.GetTriangleStrip(combine.subMeshIndex);
 					for (int i=0;i<inputtriangles.Length;i++)
 					{
 						triangles[i+triangleOffset] = inputtriangles[i] + vertexOffset;
