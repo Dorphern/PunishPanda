@@ -444,16 +444,12 @@ public class PandaAI : MonoBehaviour
                 if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), Vector3.down, out hit))
                     if (hit.collider.GetComponent<Collidable>() != null && hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor)
                     {
+                        
                         float distance = (hit.transform.position - transform.position).magnitude;
-                        //Debug.Log("Distance: " + distance);
-                        if (distance > 7)
-                        {
                             if (hit.collider.GetComponent<Collidable>().type == CollidableTypes.Floor && hit.distance < 2.5f)
                             {
                                 pandaStateManager.ChangeState(PandaState.FallSplat);
                             }
-
-                        }
                     }
                 if (speed < 17f)
                 {
