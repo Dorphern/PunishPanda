@@ -817,7 +817,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  electricutedPanda: {fileID: 0}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  slapAudioEvents:
+  - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  jumpEvents:
+  - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  debug: a
 --- !u!114 &67617972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,7 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &67617973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,7 +855,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 1
+    walkSpeed: 2
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -864,6 +871,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 2
 --- !u!114 &67617974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,7 +910,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .500000119
-  m_Height: 2
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
 --- !u!143 &67617977
@@ -944,6 +954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleVersion: 1
+  slapAudioEvents: []
 --- !u!114 &67617980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1372,6 +1383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushingPandas: []
 --- !u!135 &86678499
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1964,10 +1976,10 @@ MonoBehaviour:
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
-  electricity: {fileID: 0}
+  electricity: {fileID: 800462534}
   electricityBox0: {fileID: 474462547}
   electricityBox1: {fileID: 386609400}
-  electricTextureCount: 5
+  electricTextureCount: 6
 --- !u!4 &135265441
 Transform:
   m_ObjectHideFlags: 0
@@ -2644,7 +2656,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  electricutedPanda: {fileID: 0}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  slapAudioEvents:
+  - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  jumpEvents:
+  - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  debug: a
 --- !u!114 &203078240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2658,7 +2677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &203078241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2675,7 +2694,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 1
+    walkSpeed: 2
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -2691,6 +2710,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 2
 --- !u!114 &203078242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2727,7 +2749,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .500000119
-  m_Height: 2
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
 --- !u!143 &203078245
@@ -2758,6 +2780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleVersion: 1
+  slapAudioEvents: []
 --- !u!114 &203078247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4267,6 +4290,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 314656459}
+  - 114: {fileID: 314656460}
   m_Layer: 0
   m_Name: LevelFrameFAR_2Dwalkway
   m_TagString: Untagged
@@ -4292,6 +4316,19 @@ Transform:
   - {fileID: 451491277}
   - {fileID: 341515381}
   m_Father: {fileID: 0}
+--- !u!114 &314656460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400010, guid: 1db097c478b991e46bbb782623a3d6f8,
+    type: 2}
+  m_PrefabInternal: {fileID: 100290638}
+  m_GameObject: {fileID: 314656458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31179a6bbd11e2c3d000dc0b8d76c639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!1 &318220969
 GameObject:
   m_ObjectHideFlags: 0
@@ -4636,7 +4673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &341515381
 Transform:
   m_ObjectHideFlags: 0
@@ -5217,7 +5254,7 @@ Transform:
   m_PrefabInternal: {fileID: 955344483}
   m_GameObject: {fileID: 386609400}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: 2.4000001, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 135265441}
@@ -6117,7 +6154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &451491277
 Transform:
   m_ObjectHideFlags: 0
@@ -6398,7 +6435,7 @@ Transform:
   m_PrefabInternal: {fileID: 955344483}
   m_GameObject: {fileID: 474462547}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: -2.4000001, z: 0}
+  m_LocalPosition: {x: 0, y: -2.5999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 135265441}
@@ -7392,7 +7429,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  electricutedPanda: {fileID: 0}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  slapAudioEvents:
+  - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  jumpEvents:
+  - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  debug: a
 --- !u!114 &538152848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7406,7 +7450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &538152849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7423,7 +7467,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 1
+    walkSpeed: 2
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -7439,6 +7483,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 2
 --- !u!114 &538152850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7475,7 +7522,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .500000119
-  m_Height: 2
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
 --- !u!143 &538152853
@@ -7506,6 +7553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleVersion: 1
+  slapAudioEvents: []
 --- !u!114 &538152855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8274,6 +8322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleVersion: 1
+  slapAudioEvents: []
 --- !u!136 &583279012
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8285,7 +8334,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .500000119
-  m_Height: 2
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
 --- !u!114 &583279013
@@ -8315,7 +8364,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  electricutedPanda: {fileID: 0}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  slapAudioEvents:
+  - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  jumpEvents:
+  - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  debug: a
 --- !u!114 &583279015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8329,7 +8385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &583279016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8346,7 +8402,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 1
+    walkSpeed: 2
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -8362,6 +8418,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 2
 --- !u!114 &583279017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9015,95 +9074,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b45d38baf3c8ea4ab2901ff94e8544d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  achievementList:
-  - name: First Kill
-    description: Kill your first panda
-    goal: 1
-    achievementIcon: {fileID: 0}
-  - name: Getting the hang of this
-    description: Kill 10 pandas
-    goal: 10
-    achievementIcon: {fileID: 0}
-  - name: Fun times
-    description: Kill 50 pandas
-    goal: 50
-    achievementIcon: {fileID: 0}
-  - name: Serial killah
-    description: Kill 100 pandas
-    goal: 100
-    achievementIcon: {fileID: 0}
-  - name: Massmurdah
-    description: Kill 200 pandas
-    goal: 200
-    achievementIcon: {fileID: 0}
-  - name: Exterminator
-    description: Kill 1600 pandas
-    goal: 1600
-    achievementIcon: {fileID: 0}
-  - name: High-Five
-    description: Slap your first panda
-    goal: 1
-    achievementIcon: {fileID: 0}
-  - name: Happy Slapper
-    description: Slap 10 panas
-    goal: 10
-    achievementIcon: {fileID: 0}
-  - name: Red finger
-    description: Slap 100 pandas
-    goal: 100
-    achievementIcon: {fileID: 0}
-  - name: Mosquito
-    description: Collect one liter of blood
-    goal: 1
-    achievementIcon: {fileID: 0}
-  - name: Bloody Mary
-    description: Collect 5 liters of blood
-    goal: 5
-    achievementIcon: {fileID: 0}
-  - name: Blood Sucker
-    description: Collect 50 leters of blood
-    goal: 50
-    achievementIcon: {fileID: 0}
-  - name: Dracula
-    description: Collect 100 liters of blood
-    goal: 1
-    achievementIcon: {fileID: 0}
-  - name: Star Hunter
-    description: Collect all stars
-    goal: 10000
-    achievementIcon: {fileID: 0}
-  - name: Combo noob
-    description: Get a combo kill
-    goal: 1
-    achievementIcon: {fileID: 0}
-  - name: Combo crazy
-    description: Get 30 combo kills
-    goal: 30
-    achievementIcon: {fileID: 0}
-  - name: Combo King
-    description: 60 combo kills
-    goal: 60
-    achievementIcon: {fileID: 0}
-  - name: Shock therapy
-    description: Kill 50 pandas on shock traps
-    goal: 50
-    achievementIcon: {fileID: 0}
-  - name: Pretty Panda Pieces!
-    description: Kill 50 pandas on roundsaw traps
-    goal: 50
-    achievementIcon: {fileID: 0}
-  - name: Meat poudin!
-    description: Kill 50 pandas on Pounder traps
-    goal: 50
-    achievementIcon: {fileID: 0}
-  - name: Ninja Skills
-    description: Kill 50 pandas on Throwing star traps
-    goal: 50
-    achievementIcon: {fileID: 0}
-  - name: High-Five
-    description: Slap your first panda
-    goal: 1
-    achievementIcon: {fileID: 0}
+  achievementList: []
 --- !u!114 &616830060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9182,9 +9153,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadLevelsScreenFlag: 0
   transitionLevelName: LevelTransition
-  mainMenuName: DMT_MainMenu
+  mainMenuName: MainMenu
   worlds:
   - {fileID: 1901351720}
+  currentLevelIndex: 0
 --- !u!114 &616830065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9857,7 +9829,6 @@ GameObject:
   - 4: {fileID: 685633022}
   - 33: {fileID: 685633021}
   - 23: {fileID: 685633020}
-  - 95: {fileID: 685633019}
   m_Layer: 0
   m_Name: Electricity Plane
   m_TagString: Untagged
@@ -9865,19 +9836,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &685633019
-Animator:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 9500004, guid: cdd9726d4a069254ab45cc95a1eeaca7,
-    type: 2}
-  m_PrefabInternal: {fileID: 590316904}
-  m_GameObject: {fileID: 685633018}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 4370d4d5a0c7207469ce6471d0c1a1e0, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_ApplyRootMotion: 1
-  m_AnimatePhysics: 0
 --- !u!23 &685633020
 Renderer:
   m_ObjectHideFlags: 0
@@ -9904,7 +9862,7 @@ MeshFilter:
     type: 2}
   m_PrefabInternal: {fileID: 590316904}
   m_GameObject: {fileID: 685633018}
-  m_Mesh: {fileID: 4300000, guid: 4370d4d5a0c7207469ce6471d0c1a1e0, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 332a4950ebdd1584e998092d9658f536, type: 3}
 --- !u!4 &685633022
 Transform:
   m_ObjectHideFlags: 0
@@ -9912,7 +9870,7 @@ Transform:
   m_PrefabInternal: {fileID: 590316904}
   m_GameObject: {fileID: 685633018}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
-  m_LocalPosition: {x: -1.1920929e-07, y: -2.41034913, z: -.227564573}
+  m_LocalPosition: {x: 0, y: 0, z: .0199999996}
   m_LocalScale: {x: 4.7857461, y: 4.7857461, z: 4.7857461}
   m_Children: []
   m_Father: {fileID: 905355618}
@@ -10882,7 +10840,6 @@ GameObject:
   - 4: {fileID: 800462535}
   - 33: {fileID: 800462538}
   - 23: {fileID: 800462537}
-  - 95: {fileID: 800462536}
   m_Layer: 0
   m_Name: Electricity Plane
   m_TagString: Untagged
@@ -10897,23 +10854,10 @@ Transform:
   m_PrefabInternal: {fileID: 955344483}
   m_GameObject: {fileID: 800462534}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
-  m_LocalPosition: {x: -1.1920929e-07, y: -2.41034913, z: -.227564573}
+  m_LocalPosition: {x: 0, y: 0, z: .0199999996}
   m_LocalScale: {x: 4.7857461, y: 4.7857461, z: 4.7857461}
   m_Children: []
   m_Father: {fileID: 135265441}
---- !u!95 &800462536
-Animator:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 9500004, guid: cdd9726d4a069254ab45cc95a1eeaca7,
-    type: 2}
-  m_PrefabInternal: {fileID: 955344483}
-  m_GameObject: {fileID: 800462534}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 4370d4d5a0c7207469ce6471d0c1a1e0, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_ApplyRootMotion: 1
-  m_AnimatePhysics: 0
 --- !u!23 &800462537
 Renderer:
   m_ObjectHideFlags: 0
@@ -10940,7 +10884,7 @@ MeshFilter:
     type: 2}
   m_PrefabInternal: {fileID: 955344483}
   m_GameObject: {fileID: 800462534}
-  m_Mesh: {fileID: 4300000, guid: 4370d4d5a0c7207469ce6471d0c1a1e0, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 332a4950ebdd1584e998092d9658f536, type: 3}
 --- !u!1 &802866383
 GameObject:
   m_ObjectHideFlags: 0
@@ -12127,10 +12071,10 @@ MonoBehaviour:
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
-  electricity: {fileID: 0}
+  electricity: {fileID: 685633018}
   electricityBox0: {fileID: 1829450243}
   electricityBox1: {fileID: 1789752946}
-  electricTextureCount: 5
+  electricTextureCount: 6
 --- !u!1 &907266068
 GameObject:
   m_ObjectHideFlags: 0
@@ -18198,8 +18142,7 @@ MonoBehaviour:
   useMouseInput: 1
   fingerRadius: .800000012
   swipeThreshold: .0320000015
-  blocadeRepositionMaximumThreshold: 0
-  blockadeDistanceFromFingerThreshold: 100
+  pushingMaxMagnitude: .00999999978
   controls:
     slapping: 1
     bouncing: 1
@@ -20866,7 +20809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1667960568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20914,7 +20857,7 @@ Renderer:
     type: 2}
   m_PrefabInternal: {fileID: 100290638}
   m_GameObject: {fileID: 1667960567}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -20941,7 +20884,7 @@ Transform:
   m_PrefabInternal: {fileID: 100290638}
   m_GameObject: {fileID: 1667960567}
   m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: -.951990604, y: -6.20894241, z: -.680168152}
+  m_LocalPosition: {x: -.951990604, y: -6.46485901, z: -.680168152}
   m_LocalScale: {x: 150.000031, y: 10, z: 3000}
   m_Children: []
   m_Father: {fileID: 314656459}
@@ -21870,6 +21813,7 @@ GameObject:
   - 92: {fileID: 1763571246}
   - 124: {fileID: 1763571245}
   - 81: {fileID: 1763571244}
+  - 114: {fileID: 1763571248}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -21884,7 +21828,7 @@ Transform:
   m_PrefabInternal: {fileID: 100290638}
   m_GameObject: {fileID: 1763571242}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -31}
+  m_LocalPosition: {x: 0, y: 0, z: -28.2652283}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 314656459}
@@ -21929,9 +21873,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 28.0300007
-  far clip plane: 31.2000008
-  field of view: 25.5
+  near clip plane: 2
+  far clip plane: 65.1900024
+  field of view: 17
   orthographic: 0
   orthographic size: 7
   m_Depth: -1
@@ -21941,6 +21885,19 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
+--- !u!114 &1763571248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400012, guid: 1db097c478b991e46bbb782623a3d6f8,
+    type: 2}
+  m_PrefabInternal: {fileID: 100290638}
+  m_GameObject: {fileID: 1763571242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 674f8873c1b5dac4486cd6284f6566a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundObject: {fileID: 0}
 --- !u!1 &1763996602
 GameObject:
   m_ObjectHideFlags: 0
@@ -22139,7 +22096,7 @@ Transform:
   m_PrefabInternal: {fileID: 590316904}
   m_GameObject: {fileID: 1789752946}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: 2.4000001, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 905355618}
@@ -22887,7 +22844,7 @@ Transform:
   m_PrefabInternal: {fileID: 590316904}
   m_GameObject: {fileID: 1829450243}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: -2.4000001, z: 0}
+  m_LocalPosition: {x: 0, y: -2.5999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 905355618}
@@ -23774,14 +23731,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WorldName: World 1
   Levels:
-  - LevelName: Level1
+  - LevelName: level1-slaptutorial
     Mode: 0
     HighScore: 0
-    Unlocked: 0
-  - LevelName: PandaMoveRuben
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: level2-holdtutorial
     Mode: 0
     HighScore: 0
-    Unlocked: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: level3-bouncetutorial
+    Mode: 0
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: level4-lifttutorial
+    Mode: 0
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: levelb
+    Mode: 0
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+  - LevelName: workingshit
+    Mode: 0
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
 --- !u!4 &1901351721
 Transform:
   m_ObjectHideFlags: 0
@@ -23873,7 +23852,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  electricutedPanda: {fileID: 0}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  slapAudioEvents:
+  - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  jumpEvents:
+  - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  debug: a
 --- !u!114 &1903852531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23887,7 +23873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &1903852532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23904,7 +23890,7 @@ MonoBehaviour:
   movement:
     gravity: 20
     jumpHeight: 8
-    walkSpeed: 1
+    walkSpeed: 2
     notMovingThreshold: .00999999978
   lifting:
     minMoveDistance: .100000001
@@ -23920,6 +23906,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 2
 --- !u!114 &1903852533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23956,7 +23945,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .500000119
-  m_Height: 2
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
 --- !u!143 &1903852536
@@ -23987,6 +23976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleVersion: 1
+  slapAudioEvents: []
 --- !u!114 &1903852538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25930,6 +25920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushingPandas: []
 --- !u!135 &2056576886
 SphereCollider:
   m_ObjectHideFlags: 0
