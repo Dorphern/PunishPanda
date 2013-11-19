@@ -23,7 +23,6 @@ public class Animations : MonoBehaviour {
     {
 
         anim.SetBool(pandaStateLast.ToString(), false);
-
         Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
 
         Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
@@ -40,7 +39,17 @@ public class Animations : MonoBehaviour {
             transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
 
         if (statePanda == PandaState.PushingFinger)
-            transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
+        {
+            //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
+            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
+        }
+        else if (pandaStateLast == PandaState.PushingFinger)
+        {
+            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
+        }
+
 
         if (currentDirection == PandaDirection.Left)
         {
@@ -53,10 +62,7 @@ public class Animations : MonoBehaviour {
             anim.SetBool("Left", false);
         }
 
-        anim.SetBool(statePanda.ToString(), pandaStateBool);
-
-
-        
+        anim.SetBool(statePanda.ToString(), pandaStateBool);        
 
     }
     public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
