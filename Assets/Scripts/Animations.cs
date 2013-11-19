@@ -80,7 +80,7 @@ public class Animations : MonoBehaviour {
 
 
         
-        //anim.SetBool(statePanda.ToString(), pandaStateBool);
+        anim.SetBool(statePanda.ToString(), pandaStateBool);
         anim.SetBool(dir.ToString(), pandaStateBool);
         anim.SetBool("Face", isInFace);
 
@@ -99,11 +99,12 @@ public class Animations : MonoBehaviour {
         //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirection;
 
         anim.SetBool(dir.ToString(), false);
-        //anim.SetBool("Slapped", false);
+        anim.SetBool("Slapped", false);
         anim.SetBool("Face", false);
         if (isInFace)
             pandaAI.ChangeDirection(null);
         stateManager.ChangeState(PandaState.Walking);
+ 
 
         
         
