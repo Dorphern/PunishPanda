@@ -26,8 +26,6 @@ public class AchievementWindow : MonoBehaviour {
 		
 		completedAchievements.Enqueue(achievement);
 		
-		Debug.Log("Achievement completed! " + achievement.name);
-		
 		if(!isRunning)
 		{
 			isRunning = true;
