@@ -114,16 +114,16 @@ public class PandaAI : MonoBehaviour
     }
 
     public void PandaSlapped(Vector2 slapDirection, float force)
-    {
-        // we can slap the panda only in walking and standing state
-        if (pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing
-            && pandaStateManager.GetState() != PandaState.Falling)
-            return;
-
-
-
-        // play animation + splatter ( texture projection + particles)
-        PlaySlap(slapDirection);
+	{
+		// we can slap the panda only in walking and standing state
+		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing
+			&& pandaStateManager.GetState() != PandaState.Falling)
+			return;
+        
+		// play animation + splatter ( texture projection + particles)
+		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
+		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
+		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
 
         //InstanceFinder.StatsManager.pandaSlaps++;
@@ -169,7 +169,7 @@ public class PandaAI : MonoBehaviour
 
 
         }
-        bloodOnSlap.EmmitSlapBlood();
+        bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
     }
 
     public bool IsFacingFinger(Vector3 fingerPosition)
