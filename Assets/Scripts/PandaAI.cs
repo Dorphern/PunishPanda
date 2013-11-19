@@ -143,7 +143,8 @@ public class PandaAI : MonoBehaviour {
 		if(dot > 0f)
 		{
             pandaStateManager.ChangeState(PandaState.Slapped);
-            animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), false, lastPandaState);
+                animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), false, lastPandaState);
+            
 			if(boostEnabled)
 			{
 			SetBoostSpeed();
@@ -156,8 +157,8 @@ public class PandaAI : MonoBehaviour {
 		{
 			// the slap direction is opposite to the panda's facing direction
             pandaStateManager.ChangeState(PandaState.Slapped);
-            animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), true, lastPandaState);
-
+                 animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), true, lastPandaState);
+            
 			//ChangeDirection(null);
             
 
