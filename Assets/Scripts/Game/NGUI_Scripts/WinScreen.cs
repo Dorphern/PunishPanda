@@ -37,7 +37,7 @@ public class WinScreen : MonoBehaviour {
 	private void OnLevelComplete()
 	{
 		
-		// we also need to deactivate controls
+		/*// we also need to deactivate controls
 		//this is where calcualtions for score, stars and adding to lifetime score happens
 		
 		Level level = InstanceFinder.GameManager.ActiveLevel;
@@ -77,7 +77,7 @@ public class WinScreen : MonoBehaviour {
 			oneStarTexture.enabled = true;	
 			twoStarTexture.enabled = true;	
 			threeStarTexture.enabled = true;
-		}
+		}*/
 		winScreen.SetActive(true);
 	}
 	
