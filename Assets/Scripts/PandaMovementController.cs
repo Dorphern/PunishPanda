@@ -14,6 +14,7 @@ public class PandaMovementController : MonoBehaviour {
 	public JumpingOff jumpOff;
     public float hangingOffSet = 30f;
 	public float pushingForce = 15f;
+	private float currentPushingMagnitude = 0f;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
@@ -177,8 +178,9 @@ public class PandaMovementController : MonoBehaviour {
         ApplyGravity();
     }
 	
-	void PushingMovement(PandaDirection direction, float pushingMagnitude)
+	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{
+		currentPushingMagnitude = Mathf.Lerp(lastMag, pushingMagnitude, Time.fixedDeltaTime * 40);
 		
 		if(controller.isGrounded)
 		{
@@ -187,15 +189,17 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
+		
+		
 		if(direction == PandaDirection.Right)
 		{	
-			movement.offset.x = movement.currentSpeed * pushingMagnitude * pushingForce;
+			movement.offset.x = movement.currentSpeed * currentPushingMagnitude * pushingForce;
 			transform.rotation = Quaternion.LookRotation(Vector3.forward);
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
-			movement.offset.x = - movement.currentSpeed * pushingMagnitude * pushingForce;
+			movement.offset.x = - movement.currentSpeed * currentPushingMagnitude * pushingForce;
 			transform.rotation = Quaternion.LookRotation(Vector3.back);
 		}
 		
