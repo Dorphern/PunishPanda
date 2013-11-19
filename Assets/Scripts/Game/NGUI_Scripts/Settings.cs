@@ -117,11 +117,13 @@ public class Settings : MonoBehaviour {
 		{
 			if(_soundEFXSlider.value==0)
 			{
+				Debug.Log ("Sound OFF");
 				InstanceFinder.StatsManager.soundEffectsEnabled = false;
 				InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
+				Debug.Log ("Sound ON");
 				InstanceFinder.StatsManager.soundEffectsEnabled = true;
 				InstanceFinder.StatsManager.Save();
 			}
