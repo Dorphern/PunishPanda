@@ -7,8 +7,10 @@ public class MainMenu : MonoBehaviour {
 	
 	void Start()
 	{
-		menuMan = GetComponent<MenuManager>();	
+		menuMan = GetComponent<MenuManager>();
+        InstanceFinder.LevelManager.CurrentWorld.Levels[0].UnlockedLevel = true;
 	}
+
 	
 	public void OnPlayClicked()
 	{
