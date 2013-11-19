@@ -94,7 +94,7 @@ public class Level : MonoBehaviour
             elapsedTime += PandaTime.deltaTime;
         }
 		
-		if(alivePandas <= 0 && onLevelCompleteFlag==false)
+		if(alivePandas <= 0 && onLevelCompleteFlag==false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
 			onLevelComplete();
