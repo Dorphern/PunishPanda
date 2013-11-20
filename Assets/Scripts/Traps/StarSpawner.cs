@@ -15,6 +15,7 @@ public class StarSpawner : TrapBase
 	void Start () 
 	{
 		starsPool = new Queue<ThrowingStar>();
+		base.Start();
 	}
 	
 	public override TrapType GetTrapType ()
@@ -66,13 +67,5 @@ public class StarSpawner : TrapBase
 		star.transform.position = transform.position;
 		star.starSpawner = this;
 		star.ShootStar(transform.forward, force, torque);
-	}
-	
-	void OnGUI()
-	{
-		if(GUI.Button(GUILayoutUtility.GetRect(100, 100), "Restart"))
-		{
-			Application.LoadLevel(Application.loadedLevelName);	
-		}
 	}
 }

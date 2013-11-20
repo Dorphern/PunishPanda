@@ -39,7 +39,10 @@ public class CollisionController : MonoBehaviour {
 	{
 		
 		var collidable = hit.collider.GetComponent<Collidable>();
-				
+        if (hit.gameObject == gameObject)
+        {
+            return;
+        }
 		
 		// basic collison cases
 		if(collidable!=null)
@@ -75,7 +78,6 @@ public class CollisionController : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider c) 
 	{
-        
 		
 		//Default delegate
 		if(DefaultOnTriggerEnter!=null)

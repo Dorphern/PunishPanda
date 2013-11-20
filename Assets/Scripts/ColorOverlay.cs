@@ -16,7 +16,7 @@ public class ColorOverlay : MonoBehaviour
     {
         Texture2D text = new Texture2D(1, 1);
         // Yellow
-        //text.SetPixel(0, 0, new Color(1f, 0.8f, 0f, 0.01f));
+        text.SetPixel(0, 0, new Color(1f, 0.8f, 0f, 0.02f));
 
         // original blue
         //text.SetPixel(0, 0, new Color(0f, 0f, 1f, 0.02f));
@@ -27,7 +27,7 @@ public class ColorOverlay : MonoBehaviour
         // greenish
         //text.SetPixel(0, 0, new Color(0f, 1f, 1f, 0.02f));
 
-        text.SetPixel(0, 0, clr);
+        //text.SetPixel(0, 0, clr);
 
         text.wrapMode = TextureWrapMode.Repeat;
         text.Apply();
