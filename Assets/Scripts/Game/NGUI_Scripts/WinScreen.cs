@@ -80,7 +80,14 @@ public class WinScreen : MonoBehaviour {
 			threeStarTexture.enabled = true;
 		}*/
 		UnLockLevels();
-		winScreen.SetActive(true);
+		StartCoroutine(WaitWinScreen());
+		
+	}
+			
+	private IEnumerator WaitWinScreen()
+	{
+		yield return new WaitForSeconds(2.0f);
+		winScreen.SetActive(true);	
 	}
 
     private static void UnLockLevels()
