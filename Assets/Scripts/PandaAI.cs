@@ -8,11 +8,10 @@ using System.Collections;
 public class PandaAI : MonoBehaviour {
 
 	public event Action<Vector3> ApplyLiftMovement;
-	public event System.Action<PandaDirection, bool> ApplyWalkingMovement;
+    public event System.Action<PandaDirection, bool> ApplyWalkingMovement;
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
-    public event System.Action SetDefaultSpeed;
     public event System.Action<float, float> ApplyJump;
     public event System.Action ApplyJumpingMovement;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
@@ -46,6 +45,7 @@ public class PandaAI : MonoBehaviour {
 
     [SerializeField] [EventHookAttribute("Slap")]
     List<AudioEvent> slapAudioEvents = new List<AudioEvent>();
+    [SerializeField] public float turnSpeed = 0.417f;
 
     [SerializeField]
     [EventHookAttribute("Jump")]
@@ -114,56 +114,30 @@ public class PandaAI : MonoBehaviour {
 			&& pandaStateManager.GetState() != PandaState.Falling)
             return;
 
+        float dot = Vector2.Dot(slapDirection.normalized, 
+            Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
+        if (dot > 0f)
+        {
+            // Panda is slapped in the back
+            Debug.Log("Slap in back");
+        }
+        else
+        {
+            // Panda is slapped in the front
+            Debug.Log("Slap in front");
+            animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
+        }
 
-        
-		// play animation + splatter ( texture projection + particles)
-		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
+        InstanceFinder.StatsManager.pandaSlaps++;
 
-        //InstanceFinder.StatsManager.pandaSlaps++;
-
+        bloodOnSlap.EmmitSlapBlood();
+        PlaySlap(slapDirection);
 
         for (int i = 0; i < slapAudioEvents.Count; i++)
         {
             HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
         }
-
-		
-		Vector2 facingDirection;
-		if(pandaStateManager.GetDirection() == PandaDirection.Right)
-		{
-			facingDirection = Vector2.right;
-		}
-		else
-		{
-			facingDirection = -Vector2.right;
-		}
-		
-		float dot = Vector2.Dot(slapDirection.normalized, facingDirection);
-		if(dot > 0f)
-		{
-            pandaStateManager.ChangeState(PandaState.Slapped);
-                animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), false, lastPandaState);
-            
-			if(boostEnabled)
-			{
-			SetBoostSpeed();
-			// the slap direction is the same as the panda's facing direction
-			
-				
-			}
-		}
-		else
-		{
-			// the slap direction is opposite to the panda's facing direction
-            pandaStateManager.ChangeState(PandaState.Slapped);
-                 animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), true, lastPandaState);
-            
-			//ChangeDirection(null);
-            
-
-		}
-		bloodOnSlap.EmmitSlapBlood();
 	}
 	
 	public bool IsFacingFinger(Vector3 fingerPosition)
@@ -293,12 +267,9 @@ public class PandaAI : MonoBehaviour {
 				//if(characterController.isGrounded)
 				//	pandaStateManager.ChangeState(PandaState.Walking);
 				break;
-			case PandaState.Slapped:                
-				BoostingMovement(pandaStateManager.GetDirection());
-				break;
 			case PandaState.FallTransition:
 				if(ApplyWalkingMovement!=null)
-					ApplyWalkingMovement(pandaStateManager.GetDirection(), standStill);
+                    ApplyWalkingMovement(pandaStateManager.GetDirection(), standStill);
 				break;
             case PandaState.FallSplat:
                 if (ApplyFalling != null)
@@ -334,7 +305,7 @@ public class PandaAI : MonoBehaviour {
 	
 	public void ChangeDirection(ControllerColliderHit hit)
 	{
-		pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+        pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 	}
 
 	void PandaChangeDirection(ControllerColliderHit hit)
@@ -346,7 +317,6 @@ public class PandaAI : MonoBehaviour {
 			return;
 	
 		timeSinceLastCollisionWithPanda = Time.time;
-		
 		
 		/*
 		// make sure the other panda is walking
@@ -366,8 +336,8 @@ public class PandaAI : MonoBehaviour {
 		// if this panda falls on another panda jump off of it
 		else if(pandaStateManager.GetState() == PandaState.FallTransition)
 		{
-			
-			pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
+
+            pandaStateManager.SwapDirection(otherPandaSM.GetDirection());
 			if(pandaMovementController.IsNotMoving())
 			{
 				pandaMovementController.JumpOff();
@@ -381,29 +351,26 @@ public class PandaAI : MonoBehaviour {
 		
 			// if both pandas are walking just bounce off of each other
 			if(otherPandaSM.GetState() == PandaState.Walking || otherPandaSM.GetState() == PandaState.PushingFinger)
-				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+                pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 			// if we hit a panda that is holding on to the finger we want this panda to change direction
 			else if(otherPandaSM.GetState() ==  PandaState.HoldingOntoFinger)
-				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+                pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 		}
 	}
+
 	
 	void CheckLiftThreshold()
 	{
 		if(pandaMovementController.IsExceedingLiftThreshold(this.touchPosition))
         {
             pandaStateManager.ChangeState(PandaState.Falling);
-        }
-			
-			
+        }	
 	}
 
-	void PlaySlap( Vector2 slapDirection)
-	{
-		BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
-		pandaStateManager.ChangeState(PandaState.Walking);
-		SetDefaultSpeed();
-	}
+    void PlaySlap (Vector2 slapDirection)
+    {
+        BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
+    }
 
     void speedFalling()
     {

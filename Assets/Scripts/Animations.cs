@@ -59,56 +59,38 @@ public class Animations : MonoBehaviour {
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
 
-
-        
-
     }
+
     public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
     {
        // anim.SetBool(pandaStateLast.ToString(), false);
        // anim.SetBool(typeTrap.ToString(), hitTrap);
     }
 
-    public void PlaySlappedAnimation(PandaState statePanda, bool pandaStateBool, PandaDirection dir, bool isInFace, PandaState pandaStateLast)
+    public void PlaySlappedAnimation(PandaDirection dir, bool isInFace, PandaState pandaStateLast)
     {
+        anim.SetBool(pandaStateLast.ToString(), false);
+        anim.SetBool("Slapped", true);
 
-
-        //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-        //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
-
-        //Quaternion targetChildDirectionQua = transform.FindChild("WalkExport_2").transform.rotation;
-
-
-        
-        //anim.SetBool(statePanda.ToString(), pandaStateBool);
-        anim.SetBool(dir.ToString(), pandaStateBool);
+        bool leftDir = dir == PandaDirection.Left;
+        anim.SetBool("Left", leftDir);
+        anim.SetBool("Right", !leftDir);
         anim.SetBool("Face", isInFace);
 
-       // anim.MatchTarget(transform.position, targetChildDirectionQua, AvatarTarget.Root, new MatchTargetWeightMask (new Vector3(0f, 1f, 0f), 0f), 0f, 0.64f);
-        StartCoroutine(EndSlap(dir, isInFace));
+        pandaAI.ChangeDirection(null);
 
+        StartCoroutine(EndSlap(dir, isInFace));
     }
+
+
     IEnumerator EndSlap(PandaDirection dir, bool isInFace)
     {
-
-
-
-        yield return new WaitForSeconds(0.6f);
-
-        //Vector3 targetChildDirection = new Vector3(0f, -180f, 0f);
-        //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirection;
+        yield return new WaitForSeconds(0.37f);
 
         anim.SetBool(dir.ToString(), false);
-        //anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
-        if (isInFace)
-            pandaAI.ChangeDirection(null);
+        anim.SetBool("Slapped", false);
+        anim.SetBool("Face", false);  
+
         stateManager.ChangeState(PandaState.Walking);
-
-        
-        
-        
-
-
     }
 }

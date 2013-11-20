@@ -23,7 +23,7 @@ public class PandaMovementController : MonoBehaviour {
 
 
  
-        #region SerializedClasses
+    #region SerializedClasses
 	[System.Serializable]
 	public class Boosting
 	{
@@ -74,9 +74,9 @@ public class PandaMovementController : MonoBehaviour {
 	
 
 	#endregion
-	
-	
-	public bool IsExceedingLiftThreshold(Vector3 position)
+
+    # region Public Methods
+    public bool IsExceedingLiftThreshold(Vector3 position)
 	{
 		
 		// these checks ensure that the panda is within the threshold before it starts checking for it
@@ -106,7 +106,6 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public void JumpOff()
 	{
-
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
 	
@@ -114,8 +113,17 @@ public class PandaMovementController : MonoBehaviour {
 	{
 		movement.offset.y = 0;
 	}
-	
-	void Start()
+
+    public void ApplyJump (float force, float direction)
+    {
+        float radDir = Mathf.Deg2Rad * direction;
+        movement.offset.y = Mathf.Sin(radDir) * force;
+        movement.offset.x = Mathf.Cos(radDir) * force;
+    }
+    # endregion
+
+    # region Private Methods
+    void Start()
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
@@ -127,9 +135,8 @@ public class PandaMovementController : MonoBehaviour {
 			pandaAI.ApplyWalkingMovement += WalkingMovement;
 			pandaAI.ApplyLiftMovement += LiftMovement;
 			pandaAI.ApplyFalling += FallingMovement;
-			pandaAI.BoostingMovement += BoostedMovement;
+            pandaAI.BoostingMovement += BoostedMovement;
 			pandaAI.SetBoostSpeed += SetBoostSpeed;
-			pandaAI.SetDefaultSpeed += SetDefaultSpeed;
 	        pandaAI.ApplyJump += ApplyJump;
 	        pandaAI.ApplyJumpingMovement += JumpingMovement;
 		}
@@ -154,15 +161,13 @@ public class PandaMovementController : MonoBehaviour {
 		}
 	}
 
-
     void JumpingMovement ()
     {
-        
         ApplyGravity();
     }
 	 
 	// Move the character using Unity's CharacterController.Move function
-	void WalkingMovement(PandaDirection direction, bool standStill)
+	void WalkingMovement(PandaDirection dir, bool standStill)
 	{
 		if(controller.isGrounded)
 		{
@@ -171,20 +176,17 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
-		if(standStill == false)
-		{
-			if(direction == PandaDirection.Right)
-			{	
-				movement.offset.x = movement.currentSpeed;
-				transform.rotation = Quaternion.LookRotation(Vector3.forward);
-			}
-			
-			if(direction == PandaDirection.Left)
-			{
-				movement.offset.x = - movement.currentSpeed;
-				transform.rotation = Quaternion.LookRotation(Vector3.back);
-			}
-		}
+        Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        if ((int) curr.y != (int) goalY)
+        {
+            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
+            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
+            transform.eulerAngles = curr;
+        }
+
+        // Determine movement direction based on movement dir
+        movement.offset.x = movement.currentSpeed * (dir == PandaDirection.Left ? -1 : 1);
 		
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
@@ -216,14 +218,7 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	
     #endregion
-
-    public void ApplyJump (float force, float direction)
-    {
-        float radDir = Mathf.Deg2Rad * direction;
-        movement.offset.y = Mathf.Sin(radDir) * force;
-        movement.offset.x = Mathf.Cos(radDir) * force;
-    }
-
+    
     void ApplyJump ()
     {
         movement.offset.y = movement.jumpHeight;
@@ -262,13 +257,8 @@ public class PandaMovementController : MonoBehaviour {
 	void SetBoostSpeed()
 	{
 		movement.currentSpeed = boosting.boostSpeed;
-	}
-	
-	void SetDefaultSpeed()
-	{
-		movement.currentSpeed = movement.walkSpeed;
-	}
-	
+    }
 
-	
+    # endregion
+
 }
