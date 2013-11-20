@@ -83,6 +83,7 @@ GameObject:
   - 114: {fileID: 11400012}
   - 114: {fileID: 11400014}
   - 114: {fileID: 11400016}
+  - 114: {fileID: 11400062}
   m_Layer: 8
   m_Name: PauseSprite
   m_TagString: Untagged
@@ -183,6 +184,7 @@ GameObject:
   - 4: {fileID: 400020}
   - 114: {fileID: 11400166}
   - 65: {fileID: 6500004}
+  - 114: {fileID: 11400044}
   m_Layer: 8
   m_Name: LevelsButtonOffset
   m_TagString: Untagged
@@ -198,6 +200,11 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400022}
+  - 65: {fileID: 6500010}
+  - 114: {fileID: 11400200}
+  - 114: {fileID: 11400060}
+  - 114: {fileID: 11400056}
+  - 114: {fileID: 11400054}
   m_Layer: 8
   m_Name: ResumeButtonOffset
   m_TagString: Untagged
@@ -279,7 +286,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400032}
   - 114: {fileID: 11400046}
-  - 114: {fileID: 11400044}
   m_Layer: 8
   m_Name: PauseTint
   m_TagString: Untagged
@@ -377,11 +383,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400044}
   - 114: {fileID: 11400058}
-  - 65: {fileID: 6500010}
-  - 114: {fileID: 11400056}
-  - 114: {fileID: 11400054}
-  - 114: {fileID: 11400060}
-  - 114: {fileID: 11400062}
   m_Layer: 8
   m_Name: ResumeSprite
   m_TagString: Untagged
@@ -1303,7 +1304,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 319.499786, y: 240.499969, z: 0}
+  m_LocalPosition: {x: 424.300293, y: 266, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400050}
@@ -1385,7 +1386,7 @@ Transform:
   m_GameObject: {fileID: 100018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.70401, y: .529418945, z: 0}
-  m_LocalScale: {x: .00416666688, y: .00416666688, z: .00416666688}
+  m_LocalScale: {x: .00376647827, y: .00376647827, z: .00376647827}
   m_Children:
   - {fileID: 400028}
   m_Father: {fileID: 0}
@@ -1576,7 +1577,7 @@ Transform:
   m_GameObject: {fileID: 100050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.20000005, y: 1.20000005, z: 1.20000005}
   m_Children:
   - {fileID: 400012}
   - {fileID: 400010}
@@ -1654,7 +1655,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.4998779, y: .500006616, z: 0}
+  m_LocalPosition: {x: -.499817848, y: .999999642, z: 0}
   m_LocalScale: {x: 176, y: 176, z: 176}
   m_Children:
   - {fileID: 400064}
@@ -1746,7 +1747,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100078}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.4998779, y: .500006616, z: 0}
+  m_LocalPosition: {x: -.499817848, y: .999999642, z: 0}
   m_LocalScale: {x: 2.03559995, y: 2.03559995, z: 2.03559995}
   m_Children:
   - {fileID: 400134}
@@ -2143,7 +2144,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -320.5, y: 240.499969, z: 0}
+  m_LocalPosition: {x: -425.299927, y: 266, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400142}
@@ -2289,13 +2290,13 @@ BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100044}
+  m_GameObject: {fileID: 100022}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 250, y: 70, z: 1}
-  m_Center: {x: 70, y: 0, z: 0}
+  m_Center: {x: 110, y: -35, z: 0}
 --- !u!65 &6500012
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -2570,11 +2571,8 @@ MonoBehaviour:
   - mTarget: {fileID: 11400072}
     mMethodName: Play
     oneShot: 0
-  - mTarget: {fileID: 11400062}
+  - mTarget: {fileID: 11400056}
     mMethodName: ActivateCollider
-    oneShot: 0
-  - mTarget: {fileID: 11400044}
-    mMethodName: Play
     oneShot: 0
 --- !u!114 &11400012
 MonoBehaviour:
@@ -2650,8 +2648,8 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
-  mSpriteName: Bright
+  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mSpriteName: slap
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -2674,8 +2672,8 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
-  mSpriteName: Bright
+  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mSpriteName: Bounce
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -2698,8 +2696,8 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
-  mSpriteName: Bright
+  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mSpriteName: Lift
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -2717,8 +2715,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenu: {fileID: 0}
+  PauseTint: {fileID: 0}
   HintScreen: {fileID: 0}
-  LevelsScreen: {fileID: 0}
 --- !u!114 &11400026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2759,17 +2757,17 @@ MonoBehaviour:
   widgetsAreStatic: 0
   cullWhileDragging: 0
   worldToLocal:
-    e00: 239.999985
+    e00: 265.5
     e01: 0
     e02: 0
-    e03: -4728.96191
+    e03: -5231.41455
     e10: 0
-    e11: 239.999985
+    e11: 265.5
     e12: 0
-    e13: -127.060539
+    e13: -140.56073
     e20: 0
     e21: 0
-    e22: 239.999985
+    e22: 265.5
     e23: 0
     e30: 0
     e31: 0
@@ -2949,39 +2947,12 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100032}
-  m_Enabled: 0
+  m_GameObject: {fileID: 100020}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d166255cacf07b4292b8402b3ddefc5, type: 3}
+  m_Script: {fileID: 11500000, guid: d988b6ddd8c7b7b4192c5861f3d566c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  method: 3
-  style: 0
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 1
-      tangentMode: 0
-    - time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  ignoreTimeScale: 1
-  delay: 0
-  duration: .5
-  steeperCurves: 0
-  tweenGroup: 0
-  onFinished: []
-  eventReceiver: {fileID: 0}
-  callWhenFinished: 
-  from: {x: -3, y: 5, z: 244.123505}
-  to: {x: 295, y: 5, z: 244.123505}
 --- !u!114 &11400046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3079,8 +3050,8 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
-  mSpriteName: Bright
+  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mSpriteName: Hold
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -3091,38 +3062,35 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100044}
+  m_GameObject: {fileID: 100022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d988b6ddd8c7b7b4192c5861f3d566c1, type: 3}
+  m_Script: {fileID: 11500000, guid: eaee0fa3c7a782f43ac65b3fea68c1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 100142}
+  tweenGroup: 0
+  trigger: 0
+  playDirection: -1
+  resetOnPlay: 0
+  resetIfDisabled: 0
+  ifDisabledOnPlay: 1
+  disableWhenFinished: 0
+  includeChildren: 0
+  onFinished: []
+  eventReceiver: {fileID: 0}
+  callWhenFinished: 
 --- !u!114 &11400056
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100044}
+  m_GameObject: {fileID: 100022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Script: {fileID: 11500000, guid: 765e3a542244b3f468b2681456df055d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tweenTarget: {fileID: 100044}
-  hover: {r: .419607848, g: .419607848, b: .419607848, a: 1}
-  pressed: {r: .5, g: .5, b: .5, a: 1}
-  duration: .200000003
-  disabledColor: {r: .5, g: .5, b: .5, a: 1}
-  onClick:
-  - mTarget: {fileID: 11400054}
-    mMethodName: ResumeGame
-    oneShot: 0
-  - mTarget: {fileID: 11400072}
-    mMethodName: Toggle
-    oneShot: 0
-  - mTarget: {fileID: 11400062}
-    mMethodName: DisableCollider
-    oneShot: 0
 --- !u!114 &11400058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3152,35 +3120,41 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100044}
+  m_GameObject: {fileID: 100022}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaee0fa3c7a782f43ac65b3fea68c1d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tweenTarget: {fileID: 100142}
-  tweenGroup: 0
-  trigger: 0
-  playDirection: -1
-  resetOnPlay: 0
-  resetIfDisabled: 0
-  ifDisabledOnPlay: 1
-  disableWhenFinished: 0
-  includeChildren: 0
-  onFinished: []
-  eventReceiver: {fileID: 0}
-  callWhenFinished: 
+  tweenTarget: {fileID: 100044}
+  hover: {r: .600000024, g: 1, b: .200000003, a: 1}
+  pressed: {r: .5, g: .5, b: .5, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick:
+  - mTarget: {fileID: 11400012}
+    mMethodName: ResumeGame
+    oneShot: 0
+  - mTarget: {fileID: 11400072}
+    mMethodName: Toggle
+    oneShot: 0
+  - mTarget: {fileID: 11400056}
+    mMethodName: DisableCollider
+    oneShot: 0
 --- !u!114 &11400062
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100044}
+  m_GameObject: {fileID: 100008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 765e3a542244b3f468b2681456df055d, type: 3}
+  m_Script: {fileID: 11500000, guid: 514373258ad274343985558bfcfb8972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PauseMenu: {fileID: 0}
+  PauseTint: {fileID: 100032}
+  HintScreen: {fileID: 0}
 --- !u!114 &11400064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3372,14 +3346,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mColor: {r: .0313725509, g: .0313725509, b: .0313725509, a: 1}
   mPivot: 2
   mWidth: 300
   mHeight: 800
-  mDepth: 11
+  mDepth: -1
   autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
-  mSpriteName: Dark
+  mSpriteName: Paper Background
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -3397,8 +3371,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenu: {fileID: 100060}
+  PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
-  LevelsScreen: {fileID: 100134}
 --- !u!114 &11400078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3437,8 +3411,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenu: {fileID: 100060}
+  PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
-  LevelsScreen: {fileID: 0}
 --- !u!114 &11400082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4456,8 +4430,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenu: {fileID: 100060}
+  PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
-  LevelsScreen: {fileID: 100134}
 --- !u!114 &11400168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4546,8 +4520,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseMenu: {fileID: 100060}
+  PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
-  LevelsScreen: {fileID: 0}
 --- !u!114 &11400176
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4972,8 +4946,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseButton: {fileID: 11400010}
-  ResumeButton: {fileID: 11400056}
+  ResumeButton: {fileID: 0}
   LevelSelectButton: {fileID: 11400004}
+--- !u!114 &11400200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514373258ad274343985558bfcfb8972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PauseMenu: {fileID: 0}
+  PauseTint: {fileID: 100032}
+  HintScreen: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

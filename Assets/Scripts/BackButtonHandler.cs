@@ -11,11 +11,7 @@ public class BackButtonHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (LevelSelectButton.gameObject.activeInHierarchy)
-            {
-                LevelSelectButton.gameObject.SendMessage("OnClick");
-            }
-            else if (PauseButton.gameObject.activeInHierarchy)
+            if (PauseButton.gameObject.activeInHierarchy)
             {
                 PauseButton.gameObject.SendMessage("OnClick");
             }

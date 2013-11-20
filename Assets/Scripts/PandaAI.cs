@@ -135,6 +135,8 @@ public class PandaAI : MonoBehaviour {
 			return;
         
 		// play animation + splatter ( texture projection + particles)
+		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
+		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
 		PlaySlap(slapDirection);
         pandaStateManager.IncrementSlapCount();
 
@@ -172,39 +174,39 @@ public class PandaAI : MonoBehaviour {
             pandaStateManager.ChangeState(PandaState.Slapped);
             animations.PlaySlappedAnimation(pandaStateManager.GetState(), true, pandaStateManager.GetDirection(), true, lastPandaState);
 
-			//ChangeDirection(null);
-            
+            //ChangeDirection(null);
 
-		}
-		bloodOnSlap.EmmitSlapBlood();
-	}
-	
-	public bool IsFacingFinger(Vector3 fingerPosition)
-	{
-		Vector2 facingDirection = GetPandaFacingDirection();
-		
-		float dot = Vector2.Dot((fingerPosition - transform.position).normalized, facingDirection);
-		if(dot > 0f)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	public Vector3 GetPandaFacingDirection()
-	{
-		if(pandaStateManager.GetDirection() == PandaDirection.Right)
-		{
-			return Vector2.right;
-		}
-		else
-		{
-			return - Vector2.right;
-		}
-	}
+
+        }
+        bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
+    }
+
+    public bool IsFacingFinger(Vector3 fingerPosition)
+    {
+        Vector2 facingDirection = GetPandaFacingDirection();
+
+        float dot = Vector2.Dot((fingerPosition - transform.position).normalized, facingDirection);
+        if (dot > 0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Vector3 GetPandaFacingDirection()
+    {
+        if (pandaStateManager.GetDirection() == PandaDirection.Right)
+        {
+            return Vector2.right;
+        }
+        else
+        {
+            return -Vector2.right;
+        }
+    }
 
     /**
      * Attempt a kill on the panda from a death trap
