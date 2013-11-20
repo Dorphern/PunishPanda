@@ -11,6 +11,7 @@ public class PandaAI : MonoBehaviour {
     public event System.Action<PandaDirection> ApplyWalkingMovement;
 	public event System.Action<PandaDirection, float, float> PushingMovement;
 	public event System.Action ApplyFalling;
+	public event System.Action ApplyStun;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
     public event System.Action<float, float> ApplyJump;
@@ -28,6 +29,7 @@ public class PandaAI : MonoBehaviour {
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
+	public float stunLength = 1f;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -73,6 +75,26 @@ public class PandaAI : MonoBehaviour {
 			
 			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
 		}
+	}
+	
+	public void DoubleTapped()
+	{
+		if( pandaStateManager.GetState() == PandaState.Standing        || 
+		    pandaStateManager.GetState() == PandaState.Walking)
+			
+		{	
+			pandaStateManager.ChangeState(PandaState.Stunned);
+			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
+			StartCoroutine(StunToWalking(stunLength));
+		}
+	}
+	
+	void Update()
+	{
+//		if(Input.GetKeyDown(KeyCode.B))
+//		{
+//			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));	
+//		}
 	}
 	
 	public void PandaPushingFinger()
@@ -145,6 +167,10 @@ public class PandaAI : MonoBehaviour {
             animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
         }
 
+		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
+		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
+
+		
         pandaStateManager.IncrementSlapCount();
         InstanceFinder.StatsManager.pandaSlaps++;
 
@@ -155,6 +181,7 @@ public class PandaAI : MonoBehaviour {
         {
             HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
         }
+
 	}
 	
 	public bool IsFacingFinger(Vector3 fingerPosition)
@@ -162,14 +189,7 @@ public class PandaAI : MonoBehaviour {
 		Vector2 facingDirection = GetPandaFacingDirection();
 		
 		float dot = Vector2.Dot((fingerPosition - transform.position).normalized, facingDirection);
-		if(dot > 0f)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return dot > 0f;
 	}
 	
 	public Vector3 GetPandaFacingDirection()
@@ -183,7 +203,7 @@ public class PandaAI : MonoBehaviour {
 			return - Vector2.right;
 		}
 	}
-
+	
     /**
      * Attempt a kill on the panda from a death trap
      * return true if the panda was successfully killed
@@ -280,6 +300,12 @@ public class PandaAI : MonoBehaviour {
 				if(PushingMovement!=null)
                 {
 					PushingMovement(pandaStateManager.GetDirection(), pushingMagnitude, lastPushingMagnitude);
+                }
+				break;
+			case PandaState.Stunned:                
+				if(ApplyStun!=null)
+                {
+					ApplyStun();
                 }
 				break;
             case PandaState.Jumping:
@@ -396,11 +422,16 @@ public class PandaAI : MonoBehaviour {
 		{
 		
 			// if both pandas are walking just bounce off of each other
-			if(otherPandaSM.GetState() == PandaState.Walking || otherPandaSM.GetState() == PandaState.PushingFinger)
-                pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+			if(otherPandaSM.GetState() == PandaState.Walking || otherPandaSM.GetState() == PandaState.PushingFinger
+				|| otherPandaSM.GetState() == PandaState.Stunned)
+			{
+				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+			}
 			// if we hit a panda that is holding on to the finger we want this panda to change direction
 			else if(otherPandaSM.GetState() ==  PandaState.HoldingOntoFinger)
+			{
                 pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+            }
 		}
 	}
 
@@ -449,5 +480,11 @@ public class PandaAI : MonoBehaviour {
 
         }
     }
+	
+	IEnumerator StunToWalking(float timeToWait)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		pandaStateManager.ChangeState(PandaState.Walking);
+	}
 	# endregion		
 }

@@ -19,7 +19,9 @@ public enum PandaState
 	Jumping,
     Falling,
     FallSplat,
-	FallTransition
+    Slapped,
+	FallTransition,
+	Stunned
 }
 
 

@@ -6,20 +6,23 @@ using UnityEngine;
 public class LevelData
 {
     [SerializeField] public string LevelName = "";
-    [SerializeField] public GameModes Mode;
-
-	
-	
-	public LevelScore score;
-	
 
 
-    [HideInInspector] [SerializeField] 
+    [SerializeField] 
     public int HighScore;
-    [HideInInspector] [SerializeField]
+    [SerializeField]
     public bool UnlockedLevel; //1 == unlocked, 0 = locked
 
-    [HideInInspector] [SerializeField] 
+    [SerializeField] 
     public bool UnlockedFunFact; //1 == unlocked, 0 = locked
+
+    [SerializeField]
+    public LevelScore LevelScore = new LevelScore();
+    [SerializeField]
+    public Texture2D FunFactsTexture;
+    [SerializeField]
+    public string FunFactsText;
+
+    public bool Toggled;
 }
 

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class InputHandler : MonoBehaviour {
 	public List<FingerBlocking> blockades;
 	public SwipeController swipeController;
-	public bool useMouseInput = false;
 	public float fingerRadius = 1f;
 	public float swipeThreshold = 10f;
 	public float pushingMaxMagnitude = 0f;
@@ -32,6 +31,7 @@ public class InputHandler : MonoBehaviour {
 		public bool bouncing = true;
 		public bool lifting = true;
 		public bool holding = true;
+		public bool tapping = true;
 	}
 	
 	void Start () 
@@ -53,14 +53,11 @@ public class InputHandler : MonoBehaviour {
 	
 	void Update () 
 	{
-		if(useMouseInput)
-		{
-			MouseUpdate();
-		}
-		else
-		{
-			TouchUpdate();
-		}
+#if UNITY_EDITOR
+		MouseUpdate();
+#else
+        TouchUpdate();
+#endif
 	}
 	
 	#region Touch Input Handling
@@ -85,7 +82,7 @@ public class InputHandler : MonoBehaviour {
 			// Touch began
 			if(touch.phase == TouchPhase.Began)
 			{
-				PerformTouchBegan(touch.position, touch.fingerId);
+				PerformTouchBegan( touch.position, touch.fingerId, touch.tapCount);
 			}
 			// Touch ended
 			else if(touch.phase == TouchPhase.Ended)
@@ -98,7 +95,7 @@ public class InputHandler : MonoBehaviour {
 		}			
 	}
 	
-	void PerformTouchBegan(Vector3 position, int fingerID)
+	void PerformTouchBegan(Vector3 position, int fingerID, int tapCount)
 	{
 		ray = Camera.main.ScreenPointToRay(position);
 		// using this flag to ensure that we hit something relavent to touch controls
@@ -115,6 +112,13 @@ public class InputHandler : MonoBehaviour {
 					tempPanda.touchPosition = position;
 					tempPanda.PandaPressed();
 					selectedPandas.Add(fingerID, tempPanda);
+					hitflag = true;
+					return;
+				}
+				if(controls.tapping == true && collidable.type == CollidableTypes.Panda && tapCount == 2)
+				{
+					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
+					tempPanda.DoubleTapped();
 					hitflag = true;
 					return;
 				}
@@ -240,7 +244,7 @@ public class InputHandler : MonoBehaviour {
 	void OnGUI()
 	{
 		GUI.color = Color.black;
-		GUI.Label(new Rect(100, 400, 200, 100), debugLine);
+		GUI.Label(new Rect(100, 10, 200, 800), debugLine);
 	}
 
 	// for each panda in the list 
@@ -275,6 +279,7 @@ public class InputHandler : MonoBehaviour {
 		}
 		
 		
+		//debugLine += "\n" + Mathf.Abs(projectedDirectionLength).ToString("0.00000");
 		//Debug.Log("Dot : " + dot + " projection : " + projectedDirectionLength);
 		if( Mathf.Abs(projectedDirectionLength) > pushingMaxMagnitude)
 		{	
@@ -287,6 +292,7 @@ public class InputHandler : MonoBehaviour {
 			if(distanceToFinger > fingerSize / 2f + 0.8f || distanceToFinger < fingerSize / 2f)
 			{
 				EnablePandasOnBlockadeRelease();
+				//debugLine += "\n 	distanceToFinger >>";
 				return;
 			}
 			float mag = distanceToFinger - (fingerSize / 2f + 0.5f);
