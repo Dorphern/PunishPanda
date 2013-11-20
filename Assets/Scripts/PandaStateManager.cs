@@ -14,7 +14,6 @@ public enum PandaState
     Standing,           /* Is standing still */
     Walking,            /* Is walking in some direction */
     PushingFinger,      /* Is Pushing a finger (not moving) */
-    HoldingOntoFinger,  /* Holding on to the finger (in the air) */
     Died,               /* The panda is DEAD! (hahahah) */
 	Jumping,
     Falling,
