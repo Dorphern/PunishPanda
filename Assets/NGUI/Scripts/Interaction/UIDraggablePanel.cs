@@ -29,6 +29,7 @@ public class UIDraggablePanel : MonoBehaviour
 	}
 
 	public delegate void OnDragFinished ();
+    public delegate void OnDragStarted ();
 
 	/// <summary>
 	/// Effect to apply when dragging.
@@ -113,6 +114,7 @@ public class UIDraggablePanel : MonoBehaviour
 	/// </summary>
 
 	public OnDragFinished onDragFinished;
+    public OnDragStarted onDragStarted;
 
 	Transform mTrans;
 	UIPanel mPanel;
@@ -519,7 +521,12 @@ public class UIDraggablePanel : MonoBehaviour
 
 			mCalculatedBounds = false;
 			mShouldMove = shouldMove;
-			if (!mShouldMove) return;
+			if (!mShouldMove) 
+                return;
+            if (mPressed != pressed && pressed == true && onDragStarted != null)
+		    {
+		        onDragStarted();
+		    }
 			mPressed = pressed;
 
 			if (pressed)

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 // Require a character controller to be attached to the same game object
@@ -13,15 +12,18 @@ public class PandaMovementController : MonoBehaviour {
 	public Boosting boosting;
 	public JumpingOff jumpOff;
     public float hangingOffSet = 30f;
+	public float pushingForce = 15f;
+	private float currentPushingMagnitude = 0f;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
+    Vector3 dampedVelocity;
 	
 	bool withinRange = false;
 
-
-
+    [SerializeField] float velocityDampingSpeed = 0.1f;
+    [SerializeField] float velocityRotation = 3f;
  
     #region SerializedClasses
 	[System.Serializable]
@@ -78,7 +80,6 @@ public class PandaMovementController : MonoBehaviour {
     # region Public Methods
     public bool IsExceedingLiftThreshold(Vector3 position)
 	{
-		
 		// these checks ensure that the panda is within the threshold before it starts checking for it
 		if(lifting.difference.magnitude < lifting.releaseMagnitudeThreshold && !withinRange)
 		{
@@ -86,7 +87,12 @@ public class PandaMovementController : MonoBehaviour {
 			return false;
 		}
 		else if(!withinRange)
-			return false;
+		{
+			if(lifting.difference.magnitude > lifting.releaseMagnitudeThreshold * 3f)
+				return true;
+			else
+				return false;
+		}
 		else
 			return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
 	}
@@ -127,12 +133,14 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
+        dampedVelocity = new Vector3(0, 0, 0);
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
 		if(pandaAI != null)
 		{
 			pandaAI.ApplyWalkingMovement += WalkingMovement;
+			pandaAI.PushingMovement += PushingMovement;
 			pandaAI.ApplyLiftMovement += LiftMovement;
 			pandaAI.ApplyFalling += FallingMovement;
             pandaAI.BoostingMovement += BoostedMovement;
@@ -146,8 +154,9 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-		// Store the last position of the character;
-		lastPos = transform.position;
+
+        // Store the last position of the character;
+        lastPos = transform.position;
 	}
 	
 	void LiftMovement(Vector3 position)
@@ -157,17 +166,43 @@ public class PandaMovementController : MonoBehaviour {
 		lifting.difference = lifting.worldMousePos - transform.position;
 		if(lifting.difference.magnitude > lifting.minMoveDistance)
 		{
-			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);			
-		}
+			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
+        }
 	}
 
     void JumpingMovement ()
     {
         ApplyGravity();
     }
+	
+	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
+	{
+		currentPushingMagnitude = Mathf.Lerp(lastMag, pushingMagnitude, Time.fixedDeltaTime * 100);
+		
+		if(controller.isGrounded)
+		{
+			movement.offset = Vector3.zero;
+		}
+		// in order for the isGrounded flag to work we always need to apply gravity
+		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
+		
+		if(direction == PandaDirection.Right)
+		{	
+			movement.offset.x = movement.currentSpeed * currentPushingMagnitude * pushingForce;
+			transform.rotation = Quaternion.LookRotation(Vector3.forward);
+		}
+		
+		if(direction == PandaDirection.Left)
+		{
+			movement.offset.x = - movement.currentSpeed * currentPushingMagnitude * pushingForce;
+			transform.rotation = Quaternion.LookRotation(Vector3.back);
+		}
+		
+		controller.Move(movement.offset * Time.fixedDeltaTime);
+	}
 	 
 	// Move the character using Unity's CharacterController.Move function
-	void WalkingMovement(PandaDirection dir, bool standStill)
+	void WalkingMovement(PandaDirection direction)
 	{
 		if(controller.isGrounded)
 		{
@@ -251,7 +286,7 @@ public class PandaMovementController : MonoBehaviour {
 	void BoostedMovement(PandaDirection direction)
 	{
 		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.fixedDeltaTime * boosting.rollOffSpeed);
-		WalkingMovement(direction, false);
+		WalkingMovement(direction);
 	}
 	
 	void SetBoostSpeed()

@@ -7,19 +7,20 @@ public class Animations : MonoBehaviour {
     private PandaStateManager stateManager;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
-    private PandaState lastPandaState;
     private PandaDirection currentDirection;
-    private float rotationSpeed = 50f;
-    public AvatarTarget bodyPart;
+
+    static int staticSpikes = Animator.StringToHash("Base.StaticSpikes");
+    static int jpikedDeathFAll = Animator.StringToHash("Base.SpikedDeathFAll");
+    static int jumping = Animator.StringToHash("Base.Jumping");
+    static int walking = Animator.StringToHash("Base.Walking");
+
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
         anim = gameObject.GetComponentInChildren<Animator>();
-        lastPandaState = gameObject.GetComponent<PandaStateManager>().GetState();
         stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();
-
-        
+        pandaAI = gameObject.GetComponent<PandaAI>();       
 	}
 
 
@@ -44,7 +45,17 @@ public class Animations : MonoBehaviour {
             transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
 
         if (statePanda == PandaState.PushingFinger)
-            transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
+        {
+            //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
+            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
+        }
+        else if (pandaStateLast == PandaState.PushingFinger)
+        {
+            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
+        }
+
 
         if (currentDirection == PandaDirection.Left)
         {
@@ -58,13 +69,17 @@ public class Animations : MonoBehaviour {
         }
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
+        StartCoroutine(CheckAnimationState());
 
     }
-
-    public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
+    public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap, PandaState pandaStateLast)
     {
-       // anim.SetBool(pandaStateLast.ToString(), false);
-       // anim.SetBool(typeTrap.ToString(), hitTrap);
+        if (typeTrap == TrapType.StaticSpikes)
+            pandaAI.stuckOnSpikes = true;
+        anim.SetBool(pandaStateLast.ToString(), false);
+        anim.SetBool(typeTrap.ToString(), hitTrap);
+        Debug.Log(typeTrap.ToString() + hitTrap);
+        float animationLength = anim.GetCurrentAnimatorStateInfo(0).length;
     }
 
     public void PlaySlappedAnimation(PandaDirection dir, bool isInFace, PandaState pandaStateLast)
@@ -78,10 +93,8 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Face", isInFace);
 
         pandaAI.ChangeDirection(null);
-
         StartCoroutine(EndSlap(dir, isInFace));
     }
-
 
     IEnumerator EndSlap(PandaDirection dir, bool isInFace)
     {
@@ -92,5 +105,13 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Face", false);  
 
         stateManager.ChangeState(PandaState.Walking);
+
+
+    IEnumerator CheckAnimationState()
+    {
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        pandaAI.stuckOnSpikes = false;
+        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).length);
     }
 }
