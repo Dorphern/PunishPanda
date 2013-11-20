@@ -7,8 +7,6 @@ public class PandaMovementController : MonoBehaviour {
  
 	public Transform spawnPoint; // The character will spawn here
 	public Movement movement;
-	public Lifting lifting;
-	public Falling falling;
 	public Boosting boosting;
 	public JumpingOff jumpOff;
     public float hangingOffSet = 30f;
@@ -39,26 +37,6 @@ public class PandaMovementController : MonoBehaviour {
 		public float jumpOffSpeed = 3f;
 		public float jumpOffDir = 45f;	
 	}
-	[System.Serializable]
-	public class Falling
-	{
-		public float sideForceAmplitude = 5f;
-		public float maxMagnitude = 2f;
-		[System.NonSerializedAttribute]
-		public Vector2 normalizedDragDirection;
-	}
-	
-	[System.Serializable]
-	public class Lifting
-	{
-		public float minMoveDistance = 0.01f;
-		public float movementSpeed = 50f;
-		[System.NonSerializedAttribute]
-		public Vector3 worldMousePos;
-		[System.NonSerializedAttribute]
-		public Vector3 difference;
-		public float releaseMagnitudeThreshold = 0.5F;
-	}
 	
 	[System.Serializable]
 	public class Movement 
@@ -78,29 +56,6 @@ public class PandaMovementController : MonoBehaviour {
 	#endregion
 
     # region Public Methods
-    public bool IsExceedingLiftThreshold(Vector3 position)
-	{
-		// these checks ensure that the panda is within the threshold before it starts checking for it
-		if(lifting.difference.magnitude < lifting.releaseMagnitudeThreshold && !withinRange)
-		{
-			withinRange = true;
-			return false;
-		}
-		else if(!withinRange)
-		{
-			if(lifting.difference.magnitude > lifting.releaseMagnitudeThreshold * 3f)
-				return true;
-			else
-				return false;
-		}
-		else
-			return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
-	}
-	
-	public void ResetHolding()
-	{
-		withinRange = false;	
-	}
 	
 	public bool IsNotMoving()
 	{
@@ -141,12 +96,10 @@ public class PandaMovementController : MonoBehaviour {
 		{
 			pandaAI.ApplyWalkingMovement += WalkingMovement;
 			pandaAI.PushingMovement += PushingMovement;
-			pandaAI.ApplyLiftMovement += LiftMovement;
-			pandaAI.ApplyFalling += FallingMovement;
             pandaAI.BoostingMovement += BoostedMovement;
 			pandaAI.SetBoostSpeed += SetBoostSpeed;
 	        pandaAI.ApplyJump += ApplyJump;
-	        pandaAI.ApplyJumpingMovement += JumpingMovement;
+	        pandaAI.ApplyGravity += ApplyGravity;
 			pandaAI.ApplyStun += Stunned;
 		}
 	}
@@ -159,22 +112,6 @@ public class PandaMovementController : MonoBehaviour {
         // Store the last position of the character;
         lastPos = transform.position;
 	}
-	
-	void LiftMovement(Vector3 position)
-	{
-
-        lifting.worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y - hangingOffSet, transform.position.z - Camera.main.transform.position.z));
-		lifting.difference = lifting.worldMousePos - transform.position;
-		if(lifting.difference.magnitude > lifting.minMoveDistance)
-		{
-			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
-        }
-	}
-
-    void JumpingMovement ()
-    {
-        ApplyGravity();
-    }
 	
 	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{
@@ -281,18 +218,6 @@ public class PandaMovementController : MonoBehaviour {
 	    movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		//USING "OFFSET" FOR APPLYING GRAVITY
 		controller.Move(movement.offset * Time.fixedDeltaTime);
-	}
-	
-	void FallingMovement()
-	{
-		falling.normalizedDragDirection = new Vector2(lifting.difference.normalized.x, lifting.difference.normalized.y);
-		float dot = Vector2.Dot(falling.normalizedDragDirection, Vector2.right);
-		// magnitude control how fast the side movement increases based on the difference vector in lifting
-		// we clamp it to avoid fast side movement on fast strokes
-		float magnitude = Mathf.Clamp(lifting.difference.magnitude, 0f, falling.maxMagnitude);
-		// falling.sideForceAmplitude is just a multiplier
-		movement.offset.x = Mathf.Sign(dot) * magnitude * falling.sideForceAmplitude;
-		ApplyGravity();
 	}
 	
 	void BoostedMovement(PandaDirection direction)
