@@ -10,9 +10,10 @@ public class Animations : MonoBehaviour {
     private PandaDirection currentDirection;
 
     static int staticSpikes = Animator.StringToHash("Base.StaticSpikes");
-    static int jpikedDeathFAll = Animator.StringToHash("Base.SpikedDeathFAll");
+    static int SpikedDeathFAll = Animator.StringToHash("Base.SpikedDeathFAll");
     static int jumping = Animator.StringToHash("Base.Jumping");
     static int walking = Animator.StringToHash("Base.Walking");
+    static int walking = Animator.StringToHash("Layer Base.Walking");
 
 
 	// Use this for initialization
@@ -20,7 +21,13 @@ public class Animations : MonoBehaviour {
 	{
         anim = gameObject.GetComponentInChildren<Animator>();
         stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();       
+        pandaAI = gameObject.GetComponent<PandaAI>();
+
+        Debug.Log("staticSpikes" + staticSpikes);
+        Debug.Log("spikedDeathFAll" + spikedDeathFAll);
+        Debug.Log("deathSpikeImpact" + deathSpikeImpact);
+        Debug.Log("jumping" + jumping);
+        Debug.Log("walking" + walking);
 	}
 
 
@@ -69,7 +76,7 @@ public class Animations : MonoBehaviour {
         }
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
-        StartCoroutine(CheckAnimationState());
+        StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0)));
 
     }
     public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap, PandaState pandaStateLast)
@@ -78,8 +85,7 @@ public class Animations : MonoBehaviour {
             pandaAI.stuckOnSpikes = true;
         anim.SetBool(pandaStateLast.ToString(), false);
         anim.SetBool(typeTrap.ToString(), hitTrap);
-        Debug.Log(typeTrap.ToString() + hitTrap);
-        float animationLength = anim.GetCurrentAnimatorStateInfo(0).length;
+
     }
 
     public void PlaySlappedAnimation(PandaDirection dir, bool isInFace, PandaState pandaStateLast)
@@ -107,11 +113,14 @@ public class Animations : MonoBehaviour {
         stateManager.ChangeState(PandaState.Walking);
     }
 
-    IEnumerator CheckAnimationState()
+    IEnumerator CheckAnimationState(AnimatorStateInfo animStateInfo)
     {
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animStateInfo.length);
         pandaAI.stuckOnSpikes = false;
-        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).length);
+
+            Debug.Log(animStateInfo.nameHash + "NameHash");
+
+       // Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+       // Debug.Log(anim.GetCurrentAnimatorStateInfo(0).length);
     }
 }

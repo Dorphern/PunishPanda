@@ -143,7 +143,7 @@ public class PandaAI : MonoBehaviour {
     public void PandaSlapped(Vector2 slapDirection, float force)
 	{
         // Disable slap interaction if the panda is dead
-        if (pandaStateManager.GetState() == PandaState.Died) 
+        if (pandaStateManager.GetState() == PandaState.Died)
         {
             return;
         }
@@ -235,7 +235,10 @@ public class PandaAI : MonoBehaviour {
         else if (trap.GetTrapType() == TrapType.ImpalerSpikes
             || trap.GetTrapType() == TrapType.StaticSpikes)
         {
-            pandaController.EnableColliders(false);
+           // pandaController.EnableColliders(false);
+            BloodSplatter.Instance.ProjectBlood(transform.position, Vector2.right);
+            characterController.height = 0.1f;
+            characterController.radius = 0.1f;
         }
 
         return true;
