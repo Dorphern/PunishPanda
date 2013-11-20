@@ -8,23 +8,45 @@ public class Settings : MonoBehaviour {
 	public UISlider _soundEFXSlider;
 	public UILabel languageLabel;
 	
+	public GameObject SFX_Lever;
+	public GameObject Music_Lever;
+	private Animation SFX_animation;
+	private Animation Music_animation;
+	private bool SFX_leverState;
+	private bool Music_leverState;
+	
 	void Awake()
 	{
-		menuMan = GetComponent<MenuManager>();	
+		menuMan = GetComponent<MenuManager>();
+		SFX_animation = SFX_Lever.GetComponent<Animation>();
+		Music_animation = Music_Lever.GetComponent<Animation>();
+		
 		
 		bool music = InstanceFinder.StatsManager.musicEnabled;
 		bool sound = InstanceFinder.StatsManager.soundEffectsEnabled;
 		string lang = InstanceFinder.StatsManager.language;
 		
+
 		if(music)
+		{
 			_musicSlider.value = 1;
+
+		}
 		else
+		{
 			_musicSlider.value = 0;
+
+		}
 		
 		if(sound)
+		{
 			_soundEFXSlider.value = 1;
+
+		}
 		else
+		{
 			_soundEFXSlider.value = 0;
+		}
 		
 		if(languageLabel!=null)
 		{
@@ -44,7 +66,7 @@ public class Settings : MonoBehaviour {
 			}
 		}
 		// language button initialization goes here
-		
+
 	}
 	
 	public void OnCalibrateFingerClicked()
@@ -100,11 +122,19 @@ public class Settings : MonoBehaviour {
 		{
 			if(_musicSlider.value==0)
 			{
+				Debug.Log ("Music OFF");
+
+				Music_animation.Play ("leverAnimation2");//goleft
+	
 				InstanceFinder.StatsManager.musicEnabled = false;
 				InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
+				Debug.Log ("Music ON");
+
+				Music_animation.Play ("leverAnimation1");//goright
+
 				InstanceFinder.StatsManager.musicEnabled = true;
 				InstanceFinder.StatsManager.Save();
 			}
@@ -113,17 +143,22 @@ public class Settings : MonoBehaviour {
 	
 	public void OnSoundEFXSliderChanged()
 	{
-		if(_musicSlider!=null)
+		if(_soundEFXSlider!=null)
 		{
 			if(_soundEFXSlider.value==0)
 			{
 				Debug.Log ("Sound OFF");
+
+				SFX_animation.Play ("leverAnimation2");//goleft
+
 				InstanceFinder.StatsManager.soundEffectsEnabled = false;
 				InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
 				Debug.Log ("Sound ON");
+				SFX_animation.Play ("leverAnimation1");//goright		
+				
 				InstanceFinder.StatsManager.soundEffectsEnabled = true;
 				InstanceFinder.StatsManager.Save();
 			}
