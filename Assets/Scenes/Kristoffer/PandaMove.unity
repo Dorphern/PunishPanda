@@ -521,7 +521,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   turnSpeed: .416999996
@@ -541,7 +543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &67617973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,6 +576,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 3
 --- !u!114 &67617974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,7 +672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyPart: 0
 --- !u!114 &67617981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,6 +985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushingPandas: []
 --- !u!135 &86678499
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4890,7 +4895,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   turnSpeed: .416999996
@@ -4910,7 +4917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &538152849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4943,6 +4950,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 3
 --- !u!114 &538152850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5023,7 +5033,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyPart: 0
 --- !u!114 &538152856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7239,17 +7248,17 @@ MonoBehaviour:
   widgetsAreStatic: 0
   cullWhileDragging: 0
   worldToLocal:
-    e00: 379.5
+    e00: 239.999985
     e01: 0
     e02: 0
-    e03: -7477.67188
+    e03: -4728.96191
     e10: 0
-    e11: 379.5
+    e11: 239.999985
     e12: 0
-    e13: -1849.83228
+    e13: -1169.85437
     e20: 0
     e21: 0
-    e22: 379.5
+    e22: 239.999985
     e23: 0
     e30: 0
     e31: 0
@@ -11240,6 +11249,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1324914632
 Prefab:
   m_ObjectHideFlags: 0
@@ -12475,8 +12490,7 @@ MonoBehaviour:
   useMouseInput: 1
   fingerRadius: .800000012
   swipeThreshold: .0320000015
-  blocadeRepositionMaximumThreshold: .000500000024
-  blockadeDistanceFromFingerThreshold: 100
+  pushingMaxMagnitude: .00999999978
   controls:
     slapping: 1
     bouncing: 1
@@ -17326,7 +17340,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 0
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
+  lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   turnSpeed: .416999996
@@ -17346,7 +17362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &1903852532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17379,6 +17395,9 @@ MonoBehaviour:
     jumpOffSpeed: 3
     jumpOffDir: 45
   hangingOffSet: 30
+  pushingForce: 15
+  velocityDampingSpeed: .100000001
+  velocityRotation: 3
 --- !u!114 &1903852533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17459,7 +17478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyPart: 0
 --- !u!114 &1903852539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19245,6 +19263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2478bd7442b44bada186080828bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pushingPandas: []
 --- !u!135 &2056576886
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -202,7 +202,7 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	 
 	// Move the character using Unity's CharacterController.Move function
-	void WalkingMovement(PandaDirection direction)
+    void WalkingMovement (PandaDirection dir)
 	{
 		if(controller.isGrounded)
 		{

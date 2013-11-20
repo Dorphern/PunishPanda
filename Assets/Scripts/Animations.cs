@@ -96,16 +96,16 @@ public class Animations : MonoBehaviour {
         StartCoroutine(EndSlap(dir, isInFace));
     }
 
-    IEnumerator EndSlap(PandaDirection dir, bool isInFace)
+    IEnumerator EndSlap (PandaDirection dir, bool isInFace)
     {
         yield return new WaitForSeconds(0.37f);
 
         anim.SetBool(dir.ToString(), false);
         anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);  
+        anim.SetBool("Face", false);
 
         stateManager.ChangeState(PandaState.Walking);
-
+    }
 
     IEnumerator CheckAnimationState()
     {

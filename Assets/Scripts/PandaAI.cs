@@ -8,7 +8,7 @@ using System.Collections;
 public class PandaAI : MonoBehaviour {
 
 	public event Action<Vector3> ApplyLiftMovement;
-    public event System.Action<PandaDirection, bool> ApplyWalkingMovement;
+    public event System.Action<PandaDirection> ApplyWalkingMovement;
 	public event System.Action<PandaDirection, float, float> PushingMovement;
 	public event System.Action ApplyFalling;
 	public event System.Action<PandaDirection> BoostingMovement;
