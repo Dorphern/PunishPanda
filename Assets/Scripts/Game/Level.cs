@@ -8,10 +8,10 @@ public class Level : MonoBehaviour
 {
     private float elapsedTime;
     private bool paused;
-    private int totalPandaCount;
+    /*private int totalPandaCount;
     private int alivePandas;
     private int normalPandaKills;
-    private int perfectPandaKills;
+    private int perfectPandaKills;*/
 	private bool onLevelCompleteFlag = false;
 	[System.NonSerializedAttribute]
 	public List<PandaAI> pandas = new List<PandaAI>();  
@@ -31,28 +31,6 @@ public class Level : MonoBehaviour
         paused = false;
     }
 
-    public void RegisterPanda(PandaAI panda)
-    {
-        totalPandaCount += 1;
-        alivePandas += 1;
-		pandas.Add(panda);
-    }
-
-    public void OnPandaDeath(bool fromTrap, bool perfect)
-    {
-        alivePandas -= 1;
-        if (perfect)
-        {
-            perfectPandaKills += 1;
-        }
-        else
-        {
-            normalPandaKills += 1;
-        }
-		InstanceFinder.StatsManager.PandasKilled++;
-    }
-
-
     public float LevelTime
     {
         get
@@ -63,12 +41,12 @@ public class Level : MonoBehaviour
 	
 	public int GetScore()
 	{
-		return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel.LevelScore, perfectPandaKills, normalPandaKills, elapsedTime);	
+        return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel.LevelScore, InstanceFinder.ComboSystem.LevelDeaths, elapsedTime);	
 	}
 	
 	public int Stars()
 	{
-        return ScoreCalculator.Stars(InstanceFinder.LevelManager.CurrentLevel.LevelScore, GetScore());	
+	    return ScoreCalculator.Stars(InstanceFinder.LevelManager.CurrentLevel.LevelScore, GetScore());	
 	}
 	
     # endregion
@@ -86,12 +64,12 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (!paused && alivePandas > 0)
+        if (!paused && InstanceFinder.ComboSystem.AlivePandas > 0)
         {
             elapsedTime += PandaTime.deltaTime;
         }
-		
-		if(alivePandas <= 0 && onLevelCompleteFlag==false && onLevelComplete != null)
+
+        if (InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
             if(onLevelComplete != null)
