@@ -7,15 +7,13 @@ using System.Collections;
 
 public class PandaAI : MonoBehaviour {
 
-	public event Action<Vector3> ApplyLiftMovement;
     public event System.Action<PandaDirection> ApplyWalkingMovement;
 	public event System.Action<PandaDirection, float, float> PushingMovement;
-	public event System.Action ApplyFalling;
 	public event System.Action ApplyStun;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
     public event System.Action<float, float> ApplyJump;
-    public event System.Action ApplyJumpingMovement;
+    public event System.Action ApplyGravity;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
 
@@ -60,25 +58,9 @@ public class PandaAI : MonoBehaviour {
 	
 	
 	#region Public Methods
-	public void PandaPressed()
-	{
-		if( pandaStateManager.GetState() == PandaState.Standing        || 
-		    pandaStateManager.GetState() == PandaState.Walking         ||
-			pandaStateManager.GetState() == PandaState.FallTransition  ||
-			pandaStateManager.GetState() == PandaState.Falling         ||
-            pandaStateManager.GetState() == PandaState.FallSplat       ||
-			pandaStateManager.GetState() == PandaState.Jumping)
-			
-		{
-			pandaMovementController.ResetHolding();
-			pandaMovementController.ResetGravity();
-			
-			pandaStateManager.ChangeState(PandaState.HoldingOntoFinger);
-		}
-	}
-	
 	public void DoubleTapped()
 	{
+        Debug.Log("Double tapped!");
 		if( pandaStateManager.GetState() == PandaState.Standing        || 
 		    pandaStateManager.GetState() == PandaState.Walking)
 			
@@ -105,16 +87,6 @@ public class PandaAI : MonoBehaviour {
 	public void PandaPushingToWalking()
 	{
 		pandaStateManager.ChangeState(PandaState.Walking);	
-	}
-	
-	public void PandaReleased()
-	{
-		if(pandaStateManager.GetState() == PandaState.HoldingOntoFinger)
-		{
-			pandaMovementController.movement.offset.x = 0f;
-			pandaStateManager.ChangeState(PandaState.Falling);
-            oldPosition = transform.position;
-		}
 	}
 
     public void Jump (float force, float direction)
@@ -284,15 +256,6 @@ public class PandaAI : MonoBehaviour {
 	{
 		switch(pandaStateManager.GetState())
 		{	
-			case PandaState.HoldingOntoFinger:
-				if(ApplyLiftMovement!=null)
-				{
-                    oldPosition = transform.position;
-                    ApplyLiftMovement(touchPosition);
-                   // animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
-					CheckLiftThreshold();
-				}
-				break;
 			case PandaState.Walking:                
 				if(ApplyWalkingMovement!=null)
                 {
@@ -312,10 +275,9 @@ public class PandaAI : MonoBehaviour {
                 }
 				break;
             case PandaState.Jumping:
-                if (ApplyJumpingMovement != null)
+                if (ApplyGravity != null)
                 {
-                  //  animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
-                    ApplyJumpingMovement();
+                    ApplyGravity();
                 }
 
                 if (characterController.isGrounded)
@@ -324,11 +286,11 @@ public class PandaAI : MonoBehaviour {
                 }
                 break;
 			case PandaState.Falling:
-                if (ApplyFalling != null)
+                if (ApplyGravity != null)
                 {
                  //   animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
                     speedFalling();
-                    ApplyFalling();
+                    ApplyGravity();
                 }
                 
 				//if(characterController.isGrounded)
@@ -339,12 +301,12 @@ public class PandaAI : MonoBehaviour {
 					ApplyWalkingMovement(pandaStateManager.GetDirection());
 				break;
             case PandaState.FallSplat:
-                if (ApplyFalling != null)
-                    ApplyFalling();
+                if (ApplyGravity != null)
+                    ApplyGravity();
                 break;
             case PandaState.Died:
-                if (ApplyFalling != null && stuckOnSpikes == false)
-                    ApplyFalling();
+                if (ApplyGravity != null && stuckOnSpikes == false)
+                    ApplyGravity();
                 break;
 
 
@@ -430,21 +392,7 @@ public class PandaAI : MonoBehaviour {
 			{
 				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 			}
-			// if we hit a panda that is holding on to the finger we want this panda to change direction
-			else if(otherPandaSM.GetState() ==  PandaState.HoldingOntoFinger)
-			{
-                pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
-            }
 		}
-	}
-
-	
-	void CheckLiftThreshold()
-	{
-		if(pandaMovementController.IsExceedingLiftThreshold(this.touchPosition))
-        {
-            pandaStateManager.ChangeState(PandaState.Falling);
-        }	
 	}
 
     void PlaySlap (Vector2 slapDirection)

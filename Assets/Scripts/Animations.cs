@@ -38,19 +38,7 @@ public class Animations : MonoBehaviour {
         anim.SetBool(pandaStateLast.ToString(), false);
 
         Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-
         Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
-
-
-        if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Right)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-        else if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Left)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
-
-        if (statePanda == PandaState.Falling && currentDirection == PandaDirection.Right)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-        else if (statePanda == PandaState.Falling && currentDirection == PandaDirection.Left)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
 
         if (statePanda == PandaState.PushingFinger)
         {
