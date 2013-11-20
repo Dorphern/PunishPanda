@@ -15,7 +15,6 @@ public class InputHandler : MonoBehaviour {
 	private PandaAI tempPanda = null;
 	private Hotspot tempHotSpot;
 	private FingerBlocking tempBlockade;
-	private Dictionary<int, PandaAI> selectedPandas; 
 	private Dictionary<int, Hotspot> selectedHotSpots; 
 	private Dictionary<int, FingerBlocking> selectedBlockades;  
 	private Vector3 [] lastMousePos;
@@ -29,14 +28,12 @@ public class InputHandler : MonoBehaviour {
 	{
 		public bool slapping = true;
 		public bool bouncing = true;
-		public bool lifting = true;
 		public bool holding = true;
 		public bool tapping = true;
 	}
 	
 	void Start () 
 	{
-		selectedPandas = new Dictionary<int, PandaAI>();
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
 		selectedHotSpots = new Dictionary<int, Hotspot>();
 		
@@ -106,15 +103,7 @@ public class InputHandler : MonoBehaviour {
 		
 			if(collidable != null)
 			{
-				if(controls.lifting == true && collidable.type == CollidableTypes.Panda)
-				{
-					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
-					tempPanda.touchPosition = position;
-					tempPanda.PandaPressed();
-					selectedPandas.Add(fingerID, tempPanda);
-					hitflag = true;
-					return;
-				}
+                Debug.Log("tapped");
 				if(controls.tapping == true && collidable.type == CollidableTypes.Panda && tapCount == 2)
 				{
 					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
@@ -143,14 +132,8 @@ public class InputHandler : MonoBehaviour {
 	
 	void PerformTouchUpdate(Touch touch)
 	{
-		if(selectedPandas.ContainsKey(touch.fingerId))
-		{
-			selectedPandas.TryGetValue(touch.fingerId, out tempPanda);
-			// if our fingerID corresponds with a panda we updated the position on PandaAI
-			tempPanda.touchPosition = touch.position;
-		}
 		// if we have a blockade selected we can perform actions involving blocking and slaping
-		else if(selectedBlockades.ContainsKey(touch.fingerId))
+		if(selectedBlockades.ContainsKey(touch.fingerId))
 		{
 			float relativCurrPosX = touch.position.x / Screen.width;
 			float relativCurrPosY = touch.position.y / Screen.height;
@@ -215,13 +198,7 @@ public class InputHandler : MonoBehaviour {
 	
 	void PerformTouchEnded(int fingerId)
 	{	
-		if(selectedPandas.ContainsKey(fingerId))
-		{
-			selectedPandas.TryGetValue(fingerId, out tempPanda);
-			tempPanda.PandaReleased();
-			selectedPandas.Remove(fingerId);
-		}
-		else if(selectedBlockades.ContainsKey(fingerId))
+		if(selectedBlockades.ContainsKey(fingerId))
 		{
 			selectedBlockades.TryGetValue(fingerId, out tempBlockade);
 			tempBlockade.DeactivateBlockade();
@@ -335,13 +312,7 @@ public class InputHandler : MonoBehaviour {
 			
 				if(collidable != null)
 				{
-					if(controls.lifting == true && collidable.type == CollidableTypes.Panda)
-					{
-						tempPanda = hitInfo.collider.GetComponent<PandaAI>();
-						tempPanda.touchPosition = Input.mousePosition;
-						tempPanda.PandaPressed();
-					}
-					else if(controls.bouncing == true && collidable.type == CollidableTypes.Hotspot)
+					if(controls.bouncing == true && collidable.type == CollidableTypes.Hotspot)
 					{
 						tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
                         tempHotSpot.ActivateHotspot();	
@@ -427,12 +398,7 @@ public class InputHandler : MonoBehaviour {
 		
 		if(Input.GetMouseButtonUp(0))
 		{
-			if(tempPanda != null)
-			{
-				tempPanda.PandaReleased();
-				tempPanda = null;
-			}
-			else if(tempHotSpot != null)
+			if(tempHotSpot != null)
 			{
                 tempHotSpot.DeactivateHotspot();
 				tempHotSpot = null;
