@@ -15,7 +15,6 @@ public class Animations : MonoBehaviour {
     static int spikedDeathFall = Animator.StringToHash("Base.SpikedDeathFall");
     static int jumping = Animator.StringToHash("Base.Jumping");
     static int walking = Animator.StringToHash("Base.Walking");
-    static int walking = Animator.StringToHash("Layer Base.Walking");
 
 
 	// Use this for initialization
