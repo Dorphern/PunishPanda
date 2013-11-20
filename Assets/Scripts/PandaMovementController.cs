@@ -22,7 +22,6 @@ public class PandaMovementController : MonoBehaviour {
 	
 	bool withinRange = false;
 
-
     [SerializeField] float velocityDampingSpeed = 0.1f;
     [SerializeField] float velocityRotation = 3f;
  
@@ -77,9 +76,9 @@ public class PandaMovementController : MonoBehaviour {
 	
 
 	#endregion
-	
-	
-	public bool IsExceedingLiftThreshold(Vector3 position)
+
+    # region Public Methods
+    public bool IsExceedingLiftThreshold(Vector3 position)
 	{
 		// these checks ensure that the panda is within the threshold before it starts checking for it
 		if(lifting.difference.magnitude < lifting.releaseMagnitudeThreshold && !withinRange)
@@ -120,8 +119,17 @@ public class PandaMovementController : MonoBehaviour {
 	{
 		movement.offset.y = 0;
 	}
-	
-	void Start()
+
+    public void ApplyJump (float force, float direction)
+    {
+        float radDir = Mathf.Deg2Rad * direction;
+        movement.offset.y = Mathf.Sin(radDir) * force;
+        movement.offset.x = Mathf.Cos(radDir) * force;
+    }
+    # endregion
+
+    # region Private Methods
+    void Start()
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
@@ -135,9 +143,8 @@ public class PandaMovementController : MonoBehaviour {
 			pandaAI.PushingMovement += PushingMovement;
 			pandaAI.ApplyLiftMovement += LiftMovement;
 			pandaAI.ApplyFalling += FallingMovement;
-			pandaAI.BoostingMovement += BoostedMovement;
+            pandaAI.BoostingMovement += BoostedMovement;
 			pandaAI.SetBoostSpeed += SetBoostSpeed;
-			pandaAI.SetDefaultSpeed += SetDefaultSpeed;
 	        pandaAI.ApplyJump += ApplyJump;
 	        pandaAI.ApplyJumpingMovement += JumpingMovement;
 			pandaAI.ApplyStun += Stunned;
@@ -148,18 +155,6 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-		
-		
-
-        Vector3 velocity = transform.position - lastPos;
-        dampedVelocity = dampedVelocity * (1f - velocityDampingSpeed)
-            + velocity * velocityDampingSpeed;
-        Vector3 rot = controller.transform.eulerAngles;
-        if (rot.y < 91f && rot.y > 89f)
-        {
-            rot.x = dampedVelocity.x * velocityRotation * 100f;
-        }
-        controller.transform.eulerAngles = rot;
 
         // Store the last position of the character;
         lastPos = transform.position;
@@ -175,7 +170,6 @@ public class PandaMovementController : MonoBehaviour {
 			controller.Move(lifting.difference.normalized * Time.fixedDeltaTime * lifting.movementSpeed * lifting.difference.magnitude);
         }
 	}
-
 
     void JumpingMovement ()
     {
@@ -220,7 +214,7 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	
 	// Move the character using Unity's CharacterController.Move function
-	void WalkingMovement(PandaDirection direction)
+    void WalkingMovement (PandaDirection dir)
 	{
 		if(controller.isGrounded)
 		{
@@ -229,18 +223,18 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
-		if(direction == PandaDirection.Right)
-		{	
-			movement.offset.x = movement.currentSpeed;
-			transform.rotation = Quaternion.LookRotation(Vector3.forward);
-		}
+        Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        if ((int) curr.y != (int) goalY)
+        {
+            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
+            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
+            transform.eulerAngles = curr;
+        }
+
+        // Determine movement direction based on movement dir
+        movement.offset.x = movement.currentSpeed * (dir == PandaDirection.Left ? -1 : 1);
 		
-		if(direction == PandaDirection.Left)
-		{
-			movement.offset.x = - movement.currentSpeed;
-			transform.rotation = Quaternion.LookRotation(Vector3.back);
-		}
-	
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
@@ -271,14 +265,7 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	
     #endregion
-
-    public void ApplyJump (float force, float direction)
-    {
-        float radDir = Mathf.Deg2Rad * direction;
-        movement.offset.y = Mathf.Sin(radDir) * force;
-        movement.offset.x = Mathf.Cos(radDir) * force;
-    }
-
+    
     void ApplyJump ()
     {
         movement.offset.y = movement.jumpHeight;
@@ -317,13 +304,8 @@ public class PandaMovementController : MonoBehaviour {
 	void SetBoostSpeed()
 	{
 		movement.currentSpeed = boosting.boostSpeed;
-	}
-	
-	void SetDefaultSpeed()
-	{
-		movement.currentSpeed = movement.walkSpeed;
-	}
-	
+    }
 
-	
+    # endregion
+
 }
