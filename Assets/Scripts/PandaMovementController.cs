@@ -81,7 +81,6 @@ public class PandaMovementController : MonoBehaviour {
 	
 	public bool IsExceedingLiftThreshold(Vector3 position)
 	{
-		
 		// these checks ensure that the panda is within the threshold before it starts checking for it
 		if(lifting.difference.magnitude < lifting.releaseMagnitudeThreshold && !withinRange)
 		{
@@ -89,7 +88,12 @@ public class PandaMovementController : MonoBehaviour {
 			return false;
 		}
 		else if(!withinRange)
-			return false;
+		{
+			if(lifting.difference.magnitude > lifting.releaseMagnitudeThreshold * 3f)
+				return true;
+			else
+				return false;
+		}
 		else
 			return lifting.difference.magnitude > lifting.releaseMagnitudeThreshold;
 	}
@@ -136,6 +140,7 @@ public class PandaMovementController : MonoBehaviour {
 			pandaAI.SetDefaultSpeed += SetDefaultSpeed;
 	        pandaAI.ApplyJump += ApplyJump;
 	        pandaAI.ApplyJumpingMovement += JumpingMovement;
+			pandaAI.ApplyStun += Stunned;
 		}
 	}
 	 
@@ -179,7 +184,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{
-		currentPushingMagnitude = Mathf.Lerp(lastMag, pushingMagnitude, Time.fixedDeltaTime * 40);
+		currentPushingMagnitude = Mathf.Lerp(lastMag, pushingMagnitude, Time.fixedDeltaTime * 100);
 		
 		if(controller.isGrounded)
 		{
@@ -187,8 +192,6 @@ public class PandaMovementController : MonoBehaviour {
 		}
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
-		
-		
 		
 		if(direction == PandaDirection.Right)
 		{	
@@ -204,7 +207,18 @@ public class PandaMovementController : MonoBehaviour {
 		
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
-	 
+	
+	void Stunned()
+	{
+		if(controller.isGrounded)
+		{
+			movement.offset = Vector3.zero;
+		}
+		// in order for the isGrounded flag to work we always need to apply gravity
+		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;	
+		controller.Move(movement.offset * Time.fixedDeltaTime);
+	}
+	
 	// Move the character using Unity's CharacterController.Move function
 	void WalkingMovement(PandaDirection direction)
 	{

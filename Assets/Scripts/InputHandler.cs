@@ -31,6 +31,7 @@ public class InputHandler : MonoBehaviour {
 		public bool bouncing = true;
 		public bool lifting = true;
 		public bool holding = true;
+		public bool tapping = true;
 	}
 	
 	void Start () 
@@ -81,7 +82,7 @@ public class InputHandler : MonoBehaviour {
 			// Touch began
 			if(touch.phase == TouchPhase.Began)
 			{
-				PerformTouchBegan(touch.position, touch.fingerId);
+				PerformTouchBegan( touch.position, touch.fingerId, touch.tapCount);
 			}
 			// Touch ended
 			else if(touch.phase == TouchPhase.Ended)
@@ -94,7 +95,7 @@ public class InputHandler : MonoBehaviour {
 		}			
 	}
 	
-	void PerformTouchBegan(Vector3 position, int fingerID)
+	void PerformTouchBegan(Vector3 position, int fingerID, int tapCount)
 	{
 		ray = Camera.main.ScreenPointToRay(position);
 		// using this flag to ensure that we hit something relavent to touch controls
@@ -108,9 +109,16 @@ public class InputHandler : MonoBehaviour {
 				if(controls.lifting == true && collidable.type == CollidableTypes.Panda)
 				{
 					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
-					tempPanda.PandaPressed();
 					tempPanda.touchPosition = position;
+					tempPanda.PandaPressed();
 					selectedPandas.Add(fingerID, tempPanda);
+					hitflag = true;
+					return;
+				}
+				if(controls.tapping == true && collidable.type == CollidableTypes.Panda && tapCount == 2)
+				{
+					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
+					tempPanda.DoubleTapped();
 					hitflag = true;
 					return;
 				}
@@ -144,7 +152,6 @@ public class InputHandler : MonoBehaviour {
 		// if we have a blockade selected we can perform actions involving blocking and slaping
 		else if(selectedBlockades.ContainsKey(touch.fingerId))
 		{
-		
 			float relativCurrPosX = touch.position.x / Screen.width;
 			float relativCurrPosY = touch.position.y / Screen.height;
 			
@@ -179,7 +186,7 @@ public class InputHandler : MonoBehaviour {
 					if(panda.IsFacingFinger(tempBlockade.transform.position))
 					{
 						float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
-						if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.4f)
+						if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.1f)
 						{
 							panda.PandaPushingFinger();
 							tempBlockade.pushingPandas.Add(panda);
@@ -237,7 +244,7 @@ public class InputHandler : MonoBehaviour {
 	void OnGUI()
 	{
 		GUI.color = Color.black;
-		GUI.Label(new Rect(100, 400, 200, 100), debugLine);
+		GUI.Label(new Rect(100, 10, 200, 800), debugLine);
 	}
 
 	// for each panda in the list 
@@ -271,6 +278,8 @@ public class InputHandler : MonoBehaviour {
 			projectedDirectionLength = - Vector2.Dot(direction, - facingDirection);	
 		}
 		
+		
+		//debugLine += "\n" + Mathf.Abs(projectedDirectionLength).ToString("0.00000");
 		//Debug.Log("Dot : " + dot + " projection : " + projectedDirectionLength);
 		if( Mathf.Abs(projectedDirectionLength) > pushingMaxMagnitude)
 		{	
@@ -279,10 +288,11 @@ public class InputHandler : MonoBehaviour {
 		else
 		{
 			float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, pushedPanda.transform.position);
-			
-			if(distanceToFinger > fingerSize / 2f + 0.8f)
+			//debugLine = distanceToFinger.ToString("0.0000");
+			if(distanceToFinger > fingerSize / 2f + 0.8f || distanceToFinger < fingerSize / 2f)
 			{
 				EnablePandasOnBlockadeRelease();
+				//debugLine += "\n 	distanceToFinger >>";
 				return;
 			}
 			float mag = distanceToFinger - (fingerSize / 2f + 0.5f);

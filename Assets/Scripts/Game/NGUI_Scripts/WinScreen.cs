@@ -36,51 +36,71 @@ public class WinScreen : MonoBehaviour {
 	
 	private void OnLevelComplete()
 	{
-		
-		/*// we also need to deactivate controls
-		//this is where calcualtions for score, stars and adding to lifetime score happens
-		
-		Level level = InstanceFinder.GameManager.ActiveLevel;
-		
-		//Set win screen
-		
-		funFactsTexture.mainTexture = level.FunFactsTexture;
-		FunFactsLabel.text = level.FunFactsText;
-		
-		// score calculation
-		int score = level.GetScore();
-		int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
-		scoreLabel.text = score.ToString();
-		
-		if(score > highScore)
-		{
-			highScoreLabel.text = "New High Score!";
-		}
-		else
-		{
-			highScoreLabel.text = "HighScore: " + highScore;
-		}
-		
-		// star calculation
-		int stars = level.Stars();
-		if(stars==1)
-		{
-			oneStarTexture.enabled = true;	
-		}
-		else if(stars==1)
-		{
-			oneStarTexture.enabled = true;	
-			twoStarTexture.enabled = true;	
-		}
-		else if(stars==1)
-		{
-			oneStarTexture.enabled = true;	
-			twoStarTexture.enabled = true;	
-			threeStarTexture.enabled = true;
-		}*/
+	   
 		UnLockLevels();
-		winScreen.SetActive(true);
+		StartCoroutine(WaitWinScreen());
+		
 	}
+			
+	private IEnumerator WaitWinScreen()
+	{
+		yield return new WaitForSeconds(2.0f);
+	    SetWinScreenData();
+		winScreen.SetActive(true);	
+
+	}
+
+    private void SetWinScreenData()
+    {
+        LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
+        funFactsTexture.mainTexture = levelData.FunFactsTexture;
+        Level level = InstanceFinder.GameManager.ActiveLevel;
+        int score = level.GetScore();
+        //int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
+        scoreLabel.text = score.ToString();
+        /*// we also need to deactivate controls
+        //this is where calcualtions for score, stars and adding to lifetime score happens
+		
+        Level level = InstanceFinder.GameManager.ActiveLevel;
+		
+        //Set win screen
+		
+        funFactsTexture.mainTexture = level.FunFactsTexture;
+        FunFactsLabel.text = level.FunFactsText;
+		
+        // score calculation
+        int score = level.GetScore();
+        int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
+        scoreLabel.text = score.ToString();
+		
+        if(score > highScore)
+        {
+            highScoreLabel.text = "New High Score!";
+        }
+        else
+        {
+            highScoreLabel.text = "HighScore: " + highScore;
+        }
+		*/
+        // star calculation
+        int stars = level.Stars();
+        Debug.Log(stars);
+        if(stars==1)
+        {
+            oneStarTexture.gameObject.SetActive(true);
+        }
+        else if(stars==2)
+        {
+            oneStarTexture.gameObject.SetActive(true);
+            twoStarTexture.gameObject.SetActive(true);
+        }
+        else if(stars==3)
+        {
+            oneStarTexture.gameObject.SetActive(true);
+            twoStarTexture.gameObject.SetActive(true);
+            threeStarTexture.gameObject.SetActive(true);
+        }
+    }
 
     private static void UnLockLevels()
     {
