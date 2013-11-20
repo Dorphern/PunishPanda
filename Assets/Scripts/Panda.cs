@@ -5,6 +5,7 @@ public class Panda : MonoBehaviour {
 
     public void PandaKilled (bool fromTrap, bool perfect)
     {
+        Debug.Log(perfect);
         InstanceFinder.GameManager.ActiveLevel.OnPandaDeath(fromTrap, perfect);
         if (InstanceFinder.ComboSystem != null)
         {

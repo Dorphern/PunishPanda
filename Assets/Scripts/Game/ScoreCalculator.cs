@@ -24,15 +24,15 @@ namespace PunishPanda.Game
 
         public static int Stars(LevelScore levelScore, int score)
         {
-            if (score > levelScore.Three)
+            if (score > levelScore.ThreeStars)
             {
                 return 3;
             }
-            if (score > levelScore.Two)
+            if (score > levelScore.TwoStars)
             {
                 return 2;
             }
-            if (score > levelScore.One)
+            if (score > levelScore.OneStar)
             {
                 return 1;
             }
