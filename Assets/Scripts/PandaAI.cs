@@ -97,6 +97,12 @@ public class PandaAI : MonoBehaviour {
 
     public void Jump (float force, float direction)
     {
+        // Disable jumping if the panda is dead
+        if (pandaStateManager.GetState() == PandaState.Died)
+        {
+            return;
+        }
+
         if (pandaStateManager.GetDirection() == PandaDirection.Left)
         {
             direction = 180f - direction;
@@ -114,6 +120,12 @@ public class PandaAI : MonoBehaviour {
 
     public void PandaSlapped(Vector2 slapDirection, float force)
 	{
+        // Disable slap interaction if the panda is dead
+        if (pandaStateManager.GetState() == PandaState.Died) 
+        {
+            return;
+        }
+ 
 		// we can slap the panda only in walking and standing state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing
 			&& pandaStateManager.GetState() != PandaState.Falling)
@@ -178,6 +190,12 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
     {
+        // Disable death if the panda is already dead
+        if (pandaStateManager.GetState() == PandaState.Died)
+        {
+            return false;
+        }
+
         Debug.Log("Hit death object: " + trap.GetTrapType());
         pandaStateManager.ChangeState(PandaState.Died);
 
@@ -193,6 +211,11 @@ public class PandaAI : MonoBehaviour {
         {
             Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
             Destroy(gameObject);
+        }
+        else if (trap.GetTrapType() == TrapType.ImpalerSpikes
+            || trap.GetTrapType() == TrapType.StaticSpikes)
+        {
+            pandaController.EnableColliders(false);
         }
 
         return true;
