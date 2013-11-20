@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -17,22 +18,30 @@ public class Achievement
 	public Texture2D achievementIcon;
 	
 	
-	private bool achieved = false;
+	private bool completed = false;
 	// expressing progress as a float
 	private float currentProgress = 0f;
 	private DateTime goalCompletionTime;
 	
+	public void LoadAchievement(float progress)
+	{
+		if(progress>=goal)
+		{
+			completed = true;
+		}
+		currentProgress = progress;
+	}
 	
 	public bool AddProgress(float progress)
 	{
-		if(achieved)
+		if(completed)
 			return false;
 		
-		progress += currentProgress;
+		currentProgress += progress;
 		
 		if(currentProgress>=goal)
 		{
-			achieved = true;
+			completed = true;
 			goalCompletionTime = DateTime.Now;
 			return true;
 		}
@@ -41,13 +50,13 @@ public class Achievement
 	
 	public bool SetProgress(float progress)
 	{
-		if(achieved)
+		if(completed)
 			return false;
 		
 		currentProgress = progress;
 		if(progress>=goal)
 		{
-			achieved = true;
+			completed = true;
 			goalCompletionTime = DateTime.Now;
 			return true;
 		}
@@ -56,10 +65,15 @@ public class Achievement
 	
 	public bool HasBeenCompleted()
 	{
-		return achieved;	
+		return completed;	
 	}
 	
-	public float GetPersentOfProgress()
+	public float GetProgress()
+	{
+		return currentProgress;
+	}
+	
+	public float GetPersentageProgress()
 	{
 		if(currentProgress<goal)
 			return currentProgress/goal;
@@ -102,7 +116,7 @@ public class AchievementManager : MonoBehaviour {
 	{
 		if(!achievements.ContainsKey(name))
 		{
-			Debug.LogError("Attempted to add progress to achievement that doesn't exist: " + name);
+			Debug.Log("Attempted to add progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{
@@ -140,24 +154,38 @@ public class AchievementManager : MonoBehaviour {
 	
 	void Start() 
 	{
-		//LoadAchievements();	
+		LoadAchievements();	
 	}
 	
 	private void LoadAchievements()
 	{
+		achievements = new Dictionary<string, Achievement>();
 		for(int i=0;i<achievementList.Count;i++)
 		{
 			if(achievements.ContainsKey(achievementList[i].name))
 			{
-				Debug.Log("Duplicate achievement with the name " + achievementList[i].name);
+				Debug.Log("Duplicate achievements with the name " + achievementList[i].name);
 				continue;
 			}
+			
+			float progress = PlayerPrefs.GetFloat(achievementList[i].name, -1f);
+			if(progress!= -1)
+				achievementList[i].LoadAchievement(progress);
 			
 			achievements.Add(achievementList[i].name, achievementList[i]);
 		}
 	}
 	
-
+	public void SaveAchievements()
+	{
+		List<string> keys = new List<string>(achievements.Keys);
+		Achievement ach;
+		for(int i=0;i<keys.Count;i++)
+		{
+			ach = achievements[keys[i]];
+			PlayerPrefs.SetFloat(ach.name, ach.GetProgress());
+		}
+	}
 }
 
 

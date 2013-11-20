@@ -5,7 +5,7 @@ public class Panda : MonoBehaviour {
 
     public void PandaKilled (bool fromTrap, bool perfect)
     {
-        InstanceFinder.GameManager.ActiveLevel.OnPandaDeath(fromTrap, perfect);
+       
         if (InstanceFinder.ComboSystem != null)
         {
             InstanceFinder.ComboSystem.OnPandaDeath(perfect);
@@ -14,7 +14,7 @@ public class Panda : MonoBehaviour {
 
 	void Start () 
 	{
-	    InstanceFinder.GameManager.ActiveLevel.RegisterPanda(this.GetComponent<PandaAI>());
+        InstanceFinder.ComboSystem.RegisterPanda();
 	}
 
     public void EnableColliders (bool enable)

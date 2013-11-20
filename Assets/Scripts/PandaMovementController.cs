@@ -147,6 +147,7 @@ public class PandaMovementController : MonoBehaviour {
 			pandaAI.SetBoostSpeed += SetBoostSpeed;
 	        pandaAI.ApplyJump += ApplyJump;
 	        pandaAI.ApplyJumpingMovement += JumpingMovement;
+			pandaAI.ApplyStun += Stunned;
 		}
 	}
 	 
@@ -200,7 +201,18 @@ public class PandaMovementController : MonoBehaviour {
 		
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
-	 
+	
+	void Stunned()
+	{
+		if(controller.isGrounded)
+		{
+			movement.offset = Vector3.zero;
+		}
+		// in order for the isGrounded flag to work we always need to apply gravity
+		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;	
+		controller.Move(movement.offset * Time.fixedDeltaTime);
+	}
+	
 	// Move the character using Unity's CharacterController.Move function
     void WalkingMovement (PandaDirection dir)
 	{
