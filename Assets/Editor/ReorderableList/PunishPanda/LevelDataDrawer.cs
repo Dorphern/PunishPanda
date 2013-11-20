@@ -69,8 +69,6 @@ public class LevelDataDrawer : IReorderableListAdaptor
         position.height = itemHeight;
         Rect togglePos = position;
         togglePos.height = itemHeight;
-        float totalWidth = position.width;
-        //position.width -= 60;
 
         currentLevel.Toggled = EditorGUI.Foldout(position, currentLevel.Toggled, currentLevel.LevelName);
         if (currentLevel.Toggled)
