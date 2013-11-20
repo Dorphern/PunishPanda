@@ -11,6 +11,8 @@ public class Animations : MonoBehaviour {
 
     static int staticSpikes = Animator.StringToHash("Base.StaticSpikes");
     static int SpikedDeathFAll = Animator.StringToHash("Base.SpikedDeathFAll");
+    static int deathSpikeImpact = Animator.StringToHash("Base.DeathSpikeImpact");
+    static int spikedDeathFall = Animator.StringToHash("Base.SpikedDeathFall");
     static int jumping = Animator.StringToHash("Base.Jumping");
     static int walking = Animator.StringToHash("Base.Walking");
     static int walking = Animator.StringToHash("Layer Base.Walking");
@@ -24,7 +26,7 @@ public class Animations : MonoBehaviour {
         pandaAI = gameObject.GetComponent<PandaAI>();
 
         Debug.Log("staticSpikes" + staticSpikes);
-        Debug.Log("spikedDeathFAll" + spikedDeathFAll);
+        Debug.Log("spikedDeathFAll" + spikedDeathFall);
         Debug.Log("deathSpikeImpact" + deathSpikeImpact);
         Debug.Log("jumping" + jumping);
         Debug.Log("walking" + walking);
