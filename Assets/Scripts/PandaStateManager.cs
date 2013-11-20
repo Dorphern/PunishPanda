@@ -19,7 +19,6 @@ public enum PandaState
 	Jumping,
     Falling,
     FallSplat,
-    Slapped,
 	FallTransition
 }
 
@@ -95,7 +94,6 @@ public class PandaStateManager : MonoBehaviour {
     {
         return currentDirection;
     }
-
 
     public int GetSlapCount ()
     {
