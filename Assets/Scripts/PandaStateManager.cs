@@ -100,7 +100,6 @@ public class PandaStateManager : MonoBehaviour {
         return currentDirection;
     }
 
-
     public int GetSlapCount ()
     {
         return slapCount;
