@@ -57,7 +57,7 @@ public class InputHandler : MonoBehaviour {
 #endif
 	}
 	
-	#region Touch Input Handling
+	#region Input Handling
 	
 	void TouchUpdate()
 	{
@@ -79,20 +79,37 @@ public class InputHandler : MonoBehaviour {
 			// Touch began
 			if(touch.phase == TouchPhase.Began)
 			{
-				PerformTouchBegan( touch.position, touch.fingerId, touch.tapCount);
+                PerformCursorBegan(touch.position, touch.fingerId, touch.tapCount);
 			}
 			// Touch ended
 			else if(touch.phase == TouchPhase.Ended)
 			{
-				PerformTouchEnded(touch.fingerId);
+                PerformCursorEnded(touch.fingerId);
 			}
-			
-			PerformTouchUpdate(touch);
+
+            PerformCursorUpdate(touch.position, touch.fingerId);
 			
 		}			
 	}
-	
-	void PerformTouchBegan(Vector3 position, int fingerID, int tapCount)
+
+    void MouseUpdate ()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {   // Mouse Down Began
+            PerformCursorBegan(Input.mousePosition, 1, 0);
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {   // Mouse Down Ended
+            PerformCursorEnded(1);
+        }
+
+        if (Input.GetMouseButton(0))
+        {   // Mouse Update (is down)
+            PerformCursorUpdate(Input.mousePosition, 1);
+        }
+    }
+
+    void PerformCursorBegan (Vector3 position, int fingerID, int tapCount)
 	{
 		ray = Camera.main.ScreenPointToRay(position);
 		// using this flag to ensure that we hit something relavent to touch controls
@@ -103,7 +120,10 @@ public class InputHandler : MonoBehaviour {
 		
 			if(collidable != null)
 			{
-                Debug.Log("tapped");
+                if (tapCount > 0)
+                {
+                    Debug.Log("tapped");
+                }
 				if(controls.tapping == true && collidable.type == CollidableTypes.Panda && tapCount == 2)
 				{
 					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
@@ -129,17 +149,17 @@ public class InputHandler : MonoBehaviour {
 			lastMousePos[fingerID] = position;
 		}
 	}
-	
-	void PerformTouchUpdate(Touch touch)
+
+    void PerformCursorUpdate (Vector3 position, int fingerID)
 	{
 		// if we have a blockade selected we can perform actions involving blocking and slaping
-		if(selectedBlockades.ContainsKey(touch.fingerId))
+        if (selectedBlockades.ContainsKey(fingerID))
 		{
-			float relativCurrPosX = touch.position.x / Screen.width;
-			float relativCurrPosY = touch.position.y / Screen.height;
-			
-			float relativLastPosX = lastMousePos[touch.fingerId].x / Screen.width;
-			float relativLastPosY = lastMousePos[touch.fingerId].y / Screen.height;
+            float relativCurrPosX = position.x / Screen.width;
+            float relativCurrPosY = position.y / Screen.height;
+
+            float relativLastPosX = lastMousePos[fingerID].x / Screen.width;
+            float relativLastPosY = lastMousePos[fingerID].y / Screen.height;
 			
 			Vector3 relativCurrPos = new Vector3(relativCurrPosX, relativCurrPosY, Input.mousePosition.z);
 			Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
@@ -148,15 +168,15 @@ public class InputHandler : MonoBehaviour {
 			
 			// if we are fast enough for swiping
 			if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
-			{				
-				swipeController.Swipe(touch.position, lastMousePos[touch.fingerId]);
+			{
+                swipeController.Swipe(position, lastMousePos[fingerID]);
 			}
 			
 			// if we are slow enough for repositioning the blockade
 			
 			if(controls.holding == true)
 			{
-				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);				
+                selectedBlockades.TryGetValue(fingerID, out tempBlockade);				
 				
 				// Check distance from finger to pandas
 				// if distance < threshold and distance > threshold and panda is facing finger
@@ -181,22 +201,22 @@ public class InputHandler : MonoBehaviour {
 				{
 					UpdatePandasAroundBlockade(tempBlockade.pushingPandas[i] ,mouseDelta);
 				}
-				
-				tempBlockade.RepositionBlockade (touch.position);
+
+                tempBlockade.RepositionBlockade(position);
 				tempBlockade.ActivateBlockade();
 			}
 			// otherwise disable the blockade
 			else
 			{
-				selectedBlockades.TryGetValue(touch.fingerId, out tempBlockade);
+                selectedBlockades.TryGetValue(fingerID, out tempBlockade);
 				tempBlockade.DeactivateBlockade();
 				EnablePandasOnBlockadeRelease();
 			}
-			lastMousePos[touch.fingerId] = touch.position;
+            lastMousePos[fingerID] = position;
 		}
 	}
-	
-	void PerformTouchEnded(int fingerId)
+
+    void PerformCursorEnded (int fingerId)
 	{	
 		if(selectedBlockades.ContainsKey(fingerId))
 		{
@@ -297,117 +317,5 @@ public class InputHandler : MonoBehaviour {
 			tempBlockade.pushingPandas[i].PandaPushingToWalking();
 		}
 		tempBlockade.pushingPandas.Clear();
-	}
-	
-	void MouseUpdate()
-	{
-		
-		#region mouse down event
-		if(Input.GetMouseButtonDown(0))
-		{
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			if(Physics.SphereCast(ray, fingerRadius, out hitInfo))
-			{
-				Collidable collidable = hitInfo.collider.GetComponent<Collidable>();
-			
-				if(collidable != null)
-				{
-					if(controls.bouncing == true && collidable.type == CollidableTypes.Hotspot)
-					{
-						tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
-                        tempHotSpot.ActivateHotspot();	
-					}
-				}
-			}
-			lastMousePos[0] = Input.mousePosition;
-		}
-		
-		#endregion
-		
-		if(Input.GetMouseButton(0))
-		{ 
-			if(tempPanda != null)
-			{
-				tempPanda.touchPosition = Input.mousePosition;	
-			}
-			else if(tempHotSpot == null)
-			{
-				
-				float relativCurrPosX = Input.mousePosition.x / Screen.width;
-				float relativCurrPosY = Input.mousePosition.y / Screen.height;
-				
-				float relativLastPosX = lastMousePos[0].x / Screen.width;
-				float relativLastPosY = lastMousePos[0].y / Screen.height;
-				
-				Vector3 relativCurrPos = new Vector3(relativCurrPosX, relativCurrPosY, Input.mousePosition.z);
-				Vector3 relativLastPos = new Vector3(relativLastPosX, relativLastPosY, Input.mousePosition.z);
-				
-				Vector3 mouseDelta = (relativCurrPos - relativLastPos);
-				
-				// if we are fast enough for swiping
-				if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
-				{
-					swipeController.Swipe(Input.mousePosition, lastMousePos[0]);
-				}
-		
-				// if we are slow enough for repositioning the blockade
-				if(controls.holding == true )
-				{
-				// Check distance from finger to pandas
-				// if distance < threshold and distance > threshold and panda is facing finger
-					// add panda to the list of pandas associated with the finger
-					// set panda state to holding
-					tempBlockade = blockades[0];
-					
-					foreach(PandaAI panda in InstanceFinder.GameManager.ActiveLevel.pandas)
-					{
-						if(tempBlockade.pushingPandas.Contains(panda)) continue;
-						
-						if(panda.IsFacingFinger(tempBlockade.transform.position))
-						{
-							float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
-							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f )
-							{
-								panda.PandaPushingFinger();
-								tempBlockade.pushingPandas.Add(panda);
-								break;
-							}
-						}	
-					}
-					
-					if(tempBlockade.pushingPandas.Count > 0)
-					{
-						UpdatePandasAroundBlockade(tempBlockade.pushingPandas[0] ,mouseDelta);
-					}
-					
-					tempBlockade.RepositionBlockade (Input.mousePosition);
-					tempBlockade.ActivateBlockade();
-				}
-				// otherwise disable the blockade
-				else
-				{
-					if(tempBlockade != null)
-						tempBlockade.DeactivateBlockade();
-					EnablePandasOnBlockadeRelease();	
-				}
-				
-			}
-			
-			lastMousePos[0] = Input.mousePosition;
-		}
-		
-		if(Input.GetMouseButtonUp(0))
-		{
-			if(tempHotSpot != null)
-			{
-                tempHotSpot.DeactivateHotspot();
-				tempHotSpot = null;
-			}
-			else
-			{
-				blockades[0].DeactivateBlockade();
-				EnablePandasOnBlockadeRelease();	
-			}
-		}	
 	}
 }
