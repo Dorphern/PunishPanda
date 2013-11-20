@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Rotorz.ReorderableList;
 using UnityEditor;
@@ -59,25 +60,59 @@ public class LevelDataDrawer : IReorderableListAdaptor
         levelDataList.Clear();
     }
 
+    private const float itemHeight = 17.0f;
+
     public void DrawItem(Rect position, int index)
     {
-		position.height = 17;
         var currentLevel = levelDataList[index];
+
+        position.height = itemHeight;
         Rect togglePos = position;
-        togglePos.height = 17;
-        float totalWidth = position.width;
-        position.width -= 60;
-        currentLevel.LevelName = EditorGUI.TextField(position, currentLevel.LevelName);
-        Rect levelTypePos = position;
-        levelTypePos.x += totalWidth - 60;
-        levelTypePos.width = 60;
-        position.y += 17;
-        currentLevel.Mode = (PunishPanda.Game.GameModes) EditorGUI.EnumPopup(levelTypePos, currentLevel.Mode);
-        currentLevel.UnlockedLevel = EditorGUI.Toggle(position, "Unlocked", currentLevel.UnlockedLevel);
+        togglePos.height = itemHeight;
+
+        currentLevel.Toggled = EditorGUI.Foldout(position, currentLevel.Toggled, currentLevel.LevelName);
+        if (currentLevel.Toggled)
+        {
+            position.y += itemHeight;
+            currentLevel.LevelName = EditorGUI.TextField(position, "File name", currentLevel.LevelName);
+
+            position.y += itemHeight;
+            currentLevel.LevelScore.MaxTimeScore = EditorGUI.FloatField(position, "Max Time Score", currentLevel.LevelScore.MaxTimeScore);
+            position.y += itemHeight;
+            currentLevel.LevelScore.LevelLength = EditorGUI.FloatField(position, "Level Length (Seconds)", currentLevel.LevelScore.LevelLength);
+
+            position.y += itemHeight;
+            currentLevel.LevelScore.OneStar = EditorGUI.IntField(position, "One Star", currentLevel.LevelScore.OneStar);
+            position.y += itemHeight;
+            currentLevel.LevelScore.TwoStars = EditorGUI.IntField(position, "Two Stars", currentLevel.LevelScore.TwoStars);
+            position.y += itemHeight;
+            currentLevel.LevelScore.ThreeStars = EditorGUI.IntField(position, "Three Stars", currentLevel.LevelScore.ThreeStars);
+            
+            position.y += itemHeight;
+            GUI.enabled = false;
+            EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
+            position.y += itemHeight;
+            EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
+            GUI.enabled = true;
+
+            position.y += itemHeight;
+            currentLevel.FunFactsText = EditorGUI.TextField(position, "Fact text", currentLevel.FunFactsText);
+            position.y += itemHeight;
+
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Fun Fact Texture"));
+            position.x += 150;
+            currentLevel.FunFactsTexture = EditorGUI.ObjectField(position, currentLevel.FunFactsTexture, typeof(Texture2D), false) as Texture2D;
+        }
     }
 
     public float GetItemHeight(int index)
     {
-        return 17 * 2;
+        var currentLevel = levelDataList[index];
+        if (currentLevel.Toggled)
+            return itemHeight * 11 + 100;
+        else
+            return itemHeight;
     }
 }
