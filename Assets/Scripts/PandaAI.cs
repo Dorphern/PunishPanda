@@ -60,10 +60,8 @@ public class PandaAI : MonoBehaviour {
 	#region Public Methods
 	public void DoubleTapped()
 	{
-        Debug.Log("Double tapped!");
 		if( pandaStateManager.GetState() == PandaState.Standing        || 
 		    pandaStateManager.GetState() == PandaState.Walking)
-			
 		{	
 			pandaStateManager.ChangeState(PandaState.Stunned);
 			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));

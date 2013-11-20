@@ -120,10 +120,6 @@ public class InputHandler : MonoBehaviour {
 		
 			if(collidable != null)
 			{
-                if (tapCount > 0)
-                {
-                    Debug.Log("tapped");
-                }
 				if(controls.tapping == true && collidable.type == CollidableTypes.Panda && tapCount == 2)
 				{
 					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
