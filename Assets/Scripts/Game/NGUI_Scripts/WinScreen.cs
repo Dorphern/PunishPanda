@@ -36,7 +36,8 @@ public class WinScreen : MonoBehaviour {
 	
 	private void OnLevelComplete()
 	{
-		
+	    LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
+        funFactsTexture.mainTexture = levelData.FunFactsTexture;
 		/*// we also need to deactivate controls
 		//this is where calcualtions for score, stars and adding to lifetime score happens
 		

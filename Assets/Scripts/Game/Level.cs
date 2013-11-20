@@ -6,10 +6,6 @@ using PunishPanda.Game;
 
 public class Level : MonoBehaviour
 {
-    [SerializeField] private LevelScore levelScore = new LevelScore();
-	public Texture2D FunFactsTexture;
-	public string    FunFactsText;
-
     private float elapsedTime;
     private bool paused;
     private int totalPandaCount;
@@ -67,12 +63,12 @@ public class Level : MonoBehaviour
 	
 	public int GetScore()
 	{
-		return ScoreCalculator.Score(levelScore, perfectPandaKills, normalPandaKills, elapsedTime);	
+		return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel.LevelScore, perfectPandaKills, normalPandaKills, elapsedTime);	
 	}
 	
 	public int Stars()
 	{
-		return ScoreCalculator.Stars(levelScore, GetScore());	
+        return ScoreCalculator.Stars(InstanceFinder.LevelManager.CurrentLevel.LevelScore, GetScore());	
 	}
 	
     # endregion
