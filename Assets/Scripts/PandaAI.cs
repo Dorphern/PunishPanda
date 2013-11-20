@@ -28,6 +28,7 @@ public class PandaAI : MonoBehaviour {
 	public float pushingMagnitude;
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
+    public bool stuckOnSpikes;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -36,6 +37,7 @@ public class PandaAI : MonoBehaviour {
     private float fallDist;
     private Vector3 oldPosition;
     private Vector3 fallDir;
+    
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -199,7 +201,7 @@ public class PandaAI : MonoBehaviour {
         pandaStateManager.ChangeState(PandaState.Died);
 
         // change state from playAnimation PlayDeathAnimation
-        gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap.GetTrapType(), true);
+        gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap.GetTrapType(), true, lastPandaState);
         
         pandaController.PandaKilled(true, isPerfect);
         if (trap.GetTrapType() == TrapType.Electicity)
@@ -310,6 +312,11 @@ public class PandaAI : MonoBehaviour {
                 if (ApplyFalling != null)
                     ApplyFalling();
                 break;
+            case PandaState.Died:
+                if (ApplyFalling != null && stuckOnSpikes == false)
+                    ApplyFalling();
+                break;
+
 
 				
 		}
@@ -317,8 +324,6 @@ public class PandaAI : MonoBehaviour {
         if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
         {
             if (pandaStateManager.GetState() != PandaState.PushingFinger)
-
-                Debug.Log("Check");
            		animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
             
             lastPandaState = pandaStateManager.GetState();
