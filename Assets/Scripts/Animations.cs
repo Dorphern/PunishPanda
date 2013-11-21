@@ -43,13 +43,13 @@ public class Animations : MonoBehaviour {
         if (statePanda == PandaState.PushingFinger)
         {
             //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
-            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
+            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
         }
         else if (pandaStateLast == PandaState.PushingFinger)
         {
-            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
+            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
 
