@@ -20,7 +20,7 @@ public class FingerMenu : MonoBehaviour {
 	void Start()
 	{
 		mm = GetComponent<MenuManager>();
-		float size = InstanceFinder.StatsManager.fingerSize;
+		float size = InstanceFinder.StatsManager.FingerSize;
 		
 		if(size == smallFingerSize)
 			smallToggle.value = true;
