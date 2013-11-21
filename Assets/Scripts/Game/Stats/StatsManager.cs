@@ -23,16 +23,16 @@ public class StatsManager : MonoBehaviour
 	private float defaultFingerSize = 2f;
 
 
-    public float literBlood;
-    public int pandasKilled;
-    public int pandaSlaps;
-    public int totalScore;
-    public int gamesPlayed;
+    private float literBlood;
+    private int pandasKilled;
+    private int pandaSlaps;
+    private int totalScore;
+    private int gamesPlayed;
 
-    public float fingerSize;
+    private float fingerSize;
 
-    public bool musicEnabled;
-    public bool soundEffectsEnabled;
+    private bool musicEnabled;
+    private bool soundEffectsEnabled;
 	
 	public string language;
 	
@@ -115,19 +115,43 @@ public class StatsManager : MonoBehaviour
     public int PandasKilled
     {
         get { return pandasKilled; }
-        set { pandasKilled = value; }
+        set { if (pandasKilled<value)
+			{
+			  int val = value-pandasKilled;
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("First kill", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Getting the hand of this", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Fun times", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Serial killah", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Massmurdah", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Exterminator", val);
+			} }
     }
 
     public int PandaSlaps
     {
         get { return pandaSlaps; }
-        set { pandaSlaps = value; }
+        set { if (pandaSlaps<value)
+			{
+			  int val = value-pandaSlaps;
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper", val);
+			  InstanceFinder.AchievementManager.AddProgressToAchievement("Red finger", val);
+			}
+			pandaSlaps = value; 
+			}
     }
 
     public float LiterBlood
     {
         get { return literBlood; }
-        set { literBlood = value; }
+        set { if (literBlood<value)
+			{
+			  float val = value-literBlood;
+				  InstanceFinder.AchievementManager.AddProgressToAchievement("Bloody Mary", val);
+				  InstanceFinder.AchievementManager.AddProgressToAchievement("Blood sucker", val);
+				  InstanceFinder.AchievementManager.AddProgressToAchievement("Dracula", val);
+			}
+			literBlood = value; }
     }
 
     public bool MusicEnabled
