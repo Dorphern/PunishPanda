@@ -10,8 +10,6 @@ GameObject:
   - 4: {fileID: 400000}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400004}
-  - 114: {fileID: 11400000}
   m_Layer: 2
   m_Name: PressurePad
   m_TagString: Untagged
@@ -29,9 +27,10 @@ GameObject:
   - 4: {fileID: 400002}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  - 95: {fileID: 9500000}
+  - 65: {fileID: 6500002}
+  - 111: {fileID: 11100000}
   m_Layer: 0
-  m_Name: button_pressurePad
+  m_Name: prop_pressurePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +43,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.181982, y: .302177399, z: -36.0778809}
-  m_LocalScale: {x: 2.59299994, y: .369084001, z: 2.92384291}
+  m_LocalPosition: {x: -6.66819763, y: -6.09427929, z: .0151568651}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 400002}
   m_Father: {fileID: 0}
@@ -56,8 +55,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: -.0670279935, y: -.126016572, z: -.497014582}
-  m_LocalScale: {x: .385653704, y: 2.70941043, z: .342015624}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -72,7 +71,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: d9108ba96bdbe224e9aace23b7ea2ea2, type: 2}
+  - {fileID: 2100000, guid: ae9c0a5b9de0c244c92d9ddd0c3211e8, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -84,7 +83,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_Mesh: {fileID: 4300000, guid: 41404436366047b4cb996ea2cfc54550, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 23d4dcf3557ef4344afdbb7a07837f15, type: 3}
 --- !u!65 &6500000
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -95,34 +94,38 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .639999986, y: 1.63999999, z: .870000005}
-  m_Center: {x: -.0500000007, y: 0, z: -.119999997}
---- !u!95 &9500000
-Animator:
+  m_Size: {x: .519999981, y: .310000002, z: 1}
+  m_Center: {x: 0, y: .289999992, z: 0}
+--- !u!65 &6500002
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: .519999981, y: .129999995, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!111 &11100000
+Animation:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 41404436366047b4cb996ea2cfc54550, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_ApplyRootMotion: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: c32be2f1c4edcc04c94617bd253db0fc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: c32be2f1c4edcc04c94617bd253db0fc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84f6e1f5621f97a448635139566e61ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onlyPlayOnce: 0
-  pandaCollideEvents:
-  - {fileID: 11400060, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  m_CullingType: 0
+  m_UserAABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -134,19 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02823eda6fb45ba48a46e56bce4c9944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traps: []
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31179a6bbd11e2c3d000dc0b8d76c639, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  generateTriangleStrips: 1
+  traps:
+  - {fileID: 0}
+  pressurePlate: {fileID: 100002}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

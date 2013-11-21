@@ -11,6 +11,7 @@ public class WinScreen : MonoBehaviour {
 	public UILabel   FunFactsLabel;
 	public UILabel   scoreLabel;
 	public UILabel   highScoreLabel;
+    public UILabel  newHighScoreLabel;
 	
 	public void OnLevelsButtonClicked()
 	{
@@ -36,8 +37,9 @@ public class WinScreen : MonoBehaviour {
 	
 	private void OnLevelComplete()
 	{
-	   
-		UnLockLevels();
+
+		UnLockLevels();    
+        
 		StartCoroutine(WaitWinScreen());
 		
 	}
@@ -45,19 +47,28 @@ public class WinScreen : MonoBehaviour {
 	private IEnumerator WaitWinScreen()
 	{
 		yield return new WaitForSeconds(2.0f);
-	    SetWinScreenData();
-		winScreen.SetActive(true);	
+        SetWinScreenData();
+		winScreen.SetActive(true);
 
+        InstanceFinder.StatsManager.Save();
 	}
-
+     
     private void SetWinScreenData()
     {
         LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
         funFactsTexture.mainTexture = levelData.FunFactsTexture;
         Level level = InstanceFinder.GameManager.ActiveLevel;
         int score = level.GetScore();
-        //int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
+        int highscore = levelData.HighScore;
+
+        if (score > highscore)
+        {
+            newHighScoreLabel.enabled = true;
+            levelData.HighScore = score;
+        }
+
         scoreLabel.text = score.ToString();
+        
         /*// we also need to deactivate controls
         //this is where calcualtions for score, stars and adding to lifetime score happens
 		
@@ -83,8 +94,8 @@ public class WinScreen : MonoBehaviour {
         }
 		*/
         // star calculation
+
         int stars = level.Stars();
-        Debug.Log(stars);
         if(stars==1)
         {
             oneStarTexture.gameObject.SetActive(true);
@@ -100,6 +111,7 @@ public class WinScreen : MonoBehaviour {
             twoStarTexture.gameObject.SetActive(true);
             threeStarTexture.gameObject.SetActive(true);
         }
+
     }
 
     private static void UnLockLevels()
@@ -107,10 +119,12 @@ public class WinScreen : MonoBehaviour {
         var levelManager = InstanceFinder.LevelManager;
         levelManager.CurrentLevel.UnlockedFunFact = true;
         var levels = levelManager.CurrentWorld.Levels;
+
         if (levels.Count - 1 > levelManager.CurrentLevelIndex)
         {
             levels[levelManager.CurrentLevelIndex + 1].UnlockedLevel = true;
         }
-        InstanceFinder.StatsManager.Save();
+        
+
     }
 }

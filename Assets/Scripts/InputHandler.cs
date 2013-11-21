@@ -195,6 +195,7 @@ public class InputHandler : MonoBehaviour {
 				
 				for(int i = 0; i < tempBlockade.pushingPandas.Count; i++)
 				{
+					debugLine +=  tempBlockade.pushingPandas.Count;
 					UpdatePandasAroundBlockade(tempBlockade.pushingPandas[i] ,mouseDelta);
 				}
 
