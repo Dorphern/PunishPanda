@@ -5,11 +5,9 @@ public class Panda : MonoBehaviour {
 
     public void PandaKilled (bool fromTrap, bool perfect)
     {
-       
-        if (InstanceFinder.ComboSystem != null)
-        {
-            InstanceFinder.ComboSystem.OnPandaDeath(perfect);
-        }
+
+        InstanceFinder.ComboSystem.OnPandaDeath(perfect);
+   
     }
 
 	void Start () 

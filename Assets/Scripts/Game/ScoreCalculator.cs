@@ -6,7 +6,7 @@ namespace PunishPanda.Game
 {
     public static class ScoreCalculator
     {
-        public static int Score(LevelScore level, LevelDeaths levelDeaths, float elapsedTime)
+        public static int Score(LevelData level, LevelDeaths levelDeaths, float elapsedTime)
         {
             return TimeScore(level, elapsedTime) + PandaKillScore(levelDeaths);
         }
@@ -29,22 +29,22 @@ namespace PunishPanda.Game
             return score;
         }
 
-        public static int TimeScore(LevelScore score, float elapsedTime)
+        public static int TimeScore(LevelData score, float elapsedTime)
         {
             return Mathf.FloorToInt(Mathf.Lerp(score.MaxTimeScore, 0, elapsedTime / score.LevelLength));
         }
 
-        public static int Stars(LevelScore levelScore, int score)
+        public static int Stars(LevelData levelScore, int score)
         {
-            if (score > levelScore.ThreeStars)
+            if (score >= levelScore.ThreeStars)
             {
                 return 3;
             }
-            if (score > levelScore.TwoStars)
+            if (score >= levelScore.TwoStars)
             {
                 return 2;
             }
-            if (score > levelScore.OneStar)
+            if (score >= levelScore.OneStar)
             {
                 return 1;
             }

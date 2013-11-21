@@ -12,8 +12,8 @@ public class Settings : MonoBehaviour {
 	{
 		menuMan = GetComponent<MenuManager>();	
 		
-		bool music = InstanceFinder.StatsManager.musicEnabled;
-		bool sound = InstanceFinder.StatsManager.soundEffectsEnabled;
+		bool music = InstanceFinder.StatsManager.MusicEnabled;
+		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
 		string lang = InstanceFinder.StatsManager.language;
 		
 		if(music)
@@ -54,7 +54,7 @@ public class Settings : MonoBehaviour {
 	
 	public void OnCreditsClicked()
 	{
-		Debug.Log("Credits!");
+		//Debug.Log("Credits!");
 	}
 	
 	public void OnReturnClicked()
@@ -76,7 +76,7 @@ public class Settings : MonoBehaviour {
 						InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[0].name;
 						languageLabel.text = InstanceFinder.Localization.languages[0].name;
 						InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[0].name;
-						InstanceFinder.StatsManager.Save();
+						//InstanceFinder.StatsManager.Save();
 						break;
 					}
 					else
@@ -84,7 +84,7 @@ public class Settings : MonoBehaviour {
 						InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
 						languageLabel.text = InstanceFinder.Localization.languages[i].name;
 						InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[i].name;
-						InstanceFinder.StatsManager.Save();
+						//InstanceFinder.StatsManager.Save();
 						break;
 					}
 				}
@@ -100,13 +100,13 @@ public class Settings : MonoBehaviour {
 		{
 			if(_musicSlider.value==0)
 			{
-				InstanceFinder.StatsManager.musicEnabled = false;
-				InstanceFinder.StatsManager.Save();
+				InstanceFinder.StatsManager.MusicEnabled = false;
+				//InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
-				InstanceFinder.StatsManager.musicEnabled = true;
-				InstanceFinder.StatsManager.Save();
+				InstanceFinder.StatsManager.MusicEnabled = true;
+				//InstanceFinder.StatsManager.Save();
 			}
 		}
 	}
@@ -117,15 +117,15 @@ public class Settings : MonoBehaviour {
 		{
 			if(_soundEFXSlider.value==0)
 			{
-				Debug.Log ("Sound OFF");
-				InstanceFinder.StatsManager.soundEffectsEnabled = false;
-				InstanceFinder.StatsManager.Save();
+				//Debug.Log ("Sound OFF");
+				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
+				//InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
-				Debug.Log ("Sound ON");
-				InstanceFinder.StatsManager.soundEffectsEnabled = true;
-				InstanceFinder.StatsManager.Save();
+				//Debug.Log ("Sound ON");
+				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
+				//InstanceFinder.StatsManager.Save();
 			}
 		}
 	}
