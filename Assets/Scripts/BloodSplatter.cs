@@ -145,13 +145,13 @@ public class BloodSplatter : MonoBehaviour {
 		m_Decals.UpdateDecalsMeshes (m_DecalsMesh);		
 	}
 	
-	public void ProjectHit(Vector3 rayStart ,Vector2 slapDirection, float slapForce)
+	public void ProjectHit(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
 		ProjectBlood(rayStart, slapDirection, slapForce);
 		NextHitUV();
 	}
 	
-	public void ProjectSlap(Vector3 rayStart ,Vector2 slapDirection, float slapForce)
+	public void ProjectSlap(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
 		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce));
 		//Util.Draw.Arrow(rayStart, rayStart + rotatedDirection * 1f, Color.blue, 100f);

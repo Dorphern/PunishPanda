@@ -36,7 +36,7 @@ public class PandaDismemberment : MonoBehaviour
 			angle += (angle < 0) ? -15f : 15f;
 			splatDirection =  new Vector2(Mathf.Sin(Mathf.Deg2Rad * angle), Mathf.Cos(Mathf.Deg2Rad * angle));
 		
-			BloodSplatter.Instance.ProjectBlood(transform.position, splatDirection.normalized);
+			BloodSplatter.Instance.ProjectHit(transform.position, splatDirection.normalized);
 		}
 	}
 }
