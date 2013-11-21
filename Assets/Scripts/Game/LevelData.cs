@@ -7,7 +7,6 @@ public class LevelData
 {
     [SerializeField] public string LevelName = "";
 
-
     [SerializeField] 
     public int HighScore;
     [SerializeField]
@@ -17,12 +16,23 @@ public class LevelData
     public bool UnlockedFunFact; //1 == unlocked, 0 = locked
 
     [SerializeField]
-    public LevelScore LevelScore = new LevelScore();
-    [SerializeField]
     public Texture2D FunFactsTexture;
     [SerializeField]
     public string FunFactsText;
 
     public bool Toggled;
+
+    [SerializeField]
+    public float MaxTimeScore;
+    [SerializeField]
+    public float LevelLength = 20;
+
+    //How many points the player need to get stars. It could be 500, 600, 850, so if the player gets 700 in score, she will get two stars
+    [SerializeField]
+    public int OneStar;
+    [SerializeField]
+    public int TwoStars;
+    [SerializeField]
+    public int ThreeStars;
 }
 
