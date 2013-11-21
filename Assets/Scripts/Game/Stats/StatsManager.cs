@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 
@@ -17,6 +17,7 @@ public class StatsManager : MonoBehaviour
 
     private const string levelScore = "Score";
     private const string levelUnlocked = "Unlocked";
+    private const string funfactUnlocked = "UnlockedFunfact";
 	private const string languageKey = "Language";
 	
 	private float defaultFingerSize = 2f;
@@ -37,7 +38,8 @@ public class StatsManager : MonoBehaviour
 	
 	void Start()
 	{
-		Load();	
+
+		Load();
 	}
 
     void OnEnable()
@@ -69,7 +71,8 @@ public class StatsManager : MonoBehaviour
         for (int i = 0; i < levels.Count; i++)
         {
             levels[i].HighScore = PlayerPrefs.GetInt(levels[i].LevelName + levelScore);
-            levels[i].Unlocked = PlayerPrefs.GetInt(levels[i].LevelName + levelUnlocked) == 1 ? true : false;
+            levels[i].UnlockedLevel = PlayerPrefs.GetInt(levels[i].LevelName + levelUnlocked) == 1 ? true : false;
+            levels[i].UnlockedFunFact = PlayerPrefs.GetInt(levels[i].LevelName + funfactUnlocked) == 1 ? true : false;
         }
     }
 
@@ -91,7 +94,8 @@ public class StatsManager : MonoBehaviour
         {
             scoreCombined += levels[i].HighScore;
             PlayerPrefs.SetInt(levels[i].LevelName + levelScore, levels[i].HighScore);
-            PlayerPrefs.SetInt(levels[i].LevelName + levelUnlocked, levels[i].Unlocked == true ? 1 : 0);
+            PlayerPrefs.SetInt(levels[i].LevelName + levelUnlocked, levels[i].UnlockedLevel == true ? 1 : 0);
+            PlayerPrefs.SetInt(levels[i].LevelName + funfactUnlocked, levels[i].UnlockedFunFact == true ? 1 : 0);
         }
         PlayerPrefs.SetInt(totalScoreKey, TotalScore);
         PlayerPrefs.Save();
