@@ -22,4 +22,14 @@ public class UILoseLevel : MonoBehaviour
             }
         };
     }
+
+    public void RestartLevel()
+    {
+        InstanceFinder.LevelManager.Reload();
+    }
+
+    public void SelectLevel()
+    {
+        InstanceFinder.LevelManager.LoadLevelsMenu();
+    }
 }
