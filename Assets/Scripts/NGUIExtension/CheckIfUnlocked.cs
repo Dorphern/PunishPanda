@@ -13,6 +13,8 @@ public class CheckIfUnlocked : MonoBehaviour
         Transform superParent = transform.parent.parent;
         Transform parent = transform.parent;
         int childCount = superParent.childCount;
+
+        //Find index of this in scroll view
         for (int i = 0; i < childCount; i++)
         {
             if (superParent.GetChild(i) == parent)
@@ -23,9 +25,14 @@ public class CheckIfUnlocked : MonoBehaviour
         }
 
         var levels = InstanceFinder.LevelManager.CurrentWorld.Levels;
-        if (levels.Count > index && !levels[index].UnlockedFunFact)
+        if (levels.Count > index)
         {
-            GetComponent<UITexture>().mainTexture = LockScreen;
+            if (!levels[index].UnlockedFunFact)
+                GetComponent<UITexture>().mainTexture = LockScreen;
+            else
+            {
+                GetComponent<UITexture>().mainTexture = InstanceFinder.LevelManager.GetWorld(0).Levels[index].FunFactsTexture;
+            }
         }
     }
 }

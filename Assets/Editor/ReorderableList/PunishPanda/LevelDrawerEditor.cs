@@ -25,7 +25,13 @@ public class LevelDrawerEditor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        
+        if (Application.isPlaying)
+        {
+            if (GUILayout.Button("Save Changes To SaveGame"))
+            {
+                InstanceFinder.StatsManager.Save();
+            }
+        }
         //ReorderableListGUI.Title("Name");
         LevelDataDrawer drawer = new LevelDataDrawer();
         drawer.levelDataList = GetWorld.Levels;
