@@ -78,7 +78,6 @@ public class CollisionController : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider c) 
 	{
-        
 		
 		//Default delegate
 		if(DefaultOnTriggerEnter!=null)

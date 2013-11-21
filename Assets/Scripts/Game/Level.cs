@@ -1,4 +1,5 @@
-﻿using PunishPanda;
+﻿using System.Collections;
+using PunishPanda;
 using UnityEngine;
 using System.Collections.Generic;
 using PunishPanda.Game;
@@ -8,6 +9,8 @@ public class Level : MonoBehaviour
 {
     private float elapsedTime;
     private bool paused;
+    [SerializeField] private float LoseFadeTime = 4.0f;
+
     /*private int totalPandaCount;
     private int alivePandas;
     private int normalPandaKills;
@@ -19,11 +22,34 @@ public class Level : MonoBehaviour
 	public delegate void levelCompleteDelegate();
 	public event levelCompleteDelegate onLevelComplete;
 
+    public delegate void LevelLostDelegate();
+    public event LevelLostDelegate onLevelLost;
+
     # region Public Methods
 
     public void Pause()
     {
         paused = true;
+    }
+	
+	public void AddPandaAIRef(PandaAI panda)
+	{
+		pandas.Add(panda);
+	}
+
+    public void PandaEscaped()
+    {
+        if (onLevelLost != null)
+        {
+            StartCoroutine(WaitForLoseFade());
+        }
+    }
+
+    private IEnumerator WaitForLoseFade()
+    {
+        yield return new WaitForSeconds(LoseFadeTime);
+        onLevelLost();
+        Time.timeScale = 0;
     }
 
     public void Continue()
@@ -54,6 +80,7 @@ public class Level : MonoBehaviour
     # region Private Methods
     private void OnEnable()
     {
+        Time.timeScale = 1.0f;
         //This code only exists to enable that the game will work correctly when working in the editor and loading a random map
         if (!GetComponent<InstanceFinder>().SetupIfMissing())
         {
@@ -64,12 +91,12 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (!paused && InstanceFinder.ComboSystem.AlivePandas > 0)
+        if (!paused && InstanceFinder.ComboSystem != null && InstanceFinder.ComboSystem.AlivePandas > 0)
         {
             elapsedTime += PandaTime.deltaTime;
         }
 
-        if (InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
+        if (InstanceFinder.ComboSystem && InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
             if(onLevelComplete != null)
@@ -82,6 +109,9 @@ public class Level : MonoBehaviour
 	{
 		InstanceFinder.StatsManager.Save();	
 	}
+
+    void OnDestroy()
+    { Time.timeScale = 1.0f; }
 	
     # endregion
 }
