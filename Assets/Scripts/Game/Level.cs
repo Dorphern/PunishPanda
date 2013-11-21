@@ -9,7 +9,6 @@ public class Level : MonoBehaviour
 {
     private float elapsedTime;
     private bool paused;
-    [SerializeField] private float LoseFadeTime = 4.0f;
 
     /*private int totalPandaCount;
     private int alivePandas;
@@ -41,16 +40,11 @@ public class Level : MonoBehaviour
     {
         if (onLevelLost != null)
         {
-            StartCoroutine(WaitForLoseFade());
+            onLevelLost();
         }
     }
 
-    private IEnumerator WaitForLoseFade()
-    {
-        yield return new WaitForSeconds(LoseFadeTime);
-        onLevelLost();
-        Time.timeScale = 0;
-    }
+
 
     public void Continue()
     { 

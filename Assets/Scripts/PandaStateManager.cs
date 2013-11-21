@@ -27,7 +27,8 @@ public enum PandaState
 public enum PandaDirection
 {
     Left,
-    Right
+    Right,
+	Forward
 }
 
 public class PandaStateManager : MonoBehaviour {
@@ -97,17 +98,6 @@ public class PandaStateManager : MonoBehaviour {
     public PandaDirection GetDirection ()
     {
         return currentDirection;
-    }
-
-    public int GetSlapCount ()
-    {
-        return slapCount;
-    }
-
-
-    public void IncrementSlapCount ()
-    {
-        slapCount++;
     }
 
     # endregion
