@@ -16,6 +16,7 @@ public class PandaAI : MonoBehaviour {
     public event System.Action ApplyGravity;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
+	public float boostDuration = 1f;
 
     [SerializeField] protected GameObject dismemberedPanda;
     
@@ -35,6 +36,7 @@ public class PandaAI : MonoBehaviour {
     private float fallDist;
     private Vector3 oldPosition;
     private Vector3 fallDir;
+	private Coroutine boostco;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -129,9 +131,18 @@ public class PandaAI : MonoBehaviour {
             // Panda is slapped in the back
             if(boostEnabled)
 			{
-				// using placeholder time calc until animation based handling
 				//boostStartTime = Time.time;
-				
+				if(boostco!=null)
+				{
+					Debug.Log("restarting");
+					StopCoroutine("BoostingToWalking");
+					StartCoroutine("BoostingToWalking", boostDuration);
+				}
+				else
+				{
+					Debug.Log("oosting");
+					boostco = StartCoroutine("BoostingToWalking", boostDuration);
+				}
 				pandaStateManager.ChangeState(PandaState.Boosting);
 			}
         }
@@ -440,9 +451,11 @@ public class PandaAI : MonoBehaviour {
         }
     }
 	
-	IEnumerator StunToWalking(float timeToWait)
+	IEnumerator BoostingToWalking(float timeToWait)
 	{
+		Debug.Log("starting");
 		yield return new WaitForSeconds(timeToWait);
+		Debug.Log("ending");
 		pandaStateManager.ChangeState(PandaState.Walking);
 	}
 	# endregion		
