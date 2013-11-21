@@ -1647,8 +1647,11 @@ MonoBehaviour:
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
+  stunLength: 1
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  turnSpeed: .416999996
   jumpEvents:
   - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   debug: a
@@ -1684,13 +1687,6 @@ MonoBehaviour:
     jumpHeight: 8
     walkSpeed: 1
     notMovingThreshold: .00999999978
-  lifting:
-    minMoveDistance: .100000001
-    movementSpeed: 20
-    releaseMagnitudeThreshold: 1
-  falling:
-    sideForceAmplitude: 5
-    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
@@ -3307,23 +3303,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalScale.x
-      value: .00282087456
+      value: .00202634255
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalScale.y
-      value: .00282087456
+      value: .00202634255
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalScale.z
-      value: .00282087456
+      value: .00202634255
       objectReference: {fileID: 0}
     - target: {fileID: 400090, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: .00048828125
+      value: -.5
       objectReference: {fileID: 0}
     - target: {fileID: 400090, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.00024414
       objectReference: {fileID: 0}
     - target: {fileID: 400074, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
@@ -3343,11 +3339,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400218, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -34.4804688
+      value: -56.9995117
       objectReference: {fileID: 0}
     - target: {fileID: 400218, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 361.5
+      value: 503.500244
       objectReference: {fileID: 0}
     - target: {fileID: 400218, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.z
@@ -3363,35 +3359,35 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -567.699707
+      value: -953.499512
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 354.999878
+      value: 494.000122
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 566.700928
+      value: 952.500977
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 354.999878
+      value: 494.000122
       objectReference: {fileID: 0}
     - target: {fileID: 400018, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -.000854492188
+      value: -.000732421875
       objectReference: {fileID: 0}
     - target: {fileID: 400032, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: .00048828125
+      value: -.5
       objectReference: {fileID: 0}
     - target: {fileID: 400090, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -.00103759766
+      value: -.000915527344
       objectReference: {fileID: 0}
     - target: {fileID: 400032, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.00024414
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
@@ -4312,7 +4308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initActivated: 1
-  isPerfectTrap: 0
+  isPerfectTrap: 1
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
@@ -4914,8 +4910,11 @@ MonoBehaviour:
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
+  stunLength: 1
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  turnSpeed: .416999996
   jumpEvents:
   - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   debug: a
@@ -4951,13 +4950,6 @@ MonoBehaviour:
     jumpHeight: 8
     walkSpeed: 1
     notMovingThreshold: .00999999978
-  lifting:
-    minMoveDistance: .100000001
-    movementSpeed: 20
-    releaseMagnitudeThreshold: 1
-  falling:
-    sideForceAmplitude: 5
-    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
@@ -5377,6 +5369,10 @@ Prefab:
     - target: {fileID: 400004, guid: 997bf2a00e14b9e4b96dfcbaa19a7ea1, type: 2}
       propertyPath: m_LocalScale.x
       value: .349999905
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 997bf2a00e14b9e4b96dfcbaa19a7ea1, type: 2}
+      propertyPath: isPerfectTrap
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 997bf2a00e14b9e4b96dfcbaa19a7ea1, type: 2}
@@ -7808,7 +7804,7 @@ Transform:
   m_PrefabInternal: {fileID: 401763561}
   m_GameObject: {fileID: 1074306991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .00048828125, y: 1, z: -.00103759766}
+  m_LocalPosition: {x: -.5, y: 1.00024414, z: -.000915527344}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2023303202}
@@ -9652,14 +9648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0370a44cd05af324485c858ee21f0e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelScore:
-    MaxTimeScore: 0
-    LevelLength: 0
-    One: 0
-    Two: 0
-    Three: 0
-  FunFactsTexture: {fileID: 0}
-  FunFactsText: 
+  LoseFadeTime: 4
 --- !u!4 &1351854627
 Transform:
   m_ObjectHideFlags: 0
@@ -9965,7 +9954,7 @@ Transform:
   m_PrefabInternal: {fileID: 401763561}
   m_GameObject: {fileID: 1407439690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .00048828125, y: 1, z: -6.10351562e-05}
+  m_LocalPosition: {x: -.5, y: 1.00024414, z: -6.10351562e-05}
   m_LocalScale: {x: 176, y: 176, z: 176}
   m_Children:
   - {fileID: 1982409868}
@@ -11225,7 +11214,7 @@ Transform:
   m_PrefabInternal: {fileID: 401763561}
   m_GameObject: {fileID: 1561636238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -34.4804688, y: 361.5, z: -6.10351562e-05}
+  m_LocalPosition: {x: -56.9995117, y: 503.500244, z: -6.10351562e-05}
   m_LocalScale: {x: .999982476, y: .999982476, z: .999982476}
   m_Children:
   - {fileID: 1444640731}
@@ -12669,7 +12658,7 @@ Transform:
   m_GameObject: {fileID: 1680281380}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.214016, y: 0, z: 0}
-  m_LocalScale: {x: .00282087456, y: .00282087456, z: .00282087456}
+  m_LocalScale: {x: .00202634255, y: .00202634255, z: .00202634255}
   m_Children:
   - {fileID: 2017465328}
   m_Father: {fileID: 974914994}
@@ -14274,7 +14263,7 @@ Transform:
   m_PrefabInternal: {fileID: 401763561}
   m_GameObject: {fileID: 1866540614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -567.699707, y: 354.999878, z: -6.10351562e-05}
+  m_LocalPosition: {x: -953.499512, y: 494.000122, z: -6.10351562e-05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1255852355}
@@ -16240,8 +16229,8 @@ MonoBehaviour:
   controls:
     slapping: 1
     bouncing: 1
-    lifting: 1
     holding: 1
+    tapping: 1
 --- !u!4 &2070611452
 Transform:
   m_ObjectHideFlags: 0
@@ -16316,7 +16305,7 @@ Transform:
   m_PrefabInternal: {fileID: 401763561}
   m_GameObject: {fileID: 2077400692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 566.700928, y: 354.999878, z: -.000854492188}
+  m_LocalPosition: {x: 952.500977, y: 494.000122, z: -.000732421875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 744614012}
