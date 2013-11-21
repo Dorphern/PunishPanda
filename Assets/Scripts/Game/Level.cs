@@ -86,12 +86,12 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (!paused && InstanceFinder.ComboSystem.AlivePandas > 0)
+        if (!paused && InstanceFinder.ComboSystem != null && InstanceFinder.ComboSystem.AlivePandas > 0)
         {
             elapsedTime += PandaTime.deltaTime;
         }
 
-        if (InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
+        if (InstanceFinder.ComboSystem && InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
             if(onLevelComplete != null)
