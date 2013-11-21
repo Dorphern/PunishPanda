@@ -14,7 +14,7 @@ public class PandaAIMainMenu : MonoBehaviour {
     public void PandaSlapped(Vector2 slapDirection, float force)
 	{
 		// we can slap the panda only in tanding state
-		if(pandaStateManager.GetState() != PandaState.Standing)
+		if(pandaStateManager.GetState() != PandaState.Idle)
 			return;
 		
 		// project blood and change state to standing
@@ -56,7 +56,7 @@ public class PandaAIMainMenu : MonoBehaviour {
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		
-		pandaStateManager.ChangeState(PandaState.Standing);
+		pandaStateManager.ChangeState(PandaState.Idle);
 		
 		// play standing (idle) animation
 	}
