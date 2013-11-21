@@ -4,8 +4,21 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class ThrowingStar : MonoBehaviour 
 {
+    [SerializeField] protected Texture cleanTexture;
+    [SerializeField] protected Texture dirtyTexture;
+
 	[System.NonSerialized] public StarSpawner starSpawner;
-	private bool isActive = true;
+    private bool isActive = true;
+
+    public void SetDirty ()
+    {
+        if (dirtyTexture != null) renderer.material.mainTexture = dirtyTexture;
+    }
+
+    public void SetClean ()
+    {
+        if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
+    }
 	
 	public void ShootStar(Vector3 direction, float force, float torque) 
 	{
@@ -30,7 +43,10 @@ public class ThrowingStar : MonoBehaviour
 		
         if (collidable.type == CollidableTypes.Panda && isActive == true)
         {
-            starSpawner.TryPandaKill(collider.GetComponent<PandaAI>());
+            if (starSpawner.TryPandaKill(collider.GetComponent<PandaAI>()))
+            {
+                SetDirty();
+            }
         }
 		else if(collidable.type == CollidableTypes.Wall)
 		{
