@@ -11,8 +11,21 @@ public class SideWallButton : TrapActivator {
 
 	public ButtonMode buttonFunction = ButtonMode.Activate;
 	public float activationTimeLength = 3f;
-	private Collidable colliderType;
-	
+    private Collidable colliderType;
+    private string animationName = "sideWallButton";
+
+    protected override void ActivateTraps ()
+    {
+        base.ActivateTraps();
+        StartCoroutine(PlayActivateAnimation());
+    }
+
+    protected override void DeactivateTraps ()
+    {
+        base.DeactivateTraps();
+        PlayDeactiveAnimation();
+    }
+
 	void OnTriggerEnter(Collider collider)
 	{
 		colliderType = collider.GetComponent<Collidable>();
@@ -44,5 +57,19 @@ public class SideWallButton : TrapActivator {
 		{
 			ActivateTraps();	
 		}
-	}
+    }
+
+    IEnumerator PlayActivateAnimation ()
+    {
+        Debug.Log("activate anim");
+        animation.Play(animationName);
+        yield return new WaitForSeconds(0.2f);
+        animation[animationName].speed = 0;
+    }
+
+    void PlayDeactiveAnimation ()
+    {
+        Debug.Log("deactivate anim");
+        animation[animationName].speed = 1;
+    }
 }
