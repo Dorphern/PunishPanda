@@ -127,7 +127,7 @@ public class PandaAI : MonoBehaviour {
         }
     }
 
-    public void PandaSlapped(Vector2 slapDirection, float force)
+    public void PandaSlapped(Vector2 slapDirection, float slapForce)
 	{
 		// we can slap the panda only in walking and standing state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing
@@ -137,7 +137,7 @@ public class PandaAI : MonoBehaviour {
 		// play animation + splatter ( texture projection + particles)
 		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
 		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
-		PlaySlap(slapDirection);
+		PlaySlap(slapDirection, slapForce);
         pandaStateManager.IncrementSlapCount();
 
         for (int i = 0; i < slapAudioEvents.Count; i++)
@@ -422,9 +422,9 @@ public class PandaAI : MonoBehaviour {
 			
 	}
 
-	void PlaySlap( Vector2 slapDirection)
+	void PlaySlap( Vector2 slapDirection, float slapForce)
 	{
-		BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
+		BloodSplatter.Instance.ProjectSlap(transform.position, slapDirection.normalized, slapForce);
 		pandaStateManager.ChangeState(PandaState.Walking);
 		SetDefaultSpeed();
 	}
