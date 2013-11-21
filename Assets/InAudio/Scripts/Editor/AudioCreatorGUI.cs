@@ -20,7 +20,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
     public bool OnGUI(int leftWidth, int height)
     {
         BaseOnGUI();
-        var root = HDRInstanceFinder.DataManager.AudioTree;
+        var root = HDRInstanceFinder.DataManager.AudioTree; 
         int id = HDRInstanceFinder.InAudioGuiUserPrefs.SelectedAudioNodeID;
         var selectedNode = UpdateSelectedNode(root, id);
         HDRInstanceFinder.InAudioGuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
@@ -30,7 +30,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
      
         EditorGUIHelper.DrawColums(DrawLeftSide, DrawRightSide);
         
-        return isDirty;
+        return isDirty; 
     }
 
     private void DrawLeftSide(Rect area) 
