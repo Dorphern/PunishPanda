@@ -5,22 +5,38 @@ using System.Collections;
 public class UILoseLevel : MonoBehaviour
 {
     [SerializeField]
-    private GameObject ToEnable;
+    private GameObject LoseCamera;
+
+    [SerializeField]
+    private GameObject EscapeLabel;
 
     private UITweener[] twenners;
+
+    [SerializeField]
+    private float LoseFadeTime = 4.0f;
+
 
     void OnEnable()
     {
         twenners = GetComponentsInChildren<UITweener>();
         InstanceFinder.GameManager.ActiveLevel.onLevelLost += () =>
         {
-            ToEnable.SetActive(true);
+            EscapeLabel.SetActive(true);
+            
             for (int i = 0; i < twenners.Length; i++)
             {
                 twenners[i].Reset();
                 twenners[i].PlayForward();
             }
+            StartCoroutine(WaitForLoseFade());
         };
+    }
+
+    private IEnumerator WaitForLoseFade()
+    {
+        yield return new WaitForSeconds(LoseFadeTime);
+        Time.timeScale = 0;
+        LoseCamera.SetActive(true);
     }
 
     public void RestartLevel()
