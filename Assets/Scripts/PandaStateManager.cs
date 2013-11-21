@@ -27,8 +27,7 @@ public enum PandaState
 public enum PandaDirection
 {
     Left,
-    Right,
-	Forward
+    Right
 }
 
 public class PandaStateManager : MonoBehaviour {
