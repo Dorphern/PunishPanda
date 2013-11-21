@@ -30,6 +30,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 135: {fileID: 13500000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: roundSaw
   m_TagString: Untagged
@@ -82,8 +83,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_LocalRotation: {x: 1, y: -4.37113883e-08, z: -1.62920685e-07, w: 7.12148964e-15}
-  m_LocalPosition: {x: .0432076454, y: -3.77801466, z: 9.54433062e-07}
+  m_LocalRotation: {x: -.707106829, y: .707106829, z: -3.09086232e-08, w: 3.09086232e-08}
+  m_LocalPosition: {x: -5.8077755, y: -5.72664261, z: 9.8663559}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -185,9 +186,9 @@ MonoBehaviour:
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
-  turnSpeed: 0
   acceleration: 1
-  solidThreshold: .5
+  killThreshold: .300000012
+  maxTurnSpeed: 5
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,6 +201,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f6e1f5621f97a448635139566e61ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onlyPlayOnce: 0
+  pandaCollideEvents:
+  - {fileID: 11400008, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
