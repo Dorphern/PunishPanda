@@ -1960,7 +1960,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.39976311, y: -3.29024267, z: 0}
+  m_LocalPosition: {x: 2.98794365, y: -.582396746, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -3593,7 +3593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initState: 1
-  initDirection: 1
+  initDirection: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3634,19 +3634,14 @@ MonoBehaviour:
     jumpHeight: 8
     walkSpeed: 1
     notMovingThreshold: .00999999978
-  lifting:
-    minMoveDistance: .100000001
-    movementSpeed: 20
-    releaseMagnitudeThreshold: 1
-  falling:
-    sideForceAmplitude: 5
-    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
   jumpOff:
     jumpOffSpeed: 3
     jumpOffDir: 45
+  falling:
+    velocityThreshold: 1
   hangingOffSet: 30
   pushingForce: 15
   velocityDampingSpeed: .100000001
@@ -3662,12 +3657,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a9f536520d8843a57153d75f3da50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boostEnabled: 0
+  boostEnabled: 1
+  boostDuration: 1.5
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  turnSpeed: .416999996
   jumpEvents:
   - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   debug: a
@@ -3716,9 +3714,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: .500000119
-  m_Height: 1
+  m_Height: 1.78999996
   m_Direction: 1
-  m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
+  m_Center: {x: .180000007, y: -.119999997, z: 0}
 --- !u!137 &13700000
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -3816,13 +3814,13 @@ CharacterController:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.78999996
   m_Radius: .5
   m_SlopeLimit: 45
   m_StepOffset: .300000012
   m_SkinWidth: .0799999982
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: .180000007, y: -.119999997, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
