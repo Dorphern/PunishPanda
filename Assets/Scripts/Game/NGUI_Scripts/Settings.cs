@@ -125,7 +125,7 @@ public class Settings : MonoBehaviour {
 	{
 		if(_musicSlider!=null)
 		{
-			//hack for dealing with extra animation (on start)
+			//hack for dealing with extra animation (when entering settings)
 			if(MusicAnimationFlag == 1)
 			{	
 				MusicAnimationFlag++;
@@ -158,7 +158,7 @@ public class Settings : MonoBehaviour {
 	{
 		if(_soundEFXSlider!=null)
 		{
-			//hack for dealing with extra animation (on start)
+			//hack for dealing with extra animation (when entering settings)
 			if(SFXAnimationFlag == 1)
 			{	
 				SFXAnimationFlag++;
