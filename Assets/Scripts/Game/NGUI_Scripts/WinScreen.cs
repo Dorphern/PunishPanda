@@ -4,6 +4,13 @@ using System.Collections;
 public class WinScreen : MonoBehaviour {
 	
 	public GameObject winScreen;
+	public UITexture funFactsTexture;
+	public UISprite oneStarTexture;
+	public UISprite twoStarTexture;
+	public UISprite threeStarTexture;
+	public UILabel   FunFactsLabel;
+	public UILabel   scoreLabel;
+	public UILabel   highScoreLabel;
 	
 	public void OnLevelsButtonClicked()
 	{
@@ -29,9 +36,81 @@ public class WinScreen : MonoBehaviour {
 	
 	private void OnLevelComplete()
 	{
-		//this is where calcualtions for score, stars and adding to lifetime score happens
-		//  .GameManager.ActiveLevel.
-		winScreen.SetActive(true);
+	   
+		UnLockLevels();
+		StartCoroutine(WaitWinScreen());
+		
 	}
-	
+			
+	private IEnumerator WaitWinScreen()
+	{
+		yield return new WaitForSeconds(2.0f);
+	    SetWinScreenData();
+		winScreen.SetActive(true);	
+
+	}
+
+    private void SetWinScreenData()
+    {
+        LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
+        funFactsTexture.mainTexture = levelData.FunFactsTexture;
+        Level level = InstanceFinder.GameManager.ActiveLevel;
+        int score = level.GetScore();
+        //int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
+        scoreLabel.text = score.ToString();
+        /*// we also need to deactivate controls
+        //this is where calcualtions for score, stars and adding to lifetime score happens
+		
+        Level level = InstanceFinder.GameManager.ActiveLevel;
+		
+        //Set win screen
+		
+        funFactsTexture.mainTexture = level.FunFactsTexture;
+        FunFactsLabel.text = level.FunFactsText;
+		
+        // score calculation
+        int score = level.GetScore();
+        int highScore = InstanceFinder.LevelManager.CurrentLevel.HighScore;
+        scoreLabel.text = score.ToString();
+		
+        if(score > highScore)
+        {
+            highScoreLabel.text = "New High Score!";
+        }
+        else
+        {
+            highScoreLabel.text = "HighScore: " + highScore;
+        }
+		*/
+        // star calculation
+        int stars = level.Stars();
+        Debug.Log(stars);
+        if(stars==1)
+        {
+            oneStarTexture.gameObject.SetActive(true);
+        }
+        else if(stars==2)
+        {
+            oneStarTexture.gameObject.SetActive(true);
+            twoStarTexture.gameObject.SetActive(true);
+        }
+        else if(stars==3)
+        {
+            oneStarTexture.gameObject.SetActive(true);
+            twoStarTexture.gameObject.SetActive(true);
+            threeStarTexture.gameObject.SetActive(true);
+        }
+    }
+
+    private static void UnLockLevels()
+    {
+        var levelManager = InstanceFinder.LevelManager;
+        levelManager.CurrentLevel.UnlockedFunFact = true;
+        var levels = levelManager.CurrentWorld.Levels;
+        if (levels.Count - 1 > levelManager.CurrentLevelIndex)
+        {
+            levels[levelManager.CurrentLevelIndex + 1].UnlockedLevel = true;
+        }
+        InstanceFinder.StatsManager.Save();
+    }
 }

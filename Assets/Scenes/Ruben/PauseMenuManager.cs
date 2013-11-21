@@ -7,39 +7,79 @@ public class PauseMenuManager : MonoBehaviour {
 	//in the In-Game-GUI
 	PauseGame pausegame; 
 	
-	public GameObject PauseMenu; 
+	public GameObject PauseMenu;
+	public GameObject PauseTint;
 	public GameObject HintScreen;
-	public GameObject LevelsScreen; 
+
 	
 	void Start()
 	{
 		pausegame = GetComponent<PauseGame>();
 	}
 	
+	public void OnPauseClick()
+	{
+		//Enable Screen tint
+		PauseTint.SetActive(true);
+	}
+	
+	public void OnResumeClick()
+	{
+		PauseTint.SetActive(false);		
+	}
+	
+	public void OnHintClick()
+	{
+		HintScreen.SetActive(true);
+	    PauseMenu.SetActive(false);
+	}
+	
+	public void OnLevelsClick()
+	{
+		//Unpause game to get the normal TimeScale back
+		pausegame.ResumeGame();
+		InstanceFinder.LevelManager.LoadLevelsMenu();
+	}
+	
+	public void OnMainMenuClick()
+	{
+		//Unpause game to get the normal TimeScale back
+		pausegame.ResumeGame();
+		InstanceFinder.LevelManager.LoadMainMenu();
+	}
+
+	//BUTTON HANDLER:
 	void OnClick()
 	{
+		
+		//case for hitting PAUSE
+		if(gameObject.name == "PauseSprite")
+		{
+			OnPauseClick();
+		}
+		
+		//case for RESUME click
+		if(gameObject.name == "ResumeButtonOffset")
+		{
+			OnResumeClick();
+		}
+		
 		//case for going In and out of HINT SCREEN
 		if(gameObject.name == "GoalButtonOffset")
 		{
-	    	HintScreen.SetActiveRecursively(true);
-	    	PauseMenu.SetActiveRecursively(false);
+			OnHintClick ();
 		}
 		
 		if(gameObject.name == "HintBackButton")
 		{
-			HintScreen.SetActiveRecursively(false);
-	    	PauseMenu.SetActiveRecursively(true);
+			HintScreen.SetActive(false);
+	    	PauseMenu.SetActive(true);
 		}
 		
-		//case for going In and out of LEVELS SCREEN
+		//case for going to LEVELS SCREEN
 		if(gameObject.name == "LevelsButtonOffset")
 		{
-			InstanceFinder.LevelManager.LoadLevelsMenu();
-		}
-		if(gameObject.name == "LevelsBackButton")
-		{
-			LevelsScreen.SetActiveRecursively(false);
-	    	PauseMenu.SetActiveRecursively(true);
+			OnLevelsClick();
 		}
 		
 		//case for going to MAIN MENU
@@ -50,11 +90,4 @@ public class PauseMenuManager : MonoBehaviour {
 		
 	}
 	
-	
-	public void OnMainMenuClick()
-	{
-		//Unpause game to get the normal TimeScale back
-		pausegame.ResumeGame();
-		InstanceFinder.LevelManager.LoadMainMenu();
-	}
 }

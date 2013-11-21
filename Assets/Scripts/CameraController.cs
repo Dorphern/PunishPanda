@@ -24,7 +24,6 @@ public class CameraController : MonoBehaviour
     {
         Vector3 position = new Vector3(0, 0, 0);
 
-        Bounds bounds = gObject.GetComponent<MeshFilter>().mesh.bounds;
         Vector3 size = gObject.transform.localScale;
         position.x = gObject.transform.position.x;
         position.y = gObject.transform.position.y;
