@@ -17,6 +17,7 @@ public static class AudioNodeWorker  {
         node.Type = type;
         node.Name = parent.Name + " Child";
         node.Bus = parent.Bus;
+        node.BankLink = parent.GetBank();
         node.AssignParent(parent);
 
         return node;
