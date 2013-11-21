@@ -106,8 +106,10 @@ public class UISwipeControl : MonoBehaviour
 
         if (!buttonNext)
         {
+            //Debug.Log(touchEndPos + " " + touchStartPos);
             if (Vector2.Distance(touchEndPos, touchStartPos) >= SwipeMinimum)
             {
+                
                 if (touchStartPos.x < touchEndPos.x) //Move left
                 {
                     if (startClosetsChildIndex == 0) //We are at the left end of the panel, target ourself
@@ -148,23 +150,25 @@ public class UISwipeControl : MonoBehaviour
 
             }
         }
-
-
+ 
+        //Debug.Log(touchEndPos + " " + touchStartPos);
         if (target != null)
         {
             int index;
             // Determine the closest child
             target = ClosetsChild(target, offsetCenter, min, out index);
-            
+
             if (Label != null)
             {
                 Label.text = (startClosetsChildIndex + 1) + " of " + transform.childCount;
             }
         }
-        else
-        {
-            target = transform;
-        }
+        //else
+        //{
+        //    int index;
+        //    target = ClosetsChild(target, offsetCenter, min, out index);
+        //}
+
 
         if (target != null)
         {
