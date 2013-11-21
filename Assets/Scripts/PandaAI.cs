@@ -66,7 +66,7 @@ public class PandaAI : MonoBehaviour {
 		{	
 			pandaStateManager.ChangeState(PandaState.Idle);
 			pandaStateManager.ChangeDirection(PandaDirection.Forward);
-			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
+			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
 		}
 	}
 	
@@ -245,7 +245,7 @@ public class PandaAI : MonoBehaviour {
             || trap.GetTrapType() == TrapType.StaticSpikes)
         {
            // pandaController.EnableColliders(false);
-            BloodSplatter.Instance.ProjectBlood(transform.position, Vector2.right);
+            BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
         }
@@ -391,7 +391,7 @@ public class PandaAI : MonoBehaviour {
                     fallDir.x += -1f;
                 else if (fallDir.x > 0)
                     fallDir.x += 1f;
-                BloodSplatter.Instance.ProjectBlood(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
+                BloodSplatter.Instance.ProjectHit(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
                 isSplatFall = false;
             }
             pandaStateManager.ChangeState(PandaState.Walking);
