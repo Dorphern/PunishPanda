@@ -100,7 +100,7 @@ public class PandaMovementController : MonoBehaviour {
 			pandaAI.SetBoostSpeed += SetBoostSpeed;
 	        pandaAI.ApplyJump += ApplyJump;
 	        pandaAI.ApplyGravity += ApplyGravity;
-			pandaAI.ApplyStun += Stunned;
+			pandaAI.ApplyIdle += Idle;
 		}
 	}
 	 
@@ -139,7 +139,7 @@ public class PandaMovementController : MonoBehaviour {
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
 	
-	void Stunned()
+	void Idle()
 	{
 		if(controller.isGrounded)
 		{
@@ -219,11 +219,31 @@ public class PandaMovementController : MonoBehaviour {
 		//USING "OFFSET" FOR APPLYING GRAVITY
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
-	
-	void BoostedMovement(PandaDirection direction)
+
+	void BoostedMovement(PandaDirection dir)
 	{
-		movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.fixedDeltaTime * boosting.rollOffSpeed);
-		WalkingMovement(direction);
+		//movement.currentSpeed = Mathf.Lerp(movement.currentSpeed, movement.walkSpeed, Time.fixedDeltaTime * boosting.rollOffSpeed);
+		if(controller.isGrounded)
+		{
+			movement.offset = Vector3.zero;
+		}
+		// in order for the isGrounded flag to work we always need to apply gravity
+		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
+		
+        Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        if ((int) curr.y != (int) goalY)
+        {
+            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
+            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
+            transform.eulerAngles = curr;
+        }
+
+        // Determine movement direction based on movement dir
+        movement.offset.x = boosting.boostSpeed * (dir == PandaDirection.Left ? -1 : 1);
+		
+		// CharacterController.Move() should only be called once per frame
+		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
 	
 	void SetBoostSpeed()
