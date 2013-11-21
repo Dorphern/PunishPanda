@@ -215,6 +215,7 @@ public class PandaAI : MonoBehaviour {
 
         return true;
     }
+
 	public string debug = "a";
 	void OnGUI()
 	{
@@ -249,6 +250,8 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
+
+        pandaStateManager.onStateEnter += StateChange;
 	}
 	
 	// Update is called once per frame
@@ -307,10 +310,7 @@ public class PandaAI : MonoBehaviour {
             case PandaState.Died:
                 if (ApplyGravity != null && stuckOnSpikes == false)
                     ApplyGravity();
-                break;
-
-
-				
+                break;	
 		}
         
         if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
@@ -321,6 +321,14 @@ public class PandaAI : MonoBehaviour {
             lastPandaState = pandaStateManager.GetState();
         }
 	}
+
+    void StateChange (PandaState state)
+    {
+        if (state == PandaState.Died)
+        {
+            pandaMovementController.SetVelocity(0, 0);
+        }
+    }
 	
 	void FloorCollision(ControllerColliderHit hit)
 	{

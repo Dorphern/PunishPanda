@@ -16,7 +16,6 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
-    Vector3 dampedVelocity;
 	
 	bool withinRange = false;
 
@@ -81,6 +80,12 @@ public class PandaMovementController : MonoBehaviour {
         movement.offset.y = Mathf.Sin(radDir) * force;
         movement.offset.x = Mathf.Cos(radDir) * force;
     }
+
+    public void SetVelocity (float x, float y)
+    {
+        movement.offset.x = x;
+        movement.offset.y = y;
+    }
     # endregion
 
     # region Private Methods
@@ -88,7 +93,6 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
-        dampedVelocity = new Vector3(0, 0, 0);
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -214,7 +218,7 @@ public class PandaMovementController : MonoBehaviour {
 	}
 	
 	void  ApplyGravity()
-	{	
+	{
 	    movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		//USING "OFFSET" FOR APPLYING GRAVITY
 		controller.Move(movement.offset * Time.fixedDeltaTime);
