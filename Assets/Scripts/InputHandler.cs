@@ -170,7 +170,7 @@ public class InputHandler : MonoBehaviour {
 			
 			// if we are slow enough for repositioning the blockade
 			
-			if(controls.holding == true)
+			else if(controls.holding == true)
 			{
                 selectedBlockades.TryGetValue(fingerID, out tempBlockade);				
 				
@@ -195,6 +195,7 @@ public class InputHandler : MonoBehaviour {
 				
 				for(int i = 0; i < tempBlockade.pushingPandas.Count; i++)
 				{
+					debugLine +=  tempBlockade.pushingPandas.Count;
 					UpdatePandasAroundBlockade(tempBlockade.pushingPandas[i] ,mouseDelta);
 				}
 

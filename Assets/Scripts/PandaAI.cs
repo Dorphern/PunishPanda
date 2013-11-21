@@ -65,6 +65,7 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
 			pandaStateManager.ChangeState(PandaState.Idle);
+			pandaStateManager.ChangeDirection(PandaDirection.Forward);
 			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
 		}
 	}
@@ -79,12 +80,17 @@ public class PandaAI : MonoBehaviour {
 	
 	public void PandaPushingFinger()
 	{
-		pandaStateManager.ChangeState(PandaState.PushingFinger);	
+		if(pandaStateManager.GetState()!=PandaState.Idle)
+		{
+			Debug.Log("pushing");
+			pandaStateManager.ChangeState(PandaState.PushingFinger);	
+		}
 	}
 	
 	public void PandaPushingToWalking()
 	{
-		pandaStateManager.ChangeState(PandaState.Walking);	
+		if(pandaStateManager.GetState()!=PandaState.Idle)
+			pandaStateManager.ChangeState(PandaState.Walking);	
 	}
 
     public void Jump (float force, float direction)
@@ -120,49 +126,61 @@ public class PandaAI : MonoBehaviour {
  
 		// we can slap the panda only in walking and Idle state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Idle
-			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting )
+			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting 
+			&& pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
         float dot = Vector2.Dot(slapDirection.normalized, 
             Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
 		
-        if (dot > 0f)
-        {
-            // Panda is slapped in the back
-            if(boostEnabled)
+		// if the panda is idle we need to handle its movement back into walking
+		if(pandaStateManager.GetState()==PandaState.Idle)
+		{
+			if(slapDirection.normalized.x>=0)
 			{
-				//boostStartTime = Time.time;
-				if(boostco!=null)
-				{
-					Debug.Log("restarting");
-					StopCoroutine("BoostingToWalking");
-					StartCoroutine("BoostingToWalking", boostDuration);
-				}
-				else
-				{
-					Debug.Log("oosting");
-					boostco = StartCoroutine("BoostingToWalking", boostDuration);
-				}
-				pandaStateManager.ChangeState(PandaState.Boosting);
+				pandaStateManager.ChangeDirection(PandaDirection.Right);
+				pandaStateManager.ChangeState(PandaState.Walking);
 			}
-        }
-        else
-        {
-            // Panda is slapped in the front
-            // swap back to 
-			if ( pandaStateManager.GetState() == PandaState.Boosting)
-            	pandaStateManager.ChangeState(PandaState.Walking);
-			animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
-			
-        }
+			else
+			{
+				pandaStateManager.ChangeDirection(PandaDirection.Left);
+				pandaStateManager.ChangeState(PandaState.Walking);
+			}
+		}
+		//if the panda is moving we handle slapping it normally
+		else
+		{
+	        if (dot > 0f)
+	        {
+	            // Panda is slapped in the back
+	            if(boostEnabled)
+				{
+					//boostStartTime = Time.time;
+					if(boostco!=null)
+					{
+						StopCoroutine("BoostingToWalking");
+						StartCoroutine("BoostingToWalking", boostDuration);
+					}
+					else
+					{
+						boostco = StartCoroutine("BoostingToWalking", boostDuration);
+					}
+					pandaStateManager.ChangeState(PandaState.Boosting);
+				}
+	        }
+	        else
+	        {
+	            // Panda is slapped in the front
+	            // swap back to 
+				//if ( pandaStateManager.GetState() == PandaState.Boosting)
+	            //	pandaStateManager.ChangeState(PandaState.Walking);
+				animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
+				
+	        }
+		}
 
-		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
-		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
 
-		
-        pandaStateManager.IncrementSlapCount();
-        InstanceFinder.StatsManager.pandaSlaps++;
-
+		InstanceFinder.StatsManager.PandaSlaps++;
         bloodOnSlap.EmmitSlapBlood();
         PlaySlap(slapDirection);
 
@@ -206,6 +224,8 @@ public class PandaAI : MonoBehaviour {
         }
 
         Debug.Log("Hit death object: " + trap.GetTrapType());
+		
+		
         pandaStateManager.ChangeState(PandaState.Died);
 
         // change state from playAnimation PlayDeathAnimation
@@ -469,12 +489,18 @@ public class PandaAI : MonoBehaviour {
         }
     }
 	
+	float time;
 	IEnumerator BoostingToWalking(float timeToWait)
 	{
-		Debug.Log("starting");
+//		time = Time.time;
+//		while(Time.time - time < timeToWait)
+//		{
+//			Debug.Log(pandaStateManager.GetState());
+//				yield return null;
+//		}
 		yield return new WaitForSeconds(timeToWait);
-		Debug.Log("ending");
-		pandaStateManager.ChangeState(PandaState.Walking);
+		if(pandaStateManager.GetState()==PandaState.Boosting)
+			pandaStateManager.ChangeState(PandaState.Walking);
 	}
 	# endregion		
 }

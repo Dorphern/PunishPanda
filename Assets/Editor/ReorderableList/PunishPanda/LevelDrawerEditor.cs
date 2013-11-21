@@ -21,6 +21,7 @@ public class LevelDrawerEditor : Editor
             return target as GameWorld;
         }
     }
+    LevelDataDrawer drawer = new LevelDataDrawer();
 
     public override void OnInspectorGUI()
     {
@@ -33,7 +34,7 @@ public class LevelDrawerEditor : Editor
             }
         }
         //ReorderableListGUI.Title("Name");
-        LevelDataDrawer drawer = new LevelDataDrawer();
+
         drawer.levelDataList = GetWorld.Levels;
         GetWorld.WorldName = EditorGUILayout.TextField("World Name", GetWorld.WorldName);
         ReorderableListGUI.Title("Levels");
