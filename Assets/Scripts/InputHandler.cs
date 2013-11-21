@@ -96,7 +96,7 @@ public class InputHandler : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {   // Mouse Down Began
-            PerformCursorBegan(Input.mousePosition, 1, 0);
+            PerformCursorBegan(Input.mousePosition, 1, 2);
         }
         else if (Input.GetMouseButtonUp(0))
         {   // Mouse Down Ended

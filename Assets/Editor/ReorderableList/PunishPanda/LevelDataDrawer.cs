@@ -89,11 +89,9 @@ public class LevelDataDrawer : IReorderableListAdaptor
             currentLevel.LevelScore.ThreeStars = EditorGUI.IntField(position, "Three Stars", currentLevel.LevelScore.ThreeStars);
             
             position.y += itemHeight;
-            GUI.enabled = false;
-            EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
+            currentLevel.UnlockedLevel = EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
             position.y += itemHeight;
-            EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
-            GUI.enabled = true;
+            currentLevel.UnlockedFunFact = EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
 
             position.y += itemHeight;
             currentLevel.FunFactsText = EditorGUI.TextField(position, "Fact text", currentLevel.FunFactsText);
