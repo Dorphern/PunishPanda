@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 400000}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  - 95: {fileID: 9500000}
   m_Layer: 0
   m_Name: prop_switch
   m_TagString: Untagged
@@ -28,6 +27,7 @@ GameObject:
   - 4: {fileID: 400004}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400000}
+  - 111: {fileID: 11100000}
   m_Layer: 2
   m_Name: SideWallButton
   m_TagString: Untagged
@@ -41,9 +41,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: .0209407806, y: -1.47819996, z: -1.63901293}
-  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400004}
 --- !u!4 &400004
@@ -53,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.3454752, y: -3.29667377, z: 1.49449694}
+  m_LocalPosition: {x: .654514968, y: -4.87672615, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -70,7 +70,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 28cd66e630a18d44aa4af46f7da5c2b8, type: 2}
+  - {fileID: 2100000, guid: 4739e50cd1304194fa5cf351b1238c7b, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -82,7 +82,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mesh: {fileID: 4300000, guid: b405f03a0c4c68f48b5c689fef5e3391, type: 3}
+  m_Mesh: {fileID: 4300000, guid: b326920c1fea7a147ad6d115178416f9, type: 3}
 --- !u!65 &6500000
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -93,20 +93,26 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .300000012, y: 2.5999999, z: 2.3499999}
-  m_Center: {x: 0, y: -.779999971, z: -1.26999998}
---- !u!95 &9500000
-Animator:
+  m_Size: {x: .479999989, y: 1, z: 1}
+  m_Center: {x: -.150000006, y: 0, z: 0}
+--- !u!111 &11100000
+Animation:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
+  m_GameObject: {fileID: 100004}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b405f03a0c4c68f48b5c689fef5e3391, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_ApplyRootMotion: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6bbbf17d70b7a5541939964ca97da697, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6bbbf17d70b7a5541939964ca97da697, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
+  m_CullingType: 0
+  m_UserAABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -120,8 +126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   traps:
   - {fileID: 0}
-  buttonFunction: 1
-  activationTimeLength: 30
+  buttonFunction: 0
+  activationTimeLength: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
