@@ -96,7 +96,7 @@ public class InputHandler : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {   // Mouse Down Began
-            PerformCursorBegan(Input.mousePosition, 1, 0);
+            PerformCursorBegan(Input.mousePosition, 1, 2);
         }
         else if (Input.GetMouseButtonUp(0))
         {   // Mouse Down Ended
@@ -120,10 +120,6 @@ public class InputHandler : MonoBehaviour {
 		
 			if(collidable != null)
 			{
-                if (tapCount > 0)
-                {
-                    Debug.Log("tapped");
-                }
 				if(controls.tapping == true && collidable.type == CollidableTypes.Panda && tapCount == 2)
 				{
 					tempPanda = hitInfo.collider.GetComponent<PandaAI>();
@@ -174,7 +170,7 @@ public class InputHandler : MonoBehaviour {
 			
 			// if we are slow enough for repositioning the blockade
 			
-			if(controls.holding == true)
+			else if(controls.holding == true)
 			{
                 selectedBlockades.TryGetValue(fingerID, out tempBlockade);				
 				
@@ -199,6 +195,7 @@ public class InputHandler : MonoBehaviour {
 				
 				for(int i = 0; i < tempBlockade.pushingPandas.Count; i++)
 				{
+					debugLine +=  tempBlockade.pushingPandas.Count;
 					UpdatePandasAroundBlockade(tempBlockade.pushingPandas[i] ,mouseDelta);
 				}
 

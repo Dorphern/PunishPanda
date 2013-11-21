@@ -9,13 +9,14 @@ public class PandaAI : MonoBehaviour {
 
     public event System.Action<PandaDirection> ApplyWalkingMovement;
 	public event System.Action<PandaDirection, float, float> PushingMovement;
-	public event System.Action ApplyStun;
+	public event System.Action ApplyIdle;
 	public event System.Action<PandaDirection> BoostingMovement;
 	public event System.Action SetBoostSpeed;
     public event System.Action<float, float> ApplyJump;
     public event System.Action ApplyGravity;
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
+	public float boostDuration = 1f;
 
     [SerializeField] protected GameObject dismemberedPanda;
     
@@ -27,7 +28,6 @@ public class PandaAI : MonoBehaviour {
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
-	public float stunLength = 1f;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -36,7 +36,7 @@ public class PandaAI : MonoBehaviour {
     private float fallDist;
     private Vector3 oldPosition;
     private Vector3 fallDir;
-    
+	private Coroutine boostco;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -60,14 +60,13 @@ public class PandaAI : MonoBehaviour {
 	#region Public Methods
 	public void DoubleTapped()
 	{
-        Debug.Log("Double tapped!");
-		if( pandaStateManager.GetState() == PandaState.Standing        || 
-		    pandaStateManager.GetState() == PandaState.Walking)
-			
+		if( pandaStateManager.GetState() == PandaState.Idle        || 
+		    pandaStateManager.GetState() == PandaState.Walking     ||
+			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
-			pandaStateManager.ChangeState(PandaState.Stunned);
+			pandaStateManager.ChangeState(PandaState.Idle);
+			pandaStateManager.ChangeDirection(PandaDirection.Forward);
 			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
-			StartCoroutine(StunToWalking(stunLength));
 		}
 	}
 	
@@ -81,12 +80,17 @@ public class PandaAI : MonoBehaviour {
 	
 	public void PandaPushingFinger()
 	{
-		pandaStateManager.ChangeState(PandaState.PushingFinger);	
+		if(pandaStateManager.GetState()!=PandaState.Idle)
+		{
+			Debug.Log("pushing");
+			pandaStateManager.ChangeState(PandaState.PushingFinger);	
+		}
 	}
 	
 	public void PandaPushingToWalking()
 	{
-		pandaStateManager.ChangeState(PandaState.Walking);	
+		if(pandaStateManager.GetState()!=PandaState.Idle)
+			pandaStateManager.ChangeState(PandaState.Walking);	
 	}
 
     public void Jump (float force, float direction)
@@ -120,32 +124,63 @@ public class PandaAI : MonoBehaviour {
             return;
         }
  
-		// we can slap the panda only in walking and standing state
-		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Standing
-			&& pandaStateManager.GetState() != PandaState.Falling)
+		// we can slap the panda only in walking and Idle state
+		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Idle
+			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting 
+			&& pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
         float dot = Vector2.Dot(slapDirection.normalized, 
             Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
-        if (dot > 0f)
-        {
-            // Panda is slapped in the back
-            Debug.Log("Slap in back");
-        }
-        else
-        {
-            // Panda is slapped in the front
-            Debug.Log("Slap in front");
-            animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
-        }
-
-		InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five",1);
-		InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper",1);
-
 		
-        pandaStateManager.IncrementSlapCount();
-        InstanceFinder.StatsManager.pandaSlaps++;
+		// if the panda is idle we need to handle its movement back into walking
+		if(pandaStateManager.GetState()==PandaState.Idle)
+		{
+			if(slapDirection.normalized.x>=0)
+			{
+				pandaStateManager.ChangeDirection(PandaDirection.Right);
+				pandaStateManager.ChangeState(PandaState.Walking);
+			}
+			else
+			{
+				pandaStateManager.ChangeDirection(PandaDirection.Left);
+				pandaStateManager.ChangeState(PandaState.Walking);
+			}
+		}
+		//if the panda is moving we handle slapping it normally
+		else
+		{
+	        if (dot > 0f)
+	        {
+	            // Panda is slapped in the back
+	            if(boostEnabled)
+				{
+					//boostStartTime = Time.time;
+					if(boostco!=null)
+					{
+						StopCoroutine("BoostingToWalking");
+						StartCoroutine("BoostingToWalking", boostDuration);
+					}
+					else
+					{
+						boostco = StartCoroutine("BoostingToWalking", boostDuration);
+					}
+					pandaStateManager.ChangeState(PandaState.Boosting);
+				}
+	        }
+	        else
+	        {
+	            // Panda is slapped in the front
+	            // swap back to 
+				//if ( pandaStateManager.GetState() == PandaState.Boosting)
+	            //	pandaStateManager.ChangeState(PandaState.Walking);
+				animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
+				
+	        }
+		}
 
+
+		InstanceFinder.StatsManager.PandaSlaps++;
         bloodOnSlap.EmmitSlapBlood();
         PlaySlap(slapDirection);
 
@@ -189,6 +224,8 @@ public class PandaAI : MonoBehaviour {
         }
 
         Debug.Log("Hit death object: " + trap.GetTrapType());
+		
+		
         pandaStateManager.ChangeState(PandaState.Died);
 
         // change state from playAnimation PlayDeathAnimation
@@ -280,10 +317,10 @@ public class PandaAI : MonoBehaviour {
 					PushingMovement(pandaStateManager.GetDirection(), pushingMagnitude, lastPushingMagnitude);
                 }
 				break;
-			case PandaState.Stunned:                
-				if(ApplyStun!=null)
+			case PandaState.Idle:                
+				if(ApplyIdle!=null)
                 {
-					ApplyStun();
+					ApplyIdle();
                 }
 				break;
             case PandaState.Jumping:
@@ -319,7 +356,11 @@ public class PandaAI : MonoBehaviour {
             case PandaState.Died:
                 if (ApplyGravity != null && stuckOnSpikes == false)
                     ApplyGravity();
-                break;	
+                break;
+			case PandaState.Boosting:
+				if (BoostingMovement!=null)
+					BoostingMovement(pandaStateManager.GetDirection());
+				break;
 		}
         
         if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
@@ -372,15 +413,6 @@ public class PandaAI : MonoBehaviour {
 	
 		timeSinceLastCollisionWithPanda = Time.time;
 		
-		/*
-		// make sure the other panda is walking
-		if(otherPandaSM.GetState() != PandaState.Walking)
-		{
-			// make sure this panda is either walking or falling
-			if(!(pandaStateManager.GetState() == PandaState.Walking ||
-			    pandaStateManager.GetState() == PandaState.Falling ))
-				return;
-		}*/
 				
 		// if this panda is falling onto another panda change to fall transition state
 		if(pandaStateManager.GetState() == PandaState.Falling)
@@ -405,7 +437,15 @@ public class PandaAI : MonoBehaviour {
 		
 			// if both pandas are walking just bounce off of each other
 			if(otherPandaSM.GetState() == PandaState.Walking || otherPandaSM.GetState() == PandaState.PushingFinger
-				|| otherPandaSM.GetState() == PandaState.Stunned)
+				|| otherPandaSM.GetState() == PandaState.Idle || otherPandaSM.GetState() == PandaState.Boosting)
+			{
+				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+			}
+		}
+		else if(pandaStateManager.GetState() == PandaState.Boosting ) {
+		
+			if(otherPandaSM.GetState() == PandaState.Walking || otherPandaSM.GetState() == PandaState.PushingFinger
+				|| otherPandaSM.GetState() == PandaState.Idle || otherPandaSM.GetState() == PandaState.Boosting)
 			{
 				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 			}
@@ -449,10 +489,18 @@ public class PandaAI : MonoBehaviour {
         }
     }
 	
-	IEnumerator StunToWalking(float timeToWait)
+	float time;
+	IEnumerator BoostingToWalking(float timeToWait)
 	{
+//		time = Time.time;
+//		while(Time.time - time < timeToWait)
+//		{
+//			Debug.Log(pandaStateManager.GetState());
+//				yield return null;
+//		}
 		yield return new WaitForSeconds(timeToWait);
-		pandaStateManager.ChangeState(PandaState.Walking);
+		if(pandaStateManager.GetState()==PandaState.Boosting)
+			pandaStateManager.ChangeState(PandaState.Walking);
 	}
 	# endregion		
 }

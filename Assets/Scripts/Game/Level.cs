@@ -9,7 +9,6 @@ public class Level : MonoBehaviour
 {
     private float elapsedTime;
     private bool paused;
-    [SerializeField] private float LoseFadeTime = 4.0f;
 
     /*private int totalPandaCount;
     private int alivePandas;
@@ -31,21 +30,21 @@ public class Level : MonoBehaviour
     {
         paused = true;
     }
+	
+	public void AddPandaAIRef(PandaAI panda)
+	{
+		pandas.Add(panda);
+	}
 
     public void PandaEscaped()
     {
         if (onLevelLost != null)
         {
-            StartCoroutine(WaitForLoseFade());
+            onLevelLost();
         }
     }
 
-    private IEnumerator WaitForLoseFade()
-    {
-        yield return new WaitForSeconds(LoseFadeTime);
-        onLevelLost();
-        Time.timeScale = 0;
-    }
+
 
     public void Continue()
     { 
@@ -62,12 +61,12 @@ public class Level : MonoBehaviour
 	
 	public int GetScore()
 	{
-        return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel.LevelScore, InstanceFinder.ComboSystem.LevelDeaths, elapsedTime);	
+        return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel, InstanceFinder.ComboSystem.LevelDeaths, elapsedTime);	
 	}
 	
 	public int Stars()
 	{
-	    return ScoreCalculator.Stars(InstanceFinder.LevelManager.CurrentLevel.LevelScore, GetScore());	
+	    return ScoreCalculator.Stars(InstanceFinder.LevelManager.CurrentLevel, GetScore());	
 	}
 	
     # endregion
@@ -86,12 +85,12 @@ public class Level : MonoBehaviour
 
     private void Update()
     {
-        if (!paused && InstanceFinder.ComboSystem.AlivePandas > 0)
+        if (!paused && InstanceFinder.ComboSystem != null && InstanceFinder.ComboSystem.AlivePandas > 0)
         {
             elapsedTime += PandaTime.deltaTime;
         }
 
-        if (InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
+        if (InstanceFinder.ComboSystem && InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
             if(onLevelComplete != null)

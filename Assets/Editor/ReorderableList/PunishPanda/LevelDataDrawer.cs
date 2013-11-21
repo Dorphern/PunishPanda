@@ -77,23 +77,23 @@ public class LevelDataDrawer : IReorderableListAdaptor
             currentLevel.LevelName = EditorGUI.TextField(position, "File name", currentLevel.LevelName);
 
             position.y += itemHeight;
-            currentLevel.LevelScore.MaxTimeScore = EditorGUI.FloatField(position, "Max Time Score", currentLevel.LevelScore.MaxTimeScore);
+            currentLevel.MaxTimeScore = EditorGUI.FloatField(position, "Max Time Score", currentLevel.MaxTimeScore);
             position.y += itemHeight;
-            currentLevel.LevelScore.LevelLength = EditorGUI.FloatField(position, "Level Length (Seconds)", currentLevel.LevelScore.LevelLength);
+            currentLevel.LevelLength = EditorGUI.FloatField(position, "Level Length (Seconds)", currentLevel.LevelLength);
 
             position.y += itemHeight;
-            currentLevel.LevelScore.OneStar = EditorGUI.IntField(position, "One Star", currentLevel.LevelScore.OneStar);
+            currentLevel.OneStar = EditorGUI.IntField(position, "One Star", currentLevel.OneStar);
             position.y += itemHeight;
-            currentLevel.LevelScore.TwoStars = EditorGUI.IntField(position, "Two Stars", currentLevel.LevelScore.TwoStars);
+            currentLevel.TwoStars = EditorGUI.IntField(position, "Two Stars", currentLevel.TwoStars);
             position.y += itemHeight;
-            currentLevel.LevelScore.ThreeStars = EditorGUI.IntField(position, "Three Stars", currentLevel.LevelScore.ThreeStars);
+            currentLevel.ThreeStars = EditorGUI.IntField(position, "Three Stars", currentLevel.ThreeStars);
+            position.y += itemHeight;
+            currentLevel.HighScore = EditorGUI.IntField(position, "Highscore", currentLevel.HighScore);
             
             position.y += itemHeight;
-            GUI.enabled = false;
-            EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
+            currentLevel.UnlockedLevel = EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
             position.y += itemHeight;
-            EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
-            GUI.enabled = true;
+            currentLevel.UnlockedFunFact = EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
 
             position.y += itemHeight;
             currentLevel.FunFactsText = EditorGUI.TextField(position, "Fact text", currentLevel.FunFactsText);
