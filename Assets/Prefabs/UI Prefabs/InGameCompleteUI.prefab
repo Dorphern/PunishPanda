@@ -279,8 +279,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400032}
   - 114: {fileID: 11400052}
-  m_Layer: 0
-  m_Name: Anchor - Center
+  m_Layer: 8
+  m_Name: Anchor - Center Lose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1167,9 +1167,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400142}
+  - 114: {fileID: 11400236}
   - 114: {fileID: 11400208}
   m_Layer: 8
-  m_Name: Anchor - top
+  m_Name: EscapeLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1372,6 +1373,22 @@ GameObject:
   - 4: {fileID: 400154}
   - 114: {fileID: 11400224}
   m_Layer: 8
+  m_Name: Anchor - Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100166
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400166}
+  - 114: {fileID: 11400238}
+  m_Layer: 0
   m_Name: Anchor - Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1763,9 +1780,9 @@ Transform:
   m_GameObject: {fileID: 100032}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -.499511719, y: .5, z: -.000122070312}
-  m_LocalScale: {x: 176, y: 176, z: 176}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 400050}
+  - {fileID: 400142}
   m_Father: {fileID: 400068}
 --- !u!4 &400034
 Transform:
@@ -1868,7 +1885,7 @@ Transform:
   - {fileID: 400078}
   - {fileID: 400064}
   - {fileID: 400150}
-  m_Father: {fileID: 400032}
+  m_Father: {fileID: 400166}
 --- !u!4 &400052
 Transform:
   m_ObjectHideFlags: 1
@@ -1974,9 +1991,10 @@ Transform:
   m_LocalPosition: {x: -4226.11182, y: -2133.1355, z: 979.122131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 400032}
   - {fileID: 400000}
   - {fileID: 400018}
-  - {fileID: 400032}
+  - {fileID: 400166}
   - {fileID: 400090}
   - {fileID: 400080}
   - {fileID: 400088}
@@ -2430,10 +2448,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1332.86682, y: -44.4681931, z: 0}
-  m_LocalScale: {x: 1.00007999, y: 1.00007999, z: 1.00007999}
+  m_LocalPosition: {x: 0, y: 62.581543, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 400158}
+  m_Father: {fileID: 400032}
 --- !u!4 &400144
 Transform:
   m_ObjectHideFlags: 1
@@ -2497,7 +2515,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100164}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.750160217, y: .750160217, z: 0}
+  m_LocalPosition: {x: -1.12781525, y: 1.12678528, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400152}
@@ -2527,7 +2545,6 @@ Transform:
   m_Children:
   - {fileID: 400162}
   - {fileID: 400154}
-  - {fileID: 400142}
   m_Father: {fileID: 400156}
 --- !u!4 &400160
 Transform:
@@ -2547,7 +2564,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100162}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.000343322754, y: -360, z: 0}
+  m_LocalPosition: {x: -.564079285, y: -360, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400144}
@@ -2565,6 +2582,18 @@ Transform:
   m_Children:
   - {fileID: 400160}
   m_Father: {fileID: 400162}
+--- !u!4 &400166
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100166}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -.499511719, y: .5, z: -.000122070312}
+  m_LocalScale: {x: 176, y: 176, z: 176}
+  m_Children:
+  - {fileID: 400050}
+  m_Father: {fileID: 400068}
 --- !u!4 &400202
 Transform:
   m_ObjectHideFlags: 1
@@ -5489,7 +5518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aeb1d6f41092f24bacd9b897993748c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToEnable: {fileID: 100150}
+  LoseCamera: {fileID: 0}
+  EscapeLabel: {fileID: 0}
+  LoseFadeTime: 4
 --- !u!114 &11400204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5545,17 +5576,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 100140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8077b76001d36d489868d20d28bddb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 75e7459110b9666449485c40f25362a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCamera: {fileID: 2000002}
-  container: {fileID: 0}
-  side: 8
-  halfPixelOffset: 1
-  runOnlyOnce: 0
-  relativeOffset: {x: 0, y: 0}
-  pixelOffset: {x: 0, y: 0}
-  widgetContainer: {fileID: 0}
+  method: 0
+  style: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: -.00625002384
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+    - time: .442827195
+      value: 1.00109005
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: .810355425
+      value: .996272206
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: .998742759
+      value: -.0239401162
+      inSlope: .914335251
+      outSlope: .914335251
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  ignoreTimeScale: 1
+  delay: 0
+  duration: 3
+  steeperCurves: 0
+  tweenGroup: 0
+  onFinished: []
+  eventReceiver: {fileID: 0}
+  callWhenFinished: 
+  from: {x: 0, y: 0, z: 1}
+  to: {x: 1, y: 1, z: 1}
+  updateTable: 0
 --- !u!114 &11400210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5866,6 +5927,60 @@ MonoBehaviour:
   mClipRange: {x: 0, y: 0, z: 0, w: 0}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 1
+--- !u!114 &11400236
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mColor: {r: 0, g: 0, b: 0, a: 1}
+  mPivot: 4
+  mWidth: 372
+  mHeight: 50
+  mDepth: 0
+  autoResizeBoxCollider: 0
+  keepCrispWhenShrunk: 1
+  mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
+  mFont: {fileID: 0}
+  mText: You Let A Panda Escape
+  mFontSize: 50
+  mFontStyle: 0
+  mEncoding: 1
+  mMaxLineCount: 0
+  mEffectStyle: 0
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
+  mSymbols: 1
+  mEffectDistance: {x: 1, y: 1}
+  mOverflow: 2
+  mShrinkToFit: 0
+  mMaxLineWidth: 0
+  mMaxLineHeight: 0
+  mLineWidth: 0
+  mMultiline: 1
+--- !u!114 &11400238
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8077b76001d36d489868d20d28bddb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCamera: {fileID: 2000000}
+  container: {fileID: 0}
+  side: 8
+  halfPixelOffset: 1
+  runOnlyOnce: 0
+  relativeOffset: {x: 0, y: 0}
+  pixelOffset: {x: 0, y: 0}
+  widgetContainer: {fileID: 0}
 --- !u!114 &11400266
 MonoBehaviour:
   m_ObjectHideFlags: 1
