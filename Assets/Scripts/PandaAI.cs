@@ -81,7 +81,10 @@ public class PandaAI : MonoBehaviour {
 	public void PandaPushingFinger()
 	{
 		if(pandaStateManager.GetState()!=PandaState.Idle)
+		{
+			Debug.Log("pushing");
 			pandaStateManager.ChangeState(PandaState.PushingFinger);	
+		}
 	}
 	
 	public void PandaPushingToWalking()
@@ -486,9 +489,15 @@ public class PandaAI : MonoBehaviour {
         }
     }
 	
-	
+	float time;
 	IEnumerator BoostingToWalking(float timeToWait)
 	{
+//		time = Time.time;
+//		while(Time.time - time < timeToWait)
+//		{
+//			Debug.Log(pandaStateManager.GetState());
+//				yield return null;
+//		}
 		yield return new WaitForSeconds(timeToWait);
 		if(pandaStateManager.GetState()==PandaState.Boosting)
 			pandaStateManager.ChangeState(PandaState.Walking);
