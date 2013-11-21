@@ -4,18 +4,20 @@ using System.Collections;
 // Require a character controller to be attached to the same game object
 [RequireComponent(typeof(CharacterController))]
 public class PandaMovementController : MonoBehaviour {
- 
-	public Transform spawnPoint; // The character will spawn here
-	public Movement movement;
-	public Boosting boosting;
-	public JumpingOff jumpOff;
-    public float hangingOffSet = 30f;
-	public float pushingForce = 15f;
+
+    [SerializeField] Transform spawnPoint; // The character will spawn here
+    [SerializeField] Movement movement;
+    [SerializeField] Boosting boosting;
+    [SerializeField] JumpingOff jumpOff;
+    [SerializeField] Falling falling;
+    [SerializeField] float hangingOffSet = 30f;
+    [SerializeField] float pushingForce = 15f;
 	private float currentPushingMagnitude = 0f;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
 	Vector3 lastPos;
+    Vector3 dampedVelocity;
 	
 	bool withinRange = false;
 
@@ -24,21 +26,21 @@ public class PandaMovementController : MonoBehaviour {
  
     #region SerializedClasses
 	[System.Serializable]
-	public class Boosting
+	class Boosting
 	{
 		public float boostSpeed = 5f;
 		public float rollOffSpeed = 1.5f;
 	}
 	
 	[System.Serializable]
-	public class JumpingOff
+	class JumpingOff
 	{
 		public float jumpOffSpeed = 3f;
 		public float jumpOffDir = 45f;	
 	}
 	
 	[System.Serializable]
-	public class Movement 
+	class Movement 
 	{	 
 	    public float gravity = 20;
 	    public float jumpHeight = 8;
@@ -50,6 +52,12 @@ public class PandaMovementController : MonoBehaviour {
 	    public Vector3 offset;
 		public float notMovingThreshold = 0.01f;
 	}
+
+    [System.Serializable]
+    class Falling
+    {
+        public float velocityThreshold = 1f; /* At what speed are we actually falling ? */
+    }
 	
 
 	#endregion
@@ -86,6 +94,11 @@ public class PandaMovementController : MonoBehaviour {
         movement.offset.x = x;
         movement.offset.y = y;
     }
+
+    public bool IsGrounded ()
+    {
+        return controller.isGrounded;
+    }
     # endregion
 
     # region Private Methods
@@ -112,6 +125,12 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+        dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
+
+        if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
+        {
+            pandaAI.Falling();
+        }
 
         // Store the last position of the character;
         lastPos = transform.position;

@@ -231,6 +231,15 @@ public class PandaAI : MonoBehaviour {
         PandaState state = pandaStateManager.GetState();
         return state != PandaState.Died;
     }
+
+    public void Falling ()
+    {
+        if (pandaStateManager.GetState() != PandaState.Falling
+            && pandaStateManager.GetState() != PandaState.Died)
+        {
+            pandaStateManager.ChangeState(PandaState.Falling);
+        }
+    }
 	#endregion
 	
 	# region Private Methods
