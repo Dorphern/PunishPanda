@@ -170,7 +170,7 @@ public class InputHandler : MonoBehaviour {
 			
 			// if we are slow enough for repositioning the blockade
 			
-			if(controls.holding == true)
+			else if(controls.holding == true)
 			{
                 selectedBlockades.TryGetValue(fingerID, out tempBlockade);				
 				

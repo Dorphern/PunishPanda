@@ -106,6 +106,7 @@ public class Achievement
 public class AchievementManager : MonoBehaviour {
 
 	public List<Achievement> achievementList = new List<Achievement>();
+	public bool debug = false;
 	
 	public delegate void AchievementGoalHandler(Achievement achievement);
 	public event AchievementGoalHandler onAchievementCompleted;
@@ -116,7 +117,8 @@ public class AchievementManager : MonoBehaviour {
 	{
 		if(!achievements.ContainsKey(name))
 		{
-			Debug.Log("Attempted to add progress to achievement that doesn't exist: " + name);
+			if(debug)
+				Debug.Log("Attempted to add progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{
@@ -136,7 +138,8 @@ public class AchievementManager : MonoBehaviour {
 	{
 		if(!achievements.ContainsKey(name))
 		{
-			Debug.LogError("Attempted to set progress to achievement that doesn't exist: " + name);
+			if(debug)
+				Debug.LogError("Attempted to set progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{
@@ -164,7 +167,8 @@ public class AchievementManager : MonoBehaviour {
 		{
 			if(achievements.ContainsKey(achievementList[i].name))
 			{
-				Debug.Log("Duplicate achievements with the name " + achievementList[i].name);
+				if(debug)
+					Debug.Log("Duplicate achievements with the name " + achievementList[i].name);
 				continue;
 			}
 			
