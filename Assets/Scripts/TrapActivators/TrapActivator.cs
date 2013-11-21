@@ -5,7 +5,7 @@ public class TrapActivator : MonoBehaviour {
 
     [SerializeField] protected TrapBase[] traps;
 
-    protected void ActivateTraps ()
+    virtual protected void ActivateTraps ()
     {
         for (int i = 0; i < traps.Length; i++)
         {
@@ -16,7 +16,7 @@ public class TrapActivator : MonoBehaviour {
         }
     }
 
-    protected void DeactivateTraps ()
+    virtual protected void DeactivateTraps ()
     {
         for (int i = 0; i < traps.Length; i++)
         {

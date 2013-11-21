@@ -9,6 +9,7 @@ public class StarSpawner : TrapBase
 	public float spawnInterval = 2f;
 	public int maxStarCount = 5;
 	public GameObject starPrefab;
+    [SerializeField] float angle;
 	
 	private Queue<ThrowingStar> starsPool;
 	
@@ -66,6 +67,11 @@ public class StarSpawner : TrapBase
 		star.renderer.enabled = true;
 		star.transform.position = transform.position;
 		star.starSpawner = this;
-		star.ShootStar(transform.forward, force, torque);
+        Vector3 dir = new Vector3(
+            Mathf.Cos(angle * Mathf.Deg2Rad),
+            Mathf.Sin(angle * Mathf.Deg2Rad), 
+            0
+        );
+        star.ShootStar(dir, force, torque);
 	}
 }

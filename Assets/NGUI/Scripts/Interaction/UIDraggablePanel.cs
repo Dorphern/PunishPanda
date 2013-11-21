@@ -114,7 +114,7 @@ public class UIDraggablePanel : MonoBehaviour
 	/// </summary>
 
 	public OnDragFinished onDragFinished;
-    public OnDragStarted onDragStarted;
+    public UIDraggablePanel.OnDragStarted onDragStarted;
 
 	Transform mTrans;
 	UIPanel mPanel;
