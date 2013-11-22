@@ -104,7 +104,7 @@ public abstract class TrapBase : MonoBehaviour {
         }
     }
 	
-	public void TryPandaKill(PandaAI pandaAI)
+	public bool TryPandaKill(PandaAI pandaAI)
 	{
 		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
         bool successful = pandaAI.IsAlive() && PandaAttemptKill(pandaAI, isPerfect);
@@ -113,6 +113,7 @@ public abstract class TrapBase : MonoBehaviour {
             SetDirty();
             pandaKillCount++;
         }
+        return successful;
 	}
 
     # endregion

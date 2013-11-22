@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using Edelweiss.DecalSystem;
 
 public class BloodSplatter : MonoBehaviour {
-	
+	public Transform edge;
 	public static BloodSplatter Instance;
 		// The prefab which contains the DS_Decals script with already set material and
 		// uv rectangles.
@@ -26,6 +26,13 @@ public class BloodSplatter : MonoBehaviour {
 	public float decalProjectorOffset = 0.5f;
 		// The size of new decal projectors.
 	public Vector3 decalProjectorScale = new Vector3 (0.2f, 2.0f, 0.2f);
+	
+	public float slapDelay = 0.1f;
+	
+	public int slapUVmin;
+	public int slapUVmax;
+	public int hitUVmin;
+	public int hitUVmax;
 	
 		// The reference to the instantiated prefab's DS_Decals instance.
 	private DS_Decals m_Decals;
@@ -55,13 +62,20 @@ public class BloodSplatter : MonoBehaviour {
 	private float rayDistance = 10f;
 	
 		// Move on to the next uv rectangle index.
-	private void NextUVRectangleIndex () 
+	private void NextSlapUV () 
 	{
-		m_UVRectangleIndex = m_UVRectangleIndex + 1;
-		if (m_UVRectangleIndex >= m_Decals.CurrentUvRectangles.Length) 
-		{
-			m_UVRectangleIndex = 0;
-		}
+		m_UVRectangleIndex = Random.Range(slapUVmin, slapUVmax);
+		
+//		m_UVRectangleIndex = m_UVRectangleIndex + 1;
+//		if (m_UVRectangleIndex >= m_Decals.CurrentUvRectangles.Length) 
+//		{
+//			m_UVRectangleIndex = 0;
+//		}
+	}
+	
+	private void NextHitUV () 
+	{
+		m_UVRectangleIndex = Random.Range(hitUVmin, hitUVmax);
 	}
 	
 	private void Awake()
@@ -101,7 +115,7 @@ public class BloodSplatter : MonoBehaviour {
 		layerMask = ~layerMask;
 		
 		// We instantiate a blood splatter in order to avoid a huge spike in performance caused by the first slap
-		ProjectBlood(transform.position ,Vector2.right);
+		ProjectBlood(transform.position ,Vector2.right, 2f);
 		if(m_DecalProjectors.Count > 0)
 			ClearProjectors();
 		else
@@ -109,23 +123,6 @@ public class BloodSplatter : MonoBehaviour {
 			Debug.LogException(new System.Exception("Failed to project a texture from " + gameObject.name + " because there was no mesh to project onto!" +
 				"\n<b> The object's Z axis must be facing an object within " + rayDistance + " meters! </b>"), this.gameObject);
 		}
-		// Code required for polishing projection offset (DO NOT REMOVE)
-//		float max = 20;
-//		for(int i = 0; i <= 2 * max + 1; i++)
-//		{
-//			Vector3 dir = Vector3.zero;
-//			if(i <  max + 1)
-//			{
-//				dir = Vector3.Slerp(Vector3.up, Vector3.right, i / max);
-//			}
-//			else
-//			{
-//				 dir = Vector3.Slerp(Vector3.right, Vector3.down,(i - max - 1) / max);
-//			}
-//			Debug.LogWarning(dir);
-//			Debug.DrawRay(Vector3.zero, dir * 3f, Color.red, 100f);
-//			ProjectBlood(new Vector3(i*5f, 1.55f, 0), new Vector2(dir.x, dir.y));
-//		}
 	}
 	
 	private void Update () 
@@ -148,69 +145,125 @@ public class BloodSplatter : MonoBehaviour {
 		m_Decals.UpdateDecalsMeshes (m_DecalsMesh);		
 	}
 	
-//	void OnDrawGizmosSelected() {
-//        Gizmos.color = new Color(1, 0, 0, 0.5F);
-//        Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
-//    }
+	public void ProjectHit(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
+	{
+		ProjectBlood(rayStart, slapDirection, slapForce);
+		NextHitUV();
+	}
 	
-	public void ProjectBlood(Vector3 rayStart ,Vector2 slapDirection)
+	public void ProjectSlap(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
+	{
+		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce));
+		//Util.Draw.Arrow(rayStart, rayStart + rotatedDirection * 1f, Color.blue, 100f);
+	}
+	
+	IEnumerator ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce)
+	{
+		ProjectBlood(rayStart, slapDirection, slapForce);
+		NextSlapUV ();
+		
+		yield return new WaitForSeconds(slapDelay);
+		
+		Vector3 rotatedDirection;		
+		rotatedDirection = Quaternion.AngleAxis( -45, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
+		ProjectBlood(rayStart, rotatedDirection, slapForce);
+		NextSlapUV ();
+		
+		yield return new WaitForSeconds(slapDelay);
+		
+		rotatedDirection = Quaternion.AngleAxis( 45, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
+		ProjectBlood(rayStart, rotatedDirection, slapForce);
+		NextSlapUV ();
+	}
+	
+	public void ProjectBlood(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2f)
 	{
 		// set the angle of the splat to be the same in both XY and XZ planes
 		projectionDirection.x = slapDirection.x;
 		projectionDirection.y = slapDirection.y;
-		projectionDirection.z = Mathf.Abs(slapDirection.x);
+		if(projectionDirection.y < 0f)
+			projectionDirection.z = Mathf.Abs(projectionDirection.x);
+		else
+			projectionDirection.z = 1f;
+		
 		if(Physics.Raycast (rayStart + rayStartYOffset, projectionDirection, out hitInfo, rayDistance, layerMask) )
 		{
-				// Collider hit.
-				// Make sure there are not too many projectors.
-			if (m_DecalProjectors.Count >= maxSpaltCount) 
-			{
-					// If there are more than maxSpatCount projectors, we remove the first one from
-					// our list and certainly from the decals mesh (the intermediate mesh
-					// format). All the mesh data that belongs to this projector will
-					// be removed.
-				DecalProjector l_DecalProjector = m_DecalProjectors [0];
-				m_DecalProjectors.RemoveAt (0);
-				m_DecalsMesh.RemoveProjector (l_DecalProjector);
-			}
+			// Collider hit.
+			RecycleDecalProjectors();
 			
-			Vector3 l_ProjectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
 			Vector2 projectionDirection2D = new Vector2(projectionDirection.x, projectionDirection.y).normalized;
+			
 			float angle = Vector2.Angle(Vector2.right, projectionDirection2D);
+			
 			if(Vector2.Dot(Vector2.up, projectionDirection2D) > 0f)
 			{
 				angle = 360 - angle;
 			}
+		
+			Quaternion projectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 			
-			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
 			
-			projectionDirection.x = 0f;
-			if(projectionDirection.y > 0f)
+			//Vector3 upVector = l_ProjectorRotation * Vector3.up;
+			Vector3 forwardVector = projectorRotation * hitInfo.normal;
+			
+			//Debug.DrawRay(hitInfo.point, upVector, Color.red, 2000f);
+			//Debug.DrawRay(hitInfo.point,  - projectionDirection, Color.green, 2000f);
+			
+			if(projectionDirection.y < - 0.7f)
 			{
-				projectionDirection.y = 0f;	
-				decalProjectorOffset = 1f;
-			}
-			else if(projectionDirection.y < -0.7f && projectionDirection.y > - 0.90f)
-			{
-				decalProjectorOffset = 3f;
+				Vector3 hitVector = hitInfo.point - new Vector3(hitInfo.point.x, edge.position.y, edge.position.z);	
+				//Debug.DrawLine(hitInfo.point, new Vector3(hitInfo.point.x, edge.position.y, edge.position.z), Color.white, 2000f);
+				
+				decalProjectorOffset = 1.9f - Vector3.Dot(hitVector, hitInfo.normal == - Vector3.forward ? -forwardVector : forwardVector);
+				//textMesh.GetComponent<TextMesh>().text = projectionDirection.ToString();
 			}
 			else
 			{
-				decalProjectorOffset = 2.7f;
+				decalProjectorOffset = 1f;	
 			}
+			Vector3 projectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
-			Quaternion l_ProjectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
-
-			l_ProjectorRotation = l_ProjectorRotation * slapRotation;
-				
-				// We hit a collider. Next we have to find the mesh that belongs to the collider.
+			//Util.Draw.Arrow(projectorPosition, projectorPosition + projectionDirection * 3f, Color.green, 1000f);
+			
+			
+			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
+			projectorRotation = projectorRotation * slapRotation;			
+			ProjectDecal(projectorPosition, projectorRotation);	
+		}
+	}
+	
+//	private void ProjectDecalAtAngle(Vector3 projectorPosition, Quaternion projectorRotation, float angle)
+//	{
+//		Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
+//		projectorRotation = projectorRotation * slapRotation;			
+//		ProjectDecal(projectorPosition, projectorRotation, m_UVRectangleIndex);	
+//	}
+	
+	private void RecycleDecalProjectors()
+	{
+		// Make sure there are not too many projectors.
+		if (m_DecalProjectors.Count >= maxSpaltCount) 
+		{
+				// If there are more than maxSpatCount projectors, we remove the first one from
+				// our list and certainly from the decals mesh (the intermediate mesh
+				// format). All the mesh data that belongs to this projector will
+				// be removed.
+			DecalProjector l_DecalProjector = m_DecalProjectors [0];
+			m_DecalProjectors.RemoveAt (0);
+			m_DecalsMesh.RemoveProjector (l_DecalProjector);
+		}	
+	}
+	
+	private void ProjectDecal(Vector3 l_ProjectorPosition, Quaternion l_ProjectorRotation)
+	{
+		// We hit a collider. Next we have to find the mesh that belongs to the collider.
 				// That step depends on how you set up your mesh filters and collider relative to
 				// each other in the game objects. It is important to have a consistent way in order
 				// to have a simpler implementation.
 			
-			MeshCollider l_MeshCollider = hitInfo.transform.parent.GetComponent <MeshCollider> ();
-			MeshFilter l_MeshFilter = hitInfo.transform.parent.GetComponent <MeshFilter> ();
+			MeshCollider l_MeshCollider = hitInfo.transform.root.GetComponent <MeshCollider> ();
+			MeshFilter l_MeshFilter = hitInfo.transform.root.GetComponent <MeshFilter> ();
 			
 			if (l_MeshCollider != null || l_MeshFilter != null) 
 			{
@@ -239,8 +292,8 @@ public class BloodSplatter : MonoBehaviour {
 					m_DecalsMesh.AddProjector (l_DecalProjector);
 					
 						// Get the required matrices.
-					Matrix4x4 l_WorldToMeshMatrix = hitInfo.transform.parent.renderer.transform.worldToLocalMatrix;
-					Matrix4x4 l_MeshToWorldMatrix = hitInfo.transform.parent.renderer.transform.localToWorldMatrix;
+					Matrix4x4 l_WorldToMeshMatrix = hitInfo.transform.root.renderer.transform.worldToLocalMatrix;
+					Matrix4x4 l_MeshToWorldMatrix = hitInfo.transform.root.renderer.transform.localToWorldMatrix;
 					
 						// Add the mesh data to the decals mesh, cut and offset it before we pass it
 						// to the decals instance to be displayed.
@@ -251,10 +304,7 @@ public class BloodSplatter : MonoBehaviour {
 					
 						// For the next hit, use a new uv rectangle. Usually, you would select the uv rectangle
 						// based on the surface you have hit.
-					NextUVRectangleIndex ();
 				}
-			}
-			
-		}
+			}	
 	}
 }
