@@ -24,16 +24,13 @@ public class PauseMenuManager : MonoBehaviour {
 		PauseTint.SetActive(true);
 		//Enable PauseMENU
 		PauseMenu.SetActive (true);
-		Debug.Log("hit pause");
 		MenuIsActive = true;
-		Debug.Log(MenuIsActive);
 		
 	}
 	
 	public void OnResumeClick()
 	{
 		PauseTint.SetActive(false);
-		Debug.Log("hit resume");
 		MenuIsActive = false;
 	}
 	
@@ -60,7 +57,7 @@ public class PauseMenuManager : MonoBehaviour {
 	//BUTTON HANDLER:
 	void OnClick()
 	{
-		
+		Debug.Log ("Onclick pausemenumanager");
 		//case for hitting PAUSE
 		if(gameObject.name == "PauseSprite")
 		{
@@ -101,7 +98,6 @@ public class PauseMenuManager : MonoBehaviour {
 	
 	public void DisablePauseMenu()
 	{
-		Debug.Log ("Active?" + MenuIsActive);
 		if(MenuIsActive == false)
 			PauseMenu.SetActive (false);
 	}
