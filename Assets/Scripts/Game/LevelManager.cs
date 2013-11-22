@@ -186,7 +186,7 @@ public class LevelManager : MonoBehaviour
 	// adding this to ensure that data is saved when a level change occurs
 	void SaveData()
 	{
-		InstanceFinder.StatsManager.gamesPlayed++;
+		InstanceFinder.StatsManager.GamesPlayed++;
 		InstanceFinder.AchievementManager.SaveAchievements();
 		//InstanceFinder.StatsManager.Save();	
 	}
