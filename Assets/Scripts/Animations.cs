@@ -16,21 +16,57 @@ public class Animations : MonoBehaviour {
     static int jumping = Animator.StringToHash("Base.Jumping");
     static int walking = Animator.StringToHash("Base.Walking");
 
-
-	// Use this for initialization
-	void Start () 
-	{
+    # region Private Methods
+    // Use this for initialization
+    void Start ()
+    {
         anim = gameObject.GetComponentInChildren<Animator>();
         stateManager = gameObject.GetComponent<PandaStateManager>();
         pandaAI = gameObject.GetComponent<PandaAI>();
 
-        Debug.Log("staticSpikes" + staticSpikes);
+        /*Debug.Log("staticSpikes" + staticSpikes);
         Debug.Log("spikedDeathFAll" + spikedDeathFall);
         Debug.Log("deathSpikeImpact" + deathSpikeImpact);
         Debug.Log("jumping" + jumping);
-        Debug.Log("walking" + walking);
-	}
+        Debug.Log("walking" + walking);*/
+    }
 
+    IEnumerator SetNewPandaState (PandaState state)
+    {
+        anim.SetBool("NewState", true);
+        anim.SetInteger("PandaState", (int) state);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("NewState", false);
+    }
+
+    IEnumerator EndSlap (PandaDirection dir, bool isInFace)
+    {
+        yield return new WaitForSeconds(0.37f);
+
+        anim.SetBool(dir.ToString(), false);
+        anim.SetBool("Slapped", false);
+        anim.SetBool("Face", false);
+
+        stateManager.ChangeState(PandaState.Walking);
+    }
+
+    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo)
+    {
+        yield return new WaitForSeconds(animStateInfo.length);
+        pandaAI.stuckOnSpikes = false;
+
+        Debug.Log(animStateInfo.nameHash + "NameHash");
+
+        // Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        // Debug.Log(anim.GetCurrentAnimatorStateInfo(0).length);
+    }
+    # endregion
+
+    # region Public Methods
+    public void ChangePandaState (PandaState state)
+    {
+        StartCoroutine(SetNewPandaState(state));
+    }
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
@@ -90,26 +126,5 @@ public class Animations : MonoBehaviour {
         pandaAI.ChangeDirection(null);
         StartCoroutine(EndSlap(dir, isInFace));
     }
-
-    IEnumerator EndSlap (PandaDirection dir, bool isInFace)
-    {
-        yield return new WaitForSeconds(0.37f);
-
-        anim.SetBool(dir.ToString(), false);
-        anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
-
-        stateManager.ChangeState(PandaState.Walking);
-    }
-
-    IEnumerator CheckAnimationState(AnimatorStateInfo animStateInfo)
-    {
-        yield return new WaitForSeconds(animStateInfo.length);
-        pandaAI.stuckOnSpikes = false;
-
-            Debug.Log(animStateInfo.nameHash + "NameHash");
-
-       // Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-       // Debug.Log(anim.GetCurrentAnimatorStateInfo(0).length);
-    }
+    # endregion
 }
