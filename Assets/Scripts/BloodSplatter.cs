@@ -210,18 +210,18 @@ public class BloodSplatter : MonoBehaviour {
 			//Debug.DrawRay(hitInfo.point, upVector, Color.red, 2000f);
 			//Debug.DrawRay(hitInfo.point,  - projectionDirection, Color.green, 2000f);
 			
-			if(projectionDirection.y < - 0.7f)
-			{
-				Vector3 hitVector = hitInfo.point - new Vector3(hitInfo.point.x, edge.position.y, edge.position.z);	
-				//Debug.DrawLine(hitInfo.point, new Vector3(hitInfo.point.x, edge.position.y, edge.position.z), Color.white, 2000f);
-				
-				decalProjectorOffset = 1.9f - Vector3.Dot(hitVector, hitInfo.normal == - Vector3.forward ? -forwardVector : forwardVector);
-				//textMesh.GetComponent<TextMesh>().text = projectionDirection.ToString();
-			}
-			else
-			{
-				decalProjectorOffset = 1f;	
-			}
+//			if(projectionDirection.y < - 0.7f)
+//			{
+//				Vector3 hitVector = hitInfo.point - new Vector3(hitInfo.point.x, edge.position.y, edge.position.z);	
+//				//Debug.DrawLine(hitInfo.point, new Vector3(hitInfo.point.x, edge.position.y, edge.position.z), Color.white, 2000f);
+//				
+//				decalProjectorOffset = 1.9f - Vector3.Dot(hitVector, hitInfo.normal == - Vector3.forward ? -forwardVector : forwardVector);
+//				//textMesh.GetComponent<TextMesh>().text = projectionDirection.ToString();
+//			}
+//			else
+//			{
+//				decalProjectorOffset = 1f;	
+//			}
 			Vector3 projectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
 			//Util.Draw.Arrow(projectorPosition, projectorPosition + projectionDirection * 3f, Color.green, 1000f);
