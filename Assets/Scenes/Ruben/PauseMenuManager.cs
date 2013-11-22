@@ -57,7 +57,6 @@ public class PauseMenuManager : MonoBehaviour {
 	//BUTTON HANDLER:
 	void OnClick()
 	{
-		Debug.Log ("Onclick pausemenumanager");
 		//case for hitting PAUSE
 		if(gameObject.name == "PauseSprite")
 		{

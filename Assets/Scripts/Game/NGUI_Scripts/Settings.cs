@@ -15,7 +15,7 @@ public class Settings : MonoBehaviour {
 	private int MusicAnimationFlag;
 	private int SFXAnimationFlag;
 	
-	void Awake()
+	void Start()
 	{
 		menuMan = GetComponent<MenuManager>();
 		SFX_animation = SFX_Lever.GetComponent<Animation>();
@@ -77,6 +77,7 @@ public class Settings : MonoBehaviour {
 	
 	public void OnReturnClicked()
 	{
+		InstanceFinder.StatsManager.Save();
 		menuMan.SwitchToMenu(MenuTypes.MainMenu);
 	}
 	
@@ -139,7 +140,6 @@ public class Settings : MonoBehaviour {
 				Music_animation.Play ("leverAnimation2");//goleft
 	
 				InstanceFinder.StatsManager.musicEnabled = false;
-				InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
@@ -148,7 +148,6 @@ public class Settings : MonoBehaviour {
 				Music_animation.Play ("leverAnimation1");//goright
 
 				InstanceFinder.StatsManager.musicEnabled = true;
-				InstanceFinder.StatsManager.Save();
 			}
 		}
 	}
@@ -173,7 +172,6 @@ public class Settings : MonoBehaviour {
 				SFX_animation.Play ("leverAnimation2");//goleft
 
 				InstanceFinder.StatsManager.soundEffectsEnabled = false;
-				InstanceFinder.StatsManager.Save();
 			}
 			else
 			{
@@ -181,7 +179,6 @@ public class Settings : MonoBehaviour {
 				SFX_animation.Play ("leverAnimation1");//goright		
 				
 				InstanceFinder.StatsManager.soundEffectsEnabled = true;
-				InstanceFinder.StatsManager.Save();
 			}
 		}
 	}
