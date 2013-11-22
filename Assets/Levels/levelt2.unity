@@ -19,7 +19,7 @@ RenderSettings:
   m_FogDensity: .00999999978
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientLight: {r: .200000003, g: .200000003, b: .200000003, a: 1}
+  m_AmbientLight: {r: .669117689, g: .669117689, b: .669117689, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: .5
   m_FlareStrength: 1
@@ -309,7 +309,7 @@ GameObject:
   - 4: {fileID: 108020736}
   - 114: {fileID: 108020735}
   m_Layer: 0
-  m_Name: HDRAudioManager
+  m_Name: InAudio Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1976,18 +1976,18 @@ MonoBehaviour:
   widgetsAreStatic: 0
   cullWhileDragging: 0
   worldToLocal:
-    e00: 319.5
+    e00: 493.499969
     e01: 0
     e02: 0
-    e03: -14419.5371
+    e03: -22272.4297
     e10: 0
-    e11: 319.5
+    e11: 493.499969
     e12: 0
-    e13: -2566.99365
+    e13: -3964.98047
     e20: 0
     e21: 0
-    e22: 319.5
-    e23: 1178.26562
+    e22: 493.499969
+    e23: 1819.95007
     e30: 0
     e31: 0
     e32: 0
@@ -3278,7 +3278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitialSize: 10
   ChunkSize: 5
-  RuntimeAudioPrefab: {fileID: 100000, guid: 84464ec90f6ef054ab1f8356691a158b, type: 2}
+  RuntimeAudioPrefab: {fileID: 100000, guid: 4b2386948dc004345bd0ad3165b98107, type: 2}
 --- !u!114 &641594679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3560,6 +3560,69 @@ Transform:
   - {fileID: 848959343}
   - {fileID: 1753706382}
   m_Father: {fileID: 1334927318}
+--- !u!1 &685366554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100006, guid: a35f778678ee78f49bf2c4150b70b4e5, type: 2}
+  m_PrefabInternal: {fileID: 795090563}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 685366556}
+  - 108: {fileID: 685366555}
+  m_Layer: 0
+  m_Name: Directional light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &685366555
+Light:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 10800000, guid: a35f778678ee78f49bf2c4150b70b4e5,
+    type: 2}
+  m_PrefabInternal: {fileID: 795090563}
+  m_GameObject: {fileID: 685366554}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: .0799999982
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: .0500000007
+    m_Softness: 4
+    m_SoftnessFade: 1
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_ActuallyLightmapped: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 1
+  m_ShadowSamples: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_IndirectIntensity: 1
+  m_AreaSize: {x: 1, y: 1}
+--- !u!4 &685366556
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400006, guid: a35f778678ee78f49bf2c4150b70b4e5, type: 2}
+  m_PrefabInternal: {fileID: 795090563}
+  m_GameObject: {fileID: 685366554}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1447512218}
 --- !u!1 &692212890
 GameObject:
   m_ObjectHideFlags: 0
@@ -9107,6 +9170,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 282031333}
+  - {fileID: 685366556}
   - {fileID: 1497723208}
   m_Father: {fileID: 0}
 --- !u!1 &1453807960
@@ -11869,10 +11933,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7b3754f1d5340469a70fd4ecbec8cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  edge: {fileID: 0}
   decalsPrefab: {fileID: 100000, guid: ba08ac6b32f3b8d478fcdc612a304c4a, type: 2}
   maxSpaltCount: 100
-  decalProjectorOffset: 2.40100694
-  decalProjectorScale: {x: 3, y: 3, z: 3}
+  decalProjectorOffset: 1
+  decalProjectorScale: {x: 2, y: 2, z: 2}
+  slapDelay: .0500000007
+  slapUVmin: 0
+  slapUVmax: 8
+  hitUVmin: 9
+  hitUVmax: 12
   rayStartYOffset: {x: 0, y: 1, z: 0}
 --- !u!4 &1849821637
 Transform:
