@@ -41,13 +41,13 @@ public abstract class TrapBase : MonoBehaviour {
         collider.enabled = false;
     }
 
-    public void SetDirty ()
+    virtual public void SetDirty ()
     {
         dirty = true;
         if (dirtyTexture != null) renderer.material.mainTexture = dirtyTexture;
     }
 
-    public void SetClean ()
+    virtual public void SetClean ()
     {
         dirty = false;
         if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;

@@ -23,12 +23,6 @@ public class Animations : MonoBehaviour {
         anim = gameObject.GetComponentInChildren<Animator>();
         stateManager = gameObject.GetComponent<PandaStateManager>();
         pandaAI = gameObject.GetComponent<PandaAI>();
-
-        Debug.Log("staticSpikes" + staticSpikes);
-        Debug.Log("spikedDeathFAll" + spikedDeathFall);
-        Debug.Log("deathSpikeImpact" + deathSpikeImpact);
-        Debug.Log("jumping" + jumping);
-        Debug.Log("walking" + walking);
 	}
 
 
@@ -43,13 +37,13 @@ public class Animations : MonoBehaviour {
         if (statePanda == PandaState.PushingFinger)
         {
             //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
-            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
+            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
         }
         else if (pandaStateLast == PandaState.PushingFinger)
         {
-            Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
+            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
 
