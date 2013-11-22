@@ -52,7 +52,7 @@ public class PandaAIMainMenu : MonoBehaviour {
 
 	IEnumerator PlaySlap(float waitForSeconds, Vector2 slapDirection)
 	{
-		BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
+		BloodSplatter.Instance.ProjectHit(transform.position, slapDirection.normalized);
 		
 		yield return new WaitForSeconds(waitForSeconds);
 		
