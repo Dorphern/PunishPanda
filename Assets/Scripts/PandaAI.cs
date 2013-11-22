@@ -354,7 +354,14 @@ public class PandaAI : MonoBehaviour {
 					BoostingMovement(pandaStateManager.GetDirection());
 				break;
 		}
+        
+        if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
+        {
+            if (pandaStateManager.GetState() != PandaState.PushingFinger)
+           		animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState, pandaStateManager.GetDirection());
             
+            lastPandaState = pandaStateManager.GetState();
+        }
 	}
 
     void StateChange (PandaState state)
@@ -363,7 +370,6 @@ public class PandaAI : MonoBehaviour {
         {
             pandaMovementController.SetVelocity(0, 0);
         }
-        animations.ChangePandaState(state);
     }
 	
 	void FloorCollision(ControllerColliderHit hit)
