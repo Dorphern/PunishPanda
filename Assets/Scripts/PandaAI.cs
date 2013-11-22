@@ -130,6 +130,9 @@ public class PandaAI : MonoBehaviour {
 			&& pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
+        // Track a slap
+        GA.API.Design.NewEvent("panda:slapped", force, transform.position);
+
         float dot = Vector2.Dot(slapDirection.normalized, 
             Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
 		
