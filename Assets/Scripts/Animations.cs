@@ -23,12 +23,6 @@ public class Animations : MonoBehaviour {
         anim = gameObject.GetComponentInChildren<Animator>();
         stateManager = gameObject.GetComponent<PandaStateManager>();
         pandaAI = gameObject.GetComponent<PandaAI>();
-
-        Debug.Log("staticSpikes" + staticSpikes);
-        Debug.Log("spikedDeathFAll" + spikedDeathFall);
-        Debug.Log("deathSpikeImpact" + deathSpikeImpact);
-        Debug.Log("jumping" + jumping);
-        Debug.Log("walking" + walking);
 	}
 
 
