@@ -22,8 +22,8 @@ public class Settings : MonoBehaviour {
 		Music_animation = Music_Lever.GetComponent<Animation>();
 		
 		
-		bool music = InstanceFinder.StatsManager.musicEnabled;
-		bool sound = InstanceFinder.StatsManager.soundEffectsEnabled;
+		bool music = InstanceFinder.StatsManager.MusicEnabled;
+		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
 		string lang = InstanceFinder.StatsManager.language;
 		
 
@@ -139,7 +139,7 @@ public class Settings : MonoBehaviour {
 				//Debug.Log ("Music OFF");
 				Music_animation.Play ("leverAnimation2");//goleft
 	
-				InstanceFinder.StatsManager.musicEnabled = false;
+				InstanceFinder.StatsManager.MusicEnabled = false;
 			}
 			else
 			{
@@ -147,7 +147,7 @@ public class Settings : MonoBehaviour {
 
 				Music_animation.Play ("leverAnimation1");//goright
 
-				InstanceFinder.StatsManager.musicEnabled = true;
+				InstanceFinder.StatsManager.MusicEnabled = true;
 			}
 		}
 	}
@@ -171,14 +171,14 @@ public class Settings : MonoBehaviour {
 
 				SFX_animation.Play ("leverAnimation2");//goleft
 
-				InstanceFinder.StatsManager.soundEffectsEnabled = false;
+				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
 			}
 			else
 			{
 				//Debug.Log ("Sound ON");
 				SFX_animation.Play ("leverAnimation1");//goright		
 				
-				InstanceFinder.StatsManager.soundEffectsEnabled = true;
+				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
 			}
 		}
 	}
