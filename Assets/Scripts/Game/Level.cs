@@ -35,6 +35,11 @@ public class Level : MonoBehaviour
 	{
 		pandas.Add(panda);
 	}
+	
+	public void RemovePandaAIRef(PandaAI panda)
+	{
+		pandas.Remove(panda);
+	}
 
     public void PandaEscaped()
     {
