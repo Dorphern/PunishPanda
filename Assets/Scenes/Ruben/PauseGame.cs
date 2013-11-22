@@ -8,17 +8,20 @@ public class PauseGame : MonoBehaviour {
 	void Start () 
 	{
 		savedTimeScale = Time.timeScale;
+		//Debug.Log ("savingTimeScale " + gameObject);
 	}
 	
 
 	public void StopTime()
 	{
 		Time.timeScale = 0;
-		//we also may need to pause Audio here..
+		//Debug.Log ("StopTime()" + gameObject);
+		//PAUSE AUDIO ALSO??
 	}
 	
 	public void ResumeGame()
 	{
+		//Debug.Log ("ResumeGame()" + gameObject);
 		Time.timeScale = savedTimeScale;
 	}
 	

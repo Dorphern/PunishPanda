@@ -57,7 +57,6 @@ public class Settings : MonoBehaviour {
 			}
 		}
 		// language button initialization goes here
-		Debug.Log ("settings script awaken");
 		
 		//initialize Switches
 		MusicAnimationFlag = 0;
@@ -136,7 +135,7 @@ public class Settings : MonoBehaviour {
 			
 			if(_musicSlider.value==0)
 			{
-				Debug.Log ("Music OFF");
+				//Debug.Log ("Music OFF");
 				Music_animation.Play ("leverAnimation2");//goleft
 	
 				InstanceFinder.StatsManager.musicEnabled = false;
@@ -144,7 +143,7 @@ public class Settings : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log ("Music ON");
+				//Debug.Log ("Music ON");
 
 				Music_animation.Play ("leverAnimation1");//goright
 
@@ -169,7 +168,7 @@ public class Settings : MonoBehaviour {
 			
 			if(_soundEFXSlider.value==0)
 			{
-				Debug.Log ("Sound OFF");
+				//Debug.Log ("Sound OFF");
 
 				SFX_animation.Play ("leverAnimation2");//goleft
 
@@ -178,7 +177,7 @@ public class Settings : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log ("Sound ON");
+				//Debug.Log ("Sound ON");
 				SFX_animation.Play ("leverAnimation1");//goright		
 				
 				InstanceFinder.StatsManager.soundEffectsEnabled = true;
