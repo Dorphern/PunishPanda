@@ -253,16 +253,6 @@ public class PandaAI : MonoBehaviour {
         return true;
     }
 
-	public string debug = "a";
-	void OnGUI()
-	{
-		if(gameObject.name == "Pandaa")
-		{
-			GUI.color = Color.black;
-			GUI.Label(new Rect(100, 100, 200, 100), debug);
-		}
-	}
-
     public bool IsAlive ()
     {
         PandaState state = pandaStateManager.GetState();
