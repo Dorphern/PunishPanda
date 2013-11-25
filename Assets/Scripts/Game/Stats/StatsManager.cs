@@ -162,6 +162,7 @@ public class StatsManager : MonoBehaviour
     public int TotalScore
     {
         get { return totalScore; }
+		set { totalScore = value; }
     }
 	
 	public bool FingerCalibrated
