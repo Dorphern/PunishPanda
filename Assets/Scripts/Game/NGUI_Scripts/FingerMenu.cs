@@ -79,7 +79,7 @@ public class FingerMenu : MonoBehaviour {
 	
 	public void OnReturnClicked()
 	{
-			//InstanceFinder.StatsManager.Save();
+			InstanceFinder.StatsManager.Save();
 			mm.SwitchToMenu(MenuTypes.Settings);
 	}
 }
