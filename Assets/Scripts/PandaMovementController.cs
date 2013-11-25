@@ -133,7 +133,7 @@ public class PandaMovementController : MonoBehaviour {
         {
             if(dampedVelocity.y < 10f)
             {
-                
+                pandaAI.landingHard = true;
             }
             pandaAI.Falling();
         }

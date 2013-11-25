@@ -27,6 +27,7 @@ public class PandaAI : MonoBehaviour {
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
+    public bool landingHard;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -64,7 +65,7 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
 			pandaStateManager.ChangeState(PandaState.Idle);
-			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
+			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
 		}
 	}
 	
@@ -146,7 +147,7 @@ public class PandaAI : MonoBehaviour {
             {
                 animations.SetSlapped(true);
                 ChangeDirection(null);
-            }
+            animations.SetSlapped(true);
 		}
 		//if the panda is moving we handle slapping it normally
 		else
@@ -384,17 +385,18 @@ public class PandaAI : MonoBehaviour {
 	
 	void FloorCollision(ControllerColliderHit hit)
 	{
-        if (pandaStateManager.GetState() == PandaState.FallTransition || pandaStateManager.GetState() == PandaState.Falling || pandaStateManager.GetState() == PandaState.FallSplat)
+        if (pandaStateManager.GetState() == PandaState.FallTransition || pandaStateManager.GetState() == PandaState.Falling)
         {
 
-            if (isSplatFall == true)
+            if (landingHard == true)
             {
                 if (fallDir.x < 0)
                     fallDir.x += -1f;
                 else if (fallDir.x > 0)
                     fallDir.x += 1f;
-                BloodSplatter.Instance.ProjectHit(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
-                isSplatFall = false;
+
+                BloodSplatter.Instance.ProjectBlood(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
+                landingHard = false;
             }
             pandaStateManager.ChangeState(PandaState.Walking);
         }
@@ -470,7 +472,7 @@ public class PandaAI : MonoBehaviour {
             oldPosition = transform.position;
             if (speed > 17f && speed < 22f)
             {
-                isSplatFall = true;
+                landingHard = true;
                 RaycastHit hit;
 
                 if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), Vector3.down, out hit))
@@ -484,7 +486,7 @@ public class PandaAI : MonoBehaviour {
             }
             if (speed < 17f)
             {
-                isSplatFall = false;
+                landingHard = false;
             }
 
 
