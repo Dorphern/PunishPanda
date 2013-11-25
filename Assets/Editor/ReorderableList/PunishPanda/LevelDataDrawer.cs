@@ -104,6 +104,13 @@ public class LevelDataDrawer : IReorderableListAdaptor
             EditorGUI.PrefixLabel(position, 0, new GUIContent("Fun Fact Texture"));
             position.x += 150;
             currentLevel.FunFactsTexture = EditorGUI.ObjectField(position, currentLevel.FunFactsTexture, typeof(Texture2D), false) as Texture2D;
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Hint Screen Texture"));
+            position.x += 150;
+            currentLevel.HintscreenTexture = EditorGUI.ObjectField(position, currentLevel.HintscreenTexture, typeof(Texture2D), false) as Texture2D;
         }
     }
 
@@ -111,7 +118,7 @@ public class LevelDataDrawer : IReorderableListAdaptor
     {
         var currentLevel = levelDataList[index];
         if (currentLevel.Toggled)
-            return itemHeight * 11 + 100;
+            return itemHeight * 11 + 210;
         else
             return itemHeight;
     }
