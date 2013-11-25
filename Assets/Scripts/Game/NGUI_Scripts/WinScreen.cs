@@ -113,7 +113,16 @@ public class WinScreen : MonoBehaviour {
             oneStarTexture.gameObject.SetActive(true);
             twoStarTexture.gameObject.SetActive(true);
             threeStarTexture.gameObject.SetActive(true);
-			InstanceFinder.AchievementManager.AddProgressToAchievement(levelData.LevelName,3);
+			if(InstanceFinder.AchievementManager != null)
+			{
+				// if the achievement has been completed
+				if(InstanceFinder.AchievementManager.SetProgressToAchievement(levelData.LevelName,3))
+				{
+					// that means that the stars for this level had not been collected until now
+					// thus we add progress to the star hunter achievement
+					InstanceFinder.AchievementManager.AddProgressToAchievement("Star hunter", 1);
+				}
+			}
         }
 
     }

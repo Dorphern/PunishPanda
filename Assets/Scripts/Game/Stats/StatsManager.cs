@@ -20,6 +20,7 @@ public class StatsManager : MonoBehaviour
     private const string pandaKillsKey = "Kills";
 	private const string pandaPerfectKillsKey = "PerfectKills";
 	private const string pandaComboKillsKey = "ComboKills";
+	private const string pandasEscapedKey = "pandaEscapedKey";
     private const string pandaSlapsKey = "Slaps";
     private const string totalScoreKey = "TotalScore";
     private const string gamesKey = "Levels";
@@ -40,7 +41,7 @@ public class StatsManager : MonoBehaviour
     private const string funfactUnlocked = "UnlockedFunfact";
 	private const string languageKey = "Language";
 	
-	private float defaultFingerSize = 2f;
+	private float defaultFingerSize =-12f;
 
 	
 	
@@ -48,6 +49,7 @@ public class StatsManager : MonoBehaviour
     private int pandasKilled;
     private int pandasKilledPerfect;
 	private int pandasComboKilled;
+	private int pandasEscaped;
 	private int pandaSlaps;
     private int totalScore;
     private int gamesPlayed;
@@ -66,6 +68,13 @@ public class StatsManager : MonoBehaviour
     private bool soundEffectsEnabled;
 	
 	public string language;
+	
+	AchievementManager am;
+	
+	void Start()
+	{
+		am = InstanceFinder.AchievementManager;
+	}
 
     void OnEnable()
     {
@@ -84,6 +93,7 @@ public class StatsManager : MonoBehaviour
         pandasKilled = PlayerPrefs.GetInt(pandaKillsKey);
 		pandasKilledPerfect = PlayerPrefs.GetInt(pandaPerfectKillsKey);
 		pandasComboKilled = PlayerPrefs.GetInt(pandaComboKillsKey);
+		pandasEscaped = PlayerPrefs.GetInt(pandasEscapedKey);
         pandaSlaps = PlayerPrefs.GetInt(pandaSlapsKey);
         totalScore = PlayerPrefs.GetInt(totalScoreKey);
         gamesPlayed = PlayerPrefs.GetInt(gamesKey);
@@ -118,6 +128,7 @@ public class StatsManager : MonoBehaviour
         PlayerPrefs.SetInt(pandaKillsKey, PandasKilled);
 		PlayerPrefs.SetInt(pandaPerfectKillsKey, PandasKilledPerfect);
 		PlayerPrefs.SetInt(pandaComboKillsKey, pandasComboKilled);
+		PlayerPrefs.SetInt(pandasEscapedKey, pandasEscaped);
         PlayerPrefs.SetInt(pandaSlapsKey, PandaSlaps);
 
         PlayerPrefs.SetInt(gamesKey, gamesPlayed);
@@ -165,6 +176,17 @@ public class StatsManager : MonoBehaviour
 		set { totalScore = value; }
     }
 	
+	public int PandasEscaped
+    {
+        get { return pandasEscaped; }
+		set { if (pandasEscaped<value)
+			{
+			  int val = value-pandasComboKilled;
+			  am.AddProgressToAchievement("Panda Hudini", val);
+			}
+			pandasEscaped = value; }
+    }
+	
 	public bool FingerCalibrated
     {
         get { return fingerCalibrated; }
@@ -189,9 +211,9 @@ public class StatsManager : MonoBehaviour
         set { if (pandasComboKilled<value)
 			{
 			  int val = value-pandasComboKilled;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Combo noob", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Combo crazy", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Combo king", val);
+			  am.AddProgressToAchievement("Combo noob", val);
+			  am.AddProgressToAchievement("Combo crazy", val);
+			  am.AddProgressToAchievement("Combo king", val);
 			}
 			pandasComboKilled = value; 
 		}
@@ -203,7 +225,7 @@ public class StatsManager : MonoBehaviour
         set { if (spikeKills<value)
 			{
 			  int val = value-spikeKills;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Voodoo", val);
+			  am.AddProgressToAchievement("Voodoo", val);
 			}
 			spikeKills = value;
 		}
@@ -215,7 +237,7 @@ public class StatsManager : MonoBehaviour
         set { if (electricityKills<value)
 			{
 			  int val = value-electricityKills;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Shock Therapy", val);
+			  am.AddProgressToAchievement("Shock Therapy", val);
 			}
 			electricityKills = value;
 		}
@@ -227,7 +249,7 @@ public class StatsManager : MonoBehaviour
         set { if (roundSawKills<value)
 			{
 			  int val = value-roundSawKills;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Pretty Panda Pieces!", val);
+			  am.AddProgressToAchievement("Pretty Panda Pieces!", val);
 			} 
 			roundSawKills = value;
 		}
@@ -239,7 +261,7 @@ public class StatsManager : MonoBehaviour
         set { if (pounderKills<value)
 			{
 			  int val = value-pounderKills;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Meat Poundin!", val);
+			  am.AddProgressToAchievement("Meat Poundin!", val);
 			} 
 			pounderKills = value;
 		}
@@ -251,7 +273,7 @@ public class StatsManager : MonoBehaviour
         set { if (throwingStarKills<value)
 			{
 			  int val = value-throwingStarKills;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Ninja Skills", val);
+			  am.AddProgressToAchievement("Ninja Skills", val);
 			} 
 			throwingStarKills = value;
 		}
@@ -265,12 +287,12 @@ public class StatsManager : MonoBehaviour
         set { if (pandasKilled<value)
 			{
 			  int val = value-pandasKilled;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("First kill", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Getting the hand of this", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Fun times", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Serial killah", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Massmurdah", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Exterminator", val);
+			  am.AddProgressToAchievement("First kill", val);
+			  am.AddProgressToAchievement("Getting the hand of this", val);
+			  am.AddProgressToAchievement("Fun times", val);
+			  am.AddProgressToAchievement("Serial killah", val);
+			  am.AddProgressToAchievement("Massmurdah", val);
+			  am.AddProgressToAchievement("Exterminator", val);
 			} }
     }
 
@@ -280,9 +302,9 @@ public class StatsManager : MonoBehaviour
         set { if (pandaSlaps<value)
 			{
 			  int val = value-pandaSlaps;
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("High-Five", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Happy Slapper", val);
-			  InstanceFinder.AchievementManager.AddProgressToAchievement("Red finger", val);
+			  am.AddProgressToAchievement("High Five", val);
+			  am.AddProgressToAchievement("Happy Slapper", val);
+			  am.AddProgressToAchievement("Red finger", val);
 			}
 			pandaSlaps = value; 
 			}
@@ -294,9 +316,9 @@ public class StatsManager : MonoBehaviour
         set { if (literBlood<value)
 			{
 			  float val = value-literBlood;
-				  InstanceFinder.AchievementManager.AddProgressToAchievement("Bloody Mary", val);
-				  InstanceFinder.AchievementManager.AddProgressToAchievement("Blood sucker", val);
-				  InstanceFinder.AchievementManager.AddProgressToAchievement("Dracula", val);
+				  am.AddProgressToAchievement("Bloody Mary", val);
+				  am.AddProgressToAchievement("Blood sucker", val);
+				  am.AddProgressToAchievement("Dracula", val);
 			}
 			literBlood = value; }
     }
@@ -322,6 +344,5 @@ public class StatsManager : MonoBehaviour
     void OnApplicationQuit()
     {
         Save();
-		PlayerPrefs.DeleteAll();
     }
 }

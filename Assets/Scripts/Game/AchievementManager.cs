@@ -172,7 +172,7 @@ public class AchievementManager : MonoBehaviour {
 				continue;
 			}
 			
-			float progress = PlayerPrefs.GetFloat(achievementList[i].name, -1f);
+			float progress = PlayerPrefs.GetFloat(achievementList[i].name, 0f);
 			if(progress!= -1)
 				achievementList[i].LoadAchievement(progress);
 			
@@ -187,7 +187,8 @@ public class AchievementManager : MonoBehaviour {
 		for(int i=0;i<keys.Count;i++)
 		{
 			ach = achievements[keys[i]];
-			PlayerPrefs.SetFloat(ach.name, ach.GetProgress());
+			float progress =  ach.GetProgress();
+			PlayerPrefs.SetFloat(ach.name, progress);
 		}
 	}
 	
