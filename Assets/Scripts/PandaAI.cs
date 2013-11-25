@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Collections;
 
 
@@ -65,7 +64,7 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
 			pandaStateManager.ChangeState(PandaState.Idle);
-			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
+			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
 		}
 	}
 	
@@ -129,6 +128,9 @@ public class PandaAI : MonoBehaviour {
 			&& pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
+        // Track a slap
+        GA.API.Design.NewEvent("panda:slapped", force, transform.position);
+
         float dot = Vector2.Dot(slapDirection.normalized, 
             Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
 		
@@ -136,8 +138,15 @@ public class PandaAI : MonoBehaviour {
 		if(pandaStateManager.GetState() == PandaState.Idle)
 		{
             pandaStateManager.ChangeState(PandaState.Walking);
-            ChangeDirection(null);
-            animations.SetSlapped(true);
+            if (dot > 0)
+            { // Slapped in the back
+                animations.SetSlapped(false);
+            }
+            else
+            {
+                animations.SetSlapped(true);
+                ChangeDirection(null);
+            }
 		}
 		//if the panda is moving we handle slapping it normally
 		else
@@ -173,8 +182,8 @@ public class PandaAI : MonoBehaviour {
 		}
 
 		InstanceFinder.StatsManager.PandaSlaps++;
-        bloodOnSlap.EmmitSlapBlood();
-        PlaySlap(slapDirection);
+        bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
+        PlaySlap(slapDirection, force);
 
         for (int i = 0; i < slapAudioEvents.Count; i++)
         {
@@ -230,30 +239,20 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
         {
-            Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().KilledByPosition = trap.transform.position;
             Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.ImpalerSpikes
             || trap.GetTrapType() == TrapType.StaticSpikes)
         {
            // pandaController.EnableColliders(false);
-            BloodSplatter.Instance.ProjectBlood(transform.position, Vector2.right);
+            BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
         }
 
         return true;
     }
-
-	public string debug = "a";
-	void OnGUI()
-	{
-		if(gameObject.name == "Pandaa")
-		{
-			GUI.color = Color.black;
-			GUI.Label(new Rect(100, 100, 200, 100), debug);
-		}
-	}
 
     public bool IsAlive ()
     {
@@ -394,7 +393,7 @@ public class PandaAI : MonoBehaviour {
                     fallDir.x += -1f;
                 else if (fallDir.x > 0)
                     fallDir.x += 1f;
-                BloodSplatter.Instance.ProjectBlood(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
+                BloodSplatter.Instance.ProjectHit(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
                 isSplatFall = false;
             }
             pandaStateManager.ChangeState(PandaState.Walking);
@@ -403,9 +402,7 @@ public class PandaAI : MonoBehaviour {
 	
 	public void ChangeDirection(ControllerColliderHit hit)
 	{
-        Debug.Log("Change Direction: " + pandaStateManager.GetDirection());
         pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
-        Debug.Log("Current Direction: " + pandaStateManager.GetDirection());
 	}
 
 	void PandaChangeDirection(ControllerColliderHit hit)
@@ -457,9 +454,9 @@ public class PandaAI : MonoBehaviour {
 		}
 	}
 
-    void PlaySlap (Vector2 slapDirection)
+    void PlaySlap (Vector2 slapDirection, float slapForce)
     {
-        BloodSplatter.Instance.ProjectBlood(transform.position, slapDirection.normalized);
+        BloodSplatter.Instance.ProjectSlap(transform.position, slapDirection.normalized, slapForce);
     }
 
 
