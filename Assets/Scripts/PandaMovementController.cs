@@ -131,10 +131,10 @@ public class PandaMovementController : MonoBehaviour {
 
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
         {
-            //if(dampedVelocity < 10f)
-            //{
-            //    animations.
-            //}
+            if(dampedVelocity.y < 10f)
+            {
+                
+            }
             pandaAI.Falling();
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Animations : MonoBehaviour {
 
+    public bool landHard;
     private Animator anim;
     private PandaStateManager stateManager;
     PandaAI pandaAI;
@@ -89,7 +90,6 @@ public class Animations : MonoBehaviour {
             pandaAI.stuckOnSpikes = true;
         anim.SetBool(pandaStateLast.ToString(), false);
         anim.SetBool(typeTrap.ToString(), hitTrap);
-
     }
 
     public void SetSlapped(bool front)
