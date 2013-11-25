@@ -16,7 +16,6 @@ public class GUIButtonAlternator : MonoBehaviour {
 		//check for inital state..
 		bool music = InstanceFinder.StatsManager.MusicEnabled;
 		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
-
 		
 		if(buttonType == ButtonType.Sound)
 		{

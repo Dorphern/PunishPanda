@@ -10,12 +10,22 @@ public class PauseMenuManager : MonoBehaviour {
 	public GameObject PauseMenu;
 	public GameObject PauseTint;
 	public GameObject HintScreen;
+	public GameObject HintObj;
+	private UITexture HintComponent;
+	
 	private bool MenuIsActive;
-
+	private Texture2D HintTexture;
+	
 	
 	void Start()
 	{
 		pausegame = GetComponent<PauseGame>();
+		//get hint texture:
+		HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
+		UITexture HintComponent = HintObj.GetComponent<UITexture>();
+		
+		HintComponent.mainTexture = HintTexture;
+		
 	}
 	
 	public void OnPauseClick()
@@ -40,6 +50,14 @@ public class PauseMenuManager : MonoBehaviour {
 	    PauseMenu.SetActive(false);
 	}
 	
+	public void OnHintReturnClick()
+	{
+		HintScreen.SetActive(false);
+	    PauseMenu.SetActive(true);
+	}
+	
+	
+	
 	public void OnLevelsClick()
 	{
 		//Unpause game to get the normal TimeScale back
@@ -55,6 +73,7 @@ public class PauseMenuManager : MonoBehaviour {
 	}
 
 	//BUTTON HANDLER:
+	//NOTE -- MAY NOT NEED THIS ANYMORE....(because using UIbuttons)
 	void OnClick()
 	{
 		//case for hitting PAUSE
