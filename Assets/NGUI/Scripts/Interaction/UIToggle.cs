@@ -156,7 +156,12 @@ public class UIToggle : UIWidgetContainer
 	/// </summary>
 
 	void OnClick () { if (enabled) value = !value; }
-
+	
+	public void OnValueChange () {
+		Debug.Log ("OnValueChange");
+		if (enabled) value = !value; 
+	
+	}
 	/// <summary>
 	/// Fade out or fade in the active sprite and notify the OnChange event listener.
 	/// </summary>

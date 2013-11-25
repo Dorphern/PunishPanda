@@ -21,7 +21,6 @@ public class FingerMenu : MonoBehaviour {
 	{
 		mm = GetComponent<MenuManager>();
 		float size = InstanceFinder.StatsManager.FingerSize;
-		
 		if(size == smallFingerSize)
 			smallToggle.value = true;
 		else if(size == mediumFingerSize)
@@ -38,7 +37,9 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(smallToggle!=null && smallToggle.value)
 		{
+			Debug.Log ("selected small");
 			InstanceFinder.StatsManager.FingerSize = smallFingerSize;
+			//InstanceFinder.StatsManager.Save();
 		}
 		
 	}
@@ -47,7 +48,9 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(mediumToggle!=null && mediumToggle.value)
 		{
+			Debug.Log ("selected medium");
 			InstanceFinder.StatsManager.FingerSize = mediumFingerSize;
+			//InstanceFinder.StatsManager.Save();
 		}	
 		
 	}
@@ -56,7 +59,9 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(largeToggle!=null && largeToggle.value)
 		{
+			Debug.Log ("selected large");
 			InstanceFinder.StatsManager.FingerSize = largeFingerSize;
+			//InstanceFinder.StatsManager.Save();
 		}
 		
 	}
@@ -65,13 +70,30 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(xlToggle!=null && xlToggle.value)
 		{
+			Debug.Log ("selected XL");
 			InstanceFinder.StatsManager.FingerSize = XL_Finger_Size;
+			//InstanceFinder.StatsManager.Save();
 		}
 		
+	}
+	
+	public void OnFirstTimeSelectClicked()
+	{
+			InstanceFinder.StatsManager.FingerCalibrated = true;
+			InstanceFinder.StatsManager.Save();
+			mm.SwitchToMenu(MenuTypes.MainMenu);
+	}
+	
+	public void OnSelectClicked()
+	{
+			InstanceFinder.StatsManager.Save();
+			mm.SwitchToMenu(MenuTypes.Settings);
 	}
 	
 	public void OnReturnClicked()
 	{
 			mm.SwitchToMenu(MenuTypes.Settings);
 	}
+	
+	
 }
