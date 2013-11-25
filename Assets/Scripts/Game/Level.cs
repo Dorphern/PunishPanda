@@ -43,6 +43,10 @@ public class Level : MonoBehaviour
 
     public void PandaEscaped()
     {
+		if( InstanceFinder.StatsManager != null)
+		{
+			InstanceFinder.StatsManager.PandasEscaped++;
+		}
         if (onLevelLost != null)
         {
             onLevelLost();

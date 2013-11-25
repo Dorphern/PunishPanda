@@ -198,6 +198,6 @@ public class LevelManager : MonoBehaviour
 	{
 		InstanceFinder.StatsManager.GamesPlayed++;
 		InstanceFinder.AchievementManager.SaveAchievements();
-		//InstanceFinder.StatsManager.Save();	
+		InstanceFinder.StatsManager.Save();	
 	}
 }
