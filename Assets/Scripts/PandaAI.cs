@@ -137,18 +137,11 @@ public class PandaAI : MonoBehaviour {
             Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
 		
 		// if the panda is idle we need to handle its movement back into walking
-		if(pandaStateManager.GetState()==PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.Idle)
 		{
-			if(slapDirection.normalized.x>=0)
-			{
-				pandaStateManager.ChangeDirection(PandaDirection.Right);
-				pandaStateManager.ChangeState(PandaState.Walking);
-			}
-			else
-			{
-				pandaStateManager.ChangeDirection(PandaDirection.Left);
-				pandaStateManager.ChangeState(PandaState.Walking);
-			}
+            pandaStateManager.ChangeState(PandaState.Walking);
+            ChangeDirection(null);
+            animations.SetSlapped(true);
 		}
 		//if the panda is moving we handle slapping it normally
 		else
@@ -167,7 +160,8 @@ public class PandaAI : MonoBehaviour {
 					else
 					{
 						boostco = StartCoroutine("BoostingToWalking", boostDuration);
-					}
+                    }
+                    animations.SetSlapped(false);
 					pandaStateManager.ChangeState(PandaState.Boosting);
 				}
 	        }
@@ -177,11 +171,10 @@ public class PandaAI : MonoBehaviour {
 	            // swap back to 
 				//if ( pandaStateManager.GetState() == PandaState.Boosting)
 	            //	pandaStateManager.ChangeState(PandaState.Walking);
-				animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
-				
+                ChangeDirection(null);
+                animations.SetSlapped(true);
 	        }
 		}
-
 
 		InstanceFinder.StatsManager.PandaSlaps++;
         bloodOnSlap.EmmitSlapBlood();
@@ -291,6 +284,7 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnWallHit += ChangeDirection;
 
         pandaStateManager.onStateEnter += StateChange;
+        pandaStateManager.onDirectionEnter += DirectionChange;
 	}
 	
 	// Update is called once per frame
@@ -371,7 +365,17 @@ public class PandaAI : MonoBehaviour {
         {
             pandaMovementController.SetVelocity(0, 0);
         }
+
+        // Syncronize the panda state onto the animations controller
+        animations.ChangePandaState(state);
     }
+
+    // Syncronize the direction onto the animations controller
+    void DirectionChange (PandaDirection direction)
+    {
+        animations.ChangePandaDirection(direction);
+    }
+
 	
 	void FloorCollision(ControllerColliderHit hit)
 	{

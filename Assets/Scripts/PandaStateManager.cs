@@ -11,24 +11,23 @@ using System.Collections;
 
 public enum PandaState
 {
-    Idle,           /* Is standing still */
-    Walking,            /* Is walking in some direction */
-    PushingFinger,      /* Is Pushing a finger (not moving) */
-    Died,               /* The panda is DEAD! (hahahah) */
-	Jumping,
-    Falling,
-    FallSplat,
-    Slapped,
-	FallTransition,
-	Boosting
+    Idle            = 0,  /* Is standing still */
+    Walking         = 1,  /* Is walking in some direction */
+    PushingFinger   = 2,  /* Is Pushing a finger (not moving) */
+    Died            = 3,  /* The panda is DEAD! (hahahah) */
+	Jumping         = 4,
+    Falling         = 5,
+    FallSplat       = 6,
+    Slapped         = 7,
+	FallTransition  = 8,
+	Boosting        = 9
 }
 
 
 public enum PandaDirection
 {
-    Left,
-    Right,
-	Forward
+    Left  = 0,
+    Right = 1
 }
 
 public class PandaStateManager : MonoBehaviour {
@@ -54,7 +53,7 @@ public class PandaStateManager : MonoBehaviour {
 	
 	public void SwapDirection(PandaDirection dir)
 	{
-		if(dir == PandaDirection.Left)
+        if(dir == PandaDirection.Left)
 		{
 			ChangeDirection(PandaDirection.Right);
 		}
