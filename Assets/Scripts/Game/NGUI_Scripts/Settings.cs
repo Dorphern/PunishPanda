@@ -136,18 +136,19 @@ public class Settings : MonoBehaviour {
 			
 			if(_musicSlider.value==0)
 			{
-				//Debug.Log ("Music OFF");
+				
 				Music_animation.Play ("leverAnimation2");//goleft
 	
 				InstanceFinder.StatsManager.MusicEnabled = false;
+				//Debug.Log ("Music OFF");
 			}
 			else
 			{
-				//Debug.Log ("Music ON");
 
 				Music_animation.Play ("leverAnimation1");//goright
 
 				InstanceFinder.StatsManager.MusicEnabled = true;
+				//Debug.Log ("Music ON");
 			}
 		}
 	}
@@ -167,18 +168,17 @@ public class Settings : MonoBehaviour {
 			
 			if(_soundEFXSlider.value==0)
 			{
-				//Debug.Log ("Sound OFF");
-
 				SFX_animation.Play ("leverAnimation2");//goleft
 
 				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
+				//Debug.Log ("Sound OFF");
 			}
 			else
 			{
-				//Debug.Log ("Sound ON");
 				SFX_animation.Play ("leverAnimation1");//goright		
 				
 				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
+				//Debug.Log ("Sound ON");
 			}
 		}
 	}
