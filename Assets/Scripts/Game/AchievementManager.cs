@@ -190,6 +190,11 @@ public class AchievementManager : MonoBehaviour {
 			PlayerPrefs.SetFloat(ach.name, ach.GetProgress());
 		}
 	}
+	
+	public List<Achievement> AchievementsToList()
+	{
+		return new List<Achievement>(achievements.Values);
+	}
 }
 
 
