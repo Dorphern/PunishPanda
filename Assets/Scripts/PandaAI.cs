@@ -179,7 +179,7 @@ public class PandaAI : MonoBehaviour {
 	        }
 		}
 
-
+         
 		InstanceFinder.StatsManager.PandaSlaps++;
         bloodOnSlap.EmmitSlapBlood();
         PlaySlap(slapDirection);
@@ -238,7 +238,7 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
         {
-            Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
+            Instantiate(dismemberedPanda, transform.position, transform.rotation);
             Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.ImpalerSpikes
