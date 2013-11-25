@@ -79,18 +79,6 @@ public class Animations : MonoBehaviour {
             //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
-
-        if (currentDirection == PandaDirection.Left)
-        {
-            anim.SetBool(currentDirection.ToString(), pandaStateBool);
-            anim.SetBool("Right", false);
-        }
-        else
-        {
-            anim.SetBool(currentDirection.ToString(), pandaStateBool);
-            anim.SetBool("Left", false);
-        }
-
         anim.SetBool(statePanda.ToString(), pandaStateBool);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0)));
 
