@@ -22,9 +22,10 @@ public class PandaDismemberment : MonoBehaviour
 	
 	void Start ()
 	{
+        //Calculate the direction the panda is thrown by the roundsaw
 	    Vector3 currentPos = transform.position;
 	    KilledByPosition.z = currentPos.z;
-        transform.RotateAround(KilledByPosition, new Vector3(0,0,1), -30);
+        transform.RotateAround(KilledByPosition, new Vector3(0,0,1), -Random.Range(20,40));
 	    Vector3 newPos = transform.position;        
 	    transform.position = currentPos;
 	    Vector3 rotationDir = newPos - currentPos;
