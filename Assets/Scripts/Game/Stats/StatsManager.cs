@@ -29,7 +29,7 @@ public class StatsManager : MonoBehaviour
 	private const string electricityKillsKey = "Electricity";
 	private const string roundSawKillsKey = "RoundSaw";
 	
-	
+	private const string fingerCalibrationKey = "FingerCalibration";
     private const string fingerSizeKey = "FingerSize";
 
     private const string musicEnabledKey = "MusicEnabled";
@@ -60,7 +60,8 @@ public class StatsManager : MonoBehaviour
 
 
     private float fingerSize;
-
+	
+	private bool fingerCalibrated;
     private bool musicEnabled;
     private bool soundEffectsEnabled;
 	
@@ -94,6 +95,7 @@ public class StatsManager : MonoBehaviour
 		roundSawKills = PlayerPrefs.GetInt(roundSawKillsKey);
 
         fingerSize = PlayerPrefs.GetFloat(fingerSizeKey, defaultFingerSize);
+		fingerCalibrated = PlayerPrefs.GetInt(fingerCalibrationKey, 0) == 1;
         musicEnabled = PlayerPrefs.GetInt(musicEnabledKey, 1) == 1;
         soundEffectsEnabled = PlayerPrefs.GetInt(soundEffectsEnabledKey, 1) == 1;
 		
@@ -128,6 +130,7 @@ public class StatsManager : MonoBehaviour
 		
 
         PlayerPrefs.SetFloat(fingerSizeKey, FingerSize);
+		PlayerPrefs.SetInt(fingerCalibrationKey, fingerCalibrated == true ? 1 : 0);
         PlayerPrefs.SetInt(musicEnabledKey, MusicEnabled == true ? 1 : 0);
         PlayerPrefs.SetInt(soundEffectsEnabledKey, SoundEffectsEnabled == true ? 1 : 0);
 
@@ -160,7 +163,13 @@ public class StatsManager : MonoBehaviour
     {
         get { return totalScore; }
     }
-
+	
+	public bool FingerCalibrated
+    {
+        get { return fingerCalibrated; }
+        set { fingerCalibrated = value; }
+    }
+	
     public int GamesPlayed
     {
         get { return gamesPlayed; }
