@@ -370,6 +370,7 @@ public class PandaAI : MonoBehaviour {
         {
             pandaMovementController.SetVelocity(0, 0);
         }
+        animations.ChangePandaState(state);
     }
 	
 	void FloorCollision(ControllerColliderHit hit)
