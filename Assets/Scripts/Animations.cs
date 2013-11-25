@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Animations : MonoBehaviour {
 
-    public bool landHard;
+    public bool landingHard;
     private Animator anim;
     private PandaStateManager stateManager;
     PandaAI pandaAI;
