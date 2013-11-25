@@ -10,6 +10,7 @@ public class PauseMenuManager : MonoBehaviour {
 	public GameObject PauseMenu;
 	public GameObject PauseTint;
 	public GameObject HintScreen;
+	private bool MenuIsActive;
 
 	
 	void Start()
@@ -21,11 +22,16 @@ public class PauseMenuManager : MonoBehaviour {
 	{
 		//Enable Screen tint
 		PauseTint.SetActive(true);
+		//Enable PauseMENU
+		PauseMenu.SetActive (true);
+		MenuIsActive = true;
+		
 	}
 	
 	public void OnResumeClick()
 	{
-		PauseTint.SetActive(false);		
+		PauseTint.SetActive(false);
+		MenuIsActive = false;
 	}
 	
 	public void OnHintClick()
@@ -51,7 +57,6 @@ public class PauseMenuManager : MonoBehaviour {
 	//BUTTON HANDLER:
 	void OnClick()
 	{
-		
 		//case for hitting PAUSE
 		if(gameObject.name == "PauseSprite")
 		{
@@ -88,6 +93,12 @@ public class PauseMenuManager : MonoBehaviour {
 			OnMainMenuClick();
 		}
 		
+	}
+	
+	public void DisablePauseMenu()
+	{
+		if(MenuIsActive == false)
+			PauseMenu.SetActive (false);
 	}
 	
 }
