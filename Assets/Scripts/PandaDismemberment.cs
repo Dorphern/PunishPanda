@@ -22,12 +22,12 @@ public class PandaDismemberment : MonoBehaviour
 			explosionForce.x = Random.Range(minHorizontalForce, maxHorizontalForce);
 			explosionForce.y = Random.Range(minVerticalForce, maxVerticalForce);
 			explosionForce.z = - Random.Range(minVerticalForce, maxVerticalForce);
-			transform.GetChild(i).rigidbody.AddForce(explosionForce, ForceMode.Impulse);
+            transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddForce(explosionForce, ForceMode.Impulse);
 			
 			explosionForce.x = Random.Range(minTorque, maxTorque);
 			explosionForce.y = Random.Range(minTorque, maxTorque);
 			explosionForce.z = Random.Range(minTorque, maxTorque);
-			transform.GetChild(i).rigidbody.AddTorque(explosionForce, ForceMode.Impulse);	
+			transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddTorque(explosionForce, ForceMode.Impulse);	
 		}
 		
 		for(int i = 0; i < splatCount; i++)
