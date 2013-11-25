@@ -77,7 +77,6 @@ public class StatsManager : MonoBehaviour
 
     public void Load()
     {
-        Debug.Log("load");
         literBlood = PlayerPrefs.GetFloat(bloodKey);
         pandasKilled = PlayerPrefs.GetInt(pandaKillsKey);
 		pandasKilledPerfect = PlayerPrefs.GetInt(pandaPerfectKillsKey);
@@ -110,7 +109,6 @@ public class StatsManager : MonoBehaviour
 
     public void Save()
     {
-        Debug.Log("Save");
         PlayerPrefs.SetFloat(bloodKey, LiterBlood);
         PlayerPrefs.SetInt(pandaKillsKey, PandasKilled);
 		PlayerPrefs.SetInt(pandaPerfectKillsKey, PandasKilledPerfect);
