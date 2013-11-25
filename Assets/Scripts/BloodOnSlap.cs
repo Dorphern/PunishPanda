@@ -33,27 +33,16 @@ public class BloodOnSlap : MonoBehaviour {
 		}
 	}
 	
-	//Method for emmiting blood simply -- left or right.
-	public void EmmitSlapBlood()
+	
+	//Method for emmiting blood in the same direction(and angle) as slap.
+	public void EmmitSlapBloodWithAngle(Vector2 slapDirection)
 	{
 		for(int i = 0; i < slapAudioEvents.Count; ++i)
 		{
 			
 			HDRSystem.PostEvent(gameObject, slapAudioEvents[i]);
 		}
-		if(pandaStateManager.GetDirection() == PandaDirection.Right)
-		{
-			Instantiate(Resources.Load(objectName),transform.position, Quaternion.identity);
-		}
-		else
-		{
-			Instantiate(Resources.Load(objectName),transform.position, Quaternion.LookRotation(Vector3.back));
-		}	
-	}
-	
-	//Method for emmiting blood in the same direction(and angle) as slap.
-	public void EmmitSlapBloodWithAngle(Vector2 slapDirection)
-	{
+		
 		// set the angle of the splat to be the same in both XY and XZ planes
 		projectionDirection.x = slapDirection.x;
 		projectionDirection.y = slapDirection.y;

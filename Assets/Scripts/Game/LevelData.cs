@@ -20,6 +20,9 @@ public class LevelData
     [SerializeField]
     public string FunFactsText;
 
+    [SerializeField]
+    public Texture2D HintscreenTexture;
+
     public bool Toggled;
 
     [SerializeField]

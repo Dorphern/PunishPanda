@@ -11,12 +11,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Edelweiss.DecalSystem;
 
+public enum HierarchyTransform
+{
+	Base,
+	Parent,
+	ParentParent,
+	Root
+}
+
 public class BloodSplatter : MonoBehaviour {
-	public Transform edge;
+	
 	public static BloodSplatter Instance;
 		// The prefab which contains the DS_Decals script with already set material and
 		// uv rectangles.
 	public GameObject decalsPrefab;
+	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
+	public bool mainMenuSlap = false;
 	
 	public int maxSpaltCount = 100;
 	
@@ -28,6 +38,7 @@ public class BloodSplatter : MonoBehaviour {
 	public Vector3 decalProjectorScale = new Vector3 (0.2f, 2.0f, 0.2f);
 	
 	public float slapDelay = 0.1f;
+	public float decalOffsetAngle = 45f;
 	
 	public int slapUVmin;
 	public int slapUVmax;
@@ -121,7 +132,9 @@ public class BloodSplatter : MonoBehaviour {
 		else
 		{
 			Debug.LogException(new System.Exception("Failed to project a texture from " + gameObject.name + " because there was no mesh to project onto!" +
-				"\n<b> The object's Z axis must be facing an object within " + rayDistance + " meters! </b>"), this.gameObject);
+				"\n<b> The object's Z axis must be facing an object within " + rayDistance + " meters! </b>"
+				+ " \n The mesh needs to have a collider!"
+				+ " \n The combineChildren script need to execue before the bloodSplatter script!"), this.gameObject);
 		}
 	}
 	
@@ -154,24 +167,30 @@ public class BloodSplatter : MonoBehaviour {
 	public void ProjectSlap(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
 		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce));
-		//Util.Draw.Arrow(rayStart, rayStart + rotatedDirection * 1f, Color.blue, 100f);
+		
 	}
 	
 	IEnumerator ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce)
 	{
+		if(mainMenuSlap)
+		{
+			if(slapDirection.x > 0f)
+				rayStart.x = rayStart.x - 0.5f + slapForce * 3f;
+		}
+		
 		ProjectBlood(rayStart, slapDirection, slapForce);
 		NextSlapUV ();
 		
 		yield return new WaitForSeconds(slapDelay);
 		
 		Vector3 rotatedDirection;		
-		rotatedDirection = Quaternion.AngleAxis( -45, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
+		rotatedDirection = Quaternion.AngleAxis( - decalOffsetAngle, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
 		ProjectBlood(rayStart, rotatedDirection, slapForce);
 		NextSlapUV ();
 		
 		yield return new WaitForSeconds(slapDelay);
 		
-		rotatedDirection = Quaternion.AngleAxis( 45, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
+		rotatedDirection = Quaternion.AngleAxis( decalOffsetAngle, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
 		ProjectBlood(rayStart, rotatedDirection, slapForce);
 		NextSlapUV ();
 	}
@@ -181,16 +200,24 @@ public class BloodSplatter : MonoBehaviour {
 		// set the angle of the splat to be the same in both XY and XZ planes
 		projectionDirection.x = slapDirection.x;
 		projectionDirection.y = slapDirection.y;
-		if(projectionDirection.y < 0f)
-			projectionDirection.z = Mathf.Abs(projectionDirection.x);
-		else
+		if(mainMenuSlap)
+		{
 			projectionDirection.z = 1f;
+		}
+		else
+		{
+			if(projectionDirection.y < 0f)
+				projectionDirection.z = Mathf.Abs(projectionDirection.x);
+			else
+				projectionDirection.z = 1f;
+		}
 		
+		
+		Debug.DrawLine(rayStart, rayStart + projectionDirection * rayDistance, Color.blue, 100f);
 		if(Physics.Raycast (rayStart + rayStartYOffset, projectionDirection, out hitInfo, rayDistance, layerMask) )
 		{
 			// Collider hit.
 			RecycleDecalProjectors();
-			
 			
 			Vector2 projectionDirection2D = new Vector2(projectionDirection.x, projectionDirection.y).normalized;
 			
@@ -203,42 +230,15 @@ public class BloodSplatter : MonoBehaviour {
 		
 			Quaternion projectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 			
-			
-			//Vector3 upVector = l_ProjectorRotation * Vector3.up;
-			Vector3 forwardVector = projectorRotation * hitInfo.normal;
-			
-			//Debug.DrawRay(hitInfo.point, upVector, Color.red, 2000f);
 			//Debug.DrawRay(hitInfo.point,  - projectionDirection, Color.green, 2000f);
 			
-//			if(projectionDirection.y < - 0.7f)
-//			{
-//				Vector3 hitVector = hitInfo.point - new Vector3(hitInfo.point.x, edge.position.y, edge.position.z);	
-//				//Debug.DrawLine(hitInfo.point, new Vector3(hitInfo.point.x, edge.position.y, edge.position.z), Color.white, 2000f);
-//				
-//				decalProjectorOffset = 1.9f - Vector3.Dot(hitVector, hitInfo.normal == - Vector3.forward ? -forwardVector : forwardVector);
-//				//textMesh.GetComponent<TextMesh>().text = projectionDirection.ToString();
-//			}
-//			else
-//			{
-//				decalProjectorOffset = 1f;	
-//			}
 			Vector3 projectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
-			
-			//Util.Draw.Arrow(projectorPosition, projectorPosition + projectionDirection * 3f, Color.green, 1000f);
-			
 			
 			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
 			projectorRotation = projectorRotation * slapRotation;			
 			ProjectDecal(projectorPosition, projectorRotation);	
 		}
 	}
-	
-//	private void ProjectDecalAtAngle(Vector3 projectorPosition, Quaternion projectorRotation, float angle)
-//	{
-//		Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
-//		projectorRotation = projectorRotation * slapRotation;			
-//		ProjectDecal(projectorPosition, projectorRotation, m_UVRectangleIndex);	
-//	}
 	
 	private void RecycleDecalProjectors()
 	{
@@ -261,19 +261,14 @@ public class BloodSplatter : MonoBehaviour {
 				// That step depends on how you set up your mesh filters and collider relative to
 				// each other in the game objects. It is important to have a consistent way in order
 				// to have a simpler implementation.
+			Transform combinedMeshTransform = GetCombinedMeshTransform(hitInfo.transform);	
+		
+			MeshFilter l_MeshFilter = combinedMeshTransform.GetComponent <MeshFilter> ();
 			
-			MeshCollider l_MeshCollider = hitInfo.transform.root.GetComponent <MeshCollider> ();
-			MeshFilter l_MeshFilter = hitInfo.transform.root.GetComponent <MeshFilter> ();
-			
-			if (l_MeshCollider != null || l_MeshFilter != null) 
+			if (l_MeshFilter != null) 
 			{
-				Mesh l_Mesh = null;
-				if (l_MeshCollider != null) 
-				{
-					// Mesh collider was hit. Just use the mesh data from that one.
-					l_Mesh = l_MeshCollider.sharedMesh;
-				} 
-				else if (l_MeshFilter != null) 
+				Mesh l_Mesh = null; 
+				if (l_MeshFilter != null) 
 				{
 					// Otherwise take the data from the shared mesh.
 					l_Mesh = l_MeshFilter.sharedMesh;
@@ -292,8 +287,8 @@ public class BloodSplatter : MonoBehaviour {
 					m_DecalsMesh.AddProjector (l_DecalProjector);
 					
 						// Get the required matrices.
-					Matrix4x4 l_WorldToMeshMatrix = hitInfo.transform.root.renderer.transform.worldToLocalMatrix;
-					Matrix4x4 l_MeshToWorldMatrix = hitInfo.transform.root.renderer.transform.localToWorldMatrix;
+					Matrix4x4 l_WorldToMeshMatrix = combinedMeshTransform.renderer.transform.worldToLocalMatrix;
+					Matrix4x4 l_MeshToWorldMatrix = combinedMeshTransform.renderer.transform.localToWorldMatrix;
 					
 						// Add the mesh data to the decals mesh, cut and offset it before we pass it
 						// to the decals instance to be displayed.
@@ -306,5 +301,22 @@ public class BloodSplatter : MonoBehaviour {
 						// based on the surface you have hit.
 				}
 			}	
+	}
+	
+	private Transform GetCombinedMeshTransform(Transform baseTransform)
+	{
+		switch(combinedMeshTransform)
+		{
+			case HierarchyTransform.Base:	
+				return baseTransform;
+			case HierarchyTransform.Root:	
+				return baseTransform.root;
+			case HierarchyTransform.Parent:
+				return baseTransform.parent;
+			case HierarchyTransform.ParentParent:
+				return baseTransform.parent.parent;
+			default:
+				return baseTransform.root;
+		}
 	}
 }
