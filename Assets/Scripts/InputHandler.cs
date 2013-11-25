@@ -39,7 +39,7 @@ public class InputHandler : MonoBehaviour {
 		
 		lastMousePos = new Vector3[2];
 		
-		fingerSize = 2f;// InstanceFinder.StatsManager.FingerSize;
+		fingerSize = InstanceFinder.StatsManager.FingerSize;
 		
 		for(int i = 0; i < blockades.Count; i++)
 		{

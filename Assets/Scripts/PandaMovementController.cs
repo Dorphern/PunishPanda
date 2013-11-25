@@ -16,6 +16,7 @@ public class PandaMovementController : MonoBehaviour {
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
+    private Animations animations;
 	Vector3 lastPos;
     Vector3 dampedVelocity;
 	
@@ -106,6 +107,7 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
+        animations = GetComponent<Animations>();
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -129,6 +131,10 @@ public class PandaMovementController : MonoBehaviour {
 
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
         {
+            //if(dampedVelocity < 10f)
+            //{
+            //    animations.
+            //}
             pandaAI.Falling();
         }
 
