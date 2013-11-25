@@ -9,7 +9,8 @@ public enum MenuTypes
 	Achievements,
 	Unlocks,
 	Levels,
-	Finger
+	Finger,
+	FirstTimeFinger
 }
 
 public class MenuType : MonoBehaviour {
