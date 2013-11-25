@@ -33,15 +33,12 @@ public class Animations : MonoBehaviour {
         anim.SetBool("NewState", false);
     }
 
-    IEnumerator EndSlap (PandaDirection dir, bool isInFace)
+    IEnumerator ResetSlap ()
     {
-        yield return new WaitForSeconds(0.37f);
+        yield return new WaitForEndOfFrame();
 
-        anim.SetBool(dir.ToString(), false);
         anim.SetBool("Slapped", false);
         anim.SetBool("Face", false);
-
-        stateManager.ChangeState(PandaState.Walking);
     }
 
     IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo)
@@ -55,6 +52,11 @@ public class Animations : MonoBehaviour {
     public void ChangePandaState (PandaState state)
     {
         StartCoroutine(SetNewPandaState(state));
+    }
+
+    public void ChangePandaDirection (PandaDirection direction)
+    {
+        anim.SetInteger("Direction", (int) direction);
     }
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
@@ -102,18 +104,12 @@ public class Animations : MonoBehaviour {
 
     }
 
-    public void PlaySlappedAnimation(PandaDirection dir, bool isInFace, PandaState pandaStateLast)
+    public void SetSlapped(bool front)
     {
-        anim.SetBool(pandaStateLast.ToString(), false);
+        anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
 
-        bool leftDir = dir == PandaDirection.Left;
-        anim.SetBool("Left", leftDir);
-        anim.SetBool("Right", !leftDir);
-        anim.SetBool("Face", isInFace);
-
-        pandaAI.ChangeDirection(null);
-        StartCoroutine(EndSlap(dir, isInFace));
+        StartCoroutine(ResetSlap());
     }
     # endregion
 }
