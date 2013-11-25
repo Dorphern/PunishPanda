@@ -138,8 +138,15 @@ public class PandaAI : MonoBehaviour {
 		if(pandaStateManager.GetState() == PandaState.Idle)
 		{
             pandaStateManager.ChangeState(PandaState.Walking);
-            ChangeDirection(null);
-            animations.SetSlapped(true);
+            if (dot > 0)
+            { // Slapped in the back
+                animations.SetSlapped(false);
+            }
+            else
+            {
+                animations.SetSlapped(true);
+                ChangeDirection(null);
+            }
 		}
 		//if the panda is moving we handle slapping it normally
 		else
