@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Collections;
 
 
@@ -182,9 +181,9 @@ public class PandaAI : MonoBehaviour {
 	        }
 		}
 
-
+         
 		InstanceFinder.StatsManager.PandaSlaps++;
-        bloodOnSlap.EmmitSlapBlood();
+        bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
         PlaySlap(slapDirection, force);
 
         for (int i = 0; i < slapAudioEvents.Count; i++)
@@ -241,7 +240,7 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
         {
-            Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().KilledByPosition = trap.transform.position;
             Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.ImpalerSpikes
