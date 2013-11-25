@@ -5,9 +5,11 @@ public class Panda : MonoBehaviour {
 
     public void PandaKilled (bool fromTrap, bool perfect)
     {
-
         InstanceFinder.ComboSystem.OnPandaDeath(perfect);
-   
+		InstanceFinder.GameManager.ActiveLevel.RemovePandaAIRef(GetComponent<PandaAI>());
+
+        // Track panda death
+        GA.API.Design.NewEvent("panda:died", transform.position);
     }
 
 	void Start () 

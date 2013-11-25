@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400106}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Blood Decals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,8 +28,24 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400002}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decals Mesh Renderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400004}
+  - 114: {fileID: 11400004}
+  m_Layer: 0
+  m_Name: Projector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +62,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
+  - {fileID: 400004}
   m_Father: {fileID: 0}
 --- !u!4 &400002
 Transform:
@@ -55,6 +72,17 @@ Transform:
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400000}
+--- !u!4 &400004
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.9104233, y: 3.54352903, z: -2.6564579}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -82,7 +110,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_Mesh: {fileID: 4300000, guid: ace936311c3ff0741a5fea547a759bef, type: 2}
+  m_Mesh: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,14 +135,86 @@ MonoBehaviour:
   m_TextureAtlasAsset: {fileID: 0}
   m_Material: {fileID: 2100000, guid: 28dd1c8217aeef6409c8ea9d6b130397, type: 2}
   uvRectangles:
-  - name: Splat1
-    lowerLeftUV: {x: .542268455, y: 0}
-    upperRightUV: {x: .992801666, y: .294370353}
+  - name: Slap1
+    lowerLeftUV: {x: .0336744823, y: .533654451}
+    upperRightUV: {x: .24005495, y: .689842641}
+  - name: Slap2
+    lowerLeftUV: {x: .0406417139, y: .818640888}
+    upperRightUV: {x: .180198222, y: .932650149}
+  - name: Slap3
+    lowerLeftUV: {x: .233399585, y: .872055113}
+    upperRightUV: {x: .398502469, y: .958196819}
+  - name: Slap4
+    lowerLeftUV: {x: .430802315, y: .81980139}
+    upperRightUV: {x: .653964937, y: .969808698}
+  - name: Slap5
+    lowerLeftUV: {x: .704843283, y: .813995957}
+    upperRightUV: {x: .933812141, y: .980259478}
+  - name: Slap6
+    lowerLeftUV: {x: .264751732, y: .556211054}
+    upperRightUV: {x: .425209761, y: .691122711}
+  - name: Slap7
+    lowerLeftUV: {x: .454026073, y: .564339757}
+    upperRightUV: {x: .543651521, y: .657447398}
+  - name: Slap8
+    lowerLeftUV: {x: .584079623, y: .560855687}
+    upperRightUV: {x: .70273453, y: .685316741}
+  - name: Slap9
+    lowerLeftUV: {x: .733873487, y: .552727222}
+    upperRightUV: {x: .972131491, y: .715507805}
+  - name: Hit10
+    lowerLeftUV: {x: .0441252925, y: .251978606}
+    upperRightUV: {x: .173231244, y: .425210029}
+  - name: Hit11
+    lowerLeftUV: {x: .242689028, y: .246172741}
+    upperRightUV: {x: .443788856, y: .408953518}
+  - name: Hit12
+    lowerLeftUV: {x: .510924518, y: .228754818}
+    upperRightUV: {x: .703895986, y: .45191738}
+  - name: Hit13
+    lowerLeftUV: {x: .746646404, y: .261268169}
+    upperRightUV: {x: .915232718, y: .418242812}
   uv2Rectangles:
-  - name: Splat1
+  - name: Slap1
     lowerLeftUV: {x: 0, y: 0}
     upperRightUV: {x: 1, y: 1}
-  m_AreDecalsMeshesOptimized: 0
+  - name: Slap2
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap3
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap4
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap5
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap6
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap7
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap8
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Slap9
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Hit10
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Hit11
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Hit12
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  - name: Hit13
+    lowerLeftUV: {x: 0, y: 0}
+    upperRightUV: {x: 1, y: 1}
+  m_AreDecalsMeshesOptimized: 1
   m_MeshAssetFolder: Assets
 --- !u!114 &11400002
 MonoBehaviour:
@@ -129,6 +229,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MeshFilter: {fileID: 3300000}
   m_MeshRenderer: {fileID: 2300000}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9682b38a699b4204ab1a0b8eed5b00b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  affectedLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  affectInactiveRenderers: 0
+  affectOtherDecals: 0
+  skipUnreadableMeshes: 0
+  detailsMode: 0
+  affectedDetails: []
+  cullingAngle: 90
+  meshOffset: 0
+  projectAfterOffset: 0
+  normalsSmoothing: 0
+  uv1RectangleIndex: 0
+  uv2RectangleIndex: 0
+  vertexColor: {r: 1, g: 1, b: 1, a: 1}
+  m_VertexColorBlending: 0
+  affectMeshes: 1
+  affectTerrains: 1
+  useTerrainDensity: 0
+  terrainDensity: .5
 --- !u!114 &11400106
 MonoBehaviour:
   m_ObjectHideFlags: 1
