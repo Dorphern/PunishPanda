@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
 
     public void Initialize()
     {
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+
         InstanceFinder.GameManager = this;
 		
         DontDestroyOnLoad(transform.gameObject);

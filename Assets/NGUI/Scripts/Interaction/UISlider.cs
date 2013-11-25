@@ -165,7 +165,7 @@ public class UISlider : UIWidgetContainer
 		}
 		else
 		{
-			Debug.LogWarning("UISlider expected to find a foreground object or a box collider to work with", this);
+			//Debug.LogWarning("UISlider expected to find a foreground object or a box collider to work with", this);
 		}
 	}
 
