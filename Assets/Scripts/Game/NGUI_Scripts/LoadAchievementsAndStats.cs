@@ -8,6 +8,7 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 	public GameObject achievementsElement;
 	public GameObject statisticsListGridRoot;
 	public GameObject statisticsElement;
+	public Texture2D  achievementCompletedTexture;
 	
 	int achievementsIterator = 0;
 	int statsIterator = 0;
@@ -83,8 +84,10 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 		achievementsIterator++;
         go.transform.FindChild("TitleLabel").GetComponent<UILabel>().text =ach.name;
 		go.transform.FindChild("DescriptionLabel").GetComponent<UILabel>().text = ach.description;
-		if(ach.achievementIcon!=null)
-			go.transform.FindChild("ElementTexture").GetComponent<UITexture>().mainTexture = ach.achievementIcon;
+		if(achievementCompletedTexture != null && ach.HasBeenCompleted())
+				go.transform.FindChild("ElementTexture").GetComponent<UITexture>().mainTexture = achievementCompletedTexture;
+//		if(ach.achievementIcon!=null)
+//			go.transform.FindChild("ElementTexture").GetComponent<UITexture>().mainTexture = ach.achievementIcon;
 	}
 	
 	void AddStatisticMember(GameObject root, string name, string description, Texture image)
