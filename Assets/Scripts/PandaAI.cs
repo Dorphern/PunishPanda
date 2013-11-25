@@ -182,7 +182,8 @@ public class PandaAI : MonoBehaviour {
 		}
 
          
-		InstanceFinder.StatsManager.PandaSlaps++;
+		if(InstanceFinder.StatsManager != null)
+			InstanceFinder.StatsManager.PandaSlaps++;
         bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
         PlaySlap(slapDirection, force);
 

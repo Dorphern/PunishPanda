@@ -60,7 +60,10 @@ public class WinScreen : MonoBehaviour {
         Level level = InstanceFinder.GameManager.ActiveLevel;
         int score = level.GetScore();
         int highscore = levelData.HighScore;
-
+		
+		if(InstanceFinder.StatsManager!=null)
+			InstanceFinder.StatsManager.TotalScore += score;
+		
         if (score > highscore)
         {
             newHighScoreLabel.enabled = true;
@@ -110,6 +113,7 @@ public class WinScreen : MonoBehaviour {
             oneStarTexture.gameObject.SetActive(true);
             twoStarTexture.gameObject.SetActive(true);
             threeStarTexture.gameObject.SetActive(true);
+			InstanceFinder.AchievementManager.AddProgressToAchievement(levelData.LevelName,3);
         }
 
     }
