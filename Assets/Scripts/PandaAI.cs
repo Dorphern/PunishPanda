@@ -64,7 +64,6 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
 			pandaStateManager.ChangeState(PandaState.Idle);
-			pandaStateManager.ChangeDirection(PandaDirection.Forward);
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
 		}
 	}
