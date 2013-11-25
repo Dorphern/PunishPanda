@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using Edelweiss.DecalSystem;
 
 public class BloodSplatter : MonoBehaviour {
-	public Transform edge;
+	
 	public static BloodSplatter Instance;
 		// The prefab which contains the DS_Decals script with already set material and
 		// uv rectangles.
@@ -232,13 +232,6 @@ public class BloodSplatter : MonoBehaviour {
 			ProjectDecal(projectorPosition, projectorRotation);	
 		}
 	}
-	
-//	private void ProjectDecalAtAngle(Vector3 projectorPosition, Quaternion projectorRotation, float angle)
-//	{
-//		Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
-//		projectorRotation = projectorRotation * slapRotation;			
-//		ProjectDecal(projectorPosition, projectorRotation, m_UVRectangleIndex);	
-//	}
 	
 	private void RecycleDecalProjectors()
 	{
