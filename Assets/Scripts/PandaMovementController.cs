@@ -58,6 +58,7 @@ public class PandaMovementController : MonoBehaviour {
     class Falling
     {
         public float velocityThreshold = 1f; /* At what speed are we actually falling ? */
+        public float hardLandingThreshold = 10f;
     }
 	
 
@@ -128,13 +129,12 @@ public class PandaMovementController : MonoBehaviour {
 	    // Make sure the character stays in the 2D plane
 	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
         dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
-
+       
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
         {
-            if(dampedVelocity.y < 10f)
-            {
-                pandaAI.landingHard = true;
-            }
+            Debug.Log(dampedVelocity.y);
+            pandaAI.landingHard = dampedVelocity.y < -falling.hardLandingThreshold;
+            Debug.Log(pandaAI.landingHard);
             pandaAI.Falling();
         }
 
