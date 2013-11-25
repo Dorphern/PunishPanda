@@ -77,9 +77,23 @@ public class FingerMenu : MonoBehaviour {
 		
 	}
 	
-	public void OnReturnClicked()
+	public void OnFirstTimeSelectClicked()
+	{
+			InstanceFinder.StatsManager.FingerCalibrated = true;
+			InstanceFinder.StatsManager.Save();
+			mm.SwitchToMenu(MenuTypes.MainMenu);
+	}
+	
+	public void OnSelectClicked()
 	{
 			InstanceFinder.StatsManager.Save();
 			mm.SwitchToMenu(MenuTypes.Settings);
 	}
+	
+	public void OnReturnClicked()
+	{
+			mm.SwitchToMenu(MenuTypes.Settings);
+	}
+	
+	
 }
