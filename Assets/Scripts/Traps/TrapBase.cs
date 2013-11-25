@@ -41,13 +41,13 @@ public abstract class TrapBase : MonoBehaviour {
         collider.enabled = false;
     }
 
-    public void SetDirty ()
+    virtual public void SetDirty ()
     {
         dirty = true;
         if (dirtyTexture != null) renderer.material.mainTexture = dirtyTexture;
     }
 
-    public void SetClean ()
+    virtual public void SetClean ()
     {
         dirty = false;
         if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
@@ -104,7 +104,7 @@ public abstract class TrapBase : MonoBehaviour {
         }
     }
 	
-	public void TryPandaKill(PandaAI pandaAI)
+	public bool TryPandaKill(PandaAI pandaAI)
 	{
 		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
         bool successful = pandaAI.IsAlive() && PandaAttemptKill(pandaAI, isPerfect);
@@ -113,6 +113,7 @@ public abstract class TrapBase : MonoBehaviour {
             SetDirty();
             pandaKillCount++;
         }
+        return successful;
 	}
 
     # endregion
