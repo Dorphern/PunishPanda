@@ -3,8 +3,7 @@ using System.Collections;
 
 public class PressurePad : TrapActivator {
 
-    [SerializeField]
-    GameObject pressurePlate;
+    [SerializeField] GameObject pressurePlate;
     private string animationName = "pressurePlate";
     private int pandaCount = 0;
     private Collidable colliderType;
