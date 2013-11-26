@@ -41,7 +41,6 @@ public class EventHookDrawer : PropertyDrawer
         GUI.Label(labelPos, EventAttribute.EventType, eventTypeStyle);
         //if (EventAttribute.FoldedOut)
         {
-            Debug.Log("asfasf");
             GUI.skin.label.alignment = TextAnchor.MiddleLeft;
             for (int i = 0; i < prop.arraySize; ++i)
             {
