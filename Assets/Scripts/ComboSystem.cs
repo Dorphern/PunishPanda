@@ -193,9 +193,20 @@ public class ComboSystem : MonoBehaviour
             NormalKills = normalKillsCombo,
             PerfectKills = perfectKillsCombo,
         });
-
+		
+		AddStatistics();
         Reset();
         comboObject.SetActive(false);
         killObject.SetActive(false);
     }
+	
+	void AddStatistics()
+	{
+		if(InstanceFinder.StatsManager!=null && pandaComboKills > 1)
+		{
+			InstanceFinder.StatsManager.PandasComboKilled += pandaComboKills;
+			
+			
+		}
+	}
 }

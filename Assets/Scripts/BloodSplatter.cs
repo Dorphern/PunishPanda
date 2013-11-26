@@ -213,7 +213,7 @@ public class BloodSplatter : MonoBehaviour {
 		}
 		
 		
-		Debug.DrawLine(rayStart, rayStart + projectionDirection * rayDistance, Color.blue, 100f);
+		//Debug.DrawLine(rayStart, rayStart + projectionDirection * rayDistance, Color.blue, 100f);
 		if(Physics.Raycast (rayStart + rayStartYOffset, projectionDirection, out hitInfo, rayDistance, layerMask) )
 		{
 			// Collider hit.
