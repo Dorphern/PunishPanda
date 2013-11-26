@@ -73,6 +73,11 @@ public class Level : MonoBehaviour
         return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel, InstanceFinder.ComboSystem.LevelDeaths, elapsedTime);	
 	}
 	
+	public int GetTimeScore()
+	{
+        return ScoreCalculator.TimeScore(InstanceFinder.LevelManager.CurrentLevel, elapsedTime);	
+	}
+	
 	public int Stars()
 	{
 	    return ScoreCalculator.Stars(InstanceFinder.LevelManager.CurrentLevel, GetScore());	
