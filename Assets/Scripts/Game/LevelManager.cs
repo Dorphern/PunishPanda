@@ -5,6 +5,10 @@ using ExtensionMethods;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField]
+    [EventHookAttribute("On Next Load")]
+    private List<AudioEvent> onlevelLoad = new List<AudioEvent>();
+
     public LevelData CurrentLevel
     {
         get
@@ -47,7 +51,7 @@ public class LevelManager : MonoBehaviour
         System.GC.Collect();
         isInMainMenu = true;
 		SaveData();
-        Application.LoadLevel(mainMenuName);
+        LoadLevel(mainMenuName);
     }
 	
 	[HideInInspector]
@@ -59,7 +63,7 @@ public class LevelManager : MonoBehaviour
         isInMainMenu = true;
 		loadLevelsScreenFlag = true;
 		SaveData();
-        Application.LoadLevel(mainMenuName);
+        LoadLevel(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
@@ -71,7 +75,7 @@ public class LevelManager : MonoBehaviour
         {
             isInMainMenu = false;
             currentLevelIndex = index;
-            Application.LoadLevel(CurrentLevel.LevelName);
+            LoadLevel(CurrentLevel.LevelName);
         }
     }
 
@@ -80,7 +84,7 @@ public class LevelManager : MonoBehaviour
         System.GC.Collect();
         isInMainMenu = false;
 		SaveData();
-        Application.LoadLevel(CurrentLevel.LevelName);
+        LoadLevel(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
@@ -91,13 +95,13 @@ public class LevelManager : MonoBehaviour
         ++currentLevelIndex;
         if (MoreLevelsInWorld)
         {
-            Application.LoadLevel(CurrentLevel.LevelName);
+            LoadLevel(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
             isInMainMenu = true;
-            Application.LoadLevel("MainMenu");
+            LoadLevel(mainMenuName);
         }
     }
 
@@ -131,6 +135,13 @@ public class LevelManager : MonoBehaviour
         isInMainMenu = false;
         currentLevelIndex = 0;
 #endif
+    }
+
+    void LoadLevel(string level)
+    {
+        Debug.Log("load lavel");
+        Application.LoadLevel(level);
+        HDRSystem.PostEvents(gameObject, onlevelLoad);
     }
 
 
@@ -167,7 +178,7 @@ public class LevelManager : MonoBehaviour
     private void LoadLevelWithTransition(string levelName)
     {
         LevelToLoad = levelName;
-        Application.LoadLevel(transitionLevelName);
+        LoadLevel(transitionLevelName);
     }
 
     private void NextWorld()

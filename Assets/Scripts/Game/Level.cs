@@ -24,6 +24,14 @@ public class Level : MonoBehaviour
     public delegate void LevelLostDelegate();
     public event LevelLostDelegate onLevelLost;
 
+    [SerializeField]
+    [EventHookAttribute("On Level Win")]
+    private List<AudioEvent> onLevelWin = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Level Lost")]
+    private List<AudioEvent> onLose = new List<AudioEvent>();
+
     # region Public Methods
 
     public void Pause()
@@ -45,6 +53,7 @@ public class Level : MonoBehaviour
     {
         if (onLevelLost != null)
         {
+            HDRSystem.PostEvents(gameObject, onLose);
             onLevelLost();
         }
     }
@@ -98,8 +107,11 @@ public class Level : MonoBehaviour
         if (InstanceFinder.ComboSystem && InstanceFinder.ComboSystem.AlivePandas <= 0 && onLevelCompleteFlag == false && onLevelComplete != null)
 		{
 			onLevelCompleteFlag = true;
-            if(onLevelComplete != null)
-			    onLevelComplete();
+		    if (onLevelComplete != null)
+		    {
+		        onLevelComplete();
+                HDRSystem.PostEvents(gameObject, onLevelWin);
+		    }
 		}	
     }
 	

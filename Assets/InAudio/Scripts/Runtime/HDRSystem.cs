@@ -302,7 +302,7 @@ public class HDRSystem : MonoBehaviour
         }
         else
         {
-            Object.Destroy(transform.parent);
+            Object.Destroy(transform.parent.gameObject);
         }
     }
 
