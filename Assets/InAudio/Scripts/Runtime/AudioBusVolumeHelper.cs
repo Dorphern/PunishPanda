@@ -5,7 +5,6 @@ using UnityEngine;
 public static class AudioBusVolumeHelper {
     public static void SetTargetVolume(AudioBus bus, float targetVolume, EventBusAction.VolumeSetMode setMode, float duration, FadeCurveType curveType)
     {
-        bus.Dirty = true;
         if (setMode == EventBusAction.VolumeSetMode.Absolute)
         {
             if (duration == 0)
@@ -35,81 +34,62 @@ public static class AudioBusVolumeHelper {
 
     public static void UpdateBusVolumes(AudioBus bus)
     {
-        double currentTime = AudioSettings.dspTime;
+        
         Fader fader = bus.Fader;
         if (fader.Activated)
-        {
-            bus.Dirty = true;
+        {   
+            double currentTime = AudioSettings.dspTime;
             bus.RuntimeSelfVolume = (float)fader.Lerp(AudioSettings.dspTime);
 
-            if (bus.RuntimeSelfVolume == fader.EndValue || fader.EndTime <= currentTime)
+            if (/*bus.RuntimeSelfVolume == fader.EndValue ||*/  currentTime > fader.EndTime)
             {
-                //Debug.Log(bus.RuntimeSelfVolume +"=="+ fader.EndValue +"||"+ fader.EndTime +"<="+ currentTime);
                 fader.Activated = false;
             }
         }
-        if (bus.Dirty)
+
+        /**/
+
+        float parentVolume;
+        if (bus.Parent != null)
         {
-            if (bus.Parent != null)
+            parentVolume = bus.Parent.RuntimeVolume;
+        }
+        else
+        {
+            parentVolume = 1.0f;
+        }
+        float oldVolume = bus.RuntimeVolume;
+        
+        bus.RuntimeVolume = bus.Volume * bus.RuntimeSelfVolume * parentVolume;
+        
+        if (bus.RuntimeVolume != oldVolume)
+        {
+            var players = bus.GetRuntimePlayers();
+            for (int i = 0; i < players.Count; ++i)
             {
-                bus.CombinedVolume = bus.Parent.RuntimeVolume;
-            }
-            else
-            {
-                bus.CombinedVolume = 1.0f;
-            }
-            
-            double currentVolume = bus.RuntimeVolume;
-            
-            bus.RuntimeVolume = bus.RuntimeSelfVolume*bus.CombinedVolume * bus.Volume;
-            if (bus.RuntimeVolume == currentVolume)
-            {
-                bus.Dirty = false;
-            }
-            var nodes = bus.GetRuntimePlayers();
-            for (int i = 0; i < nodes.Count; ++i)
-            {
-                if (nodes[i] != null)
-                    nodes[i].UpdateBusVolume(bus.RuntimeVolume);
+                if (players[i] != null)
+                {
+                    players[i].UpdateBusVolume(bus.RuntimeVolume);
+                }
                 else
                 {
-                    nodes.SwapRemoveAt(i);
+                    players.SwapRemoveAt(i);
                 }
             }
-           
         }
 
         for (int i = 0; i < bus.Children.Count; ++i)
         {
-            if (bus.Dirty)
-                bus.Children[i].Dirty = true;
             UpdateBusVolumes(bus.Children[i]);
         }
     }
 
-    public static void UpdateCombinedVolume(AudioBus bus)
+    public static void InitVolumes(AudioBus bus)
     {
-        UpdateCombinedVolume(bus, 1.0f);
-    }
-
-    private static void UpdateCombinedVolume(AudioBus bus, float volume)
-    {
-        if (bus != null)
+        bus.RuntimeSelfVolume = bus.SelfVolume;
+        for (int i = 0; i < bus.Children.Count; ++i)
         {
-            float newVolume = bus.Volume*volume;
-            if (newVolume != bus.CombinedVolume)
-            {
-                bus.Dirty = true;
-                    //Non serialized, so will only stick while playing, will then get updated by the runtime system
-            }
-            bus.CombinedVolume = newVolume;
-            bus.Volume = newVolume;
-            bus.RuntimeSelfVolume = bus.Volume;
-
-            for (int i = 0; i < bus.Children.Count; i++)
-            {
-                UpdateCombinedVolume(bus.Children[i], bus.CombinedVolume);
-            }
-        }
+            InitVolumes(bus.Children[i]);
+        }        
     }
 }

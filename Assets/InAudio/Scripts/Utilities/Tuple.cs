@@ -28,6 +28,18 @@ public static class Tuple
     }
 }
 
+public struct TupleS<T1, T2>
+{
+    public T1 Item1;
+    public T2 Item2;
+    public TupleS(T1 t1, T2 t2)
+    {
+        this.Item1 = t1;
+        this.Item2 = t2;
+    }
+}
+
+
 public class Tuple<T1>
 {
     public T1 Item1;

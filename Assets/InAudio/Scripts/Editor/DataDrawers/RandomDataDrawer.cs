@@ -1,12 +1,14 @@
 using UnityEditor;
 using UnityEngine;
-namespace InAudio.HDREditorGUI
+namespace InAudio.InAudioEditorGUI
 { 
 public static class RandomDataDrawer {
     public static void Draw(AudioNode node)
     {
-        UndoHandler.CheckUndo(new UnityEngine.Object[] { node, node.NodeData }, "Random Data Node Change");
-        node.Name = EditorGUILayout.TextField("Name", node.Name);
+        //UndoHandler.CheckUndo(new UnityEngine.Object[] { node, node.NodeData }, "Random Data Node Change");
+        UndoHelper.GUIUndo(node, "Name Change", () =>
+            EditorGUILayout.TextField("Name", node.Name),
+            s => node.Name = s);
         NodeTypeDataDrawer.Draw(node);
         EditorGUILayout.Separator();
 
@@ -15,6 +17,7 @@ public static class RandomDataDrawer {
             EditorGUILayout.BeginVertical();
 
             EditorGUILayout.LabelField("Weights");
+
 
             for (int i = 0; i < node.Children.Count; ++i)
             {
@@ -26,7 +29,7 @@ public static class RandomDataDrawer {
 
             EditorGUILayout.EndVertical();
         }
-        UndoHandler.CheckGUIChange();
+        //UndoHandler.CheckGUIChange();
         
     }
 }

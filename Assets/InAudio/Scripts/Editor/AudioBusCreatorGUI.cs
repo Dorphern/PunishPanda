@@ -1,6 +1,6 @@
 using System;
 using InAudio;
-using InAudio.HDREditorGUI;
+using InAudio.InAudioEditorGUI;
 using InAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
@@ -21,10 +21,10 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
     {
         BaseOnGUI();
 
-        var root = HDRInstanceFinder.DataManager.BusTree;
-        int id = HDRInstanceFinder.InAudioGuiUserPrefs.SelectedBusID;
+        var root = InAudioInstanceFinder.DataManager.BusTree;
+        int id = InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedBusID;
         var selectedNode = UpdateSelectedNode(root, id);
-        HDRInstanceFinder.InAudioGuiUserPrefs.SelectedBusID = selectedNode != null ? selectedNode.ID : 0;
+        InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedBusID = selectedNode != null ? selectedNode.ID : 0;
     
 
         this.leftWidth = leftWidth;
@@ -43,7 +43,7 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         EditorGUILayout.BeginVertical();
         treeArea.y -= 25;
         //treeArea.height += 10;
-        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.BusTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(InAudioInstanceFinder.DataManager.BusTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndVertical();
@@ -54,8 +54,8 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         if (treeDrawer.SelectedNode != null)
         {
             AudioBusDrawer.Draw(treeDrawer.SelectedNode);
-            HDRInstanceFinder.DataManager.BusTree.Dirty = true;
-            //AudioBusVolumeHelper.UpdateCombinedVolume(HDRInstanceFinder.DataManager.BusTree);
+            //InAudioInstanceFinder.DataManager.BusTree.Dirty = true;
+            //AudioBusVolumeHelper.UpdateCombinedVolume(InAudioInstanceFinder.DataManager.BusTree);
 
         }
     }
@@ -80,7 +80,10 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         }
         else
         {
-            UndoHelper.RecordObjects("Bus Move", node, target, target.Parent);
+            if (!target.IsRoot)
+                UndoHelper.RecordObject(new Object[] { node, target }, "Bus Move");
+            else
+                UndoHelper.RecordObject(new Object[] { node, target.Parent }, "Bus Move");
         }
         
         NodeWorker.ReasignNodeParent(target, node);            
@@ -96,8 +99,8 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
 
         if (!audioBus.IsRoot)
             menu.AddItem(new GUIContent(@"Delete"), false, data => {
-                treeDrawer.SelectPreviousNode();
-                DeleteNode(audioBus);
+                //treeDrawer.SelectPreviousNode();
+                DeleteBus(audioBus);
             }, audioBus);
         else
             menu.AddDisabledItem(new GUIContent(@"Delete"));
@@ -108,8 +111,12 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
     private void CreateChildBus(object userData)
     {
         AudioBus bus = userData as AudioBus;
-        Undo.RegisterUndo(bus, "Bus Creation");
-        AudioBusWorker.CreateBus(bus);
+        UndoHelper.DoInGroup(() =>
+        {
+            UndoHelper.RecordObjectFull(bus, "Bus Creation");
+            AudioBusWorker.CreateChild(bus);    
+        });
+        
     }
 
     protected override bool OnNodeDraw(AudioBus node, bool isSelected)
@@ -117,10 +124,15 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         return BusDrawer.Draw(node, isSelected);
     }
 
-    private void DeleteNode(AudioBus bus)
+    private void DeleteBus(AudioBus bus)
     {
-        Undo.RegisterUndo(bus.Parent, "Bus Deletion");
-        AudioBusWorker.DeleteBus(bus, HDRInstanceFinder.DataManager.AudioTree);
+        UndoHelper.DoInGroupWithWarning(() =>
+        {
+            UndoHelper.RegisterUndo(bus.Parent, "Bus Deletion");
+            AudioBusWorker.DeleteBus(bus, InAudioInstanceFinder.DataManager.AudioTree);
+            UndoHelper.Destroy(bus);
+        });
+        
     }
 
     public void FindBus(AudioBus audioBus)

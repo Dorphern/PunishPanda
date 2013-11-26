@@ -3,16 +3,20 @@ using InAudio.ExtensionMethods;
 using UnityEditor;
 using UnityEngine;
 
-namespace InAudio.HDREditorGUI
+namespace InAudio.InAudioEditorGUI
 {
 public static class AudioBankLinkDrawer
 {
     public static void Draw(AudioBankLink node)
     {
         EditorGUILayout.BeginVertical();
-        UndoCheck.Instance.CheckUndo(node);
-        node.Name = EditorGUILayout.TextField("Name", node.Name);
-        UndoCheck.Instance.CheckDirty(node);
+
+        UndoHelper.GUIUndo(node, "Name Change", () =>
+        {
+            return EditorGUILayout.TextField("Name", node.Name);
+        }, s => node.Name = s);
+
+
         if (node.Type != AudioBankTypes.Folder)
         {
             EditorGUILayout.IntField("ID", node.GUID);
@@ -21,12 +25,11 @@ public static class AudioBankLinkDrawer
             bool autoLoad = EditorGUILayout.Toggle("Auto load", node.AutoLoad);
             if (autoLoad != node.AutoLoad)
             {
-                Undo.RegisterUndo(node, "Bank Auto Load");
+                UndoHelper.RecordObjectFull(node, "Bank Auto Load");
                 node.AutoLoad = autoLoad;
             }
         }
         
-
         Rect lastArea = GUILayoutUtility.GetLastRect();
         lastArea.y += 28;
         lastArea.width = 200;
