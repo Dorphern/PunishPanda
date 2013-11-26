@@ -1,4 +1,5 @@
 ﻿using InAudio;
+using InAudio.ExtensionMethods;
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
@@ -24,7 +25,7 @@ public static class DataDrawerHelper {
 
         //
         if (node.Bus != null)
-            EditorGUILayout.TextField("Used Bus", AudioBusWorker.GetParentBus(node).Name);
+            EditorGUILayout.TextField("Used Bus", node.GetBus().Name);
         else
         {
             GUILayout.Label("Missing node");
