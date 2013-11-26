@@ -69,11 +69,13 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     public bool Filtered = false;
 #endif
 
-    public List<RuntimePlayer> GetRuntimePlayers()
+    public List<RuntimePlayer> RuntimePlayers
     {
-        if (NodesInBus == null)
-            NodesInBus = new List<RuntimePlayer>();
-        return NodesInBus;
+        get {
+            if (NodesInBus == null)
+                NodesInBus = new List<RuntimePlayer>();
+            return NodesInBus;
+        }
     }
 
     public AudioBus GetParent
