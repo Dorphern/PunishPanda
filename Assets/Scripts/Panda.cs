@@ -7,9 +7,19 @@ public class Panda : MonoBehaviour {
     {
         InstanceFinder.ComboSystem.OnPandaDeath(perfect);
 		InstanceFinder.GameManager.ActiveLevel.RemovePandaAIRef(GetComponent<PandaAI>());
-		InstanceFinder.StatsManager.PandasKilled++;
-		if(perfect == true)
-			InstanceFinder.StatsManager.PandasKilledPerfect++;
+		if(InstanceFinder.StatsManager!=null)
+		{
+			InstanceFinder.StatsManager.PandasKilled++;
+			if(perfect == true)
+			{
+				InstanceFinder.StatsManager.PandasKilledPerfect++;
+				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(1f);
+			}
+			else
+			{
+				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.7f);
+			}
+		}
         // Track panda death
         GA.API.Design.NewEvent("panda:died", transform.position);
     }

@@ -63,6 +63,11 @@ public class PandaAI : MonoBehaviour {
 		    pandaStateManager.GetState() == PandaState.Walking     ||
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
+			
+			if(InstanceFinder.StatsManager!=null)
+			{
+				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
+			}
 			pandaStateManager.ChangeState(PandaState.Idle);
 			pandaStateManager.ChangeDirection(PandaDirection.Forward);
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
@@ -183,7 +188,10 @@ public class PandaAI : MonoBehaviour {
 
          
 		if(InstanceFinder.StatsManager != null)
+		{
 			InstanceFinder.StatsManager.PandaSlaps++;
+			InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.15f);
+		}
         bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
         PlaySlap(slapDirection, force);
 
