@@ -9,9 +9,8 @@ public static class AudioDataDrawer
 {
     public static void Draw(AudioNode node)
     {
-        UndoHelper.GUIUndo(node, "Name Change", () => 
-            EditorGUILayout.TextField("Name", node.Name), 
-            s => node.Name = s);
+        UndoHelper.GUIUndo(node, "Name Change", ref node.Name, () => 
+            EditorGUILayout.TextField("Name", node.Name));
 
         EditorGUILayout.Separator();
         AudioData audio = node.NodeData as AudioData;
@@ -21,6 +20,8 @@ public static class AudioDataDrawer
             UndoHelper.RecordObjectFull(new Object[] { node.NodeData, node.GetBank().LazyBankFetch }, "Changed " + node.Name + " Clip");
             audio.EditorClip = clip;
             AudioBankWorker.SwapClipInBank(node, clip);
+            EditorUtility.SetDirty(node.GetBank().LazyBankFetch);
+            EditorUtility.SetDirty(node.NodeData);
         }
 
         NodeTypeDataDrawer.Draw(node);
