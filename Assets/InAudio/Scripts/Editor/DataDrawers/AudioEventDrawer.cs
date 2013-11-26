@@ -18,9 +18,13 @@ public static class AudioEventDrawer
     private static int toRemove = -1;
     public static bool Draw(AudioEvent audioevent)
     {
-        UndoHelper.GUIUndo(audioevent, "Name Change", () => 
-            EditorGUILayout.TextField("Name", audioevent.Name),
-            s => audioevent.Name = s);
+        if (lastEvent != audioevent)
+        {
+            audioEventAction = null;
+        }
+        lastEvent = audioevent;
+        UndoHelper.GUIUndo(audioevent, "Name Change", ref audioevent.Name, () => 
+            EditorGUILayout.TextField("Name", audioevent.Name));
         
         bool repaint = false;
       
