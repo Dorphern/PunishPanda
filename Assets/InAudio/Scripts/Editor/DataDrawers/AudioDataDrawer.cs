@@ -20,8 +20,8 @@ public static class AudioDataDrawer
             UndoHelper.RecordObjectFull(new Object[] { node.NodeData, node.GetBank().LazyBankFetch }, "Changed " + node.Name + " Clip");
             audio.EditorClip = clip;
             AudioBankWorker.SwapClipInBank(node, clip);
-            EditorUtility.SetDirty(node.GetBank().LazyBankFetch);
-            EditorUtility.SetDirty(node.NodeData);
+            EditorUtility.SetDirty(node.GetBank().LazyBankFetch.gameObject);
+            EditorUtility.SetDirty(node.NodeData.gameObject);
         }
 
         NodeTypeDataDrawer.Draw(node);
