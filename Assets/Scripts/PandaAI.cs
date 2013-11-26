@@ -28,6 +28,7 @@ public class PandaAI : MonoBehaviour {
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
     public bool landingHard;
+    public bool pandaEscaped;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -37,6 +38,7 @@ public class PandaAI : MonoBehaviour {
     private Vector3 oldPosition;
     private Vector3 fallDir;
 	private Coroutine boostco;
+
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -71,10 +73,13 @@ public class PandaAI : MonoBehaviour {
 	
 	void Update()
 	{
-//		if(Input.GetKeyDown(KeyCode.B))
-//		{
-//			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));	
-//		}
+        if(pandaEscaped)
+        {
+
+            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y - 100f, transform.position.z), Time.deltaTime * 0.06f);
+
+
+        }
 	}
 	
 	public void PandaPushingFinger()
@@ -82,7 +87,7 @@ public class PandaAI : MonoBehaviour {
 		if(pandaStateManager.GetState()!=PandaState.Idle)
 		{
 			Debug.Log("pushing");
-			pandaStateManager.ChangeState(PandaState.PushingFinger);	
+			pandaStateManager.ChangeState(PandaState.PushingFinger);
 		}
 	}
 	
@@ -221,13 +226,12 @@ public class PandaAI : MonoBehaviour {
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
     {
         // Disable death if the panda is already dead
-        if (pandaStateManager.GetState() == PandaState.Died)
-        {
-            return false;
-        }
+        //if (pandaStateManager.GetState() == PandaState.Died)
+        //{
+        //    return false;
+        //}
 
-        Debug.Log("Hit death object: " + trap.GetTrapType());
-		
+        Debug.Log("Hit death object: " + trap.GetTrapType());		
 		
         pandaStateManager.ChangeState(PandaState.Died);
 
@@ -332,7 +336,6 @@ public class PandaAI : MonoBehaviour {
                 if (ApplyGravity != null)
                 {
                  //   animations.PlayAnimation(pandaStateManager.GetState(), true, lastPandaState);
-                    //speedFalling();
                     ApplyGravity();
                 }
                 
@@ -349,7 +352,10 @@ public class PandaAI : MonoBehaviour {
                 break;
             case PandaState.Died:
                 if (ApplyGravity != null && stuckOnSpikes == false)
-                    ApplyGravity();
+                {
+                    //ApplyGravity();
+                }
+
                 break;
 			case PandaState.Boosting:
 				if (BoostingMovement!=null)
@@ -461,25 +467,19 @@ public class PandaAI : MonoBehaviour {
         BloodSplatter.Instance.ProjectSlap(transform.position, slapDirection.normalized, slapForce);
     }
 
-
-    void speedFalling()
+    void OnTriggerEnter(Collider c)
     {
-        if (oldPosition != transform.position)
+        if (c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.LedgeFall && pandaStateManager.GetState() == PandaState.Walking)
         {
-            fallDir = (oldPosition - transform.position).normalized;
-            float dist = (oldPosition - transform.position).magnitude;
-            speed = dist / Time.deltaTime;
-            oldPosition = transform.position;
-            if (speed > 17f && speed < 22f)
-            {
-                landingHard = true;
-                
-            }
-            if (speed < 17f)
-            {
-                landingHard = false;
-            }
-
+            animations.PlayLedgeFallAnimation(pandaStateManager.GetDirection());
+        }
+        if(c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown)
+        {
+            pandaStateManager.ChangeState(PandaState.Escape);
+            transform.position = Vector3.Slerp(transform.position, new Vector3(c.transform.position.x - 0.4f, transform.position.y, -1f), 100f * Time.deltaTime);
+        }
+        else if(c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp)
+        {
 
         }
     }

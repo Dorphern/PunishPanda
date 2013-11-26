@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Animations : MonoBehaviour {
 
-    public bool landingHard;
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
@@ -44,11 +43,15 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Face", false);
     }
 
-    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo)
+    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
     {
         yield return new WaitForSeconds(animStateInfo.length);
         pandaAI.stuckOnSpikes = false;
         anim.SetBool("LandingHard", false);
+        if(statePanda == PandaState.Escape)
+        {
+            pandaAI.pandaEscaped = true;
+        }
     }
     # endregion
 
@@ -65,7 +68,6 @@ public class Animations : MonoBehaviour {
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
-
         anim.SetBool(pandaStateLast.ToString(), false);
 
         Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
@@ -86,13 +88,11 @@ public class Animations : MonoBehaviour {
         anim.SetBool(statePanda.ToString(), pandaStateBool);
         anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
-        StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0)));
+        StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
     }
     public void PlayDeathAnimation(TrapBase trap, bool hitTrap, PandaDirection pandaDirection, PandaState pandaStateLast)
     {
-        if (trap.GetTrapType() == TrapType.StaticSpikes)
-            pandaAI.stuckOnSpikes = true;
         anim.SetBool(pandaStateLast.ToString(), false);
         anim.SetInteger("TrapPosition", (int) trap.GetTrapPosition());
         anim.SetInteger("TrapType", (int)trap.GetTrapType());
@@ -103,8 +103,14 @@ public class Animations : MonoBehaviour {
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
+        anim.SetBool("LedgeFall", false);
 
         StartCoroutine(ResetSlap());
+    }
+    public void PlayLedgeFallAnimation(PandaDirection pandaDirection)
+    {
+        anim.SetBool("LedgeFall", true);
+        anim.SetInteger("Direction", (int)pandaDirection);
     }
     # endregion
 }
