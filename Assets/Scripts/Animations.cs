@@ -3,8 +3,10 @@ using System.Collections;
 
 public class Animations : MonoBehaviour {
 
+    public bool landingHard;
     private Animator anim;
     private PandaStateManager stateManager;
+    private CharacterController characterController;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
@@ -20,9 +22,10 @@ public class Animations : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        anim = gameObject.GetComponentInChildren<Animator>();
-        stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();
+        anim = GetComponentInChildren<Animator>();
+        stateManager = GetComponent<PandaStateManager>();
+        pandaAI = GetComponent<PandaAI>();
+        characterController = GetComponent<CharacterController>();
     }
 
     IEnumerator SetNewPandaState (PandaState state)
@@ -45,6 +48,7 @@ public class Animations : MonoBehaviour {
     {
         yield return new WaitForSeconds(animStateInfo.length);
         pandaAI.stuckOnSpikes = false;
+        anim.SetBool("LandingHard", false);
     }
     # endregion
 
@@ -80,16 +84,19 @@ public class Animations : MonoBehaviour {
         }
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
+        anim.SetBool("Grounded", characterController.isGrounded);
+        anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0)));
 
     }
-    public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap, PandaState pandaStateLast)
+    public void PlayDeathAnimation(TrapBase trap, bool hitTrap, PandaDirection pandaDirection, PandaState pandaStateLast)
     {
-        if (typeTrap == TrapType.StaticSpikes)
+        if (trap.GetTrapType() == TrapType.StaticSpikes)
             pandaAI.stuckOnSpikes = true;
         anim.SetBool(pandaStateLast.ToString(), false);
-        anim.SetBool(typeTrap.ToString(), hitTrap);
-
+        anim.SetInteger("TrapPosition", (int) trap.GetTrapPosition());
+        anim.SetInteger("TrapType", (int)trap.GetTrapType());
+        anim.SetInteger("Direction", (int) pandaDirection);
     }
 
     public void SetSlapped(bool front)
