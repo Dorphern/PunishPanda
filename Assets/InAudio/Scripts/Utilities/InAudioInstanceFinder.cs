@@ -9,7 +9,8 @@ public class InAudioInstanceFinder : MonoBehaviour
     private static InAudioInstanceFinder instance;
     void OnEnable()
     {
-        instance = this;
+        if(instance == null)
+            instance = this;
     }
 
     private static CommonDataManager _dataManager;
