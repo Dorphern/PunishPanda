@@ -21,6 +21,12 @@ public static class AudioEventDrawer
         if (lastEvent != audioevent)
         {
             audioEventAction = null;
+            if (audioevent.ActionList.Count > 0)
+            {
+                audioEventAction = audioevent.ActionList[0];
+            }
+            drawArea = new Rect();
+
         }
         lastEvent = audioevent;
         UndoHelper.GUIUndo(audioevent, "Name Change", ref audioevent.Name, () => 
@@ -34,9 +40,8 @@ public static class AudioEventDrawer
 
             EditorGUILayout.Separator();
 
-            UndoHelper.GUIUndo(audioevent, "Delay", () =>
-                Mathf.Max(EditorGUILayout.FloatField("Delay", audioevent.Delay), 0), 
-                s => audioevent.Delay = s);
+            UndoHelper.GUIUndo(audioevent, "Delay", ref audioevent.Delay, () =>
+                Mathf.Max(EditorGUILayout.FloatField("Delay", audioevent.Delay), 0));
           
             Rect entireArea = EditorGUILayout.BeginVertical();
 
@@ -95,7 +100,6 @@ public static class AudioEventDrawer
             }
             EditorGUILayout.EndVertical();
         }
-        
     }
 
     private static void NewEventArea(AudioEvent audioevent)
@@ -228,12 +232,16 @@ public static class AudioEventDrawer
                 toRemove = i;
             }
 
-            if (Event.current.ClickedWithin(lastArea))
+            if (Event.current.ClickedWithin(lastArea) )
             {
                 drawArea = lastArea;
                 audioEventAction = currentAction;
                 Event.current.Use();
             }
+            /*if (audioEventAction == currentAction)
+            {
+                drawArea = lastArea;
+            }*/
  
             GUILayout.Label("");
             //EditorGUILayout.EndHorizontal();
