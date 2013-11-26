@@ -73,6 +73,19 @@ public abstract class TrapBase : MonoBehaviour {
     }
 
     abstract public TrapType GetTrapType ();
+	
+	public bool TryPandaKill(PandaAI pandaAI)
+	{
+		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
+        bool successful = pandaAI.IsAlive() && PandaAttemptKill(pandaAI, isPerfect);
+        if (successful) 
+        {
+            SetDirty();
+            pandaKillCount++;
+			AddStatistics();
+        }
+        return successful;
+	}
 
     # endregion
 
@@ -116,19 +129,35 @@ public abstract class TrapBase : MonoBehaviour {
         {
             TryPandaKill(collider.GetComponent<PandaAI>());
         }
-    }
-	
-	public bool TryPandaKill(PandaAI pandaAI)
-	{
-		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-        bool successful = pandaAI.IsAlive() && PandaAttemptKill(pandaAI, isPerfect);
-        if (successful) 
-        {
-            SetDirty();
-            pandaKillCount++;
-        }
-        return successful;
 	}
 
+	void AddStatistics()
+	{
+		TrapType tt = GetTrapType();
+		if(InstanceFinder.StatsManager!=null)
+		{
+			switch(GetTrapType())
+			{
+				case TrapType.ImpalerSpikes:
+					InstanceFinder.StatsManager.SpikeKills++;
+					break;
+				case TrapType.StaticSpikes:
+					InstanceFinder.StatsManager.SpikeKills++;
+					break;
+				case TrapType.Electicity:
+					InstanceFinder.StatsManager.ElectricityKills++;
+					break;
+				case TrapType.Pounder:
+					InstanceFinder.StatsManager.PounderKills++;
+					break;
+				case TrapType.RoundSaw:
+					InstanceFinder.StatsManager.RoundSawKills++;
+					break;
+				case TrapType.ThrowingStars:
+					InstanceFinder.StatsManager.ThrowingStarKills++;
+					break;
+			}
+		}
+	}
     # endregion
 }

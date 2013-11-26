@@ -72,47 +72,6 @@ public class PauseMenuManager : MonoBehaviour {
 		InstanceFinder.LevelManager.LoadMainMenu();
 	}
 
-	//BUTTON HANDLER:
-	//NOTE -- MAY NOT NEED THIS ANYMORE....(because using UIbuttons)
-	void OnClick()
-	{
-		//case for hitting PAUSE
-		if(gameObject.name == "PauseSprite")
-		{
-			OnPauseClick();
-		}
-		
-		//case for RESUME click
-		if(gameObject.name == "ResumeButtonOffset")
-		{
-			OnResumeClick();
-		}
-		
-		//case for going In and out of HINT SCREEN
-		if(gameObject.name == "GoalButtonOffset")
-		{
-			OnHintClick ();
-		}
-		
-		if(gameObject.name == "HintBackButton")
-		{
-			HintScreen.SetActive(false);
-	    	PauseMenu.SetActive(true);
-		}
-		
-		//case for going to LEVELS SCREEN
-		if(gameObject.name == "LevelsButtonOffset")
-		{
-			OnLevelsClick();
-		}
-		
-		//case for going to MAIN MENU
-		if(gameObject.name == "MainMenuButtonOffset")
-		{
-			OnMainMenuClick();
-		}
-		
-	}
 	
 	public void DisablePauseMenu()
 	{
