@@ -3887,6 +3887,18 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1372122624}
     m_Modifications:
+    - target: {fileID: 11400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: onTrapAwake.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: onTrapDisable.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: OnEnableEvents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
       propertyPath: m_LocalPosition.x
       value: 9.75628757
@@ -3927,7 +3939,33 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 3.90714526
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11400004, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: OnEnableEvents.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400138, guid: caebdf79dbe0dc144afe9e244a04b8c7,
+        type: 2}
+    - target: {fileID: 11400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: onTrapAwake.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400138, guid: caebdf79dbe0dc144afe9e244a04b8c7,
+        type: 2}
+    - target: {fileID: 11400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: onTrapAwake.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400142, guid: caebdf79dbe0dc144afe9e244a04b8c7,
+        type: 2}
+    - target: {fileID: 11400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: onTrapDisable.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400208, guid: caebdf79dbe0dc144afe9e244a04b8c7,
+        type: 2}
+    - target: {fileID: 11400000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
+      propertyPath: onTrapDisable.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400206, guid: caebdf79dbe0dc144afe9e244a04b8c7,
+        type: 2}
+    m_RemovedComponents:
+    - {fileID: 11400004, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: cdd9726d4a069254ab45cc95a1eeaca7, type: 2}
   m_RootGameObject: {fileID: 765110923}
   m_IsPrefabParent: 0
@@ -5336,7 +5374,6 @@ GameObject:
   - 114: {fileID: 765110926}
   - 65: {fileID: 765110925}
   - 114: {fileID: 765110924}
-  - 114: {fileID: 765110928}
   m_Layer: 0
   m_Name: Electricity Trap
   m_TagString: Untagged
@@ -5393,6 +5430,12 @@ MonoBehaviour:
   electricityBox0: {fileID: 1923280872}
   electricityBox1: {fileID: 1977437277}
   electricTextureCount: 6
+  onTrapAwake:
+  - {fileID: 11400138, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  - {fileID: 11400142, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  onTrapDisable:
+  - {fileID: 11400208, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  - {fileID: 11400206, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!4 &765110927
 Transform:
   m_ObjectHideFlags: 0
@@ -5407,26 +5450,6 @@ Transform:
   - {fileID: 1977437278}
   - {fileID: 1487343910}
   m_Father: {fileID: 1372122624}
---- !u!114 &765110928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400004, guid: cdd9726d4a069254ab45cc95a1eeaca7,
-    type: 2}
-  m_PrefabInternal: {fileID: 540126423}
-  m_GameObject: {fileID: 765110923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f1ff234b1b046d4dbb6f7fdab994ae6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnEnableEvents:
-  - {fileID: 11400142, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400138, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  OnStartEvents: []
-  OnDisableEvents: []
-  OnDestroyEvents: []
-  OnVisibleEvents: []
-  OnInvisibleEvents: []
 --- !u!1 &769334769
 GameObject:
   m_ObjectHideFlags: 0
@@ -5517,18 +5540,18 @@ MonoBehaviour:
   widgetsAreStatic: 0
   cullWhileDragging: 0
   worldToLocal:
-    e00: 222.999985
+    e00: 189
     e01: 0
     e02: 0
-    e03: -10064.3398
+    e03: -8529.86719
     e10: 0
-    e11: 222.999985
+    e11: 189
     e12: 0
-    e13: -1791.67297
+    e13: -1518.50317
     e20: 0
     e21: 0
-    e22: 222.999985
-    e23: 822.388794
+    e22: 189
+    e23: 697.002197
     e30: 0
     e31: 0
     e32: 0
