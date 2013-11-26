@@ -159,8 +159,8 @@ public class PandaAI : MonoBehaviour {
             {
                 animations.SetSlapped(true);
                 ChangeDirection(null);
+
                 animations.SetSlapped(true);
-				Debug.Log ("idle-TURN-SLAP");
 				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
             }
         }
@@ -183,11 +183,11 @@ public class PandaAI : MonoBehaviour {
                         boostco = StartCoroutine("BoostingToWalking", boostDuration);
                     }
                     animations.SetSlapped(false);
+                }
 					pandaStateManager.ChangeState(PandaState.Boosting);
 					Debug.Log ("BACK-SLAP");
 					bloodOnSlap.EmmitSlapBlood(slapDirection);
-				}
-	        }
+			}
 	        else
 	        {
 	            // Panda is slapped in the front
@@ -200,6 +200,7 @@ public class PandaAI : MonoBehaviour {
 				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
 	        }
 		}
+
 
          
 		if(InstanceFinder.StatsManager != null)
