@@ -12,8 +12,17 @@ public enum TrapType
     RoundSaw        = 6
 }
 
+public enum TrapPosition
+{
+    Ceiling         = 180,
+    WallRight       = 90,
+    WallLeft        = 270,
+    Ground          = 0
+}
+
 public abstract class TrapBase : MonoBehaviour {
 
+    [SerializeField] protected TrapPosition position;
     [SerializeField] protected bool initActivated = false;
     [SerializeField] protected bool isPerfectTrap = false;
     [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means there is no max
@@ -26,6 +35,11 @@ public abstract class TrapBase : MonoBehaviour {
 
     # region Public Methods
 
+    
+    public TrapPosition GetTrapPosition()
+    {
+        return position;
+    }
     virtual public bool IsActive ()
     {
         return collider.enabled;
