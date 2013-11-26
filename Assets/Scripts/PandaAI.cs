@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Collections;
 
 
@@ -65,7 +64,6 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
 			pandaStateManager.ChangeState(PandaState.Idle);
-			pandaStateManager.ChangeDirection(PandaDirection.Forward);
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
 		}
 	}
@@ -137,18 +135,18 @@ public class PandaAI : MonoBehaviour {
             Vector2.right * (pandaStateManager.GetDirection() == PandaDirection.Right ? 1 : -1));
 		
 		// if the panda is idle we need to handle its movement back into walking
-		if(pandaStateManager.GetState()==PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.Idle)
 		{
-			if(slapDirection.normalized.x>=0)
-			{
-				pandaStateManager.ChangeDirection(PandaDirection.Right);
-				pandaStateManager.ChangeState(PandaState.Walking);
-			}
-			else
-			{
-				pandaStateManager.ChangeDirection(PandaDirection.Left);
-				pandaStateManager.ChangeState(PandaState.Walking);
-			}
+            pandaStateManager.ChangeState(PandaState.Walking);
+            if (dot > 0)
+            { // Slapped in the back
+                animations.SetSlapped(false);
+            }
+            else
+            {
+                animations.SetSlapped(true);
+                ChangeDirection(null);
+            }
 		}
 		//if the panda is moving we handle slapping it normally
 		else
@@ -167,7 +165,8 @@ public class PandaAI : MonoBehaviour {
 					else
 					{
 						boostco = StartCoroutine("BoostingToWalking", boostDuration);
-					}
+                    }
+                    animations.SetSlapped(false);
 					pandaStateManager.ChangeState(PandaState.Boosting);
 				}
 	        }
@@ -177,14 +176,13 @@ public class PandaAI : MonoBehaviour {
 	            // swap back to 
 				//if ( pandaStateManager.GetState() == PandaState.Boosting)
 	            //	pandaStateManager.ChangeState(PandaState.Walking);
-				animations.PlaySlappedAnimation(pandaStateManager.GetDirection(), true, lastPandaState);
-				
+                ChangeDirection(null);
+                animations.SetSlapped(true);
 	        }
 		}
 
-
 		InstanceFinder.StatsManager.PandaSlaps++;
-        bloodOnSlap.EmmitSlapBlood();
+        bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
         PlaySlap(slapDirection, force);
 
         for (int i = 0; i < slapAudioEvents.Count; i++)
@@ -241,7 +239,7 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
         {
-            Instantiate(dismemberedPanda, transform.position, Quaternion.identity);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().KilledByPosition = trap.transform.position;
             Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.ImpalerSpikes
@@ -255,16 +253,6 @@ public class PandaAI : MonoBehaviour {
 
         return true;
     }
-
-	public string debug = "a";
-	void OnGUI()
-	{
-		if(gameObject.name == "Pandaa")
-		{
-			GUI.color = Color.black;
-			GUI.Label(new Rect(100, 100, 200, 100), debug);
-		}
-	}
 
     public bool IsAlive ()
     {
@@ -301,6 +289,7 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnWallHit += ChangeDirection;
 
         pandaStateManager.onStateEnter += StateChange;
+        pandaStateManager.onDirectionEnter += DirectionChange;
 	}
 	
 	// Update is called once per frame
@@ -381,7 +370,17 @@ public class PandaAI : MonoBehaviour {
         {
             pandaMovementController.SetVelocity(0, 0);
         }
+
+        // Syncronize the panda state onto the animations controller
+        animations.ChangePandaState(state);
     }
+
+    // Syncronize the direction onto the animations controller
+    void DirectionChange (PandaDirection direction)
+    {
+        animations.ChangePandaDirection(direction);
+    }
+
 	
 	void FloorCollision(ControllerColliderHit hit)
 	{
