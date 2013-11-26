@@ -51,6 +51,10 @@ public class Level : MonoBehaviour
 
     public void PandaEscaped()
     {
+		if( InstanceFinder.StatsManager != null)
+		{
+			InstanceFinder.StatsManager.PandasEscaped++;
+		}
         if (onLevelLost != null)
         {
             HDRSystem.PostEvents(gameObject, onLose);
@@ -76,6 +80,11 @@ public class Level : MonoBehaviour
 	public int GetScore()
 	{
         return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel, InstanceFinder.ComboSystem.LevelDeaths, elapsedTime);	
+	}
+	
+	public int GetTimeScore()
+	{
+        return ScoreCalculator.TimeScore(InstanceFinder.LevelManager.CurrentLevel, elapsedTime);	
 	}
 	
 	public int Stars()

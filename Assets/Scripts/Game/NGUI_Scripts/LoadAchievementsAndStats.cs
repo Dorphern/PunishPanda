@@ -56,6 +56,7 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 				AddStatisticMember(statisticsListGridRoot, "Pandas killed on " + ti[i].name, ti[i].kills.ToString(), null);
 			}
 			
+			AddStatisticMember(statisticsListGridRoot, "Blood collected", sm.LiterBlood.ToString(), null);
 			AddStatisticMember(statisticsListGridRoot, "Total ammount of combo kills", sm.PandasComboKilled.ToString(), null);
 			
 			statisticsListGridRoot.GetComponent<UIGrid>().Reposition();

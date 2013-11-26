@@ -9,7 +9,10 @@ public enum CollidableTypes {
 	Wall,
     Hotspot,
 	Floor,
-	ThrowingStar
+	ThrowingStar,
+    LedgeFall,
+    BambooEscapeDown,
+    BambooEscapeUp
 	
 }
 
