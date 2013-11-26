@@ -41,7 +41,7 @@ public static class AudioBusWorker
         HashSet<AudioBus> toDelete = new HashSet<AudioBus>(); 
         GetBussesToDelete(toDelete, bus);
 
-        var runtimePlayers = bus.GetRuntimePlayers();
+        var runtimePlayers = bus.RuntimePlayers;
         for (int i = 0; i < runtimePlayers.Count; ++i)
         {
             runtimePlayers[i].SetNewBus(bus.Parent);
@@ -75,16 +75,6 @@ public static class AudioBusWorker
         child.Name = parent.Name + " Child";
 
         return child;
-    }
-
-    public static AudioBus GetParentBus(AudioNode node)
-    {
-        if (node.IsRoot)
-            return node.Bus;
-        if (node.OverrideParentBus)
-            return node.Bus;
-
-        return GetParentBus(node.Parent);
     }
 }
 }

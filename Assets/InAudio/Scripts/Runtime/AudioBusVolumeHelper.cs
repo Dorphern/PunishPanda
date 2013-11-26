@@ -33,8 +33,7 @@ public static class AudioBusVolumeHelper {
     }
 
     public static void UpdateBusVolumes(AudioBus bus)
-    {
-        
+    {   
         Fader fader = bus.Fader;
         if (fader.Activated)
         {   
@@ -64,7 +63,7 @@ public static class AudioBusVolumeHelper {
         
         if (bus.RuntimeVolume != oldVolume)
         {
-            var players = bus.GetRuntimePlayers();
+            var players = bus.RuntimePlayers;
             for (int i = 0; i < players.Count; ++i)
             {
                 if (players[i] != null)

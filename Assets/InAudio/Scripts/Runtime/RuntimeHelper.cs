@@ -57,16 +57,6 @@ public static class RuntimeHelper
         }
     }
 
-    public static AudioBus GetBus(AudioNode currentNode)
-    {
-        if (currentNode.OverrideParentBus || currentNode.IsRoot)
-        {
-            return currentNode.Bus;
-        }
-        else
-            return GetBus(currentNode.Parent);
-    }
-
     public static void ReleaseRuntimeInfo(RuntimeInfo info)
     {
         //Swap remove and set the new position
