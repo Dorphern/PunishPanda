@@ -39,7 +39,7 @@ public class InputHandler : MonoBehaviour {
 		
 		lastMousePos = new Vector3[2];
 		
-		fingerSize = 2f;// InstanceFinder.StatsManager.FingerSize;
+		fingerSize = InstanceFinder.StatsManager.FingerSize;
 		
 		for(int i = 0; i < blockades.Count; i++)
 		{
@@ -50,6 +50,12 @@ public class InputHandler : MonoBehaviour {
 	
 	void Update () 
 	{
+		// if we are in menus without a main camera we ignore input
+		if(Camera.main == null)
+		{
+			return;	
+		}
+		
 #if UNITY_EDITOR
 		MouseUpdate();
 #else
@@ -94,6 +100,7 @@ public class InputHandler : MonoBehaviour {
 
     void MouseUpdate ()
     {
+		
         if (Input.GetMouseButtonDown(0))
         {   // Mouse Down Began
             PerformCursorBegan(Input.mousePosition, 1, 2);
