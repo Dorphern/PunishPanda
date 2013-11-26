@@ -8,6 +8,10 @@ using System.Collections;
 
 public class Hotspot : MonoBehaviour {
 
+    /*
+     * @todo add arrow when active
+     */
+
     [SerializeField] private float bounceForce = 1f;
     [SerializeField] private float bounceDirection = 1f;
 
