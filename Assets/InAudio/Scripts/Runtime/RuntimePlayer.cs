@@ -14,6 +14,7 @@ public class RuntimePlayer : MonoBehaviour
 {
     public void Play(AudioNode node, RuntimeInfo playingInfo)
     {
+        dspPool = InAudioInstanceFinder.DSPTimePool;
         attachedToBus = RuntimeHelper.GetBus(node);
         busVolume = attachedToBus.RuntimeVolume;
 
@@ -22,8 +23,9 @@ public class RuntimePlayer : MonoBehaviour
         runtimeInfo = playingInfo;
 
         PlayingNode = node;
-
-        StartCoroutine(StartPlay(node, node, new DSPTime(AudioSettings.dspTime + 0.04)));
+        DSPTime time = dspPool.GetObject();
+        time.CurrentEndTime = AudioSettings.dspTime;
+        StartCoroutine(StartPlay(node, node, time));
     }
 
     public void Break()
@@ -74,13 +76,14 @@ public class RuntimePlayer : MonoBehaviour
 
     }
 
-    public void UpdateBusVolume(float newVolume)
+    public void UpdateBusVolume(float newBusVolume)
     {
+        busVolume = newBusVolume;
         for (int i = 0; i < audioSources.Length; i++)
         {
             if (audioSources == null)
                 continue;
-            audioSources[i].volume = originalVolume[i] * newVolume;
+            audioSources[i].volume = originalVolume[i] * newBusVolume;
         }
     }
 
@@ -109,6 +112,8 @@ public class RuntimePlayer : MonoBehaviour
 
     private RuntimeInfo runtimeInfo;
 
+    private DSPTimePool dspPool;
+
     private bool firstClip;
 
     private int currentIndex = 0;
@@ -135,6 +140,7 @@ public class RuntimePlayer : MonoBehaviour
         current.Bus.GetRuntimePlayers().Add(this);
 
         yield return StartCoroutine(NextNode(root, current, endTime));
+        dspPool.ReleaseObject(endTime);
         yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime));
         //Clean up object
         StopAndCleanup();
@@ -197,7 +203,9 @@ public class RuntimePlayer : MonoBehaviour
 
                 for (int j = 0; j < childTimes.Length; ++j)
                 {
-                    childTimes[j] = new DSPTime(endTime.CurrentEndTime);
+                    DSPTime dspTime = dspPool.GetObject();
+                    dspTime.CurrentEndTime = endTime.CurrentEndTime;
+                    childTimes[j] = dspTime;
                 }
                 for (int j = 0; j < current.Children.Count; ++j)
                 {
@@ -205,8 +213,11 @@ public class RuntimePlayer : MonoBehaviour
                 }
                 for (int j = 0; j < childTimes.Length; ++j)
                 {
-                    if (endTime.CurrentEndTime < childTimes[j].CurrentEndTime)
-                        endTime.CurrentEndTime = childTimes[j].CurrentEndTime;
+                    DSPTime dspTime = childTimes[j];
+                    if (endTime.CurrentEndTime < dspTime.CurrentEndTime)
+                        endTime.CurrentEndTime = dspTime.CurrentEndTime;
+                    else
+                        dspPool.ReleaseObject(dspTime);
                 }
             }
         }
@@ -274,7 +285,7 @@ public class RuntimePlayer : MonoBehaviour
 
 namespace InAudio.RuntimeHelperClass
 {
-    internal class DSPTime
+    public class DSPTime
     {
         public double CurrentEndTime;
 
@@ -282,6 +293,11 @@ namespace InAudio.RuntimeHelperClass
         {
             CurrentEndTime = currentEndTime;
         }
+
+        public DSPTime()
+        {
+        }
+
         public DSPTime(DSPTime time)
         {
             CurrentEndTime = time.CurrentEndTime;

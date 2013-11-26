@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("HDR Audio/Audio Event Hook")]
+[AddComponentMenu("InAudio/Audio Event Hook")]
 public class AudioEventHook : MonoBehaviour
 {
     [EventHookAttribute("On Enable")]
@@ -62,7 +62,7 @@ public class AudioEventHook : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.U))
         {
-            for (int i = 0; i < OnEnableEvents.Count; ++i)
+            for (int i = 0; i < OnDisableEvents.Count; ++i)
             {
                 HDRSystem.PostEvent(gameObject, OnEnableEvents[i]);
             }

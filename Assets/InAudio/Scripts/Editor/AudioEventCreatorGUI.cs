@@ -1,5 +1,5 @@
 using InAudio;
-using InAudio.HDREditorGUI;
+using InAudio.InAudioEditorGUI;
 using InAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
@@ -19,10 +19,10 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
     {
         BaseOnGUI();
 
-        var root = HDRInstanceFinder.DataManager.EventTree;
-        int id = HDRInstanceFinder.InAudioGuiUserPrefs.SelectedEventID;
+        var root = InAudioInstanceFinder.DataManager.EventTree;
+        int id = InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedEventID;
         var selectedNode = UpdateSelectedNode(root, id);
-        HDRInstanceFinder.InAudioGuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
+        InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
         this.height = height;
@@ -40,7 +40,7 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
         DrawSearchBar();
         EditorGUILayout.BeginVertical();
 
-        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.EventTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(InAudioInstanceFinder.DataManager.EventTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndVertical();
@@ -139,8 +139,12 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
      
     private void CreateChild(AudioEvent node, EventNodeType type)
     {
-        Undo.RegisterUndo(node, "Event Creation");
-        AudioEventWorker.CreateNode(node, type);
+        UndoHelper.DoInGroup(() =>
+        {
+            UndoHelper.RegisterUndo(node, "Event Creation");
+            AudioEventWorker.CreateNode(node, type);    
+        });
+        
         node.FoldedOut = true;
     }
 }

@@ -31,12 +31,18 @@ public static class AudioEventWorker  {
 
     public static void DeleteNode(AudioEvent node)
     {
-        Undo.RegisterUndo(node.Parent, "Event Deletion");
+        UndoHelper.DoInGroupWithWarning(() => DeleteNodeRec(node));
+    }
+
+    private static void DeleteNodeRec(AudioEvent node)
+    {
+        UndoHelper.RegisterUndo(node.Parent, "Event Deletion");
         for (int i = 0; i < node.Children.Count; ++i)
         {
-            DeleteNode(node.Children[i]);
+            DeleteNodeRec(node.Children[i]);
         }
-        node.Parent.Children.Remove(node);
+        node.Parent.Children.Remove(node); 
+        UndoHelper.Destroy(node);
     }
 
    
@@ -72,9 +78,13 @@ public static class AudioEventWorker  {
 
     public static void ReplaceActionDestructiveAt(AudioEvent audioEvent, EventActionTypes enumType, int toRemoveAndInsertAt)
     {
+        //A reel mess this function.
+        //It adds a new component of the specied type, replaces the current at the toRemoveAndInsertAt index, and then deletes the old one
         float delay = audioEvent.ActionList[toRemoveAndInsertAt].Delay;
         var newActionType = ActionEnumToType(enumType);
-        DeleteActionAtIndex(audioEvent, toRemoveAndInsertAt);
+        UndoHelper.Destroy(audioEvent.ActionList[toRemoveAndInsertAt]);
+        UndoHelper.RecordObject(audioEvent, "Event Action Creation");
+        audioEvent.ActionList.RemoveAt(toRemoveAndInsertAt);
         var added = AddEventAction(audioEvent, newActionType, enumType);
         added.Delay = delay;
         audioEvent.ActionList.Insert(toRemoveAndInsertAt, added);
@@ -103,7 +113,7 @@ public static class AudioEventWorker  {
     {
         UndoHelper.DoInGroup(() =>
         {
-            UndoHelper.DestroyObjectImmediate(audioevent.ActionList[index]);
+            UndoHelper.DestroyOnlyInNew(audioevent.ActionList[index]);
             UndoHelper.RecordObject(audioevent, "Event Action Creation");
         });
         audioevent.ActionList.RemoveAt(index);
@@ -205,7 +215,7 @@ public static class AudioEventWorker  {
                 if(UndoHelper.IsNewUndo)
                     UndoHelper.RegisterFullObjectHierarchyUndo(audioevent);
                 else
-                    UndoHelper.RecordObjects(new Object[] { audioevent, movingEvent, movingEvent.Parent }, "Event Move");
+                    UndoHelper.RecordObject(new Object[] { audioevent, movingEvent, movingEvent.Parent }, "Event Move");
                 NodeWorker.ReasignNodeParent((AudioEvent)objects[0], audioevent);
                 audioevent.IsFoldedOut = true;
             }

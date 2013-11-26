@@ -55,19 +55,9 @@ public static class AudioBusWorker
             affectedNodes[i].Bus = bus.Parent;
         }
         bus.Parent.Children.Remove(bus);
-        
-        //ActualDelete(bus);
+        UndoHelper.Destroy(bus);
     }
 
-    private static void ActualDelete(AudioBus bus)
-    {
-        for (int i = 0; i < bus.Children.Count; ++i)
-        {
-            ActualDelete(bus.Children[i]);
-        }
-        bus.Parent.Children.Remove(bus);
-        Object.DestroyImmediate(bus, true);
-    }
 
     private static void GetBussesToDelete(HashSet<AudioBus> toDelete, AudioBus bus)
     {
@@ -78,7 +68,7 @@ public static class AudioBusWorker
         }
     }
 
-    public static AudioBus CreateBus(AudioBus parent)
+    public static AudioBus CreateChild(AudioBus parent)
     {
         var child = CreateBus(parent.gameObject, parent, GUIDCreator.Create());
         child.FoldedOut = true;

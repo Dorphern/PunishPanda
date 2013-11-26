@@ -71,7 +71,7 @@ public static class RuntimeHelper
     {
         //Swap remove and set the new position
         info.PlacedIn.FindSwapRemove(info);
-        HDRInstanceFinder.RuntimeInfoPool.ReleaseObject(info);
+        InAudioInstanceFinder.RuntimeInfoPool.ReleaseObject(info);
     }
 
     public static float InitialDelay(NodeTypeData data)
