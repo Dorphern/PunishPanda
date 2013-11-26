@@ -32,7 +32,7 @@ public class PandaAIMainMenu : MonoBehaviour {
 			// play animation
 		}
 		// blood particles
-		bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection.normalized);
+		bloodOnSlap.EmmitSlapBlood(slapDirection.normalized);
 	}
 	#endregion
 	

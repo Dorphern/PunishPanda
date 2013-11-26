@@ -146,11 +146,15 @@ public class PandaAI : MonoBehaviour {
             if (dot > 0)
             { // Slapped in the back
                 animations.SetSlapped(false);
+				Debug.Log ("idle-BACK-SLAP");
+				bloodOnSlap.EmmitSlapBlood(slapDirection);
             }
             else
             {
                 animations.SetSlapped(true);
                 ChangeDirection(null);
+				Debug.Log ("idle-TURN-SLAP");
+				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
             }
 		}
 		//if the panda is moving we handle slapping it normally
@@ -173,6 +177,8 @@ public class PandaAI : MonoBehaviour {
                     }
                     animations.SetSlapped(false);
 					pandaStateManager.ChangeState(PandaState.Boosting);
+					Debug.Log ("BACK-SLAP");
+					bloodOnSlap.EmmitSlapBlood(slapDirection);
 				}
 	        }
 	        else
@@ -183,6 +189,8 @@ public class PandaAI : MonoBehaviour {
 	            //	pandaStateManager.ChangeState(PandaState.Walking);
                 ChangeDirection(null);
                 animations.SetSlapped(true);
+				Debug.Log ("TURN-SLAP");
+				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
 	        }
 		}
 
@@ -192,7 +200,6 @@ public class PandaAI : MonoBehaviour {
 			InstanceFinder.StatsManager.PandaSlaps++;
 			InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.15f);
 		}
-        bloodOnSlap.EmmitSlapBloodWithAngle(slapDirection);
         PlaySlap(slapDirection, force);
 
         for (int i = 0; i < slapAudioEvents.Count; i++)
