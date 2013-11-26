@@ -5,42 +5,42 @@ using UnityEngine;
 public static class AudioBusVolumeHelper {
     public static void SetTargetVolume(AudioBus bus, float targetVolume, EventBusAction.VolumeSetMode setMode, float duration, FadeCurveType curveType)
     {
-        if (setMode == EventBusAction.VolumeSetMode.Absolute)
+        if (duration == 0)
         {
-            if (duration == 0)
-                bus.RuntimeSelfVolume = targetVolume;
-            else
-            {
-                bus.Fader.Activated = true;
-                double currentTime = AudioSettings.dspTime;
-                bus.Fader.Initialize(curveType, currentTime, currentTime + duration, bus.RuntimeSelfVolume, targetVolume);
-            }
-            
+            bus.Fader.Activated = false;
+            bus.RuntimeSelfVolume = targetVolume;
         }
         else
         {
-            if (duration == 0)
-                bus.RuntimeSelfVolume = Mathf.Clamp(bus.RuntimeSelfVolume + targetVolume, 0.0f, 1.0f);
+            if (setMode == EventBusAction.VolumeSetMode.Absolute)
+            {
+                bus.Fader.Activated = true;
+                double currentTime = AudioSettings.dspTime;
+                bus.Fader.Initialize(curveType, currentTime, currentTime + duration, bus.RuntimeSelfVolume,
+                    targetVolume);
+            }
             else
             {
                 bus.Fader.Activated = true;
                 double currentTime = AudioSettings.dspTime;
                 float newVolume = Mathf.Clamp(bus.RuntimeSelfVolume + targetVolume, 0.0f, 1.0f);
-                bus.Fader.Initialize(curveType, currentTime, currentTime + duration, bus.RuntimeSelfVolume, newVolume);
+                bus.Fader.Initialize(curveType, currentTime, currentTime + duration, bus.RuntimeSelfVolume,
+                    newVolume);
             }
         }
-        
+
     }
 
     public static void UpdateBusVolumes(AudioBus bus)
     {   
+        
         Fader fader = bus.Fader;
         if (fader.Activated)
-        {   
+        {
             double currentTime = AudioSettings.dspTime;
             bus.RuntimeSelfVolume = (float)fader.Lerp(AudioSettings.dspTime);
 
-            if (/*bus.RuntimeSelfVolume == fader.EndValue ||*/  currentTime > fader.EndTime)
+            if (/*bus.RuntimeSelfVolume == fader.EndValue ||*/  currentTime >= fader.EndTime)
             {
                 fader.Activated = false;
             }

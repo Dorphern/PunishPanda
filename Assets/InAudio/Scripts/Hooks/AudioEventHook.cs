@@ -7,7 +7,7 @@ public class AudioEventHook : MonoBehaviour
 {
     [EventHookAttribute("On Enable")]
     public List<AudioEvent> OnEnableEvents = new List<AudioEvent>();
-    [EventHookAttribute("On Initialize")]
+    [EventHookAttribute("On Start")]
     public List<AudioEvent> OnStartEvents = new List<AudioEvent>();
     [EventHookAttribute("On Disable")]
     public List<AudioEvent> OnDisableEvents = new List<AudioEvent>();
