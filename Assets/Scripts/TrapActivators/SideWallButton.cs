@@ -1,15 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum ButtonMode
-{
-	Activate,
-	Deactivate
-}
-
 public class SideWallButton : TrapActivator {
 
-	public ButtonMode buttonFunction = ButtonMode.Activate;
 	public float activationTimeLength = 3f;
     private Collidable colliderType;
     private string animationName = "sideWallButton";
@@ -33,15 +26,7 @@ public class SideWallButton : TrapActivator {
 		
 		if(colliderType.type == CollidableTypes.Panda)
 		{
-			if(buttonFunction == ButtonMode.Activate)
-			{
-            	ActivateTraps();
-			}
-			else if(buttonFunction == ButtonMode.Deactivate)
-			{
-				DeactivateTraps();
-			}
-			
+            ActivateTraps();
 			StartCoroutine(ResetState());
 		}
 	}
@@ -49,14 +34,7 @@ public class SideWallButton : TrapActivator {
 	IEnumerator ResetState()
 	{
 		yield return new WaitForSeconds(activationTimeLength);
-		if(buttonFunction == ButtonMode.Activate)
-		{
-        	DeactivateTraps();
-		}
-		else if(buttonFunction == ButtonMode.Deactivate)
-		{
-			ActivateTraps();	
-		}
+		DeactivateTraps();
     }
 
     IEnumerator PlayActivateAnimation ()
