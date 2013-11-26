@@ -3,13 +3,13 @@ using System.Collections;
 
 public enum TrapType
 {
-    Electicity,
-    StaticSpikes,
-    ImpalerSpikes,
-    Pounder,
-    ThrowingStars,
-	DoorTrap,
-    RoundSaw
+    Electicity      = 0,
+    StaticSpikes    = 1,
+    ImpalerSpikes   = 2,
+    Pounder         = 3,
+    ThrowingStars   = 4,
+	DoorTrap        = 5,
+    RoundSaw        = 6
 }
 
 public abstract class TrapBase : MonoBehaviour {
