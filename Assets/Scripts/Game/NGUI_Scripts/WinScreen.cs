@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class WinScreen : MonoBehaviour {
@@ -33,15 +34,10 @@ public class WinScreen : MonoBehaviour {
 		InstanceFinder.GameManager.ActiveLevel.onLevelComplete += OnLevelComplete;
 	}
 	
-	
-	
 	private void OnLevelComplete()
 	{
-
 		UnLockLevels();    
-        
 		StartCoroutine(WaitWinScreen());
-		
 	}
 			
 	private IEnumerator WaitWinScreen()
