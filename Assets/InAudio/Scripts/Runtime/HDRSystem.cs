@@ -316,7 +316,7 @@ public class HDRSystem : MonoBehaviour
     //TODO Move this to another class
     private static void StopAllNodeInBus(AudioBus bus)
     {
-        var players = bus.GetRuntimePlayers();
+        var players = bus.RuntimePlayers;
         for (int i = 0; i < players.Count; i++)
         {
             players[i].Stop();
@@ -350,4 +350,4 @@ public class HDRSystem : MonoBehaviour
 
 
     #endregion
-}
+} 
