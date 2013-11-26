@@ -302,7 +302,7 @@ public class StatsManager : MonoBehaviour
         set { if (pandaSlaps<value)
 			{
 			  int val = value-pandaSlaps;
-			  am.AddProgressToAchievement("High Five", val);
+			  am.AddProgressToAchievement("High-Five", val);
 			  am.AddProgressToAchievement("Happy Slapper", val);
 			  am.AddProgressToAchievement("Red finger", val);
 			}
@@ -315,10 +315,11 @@ public class StatsManager : MonoBehaviour
         get { return literBlood; }
         set { if (literBlood<value)
 			{
-			  float val = value-literBlood;
-				  am.AddProgressToAchievement("Bloody Mary", val);
-				  am.AddProgressToAchievement("Blood sucker", val);
-				  am.AddProgressToAchievement("Dracula", val);
+		  	  float val = value-literBlood;
+			  am.AddProgressToAchievement("Mosquito", val);
+			  am.AddProgressToAchievement("Bloody Mary", val);
+			  am.AddProgressToAchievement("Blood sucker", val);
+			  am.AddProgressToAchievement("Dracula", val);
 			}
 			literBlood = value; }
     }
