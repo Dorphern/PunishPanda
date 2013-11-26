@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-namespace InAudio.HDREditorGUI
+namespace InAudio.InAudioEditorGUI
 {
 
 public static class AudioEventDrawer
@@ -18,22 +18,21 @@ public static class AudioEventDrawer
     private static int toRemove = -1;
     public static bool Draw(AudioEvent audioevent)
     {
-        UndoCheck.Instance.CheckUndo(audioevent);
-        audioevent.Name = EditorGUILayout.TextField("Name", audioevent.Name);
-        UndoCheck.Instance.CheckDirty(audioevent);
+        UndoHelper.GUIUndo(audioevent, "Name Change", () => 
+            EditorGUILayout.TextField("Name", audioevent.Name),
+            s => audioevent.Name = s);
         
         bool repaint = false;
       
         if (audioevent.Type == EventNodeType.Event)
         {
-            UndoCheck.Instance.CheckUndo(audioevent);
             EditorGUILayout.IntField("ID", audioevent.GUID);
 
             EditorGUILayout.Separator();
-            //
-            UndoCheck.Instance.CheckUndo(audioevent);
-            audioevent.Delay = Mathf.Max(EditorGUILayout.FloatField("Delay", audioevent.Delay), 0);
-            UndoCheck.Instance.CheckDirty(audioevent);
+
+            UndoHelper.GUIUndo(audioevent, "Delay", () =>
+                Mathf.Max(EditorGUILayout.FloatField("Delay", audioevent.Delay), 0), 
+                s => audioevent.Delay = s);
           
             Rect entireArea = EditorGUILayout.BeginVertical();
 
@@ -43,11 +42,8 @@ public static class AudioEventDrawer
             EditorGUILayout.Separator();
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, true);
             repaint = DrawContent(audioevent, entireArea);
-            UndoCheck.Instance.CheckDirty(audioevent);
             EditorGUILayout.EndScrollView();
-            UndoCheck.Instance.CheckUndo(audioEventAction);
             DrawSelected(audioEventAction);
-            UndoCheck.Instance.CheckDirty(audioEventAction);
 
             EditorGUILayout.EndVertical(); 
         }
@@ -62,8 +58,6 @@ public static class AudioEventDrawer
             }
             
         }
-
-        UndoCheck.Instance.CheckDirty(audioevent);
         return repaint;
     }
 
@@ -71,8 +65,6 @@ public static class AudioEventDrawer
     {
         if (eventAction != null)
         {
-            //UndoCheck.Instance.CheckUndo(eventAction);
-            //UndoCheck.Instance.CheckUndo(eventAction, "Audio Event Action Change");    
             Rect thisArea = EditorGUILayout.BeginVertical(GUILayout.Height(120));
             EditorGUILayout.LabelField("");
             var buttonArea = thisArea;
@@ -88,7 +80,7 @@ public static class AudioEventDrawer
                 if (busAction.VolumeMode == EventBusAction.VolumeSetMode.Relative)
                     busAction.Volume = EditorGUI.Slider(buttonArea, "Relative Volume", busAction.Volume, -1.0f, 1.0f);
                 else
-                    busAction.Volume = EditorGUI.Slider(buttonArea, "Absolute Volume", busAction.Volume, 0.0f, 1.0f);
+                    busAction.Volume = EditorGUI.Slider(buttonArea, "Target Volume", busAction.Volume, 0.0f, 1.0f);
 
                 buttonArea.y += 21;
                 busAction.VolumeMode = (EventBusAction.VolumeSetMode)EditorGUI.EnumPopup(buttonArea, "Volume Mode", busAction.VolumeMode);
@@ -98,7 +90,6 @@ public static class AudioEventDrawer
                 busAction.FadeCurve = (FadeCurveType)EditorGUI.EnumPopup(buttonArea, "Fade Curve", busAction.FadeCurve);
             }
             EditorGUILayout.EndVertical();
-            //UndoCheck.Instance.CheckDirty(eventAction);    
         }
         
     }
@@ -284,10 +275,25 @@ public static class AudioEventDrawer
             {
                 Type oldType = AudioEventWorker.ActionEnumToType(action.EventActionType);
                 Type newType = AudioEventWorker.ActionEnumToType(newEnumType);
-                if (oldType != newType)
-                    AudioEventWorker.ReplaceActionDestructiveAt(audioEvent, newEnumType, i);
-                else
-                    action.EventActionType = newEnumType;
+                
+                Action replacement = () =>
+                {
+                    UndoHelper.RecordObjectFull(action, "Change Event Action Type");
+                    if (oldType != newType)
+                        AudioEventWorker.ReplaceActionDestructiveAt(audioEvent, newEnumType, i);
+                    else
+                    {
+                        action.EventActionType = newEnumType;
+                    }
+                };
+                if (oldType == newType)
+                {
+                    UndoHelper.DoInGroup(replacement);
+                }
+                else //It's going to delete the current action. Warn the user
+                {
+                    UndoHelper.DoInGroupWithWarning(replacement);
+                }
                 break;
             }
         }

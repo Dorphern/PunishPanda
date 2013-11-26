@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("HDR Audio/Manual Event Poster")]
+[AddComponentMenu("InAudio/Manual Event Poster")]
 public class EventTester : MonoBehaviour {
 
 	[SerializeField]
-    public List<AudioEvent> Events = new List<AudioEvent>();
+    public AudioEventList EventList = new AudioEventList();
 }

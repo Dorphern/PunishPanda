@@ -220,7 +220,7 @@ public class HDRController : MonoBehaviour
     #endregion
 
     #region Unity update functions
-    void Update()
+   /* void Update()
     {
         //Where should we update the audio?
         if (UpdateIn == AudioVelocityUpdateMode.Dynamic)
@@ -231,7 +231,7 @@ public class HDRController : MonoBehaviour
     {
         if (UpdateIn == AudioVelocityUpdateMode.Fixed || UpdateIn == AudioVelocityUpdateMode.Auto)
             UpdateLoudness();
-    }
+    }*/
 
     #endregion
 
