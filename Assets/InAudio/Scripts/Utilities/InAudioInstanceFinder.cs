@@ -69,7 +69,7 @@ public class InAudioInstanceFinder : MonoBehaviour
     private static DSPTimePool _dspTimePool;
     public static DSPTimePool DSPTimePool
     {
-        get
+        get 
         {
             if (_dspTimePool == null)
             {
