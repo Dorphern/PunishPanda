@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using System.Collections;
@@ -29,33 +30,31 @@ namespace InAudio
 
         public static void DoInGroup(Action action)
         {
-            IncrementGroup();
-            action();
-            EndGroup();
-        }
-
-        public static bool DisplayUndoWarning()
-        {
-            if (!IsNewUndo)
-            {
-                return EditorUtility.DisplayDialog("Cannot Undo", "This action cannot be undone as you are running Unity" + Application.unityVersion + ".\nUpgrade to 4.3 or later to enable undo", "Do Action", "Cancel");
-            }
-            return true;
-        }
-
-        public static void IncrementGroup()
-        {
 #if !UNITY_4_1 && !UNITY_4_2
             Undo.IncrementCurrentGroup();
 #endif
-        }
 
-        public static void EndGroup()
-        {
+            action();
+
 #if !UNITY_4_1 && !UNITY_4_2
             Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
             Undo.IncrementCurrentGroup();
 #endif
+        }
+
+        public static bool DoInGroupWithWarning(Action action)
+        {
+#if !UNITY_4_1 && !UNITY_4_2
+            Undo.IncrementCurrentGroup();
+#endif 
+
+            bool delete = DeleteDialogue(action);
+
+#if !UNITY_4_1 && !UNITY_4_2
+            Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+            Undo.IncrementCurrentGroup();
+#endif
+            return delete;
         }
 
         public static void RecordObject(Object obj, string undoDescription)
@@ -63,50 +62,48 @@ namespace InAudio
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(obj, undoDescription);
 #else
-            Undo.RecordObject(obj, undoDescription);
+            RecordObjectFull(obj, undoDescription);
 #endif
         }
 
-        public static void RecordObjects(Object[] obj, string undoDescription)
+        public static void RecordObject(Object[] obj, string undoDescription)
+        {
+            Object[] nonNulls = obj.TakeNonNulls();
+#if UNITY_4_1 || UNITY_4_2
+            Undo.RegisterUndo(nonNulls, undoDescription);
+#else 
+            RecordObjectFull(nonNulls, undoDescription);
+#endif
+        }
+
+        public static void RecordObjectFull(Object obj, string undoDescription)
+        {
+#if UNITY_4_1 || UNITY_4_2
+            Undo.RegisterUndo(obj, undoDescription);
+#else
+            Undo.RegisterCompleteObjectUndo(obj, undoDescription);
+#endif
+        }
+
+
+        public static void RecordObjectFull(Object[] obj, string undoDescription)
         {
             Object[] nonNulls = obj.TakeNonNulls();
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(nonNulls, undoDescription);
 #else
-            Undo.RecordObjects(nonNulls, undoDescription);
-#endif
-        }
-
-        public static void RecordObjects(string undoDescription, params Object[] obj)
-        {
-            RecordObjects(undoDescription, obj);
-        }
-
-        public static void RecordDestroy(Object obj)
-        {
-#if !UNITY_4_1 && !UNITY_4_2
-        Undo.DestroyObjectImmediate(obj);
-#endif
-        }
-
-        public static void RecordDestroy(Object[] obj)
-        {
-#if !UNITY_4_1 && !UNITY_4_2
-        for (int i = 0; i < obj.Length; i++)
-	    {
-		    Undo.DestroyObjectImmediate(obj[i]);
-	    }
+            Undo.RegisterCompleteObjectUndo(nonNulls, undoDescription);
 #endif
         }
 
         public static Object[] NodeUndo(AudioNode node)
         {
             return new Object[]
-        {
-            node,
-            node.NodeData,
-            node.GetBank().LazyBankFetch
-        };
+            {
+                node,
+                node.NodeData,
+                node.GetBank().LazyBankFetch
+            };
         }
 
         public static T AddComponent<T>(GameObject go) where T : Component
@@ -114,7 +111,7 @@ namespace InAudio
             return AddComponentUndo(go, typeof(T)) as T;
         }
 
-        public static Object AddComponentUndo(this GameObject go, System.Type type)
+        public static Object AddComponentUndo(this GameObject go, Type type)
         {
 #if UNITY_4_1 || UNITY_4_2
             return go.AddComponent(type);
@@ -135,6 +132,16 @@ namespace InAudio
 #endif
         }
 
+        public static void RegisterUndo(Object obj, string description)
+        {
+#if !UNITY_4_1 && !UNITY_4_2
+            Undo.RegisterCompleteObjectUndo(obj, description);
+#else
+            Undo.RegisterUndo(obj, description);
+#endif
+
+        }
+
         public static void RegisterFullObjectHierarchyUndo(Object obj)
         {
 #if !UNITY_4_1 && !UNITY_4_2
@@ -142,12 +149,28 @@ namespace InAudio
 #endif
         }
 
-        public static void DestroyObjectImmediate(Object obj)
+        public static void Destroy(Object obj)
         {
+            SceneView.RepaintAll();
+            HandleUtility.Repaint();
+            EditorUtility.SetDirty(obj);
 #if !UNITY_4_1 && !UNITY_4_2
-            Undo.DestroyObjectImmediate(obj);
+            if(obj != null)
+                Undo.DestroyObjectImmediate(obj);
+#else
+            if(obj != null)
+                Object.DestroyImmediate(obj, true);
 #endif
         }
+
+        public static void DestroyOnlyInNew(Object obj)
+        {
+#if !UNITY_4_1 && !UNITY_4_2
+            if (obj != null)
+                Undo.DestroyObjectImmediate(obj);
+#endif
+        }
+
 
         public static void DragNDropUndo(Object obj, string description)
         {
@@ -160,6 +183,77 @@ namespace InAudio
 
         }
 
-        
+        public static void GUIUndo<T>(Object obj, string description, Func<T> displayFunction, Action<T> assignAction) 
+        {
+            EditorGUI.BeginChangeCheck();
+            T newValue = displayFunction();
+            if (EditorGUI.EndChangeCheck())
+            {
+                RecordObjectFull(obj, description);
+                assignAction(newValue);
+                EditorUtility.SetDirty(obj);
+            }
+        }
+
+        public static void GUIUndo<T>(Object obj, string description, ref T value, Func<T> displayFunction)
+        {
+            EditorGUI.BeginChangeCheck();
+            T newValue = displayFunction();
+            if (EditorGUI.EndChangeCheck())
+            {
+                RecordObjectFull(obj, description);
+                value = newValue;
+                EditorUtility.SetDirty(obj);
+            }
+        }
+
+        public delegate void RefOut<T>(out T v1, out T v2);
+        public delegate void RefAssign<in T>(T v1, T v2);
+        public static void GUIUndo<T>(Object obj, string description, RefOut<T> displayFunction, RefAssign<T> assignAction)
+        {
+            EditorGUI.BeginChangeCheck();
+            T v1;
+            T v2;
+            displayFunction(out v1, out v2);
+            if (EditorGUI.EndChangeCheck())
+            {
+                RecordObjectFull(obj, description);
+                assignAction(v1, v2);
+                EditorUtility.SetDirty(obj);
+            }
+        }
+
+        public static void GUIUndo<T>(Object obj, string description, ref T value1, ref T value2, RefOut<T> displayFunction)
+        {
+            EditorGUI.BeginChangeCheck();
+            T v1;
+            T v2;
+            displayFunction(out v1, out v2);
+            if (EditorGUI.EndChangeCheck())
+            {
+                RecordObjectFull(obj, description);
+                value1 = v1;
+                value2 = v2;
+                EditorUtility.SetDirty(obj);
+            }
+        }
+
+        public static bool DeleteDialogue(Action action)
+        {
+            #if UNITY_4_1 || UNITY_4_2
+                bool delete = EditorUtility.DisplayDialog("Delete Item?",
+                    "Deleting this cannot be undo as you are running a version previous to Unity 4.3. Delete anyway?",
+                    "Delete", "Do Nothing"); 
+                if (delete)
+                {
+                    action();
+                }
+                return delete;
+             #else
+                action();
+                return true;
+            #endif
+
+        }
     }
 }

@@ -51,6 +51,8 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     private Rect _area;
 
+    private T root;
+
     public Vector2 ScrollPosition;
 
     public void SelectPreviousNode()
@@ -63,17 +65,18 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         selectedNode = TreeWalker.FindNextUnfoldedNode(SelectedNode);
     }
 
-    public bool DrawTree(T root, Rect area)
+    public bool DrawTree(T treeRoot, Rect area)
     {
+        int startIndent = EditorGUI.indentLevel;
         ScrollPosition = EditorGUILayout.BeginScrollView(ScrollPosition, false, true);
-        if (root == null || OnNodeDraw == null)
+        if (treeRoot == null || OnNodeDraw == null)
             return true;
-
+        root = treeRoot;
         _area = area;
 
         if (triggerFilter)
         {
-            FilterNodes(root, filterFunc);
+            FilterNodes(treeRoot, filterFunc);
             triggerFilter = false;
             IsDirty = true;
         }
@@ -88,17 +91,17 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
             canDropObject = HandleDragging();
         }
 
-        DrawTree(root, EditorGUI.indentLevel);
+        DrawTree(treeRoot, EditorGUI.indentLevel);
 
         PostDrawDragHandle(canDropObject);
-
+         
         ContextHandle();
-
+      
         KeyboardControl();
-
 
         EditorGUILayout.EndScrollView();
 
+        EditorGUI.indentLevel = startIndent;
         return IsDirty;
     }
 
@@ -116,6 +119,8 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
             if (!node.IsFoldedOut)
                 return;
 
+            if(Event.current.type == EventType.Layout)
+                NodeWorker.RemoveNullChildren(node);
             for (int i = 0; i < node.GetChildren.Count; ++i)
             {
                 T child = node.GetChildren[i];
@@ -126,7 +131,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     private void ContextHandle()
     {
-        if (Event.current.type == EventType.ContextClick && selectedArea.Contains(Event.current.mousePosition) && OnContext != null)
+        if (Event.current.type == EventType.ContextClick && _area.Contains(Event.current.mousePosition) && selectedArea.Contains(Event.current.mousePosition) && OnContext != null)
         {
             OnContext(selectedNode);
 
@@ -140,28 +145,37 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
         bool hasPressedDown = false;
         bool hasPressedUp = false;
-        if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.RightArrow)
+        if (Event.current.IsKeyDown(KeyCode.RightArrow))
         {
             SelectedNode.IsFoldedOut = true;
             Event.current.Use();
         }
-        if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.LeftArrow)
+        if (Event.current.IsKeyDown(KeyCode.LeftArrow))
         {
             SelectedNode.IsFoldedOut = false;
             Event.current.Use();
         }
 
-        if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.UpArrow)
+        if (Event.current.IsKeyDown(KeyCode.UpArrow))
         {
             hasPressedUp = true;
             selectedNode = TreeWalker.FindPreviousUnfoldedNode(SelectedNode);
             Event.current.Use();
         }
-        if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.DownArrow)
+        if (Event.current.IsKeyDown(KeyCode.DownArrow))
         {
             hasPressedDown = true;
             selectedNode = TreeWalker.FindNextUnfoldedNode(SelectedNode);
             Event.current.Use();
+        }
+        if (Event.current.IsKeyDown(KeyCode.Home))
+        {
+            ScrollPosition = new Vector2();
+            selectedNode = root;
+        }
+        if (Event.current.IsKeyDown(KeyCode.End))
+        {
+            //selectedNode = TreeWalker.;
         }
 
         if (hasPressedDown && (_area.y + ScrollPosition.y + _area.height - selectedArea.height * 2 < selectedArea.y + selectedArea.height))
@@ -220,7 +234,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     //FilterBy: true if node contains search
     private bool FilterNodes(T node, Func<T, bool> filter)
-    {
+    { 
         node.IsFiltered = false;
         if (node.GetChildren.Count > 0)
         {

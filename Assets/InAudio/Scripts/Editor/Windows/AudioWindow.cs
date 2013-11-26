@@ -1,8 +1,9 @@
 using System;
+using InAudio.ExtensionMethods;
 using UnityEditor;
 using UnityEngine;
 
-public class AudioWindow : HDRBaseWindow
+public class AudioWindow : InAudioBaseWindow
 {
     private AudioCreatorGUI audioCreatorGUI;
 
@@ -55,6 +56,11 @@ public class AudioWindow : HDRBaseWindow
 
     void OnGUI()
     {
+        GUI.SetNextControlName("TreeView");
+        GUI.TextField(new Rect(-100,-100,20,10), "TreeView" );
+
+        //int nextControlID = GUIUtility.GetControlID(FocusType.Passive) + 1;
+        //Debug.Log(nextControlID);  
         if (!HandleMissingData())
         {
             return;

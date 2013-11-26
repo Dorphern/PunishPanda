@@ -24,9 +24,10 @@ namespace InAudio
                
 
         public readonly static string BankCreateFolder = FullPathResources + "Banks/";
-        public readonly static string BankDeleteFolder = FullPathResources + "Banks/";
+        public readonly static string BankRelativeDictory = "/"+Name + "/Resources/" + Name + "/" + "Banks/";
+        public readonly static string BankDeleteDictory = FullPathResources + "Banks/";
         public readonly static string BankSaveFolder =  FullPathResources  + "Banks/";
-        public readonly static string BankLoadFolder = RelativePathResources + "Banks/";
+        public readonly static string BankLoadFolder =  RelativePathResources + "Banks/";
 
         public readonly static string AudioManagerPath = "Assets/" + Name + "/Prefabs/InAudio Manager.prefab";
 

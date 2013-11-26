@@ -37,6 +37,18 @@ public static class NodeWorker  {
         node.GetParent.GetChildren.Remove(node);
     }
 
+    public static void RemoveNullChildren<T>(T node) where T : Object, ITreeNode<T>
+    {
+        var children = node.GetChildren;
+        for (int i = 0; i < children.Count; ++i)
+        {
+            if (children[i] == null)
+            {
+                children.RemoveAt(i);
+            }
+        }
+    }
+
     //public static void AssignParent<T>(T node, T newParent) where T : Object, ITreeNode<T>
     //{
     //    if (node != null && newParent != null)
@@ -75,12 +87,12 @@ public static class NodeWorker  {
         {
             if (node is AudioNode) //Forgot why audio node requires special case
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
+                UndoHelper.RecordObject(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
                     "Undo Reorder Of " + node.GetName);
             }
             else
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
+                UndoHelper.RecordObject(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
             }
         }
         var children = node.GetParent.GetChildren;
@@ -107,12 +119,12 @@ public static class NodeWorker  {
         {
             if (node is AudioNode)
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
+                UndoHelper.RecordObject(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
                     "Undo Reorder Of " + node.GetName);
             }
             else
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
+                UndoHelper.RecordObject(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
             }
         }
 

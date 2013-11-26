@@ -7,6 +7,13 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     //Volume set in the editor
     public float Volume = 1.0f;
 
+    //Initial runtime volume
+    public float SelfVolume = 1.0f;
+
+#if UNITY_EDITOR
+    //Only to easily visualize the hiarchy volume. Only used in BusDrawer
+    public float CombinedVolume = 1.0f;
+#endif
 
     public int GUID;
 
@@ -44,13 +51,13 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     [System.NonSerialized]
     public float RuntimeVolume = 1.0f;
 
-    //What the volume for itself is
+    //What the volume for itself is, set by SelfVolume when the game starts
     [System.NonSerialized]
     public float RuntimeSelfVolume = 1.0f;
 
-    //The volume in the hiarchy
+    /*//The volume in the hiarchy
     [System.NonSerialized]
-    public float CombinedVolume = 1.0f;
+    public float CombinedVolume = 1.0f;*/
 
     [System.NonSerialized]
     public Fader Fader = new Fader();

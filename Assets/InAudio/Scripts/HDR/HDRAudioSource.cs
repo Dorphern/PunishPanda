@@ -32,7 +32,7 @@ public class HDRAudioSource : MonoBehaviour {
         }
         else
         {
-            Debug.LogError("HDR Audio Manager not found : " + name + " a " + transform.position);
+            Debug.LogError("InAudio Manager not found : " + name + " a " + transform.position);
         }
         
 	}

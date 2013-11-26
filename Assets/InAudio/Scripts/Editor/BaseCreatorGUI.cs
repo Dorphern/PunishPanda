@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
 {
-    protected HDRBaseWindow window;
+    protected InAudioBaseWindow window;
 
     public TreeDrawer<T> treeDrawer = new TreeDrawer<T>();
 
@@ -26,13 +26,14 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
     protected string lowercaseSearchingFor;
     protected string searchingFor;
 
-    protected BaseCreatorGUI(HDRBaseWindow window)
+    protected BaseCreatorGUI(InAudioBaseWindow window)
     {
         this.window = window;
     }
 
     public void BaseOnGUI()
     {
+        
         isDirty = false;
         if (!UndoHelper.IsNewUndo)
         {
@@ -54,30 +55,30 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
 
     protected virtual void DrawSearchBar()
     {
-        if (!UndoHelper.IsNewUndo)
+      
+        EditorGUILayout.BeginHorizontal();
+        GUI.SetNextControlName("SearchBar");
+        EditorGUILayout.LabelField("Search", GUILayout.Width(45));
+        var content = EditorGUILayout.TextField(searchingFor);
+
+        if (content != searchingFor)
         {
-            EditorGUILayout.BeginHorizontal(CreaterGUIHelper.ToolbarStyle);
-            GUI.SetNextControlName("SearchBar");
-            var content = EditorGUILayout.TextField(searchingFor, CreaterGUIHelper.SearchFieldStyle);
-
-            if (content != searchingFor)
-            {
-                searchingFor = content;
-                lowercaseSearchingFor = searchingFor.ToLower().Trim();
-                treeDrawer.Filter(ShouldFilter);
-            }
-
-            if (GUILayout.Button("", CreaterGUIHelper.SearchCancelStyle) && Event.current.type != EventType.Repaint)
-            {
-                treeDrawer.Filter(ShouldFilter);
-                searchingFor = "";
-                lowercaseSearchingFor = "";
-
-                GUI.FocusControl(null);
-            }
-            /**/
-            GUILayout.EndHorizontal();
+            searchingFor = content;
+            lowercaseSearchingFor = searchingFor.ToLower().Trim();
+            treeDrawer.Filter(ShouldFilter);
         }
+
+        if (GUILayout.Button("x", GUILayout.Width(25)) && Event.current.type != EventType.Repaint)
+        {
+            treeDrawer.Filter(ShouldFilter);
+            searchingFor = "";
+            lowercaseSearchingFor = "";
+
+            GUI.FocusControl(null);
+        }
+        /**/
+        GUILayout.EndHorizontal();
+        
     }
 
     public virtual void OnUpdate()

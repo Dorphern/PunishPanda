@@ -1,4 +1,5 @@
 using InAudio;
+using InAudio.RuntimeHelperClass;
 
 public class RuntimeInfoPool : ObjectPool<RuntimeInfo>{
     public new RuntimeInfo GetObject()
