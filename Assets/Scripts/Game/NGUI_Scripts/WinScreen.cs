@@ -185,7 +185,6 @@ public class WinScreen : MonoBehaviour {
 			
 			while(timeElapsed < scoreCurveDuration)
 			{
-				Debug.Log(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration));
 				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				TotalScoreLabel.text = (total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				yield return null;
@@ -208,7 +207,6 @@ public class WinScreen : MonoBehaviour {
 			
 			while(timeElapsed < scoreCurveDuration)
 			{
-				Debug.Log(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration));
 				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				TotalScoreLabel.text = (total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				yield return null;
@@ -235,7 +233,6 @@ public class WinScreen : MonoBehaviour {
 				
 				while(timeElapsed < scoreCurveDuration)
 				{
-					Debug.Log(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration));
 					scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 					TotalScoreLabel.text = (total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 					yield return null;
@@ -268,6 +265,7 @@ public class WinScreen : MonoBehaviour {
 		}
 		else
 			scoreLabel.text = (0).ToString();
+		
 		total += intermediateTotal;
 		
 		yield return new WaitForSeconds(1f);
