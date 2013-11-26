@@ -43,6 +43,10 @@ public class Level : MonoBehaviour
 
     public void PandaEscaped()
     {
+		if( InstanceFinder.StatsManager != null)
+		{
+			InstanceFinder.StatsManager.PandasEscaped++;
+		}
         if (onLevelLost != null)
         {
             onLevelLost();
@@ -67,6 +71,11 @@ public class Level : MonoBehaviour
 	public int GetScore()
 	{
         return ScoreCalculator.Score(InstanceFinder.LevelManager.CurrentLevel, InstanceFinder.ComboSystem.LevelDeaths, elapsedTime);	
+	}
+	
+	public int GetTimeScore()
+	{
+        return ScoreCalculator.TimeScore(InstanceFinder.LevelManager.CurrentLevel, elapsedTime);	
 	}
 	
 	public int Stars()
