@@ -18,7 +18,7 @@ namespace InAudio
 #if UNITY_4_1 || UNITY_4_2
                 return false;
 #else
-            return true;
+                return true;
 #endif
             }
         }
@@ -59,6 +59,7 @@ namespace InAudio
 
         public static void RecordObject(Object obj, string undoDescription)
         {
+            EditorUtility.SetDirty(obj);
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(obj, undoDescription);
 #else
@@ -69,6 +70,10 @@ namespace InAudio
         public static void RecordObject(Object[] obj, string undoDescription)
         {
             Object[] nonNulls = obj.TakeNonNulls();
+            for (int i = 0; i < nonNulls.Length; i++)
+            {
+                EditorUtility.SetDirty(nonNulls[i]);
+            }
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(nonNulls, undoDescription);
 #else 
@@ -78,6 +83,8 @@ namespace InAudio
 
         public static void RecordObjectFull(Object obj, string undoDescription)
         {
+            EditorUtility.SetDirty(obj);
+            
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(obj, undoDescription);
 #else
@@ -89,6 +96,10 @@ namespace InAudio
         public static void RecordObjectFull(Object[] obj, string undoDescription)
         {
             Object[] nonNulls = obj.TakeNonNulls();
+            for (int i = 0; i < nonNulls.Length; i++)
+            {
+                EditorUtility.SetDirty(nonNulls[i]);
+            }
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(nonNulls, undoDescription);
 #else
@@ -113,6 +124,7 @@ namespace InAudio
 
         public static Object AddComponentUndo(this GameObject go, Type type)
         {
+            EditorUtility.SetDirty(go);
 #if UNITY_4_1 || UNITY_4_2
             return go.AddComponent(type);
 #else 
@@ -127,6 +139,7 @@ namespace InAudio
 
         public static void CompleteObjectUndo(Object obj, string description)
         {
+            EditorUtility.SetDirty(obj);
 #if !UNITY_4_1 && !UNITY_4_2
             Undo.RegisterCompleteObjectUndo(obj, description);
 #endif
@@ -134,6 +147,7 @@ namespace InAudio
 
         public static void RegisterUndo(Object obj, string description)
         {
+            EditorUtility.SetDirty(obj);
 #if !UNITY_4_1 && !UNITY_4_2
             Undo.RegisterCompleteObjectUndo(obj, description);
 #else
@@ -144,6 +158,7 @@ namespace InAudio
 
         public static void RegisterFullObjectHierarchyUndo(Object obj)
         {
+            EditorUtility.SetDirty(obj);
 #if !UNITY_4_1 && !UNITY_4_2
             Undo.RegisterFullObjectHierarchyUndo(obj);
 #endif
@@ -174,6 +189,7 @@ namespace InAudio
 
         public static void DragNDropUndo(Object obj, string description)
         {
+            EditorUtility.SetDirty(obj);
 #if UNITY_4_1 || UNITY_4_2
             Undo.RegisterUndo(obj, description);
 #else 
