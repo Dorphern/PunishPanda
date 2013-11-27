@@ -11,6 +11,7 @@ public class PauseMenuManager : MonoBehaviour {
 	public GameObject PauseTint;
 	public GameObject HintScreen;
 	public GameObject HintObj;
+	public GameObject PauseAndReset;
 	private UITexture HintComponent;
 	
 	private bool MenuIsActive;
@@ -53,7 +54,9 @@ public class PauseMenuManager : MonoBehaviour {
 	public void OnHintReturnClick()
 	{
 		HintScreen.SetActive(false);
-	    PauseMenu.SetActive(true);
+		PauseTint.SetActive(false);
+		PauseAndReset.SetActive (true);
+	    //PauseMenu.SetActive(true);
 	}
 	
 	
