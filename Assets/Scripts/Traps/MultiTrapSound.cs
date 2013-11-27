@@ -7,11 +7,11 @@ public class MultiTrapSound : MonoBehaviour
 
     [SerializeField] private List<TrapBase> Traps = new List<TrapBase>();
 
-    [EventHookAttribute("All Activated")]
+    [EventHookAttribute("All Single Or More Activated")]
     [SerializeField]
     List<AudioEvent> onAllActivatedEvents = new List<AudioEvent>();
 
-    [EventHookAttribute("On Single Activated")]
+    [EventHookAttribute("On All Deactivated")]
     [SerializeField]
     List<AudioEvent> onAllDeactivatedEvents = new List<AudioEvent>();
 
@@ -38,7 +38,6 @@ public class MultiTrapSound : MonoBehaviour
         if (count > 0 && !isActivated)
         {
             isActivated = true;
-            Debug.Log("Activated");
             HDRSystem.PostEvents(gameObject, onAllActivatedEvents);
         }
     }
@@ -55,7 +54,6 @@ public class MultiTrapSound : MonoBehaviour
         if (count == 0 && isActivated)
         {
             isActivated = false;
-            Debug.Log("Deactivated");
             HDRSystem.PostEvents(gameObject, onAllDeactivatedEvents);
         }
     }
