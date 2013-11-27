@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public enum ButtonType {Sound, Music}
@@ -10,6 +11,14 @@ public class GUIButtonAlternator : MonoBehaviour {
 	public GameObject Button1;
 	public GameObject Button2;
 	public ButtonType buttonType;
+
+    [SerializeField]
+    [EventHookAttribute("Off")]
+    List<AudioEvent> onOff = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On")]
+    List<AudioEvent> onOn = new List<AudioEvent>();
 
 	
 	void Start () {
@@ -51,11 +60,15 @@ public class GUIButtonAlternator : MonoBehaviour {
 	{
 		if(Button1.activeInHierarchy == false)
 		{
+            Debug.Log("Off");
+            HDRSystem.PostEvents(gameObject, onOff);
 			Button1.SetActive(true);
 			Button2.SetActive(false);
 		}
 		else
 		{
+            Debug.Log("On");
+            HDRSystem.PostEvents(gameObject, onOn);
 			Button1.SetActive(false);
 			Button2.SetActive(true);
 		}
