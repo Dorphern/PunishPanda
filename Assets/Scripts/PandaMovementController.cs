@@ -10,6 +10,7 @@ public class PandaMovementController : MonoBehaviour {
     [SerializeField] Boosting boosting;
     [SerializeField] JumpingOff jumpOff;
     [SerializeField] Falling falling;
+    [SerializeField] Escape escape;
     [SerializeField] float hangingOffSet = 30f;
     [SerializeField] float pushingForce = 15f;
 	private float currentPushingMagnitude = 0f;
@@ -17,9 +18,10 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
     private Animations animations;
-    private PandaStateManager pandastateManger;
+    private PandaStateManager pandaStateManager;
 	Vector3 lastPos;
     Vector3 dampedVelocity;
+    private float escapeSlideSpeed = 0f;
 	
 	bool withinRange = false;
 
@@ -60,6 +62,19 @@ public class PandaMovementController : MonoBehaviour {
     {
         public float velocityThreshold = 1f; /* At what speed are we actually falling ? */
         public float hardLandingThreshold = 10f;
+    }
+
+    [System.Serializable]
+    public class Escape
+    {
+        public bool pandaEscapedSlide;
+        public float bambooSlideAngle = 4f;
+        public bool pandaJumpToBamboo;
+        public Transform bambooPosition;
+        public float slideDistance;
+        public float yVelocity = -10f;
+        public float smoothTime = 0.1f;
+
     }
 	
 
@@ -102,6 +117,19 @@ public class PandaMovementController : MonoBehaviour {
     {
         return controller.isGrounded;
     }
+
+    public void PandaEscape(Collider c)
+    {
+       escape.bambooPosition = c.transform;
+       StartCoroutine(JumpToBamboo(0.5f, escape.bambooPosition));
+        
+    }
+    public void PandaEscape()
+    {
+        escape.pandaEscapedSlide = true;
+
+    }
+
     # endregion
 
     # region Private Methods
@@ -110,7 +138,7 @@ public class PandaMovementController : MonoBehaviour {
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
         animations = GetComponent<Animations>();
-        pandastateManger = GetComponent<PandaStateManager>();
+        pandaStateManager = GetComponent<PandaStateManager>();
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -129,9 +157,9 @@ public class PandaMovementController : MonoBehaviour {
 	void FixedUpdate ()
 	{
 	    // Make sure the character stays in the 2D plane
-        if(pandastateManger.GetState() != PandaState.Escape)
+        if (pandaStateManager.GetState() != PandaState.Escape)
         {
-            
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
         }
         else
         {
@@ -149,6 +177,23 @@ public class PandaMovementController : MonoBehaviour {
         // Store the last position of the character;
         lastPos = transform.position;
 	}
+
+    void Update ()
+    {
+        if (escape.pandaEscapedSlide)
+        {
+            float newPosition = Mathf.SmoothDamp(transform.position.y, transform.position.y - 100f, ref escape.yVelocity, escape.smoothTime, 5f, Time.deltaTime);
+            transform.position = new Vector3(transform.position.x, newPosition, transform.position.z);
+        }
+        if(escape.pandaJumpToBamboo)
+        {
+            if (pandaStateManager.GetDirection() == PandaDirection.Left)
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y, -1f), 10f * Time.deltaTime);
+            else
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y, -1f), 10f * Time.deltaTime);
+        }
+
+    }
 	
 	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{
@@ -288,6 +333,11 @@ public class PandaMovementController : MonoBehaviour {
 		movement.currentSpeed = boosting.boostSpeed;
     }
 
+    private IEnumerator JumpToBamboo(float timeToWait, Transform c)
+    {        
+        yield return new WaitForSeconds(timeToWait);
+        escape.pandaJumpToBamboo = true;
+    }
     # endregion
 
 }

@@ -6,6 +6,7 @@ public class Animations : MonoBehaviour {
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
+    private PandaMovementController pandaMovementController;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
@@ -25,6 +26,7 @@ public class Animations : MonoBehaviour {
         stateManager = GetComponent<PandaStateManager>();
         pandaAI = GetComponent<PandaAI>();
         characterController = GetComponent<CharacterController>();
+        pandaMovementController = GetComponent<PandaMovementController>();
     }
 
     IEnumerator SetNewPandaState (PandaState state)
@@ -50,7 +52,7 @@ public class Animations : MonoBehaviour {
         anim.SetBool("LandingHard", false);
         if(statePanda == PandaState.Escape)
         {
-            pandaAI.pandaEscaped = true;
+            pandaMovementController.PandaEscape();
         }
     }
     # endregion
