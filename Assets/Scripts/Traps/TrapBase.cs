@@ -9,7 +9,8 @@ public enum TrapType
     Pounder         = 3,
     ThrowingStars   = 4,
 	DoorTrap        = 5,
-    RoundSaw        = 6
+    RoundSaw        = 6,
+    EscapeBamboo    = 7
 }
 
 public enum TrapPosition
@@ -39,7 +40,6 @@ public abstract class TrapBase : MonoBehaviour {
 
     # region Public Methods
 
-    
     public TrapPosition GetTrapPosition()
     {
         return position;
