@@ -37,25 +37,21 @@ public class SoundSettings : MonoBehaviour {
 
     public void OnSFXEnable()
     {
-        Debug.Log("SFX enabled");
         HDRSystem.PostEvents(gameObject, onSFXEnable);
     }
 
     public void OnSFXDisable()
     {
-        Debug.Log("SFX disabled");
         HDRSystem.PostEvents(gameObject, onSFXDisable);
     }
 
     public void OnMusicEnable()
     {
-        Debug.Log("Music enabled");
         HDRSystem.PostEvents(gameObject, onMusicEnable);
     }
 
     public void OnMusicDisable()
     {
-        Debug.Log("Music Disable");
         HDRSystem.PostEvents(gameObject, onMusicDisable);
     }
 }

@@ -80,6 +80,7 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = false;
+        InstanceFinder.GameManager.ActiveLevel.OnLevelReset();
 		AddStatistics();
 		SaveData();
         Application.LoadLevel(CurrentLevel.LevelName);

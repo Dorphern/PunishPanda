@@ -60,14 +60,12 @@ public class GUIButtonAlternator : MonoBehaviour {
 	{
 		if(Button1.activeInHierarchy == false)
 		{
-            Debug.Log("Off");
             HDRSystem.PostEvents(gameObject, onOff);
 			Button1.SetActive(true);
 			Button2.SetActive(false);
 		}
 		else
 		{
-            Debug.Log("On");
             HDRSystem.PostEvents(gameObject, onOn);
 			Button1.SetActive(false);
 			Button2.SetActive(true);
