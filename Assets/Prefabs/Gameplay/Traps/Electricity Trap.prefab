@@ -11,7 +11,6 @@ GameObject:
   - 114: {fileID: 11400000}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: Electricity Trap
   m_TagString: Untagged
@@ -79,7 +78,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.27352524, y: 1.21423113, z: 2.45689249}
+  m_LocalPosition: {x: 1.66012537, y: 1.3962245, z: 2.94311523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400004}
@@ -93,7 +92,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: .707106829, y: -.707106829, z: 3.09086232e-08, w: -3.09086232e-08}
-  m_LocalPosition: {x: 5.96046448e-08, y: 2.5593648, z: 0}
+  m_LocalPosition: {x: 0, y: 4.53570271, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -115,8 +114,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
-  m_LocalPosition: {x: -.0507941246, y: .762363553, z: .0199999809}
-  m_LocalScale: {x: 4.7857461, y: 3.32523108, z: 4.7857461}
+  m_LocalPosition: {x: -.0507941246, y: 1.75139451, z: .0199999809}
+  m_LocalScale: {x: 4.7857461, y: 5.11254311, z: 4.7857461}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -204,8 +203,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .400000006, y: 4.07000017, z: 1}
-  m_Center: {x: 0, y: .360000014, z: 0}
+  m_Size: {x: .400000006, y: 4.90999985, z: 1}
+  m_Center: {x: 0, y: 1.63999999, z: 0}
 --- !u!95 &9500000
 Animator:
   m_ObjectHideFlags: 1
@@ -241,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2617520367298b42a968bc9758d8712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: 0
   initActivated: 1
   isPerfectTrap: 0
   maxPerfectPandaKills: -1
@@ -250,6 +250,8 @@ MonoBehaviour:
   electricityBox0: {fileID: 100004}
   electricityBox1: {fileID: 100002}
   electricTextureCount: 6
+  onTrapAwake: []
+  onTrapDisable: []
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -264,25 +266,6 @@ MonoBehaviour:
   onlyPlayOnce: 0
   pandaCollideEvents:
   - {fileID: 11400050, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f1ff234b1b046d4dbb6f7fdab994ae6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnEnableEvents:
-  - {fileID: 11400142, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400138, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  OnStartEvents: []
-  OnDisableEvents: []
-  OnDestroyEvents: []
-  OnVisibleEvents: []
-  OnInvisibleEvents: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
