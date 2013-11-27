@@ -39,7 +39,6 @@ public class SideWallButton : TrapActivator {
 
     IEnumerator PlayActivateAnimation ()
     {
-        Debug.Log("activate anim");
         animation.Play(animationName);
         yield return new WaitForSeconds(0.2f);
         animation[animationName].speed = 0;
@@ -47,7 +46,6 @@ public class SideWallButton : TrapActivator {
 
     void PlayDeactiveAnimation ()
     {
-        Debug.Log("deactivate anim");
         animation[animationName].speed = 1;
     }
 }
