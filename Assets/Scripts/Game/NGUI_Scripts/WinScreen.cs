@@ -90,7 +90,7 @@ public class WinScreen : MonoBehaviour {
 //        }
 
 		
-		StartCoroutine(PlayWinAnimations());
+		StartCoroutine(PlayWinAnimations(score, highscore));
 		
         if(level.Stars()==3)
         {
@@ -119,7 +119,7 @@ public class WinScreen : MonoBehaviour {
 		
 	}
 	
-	IEnumerator PlayWinAnimations()
+	IEnumerator PlayWinAnimations(int score, int highscore)
 	{
 		List<ComboKill> kills = InstanceFinder.ComboSystem.LevelDeaths.ComboKills;
 		PointSystem pointSystem = InstanceFinder.PointSystem;
@@ -128,7 +128,6 @@ public class WinScreen : MonoBehaviour {
 		int normalKills = 0, perfectKills = 0;
 		total = 0;
 		intermediateTotal = 0;
-		
 		
 	
 		// for every panda present the kill
@@ -152,7 +151,7 @@ public class WinScreen : MonoBehaviour {
 			
 			//score increment loop
 			ZoomInTween.RunTween();
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSeconds(0.2f);
 			startTime = Time.realtimeSinceStartup;
 			timeElapsed = Time.realtimeSinceStartup - startTime;
 			
@@ -165,6 +164,9 @@ public class WinScreen : MonoBehaviour {
 				yield return null;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 			}
+			
+			scoreLabel.text = ((intermediateTotal)).ToString("N0");
+			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 			total += intermediateTotal;
 			
 			ZoomOutTween.RunTween();
@@ -179,7 +181,7 @@ public class WinScreen : MonoBehaviour {
 		{
 			//score increment loop
 			ZoomInTween.RunTween();
-			yield return new WaitForSeconds(0.1f);		
+			yield return new WaitForSeconds(0.2f);		
 			startTime = Time.realtimeSinceStartup;
 			timeElapsed = Time.realtimeSinceStartup - startTime;
 			
@@ -192,6 +194,8 @@ public class WinScreen : MonoBehaviour {
 				yield return null;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 			}
+			scoreLabel.text = ((intermediateTotal)).ToString("N0");
+			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 			total += intermediateTotal;
 			ZoomOutTween.RunTween();
 			yield return new WaitForSeconds(0.5f);
@@ -209,7 +213,7 @@ public class WinScreen : MonoBehaviour {
 				intermediateTotal = pointSystem.Combo * ck.ComboCount;
 				
 				ZoomInTween.RunTween();
-				yield return new WaitForSeconds(0.1f);				
+				yield return new WaitForSeconds(0.2f);				
 				startTime = Time.realtimeSinceStartup;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 				
@@ -217,13 +221,15 @@ public class WinScreen : MonoBehaviour {
 				{
 					Debug.Log(timeElapsed);
 					Debug.Log(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration));
-					scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
+					scoreLabel.text = (( Mathf.Clamp(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration),0f,1f)*intermediateTotal)).ToString("N0");
 					int val =  Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 					TotalScoreLabel.text = (val).ToString("N0");
 					PlayStarAnimations(val);
 					yield return null;
 					timeElapsed = Time.realtimeSinceStartup - startTime;
 				}
+				scoreLabel.text = ((intermediateTotal)).ToString("N0");
+				TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 				total += intermediateTotal;
 				ZoomOutTween.RunTween();
 				yield return new WaitForSeconds(0.5f);
@@ -240,7 +246,7 @@ public class WinScreen : MonoBehaviour {
 		timeElapsed = Time.realtimeSinceStartup - startTime;
 		
 		ZoomInTween.RunTween();
-		yield return new WaitForSeconds(0.1f);
+		yield return new WaitForSeconds(0.2f);
 		if(timeScore!=0)
 		{
 			
@@ -253,14 +259,27 @@ public class WinScreen : MonoBehaviour {
 				yield return null;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 			}
-			
+			scoreLabel.text = ((intermediateTotal)).ToString("N0");
+			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 		}
 		else
 			scoreLabel.text = (0).ToString();
 		
 		total += intermediateTotal;
 		
+		
 		yield return new WaitForSeconds(0.5f);
+		
+		// if new highscore reached
+		if(highscore < score)
+		{
+			
+		}
+		else
+		{
+			newHighScoreLabel.text = "Highscore: " + highscore;
+			newHighScoreLabel.gameObject.SetActive(true);
+		}
 			
 	}
 
