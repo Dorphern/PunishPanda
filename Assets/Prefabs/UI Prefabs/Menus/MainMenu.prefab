@@ -5368,13 +5368,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boostEnabled: 0
+  boostDuration: 1
   dismemberedPanda: {fileID: 100020, guid: 3ded7fb618082e74798b9c31297c2c17, type: 2}
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
-  stunLength: 1
+  stuckOnSpikes: 0
   slapAudioEvents: []
+  turnSpeed: .416999996
   jumpEvents: []
-  debug: 
 --- !u!114 &11400034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5405,19 +5406,14 @@ MonoBehaviour:
     jumpHeight: 8
     walkSpeed: 0
     notMovingThreshold: .00999999978
-  lifting:
-    minMoveDistance: .100000001
-    movementSpeed: 20
-    releaseMagnitudeThreshold: 1
-  falling:
-    sideForceAmplitude: 5
-    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
   jumpOff:
     jumpOffSpeed: 3
     jumpOffDir: 45
+  falling:
+    velocityThreshold: 1
   hangingOffSet: 30
   pushingForce: 15
   velocityDampingSpeed: .100000001
@@ -5482,19 +5478,14 @@ MonoBehaviour:
     jumpHeight: 8
     walkSpeed: 3
     notMovingThreshold: .00999999978
-  lifting:
-    minMoveDistance: .100000001
-    movementSpeed: 20
-    releaseMagnitudeThreshold: 1
-  falling:
-    sideForceAmplitude: 5
-    maxMagnitude: 2
   boosting:
     boostSpeed: 8
     rollOffSpeed: 3
   jumpOff:
     jumpOffSpeed: 3
     jumpOffDir: 45
+  falling:
+    velocityThreshold: 1
   hangingOffSet: 30
   pushingForce: 15
   velocityDampingSpeed: .100000001
