@@ -32,6 +32,10 @@ public class Level : MonoBehaviour
     [EventHookAttribute("On Level Lost")]
     private List<AudioEvent> onLose = new List<AudioEvent>();
 
+    [SerializeField]
+    [EventHookAttribute("On Level Reset")]
+    private List<AudioEvent> onReset = new List<AudioEvent>();
+
     # region Public Methods
 
     public void Pause()
@@ -62,7 +66,10 @@ public class Level : MonoBehaviour
         }
     }
 
-
+    public void OnLevelReset()
+    {
+        HDRSystem.PostEvents(gameObject, onReset);
+    }
 
     public void Continue()
     { 

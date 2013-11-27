@@ -288,24 +288,6 @@ public class HDRSystem : MonoBehaviour
 
     #region Internal data
 
-    void OnEnable()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            _runtimeEventWorker = GetComponentInChildren<RuntimeEventWorker>();
-            runtimeData = GetComponentInChildren<RuntimeAudioData>();
-            BankLoader.LoadAutoLoadedBanks();
-            runtimeData.UpdateEvents(InAudioInstanceFinder.DataManager.EventTree);
-            //AudioBusVolumeHelper.UpdateCombinedVolume(InAudioInstanceFinder.DataManager.BusTree);
-            DontDestroyOnLoad(transform.parent.gameObject);
-        }
-        else
-        {
-            Object.Destroy(transform.parent.gameObject);
-        }
-    }
-
     private RuntimeEventWorker _runtimeEventWorker;
 
     private RuntimeAudioData runtimeData;
@@ -331,23 +313,38 @@ public class HDRSystem : MonoBehaviour
 
 
     #region Unity functions
-    void FixedUpdate()
+    void LateUpdate()
     {
         AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);
     }
 
-    void Start()
+    void OnEnable()
     {
-        if (InAudioInstanceFinder.DataManager != null && InAudioInstanceFinder.DataManager.BusTree != null)
+        if (instance == null)
         {
-            var busRoot = InAudioInstanceFinder.DataManager.BusTree;
-            busRoot.Dirty = true;
-            AudioBusVolumeHelper.InitVolumes(busRoot);
+            instance = this;
+            _runtimeEventWorker = GetComponentInChildren<RuntimeEventWorker>();
+            runtimeData = GetComponentInChildren<RuntimeAudioData>();
+            BankLoader.LoadAutoLoadedBanks();
+            runtimeData.UpdateEvents(InAudioInstanceFinder.DataManager.EventTree);
+            //AudioBusVolumeHelper.UpdateCombinedVolume(InAudioInstanceFinder.DataManager.BusTree);
+            DontDestroyOnLoad(transform.parent.gameObject);
+
+            if (InAudioInstanceFinder.DataManager != null && InAudioInstanceFinder.DataManager.BusTree != null)
+            {
+                var busRoot = InAudioInstanceFinder.DataManager.BusTree;
+                busRoot.Dirty = true;
+                AudioBusVolumeHelper.InitVolumes(busRoot);
+                AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);
+            }
         }
-
+        else
+        {
+            Object.Destroy(transform.parent.gameObject);
+        }
     }
+   
     #endregion
-
 
     #endregion
 } 
