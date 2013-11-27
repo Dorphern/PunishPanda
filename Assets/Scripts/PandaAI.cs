@@ -28,8 +28,6 @@ public class PandaAI : MonoBehaviour {
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
     public bool landingHard;
-    public bool pandaEscaped;
-    public float bambooSlideAngle = 4f;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -79,10 +77,7 @@ public class PandaAI : MonoBehaviour {
 	
 	void Update()
 	{
-        if(pandaEscaped)
-        {
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x + bambooSlideAngle, transform.position.y - 100f, transform.position.z), Time.deltaTime * 0.06f);
-        }
+
 	}
 	
 	public void PandaPushingFinger()
@@ -492,10 +487,7 @@ public class PandaAI : MonoBehaviour {
         if(c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown)
         {
             pandaStateManager.ChangeState(PandaState.Escape);
-            if(pandaStateManager.GetDirection() == PandaDirection.Left)
-                transform.position = Vector3.Slerp(transform.position, new Vector3(c.transform.position.x + 0.4f, transform.position.y, -1f), 100f * Time.deltaTime);
-            else
-                transform.position = Vector3.Slerp(transform.position, new Vector3(c.transform.position.x - 0.4f, transform.position.y, -1f), 100f * Time.deltaTime);
+            pandaMovementController.PandaEscape(c);
         }
         else if(c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp)
         {
