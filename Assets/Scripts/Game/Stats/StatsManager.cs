@@ -156,6 +156,7 @@ public class StatsManager : MonoBehaviour
         }
         PlayerPrefs.SetInt(totalScoreKey, TotalScore);
         PlayerPrefs.Save();
+		PlayerPrefs.DeleteAll();
     }
 	
 	public TrapInfo[] GetTrapInfo()
