@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Collections;
 using Object = UnityEngine.Object;
+using Debug = UnityEngine.Debug;
 
 public static class TreeWalker
 {
@@ -203,5 +205,57 @@ public static class TreeWalker
             }
         }
         return node;
+    }
+
+    public static T FindNextSibling<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        //Keep walking up as the current node may be n deep
+        while (node != null && node.GetParent != null)
+        {
+            //Look through all the children
+            for (int i = 0; i < node.GetParent.GetChildren.Count; ++i)
+            {
+                //We found the starting node
+                if (node.GetParent.GetChildren[i] == node)
+                {
+                    //If the node is the last one, select the parent and try again by breaking to the while loop
+                    if (i == node.GetParent.GetChildren.Count - 1)
+                    {
+                        node = node.GetParent;
+                        break;
+                    }
+                    else //There is another sibling, select that one
+                    {
+                        return node.GetParent.GetChildren[i + 1];
+                    }
+                }
+            }
+        }
+        return node;
+    }
+
+
+
+
+    public static T FindNextNode<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        if (node.IsFoldedOut && predicate(node) && node.GetChildren.Count > 0)
+            return node.GetChildren[0];
+
+        T found = node;
+        if (node.IsFoldedOut && predicate(node) && node.GetChildren.Count == 0)
+        {
+            found = FindNextSibling(node, predicate);
+            if (found.IsRoot) //Is root node
+                return node;
+            else
+                return found;
+        }
+
+        found = FindNextSibling(node);
+        if (found.GetParent == null)
+            return node;
+        else
+            return found;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using InAudio;
 using InAudio.ExtensionMethods;
 using UnityEditor;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace InAudio
@@ -48,6 +49,8 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
     private Vector2 dragStart;
     private bool wantToDrag;
     private bool dragging;
+
+    private bool focusOnSelectedNode;
 
     private Rect _area;
 
@@ -102,6 +105,13 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         EditorGUILayout.EndScrollView();
 
         EditorGUI.indentLevel = startIndent;
+
+        if (focusOnSelectedNode)
+        {
+            ScrollPosition.y = selectedArea.y;
+            focusOnSelectedNode = false;
+        }
+
         return IsDirty;
     }
 
@@ -159,13 +169,13 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         if (Event.current.IsKeyDown(KeyCode.UpArrow))
         {
             hasPressedUp = true;
-            selectedNode = TreeWalker.FindPreviousUnfoldedNode(SelectedNode);
+            selectedNode = TreeWalker.FindPreviousUnfoldedNode(selectedNode);
             Event.current.Use();
         }
         if (Event.current.IsKeyDown(KeyCode.DownArrow))
         {
             hasPressedDown = true;
-            selectedNode = TreeWalker.FindNextUnfoldedNode(SelectedNode);
+            selectedNode = TreeWalker.FindNextNode(SelectedNode, arg => !arg.IsFiltered );
             Event.current.Use();
         }
         if (Event.current.IsKeyDown(KeyCode.Home))
@@ -283,7 +293,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
                 DragAndDrop.SetGenericData(selectedNode.GetName, selectedNode);
                 DragAndDrop.paths = null;
                 DragAndDrop.objectReferences = new UnityEngine.Object[] {selectedNode};
-                DragAndDrop.StartDrag("AudioNode");
+                DragAndDrop.StartDrag("InAudio Tree Drag N Drop");
             }
             Event.current.Use();
         }
@@ -325,6 +335,11 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
                 DragAndDrop.visualMode = DragAndDropVisualMode.None;
             }
         }
+    }
+
+    public void FocusOnSelectedNode()
+    {
+        focusOnSelectedNode = true;
     }
 }
 }
