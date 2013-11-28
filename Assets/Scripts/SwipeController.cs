@@ -17,6 +17,7 @@ using System.Collections.Generic;
 
 public class SwipeController : MonoBehaviour {
 	
+	
 	public void Swipe(Vector3 currPos, Vector3 endPos)
     {
 
@@ -57,7 +58,7 @@ public class SwipeController : MonoBehaviour {
 				
 				if(collidable != null && collidable.type == CollidableTypes.Panda)
 				{
-					hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+						hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
 				}
 			}
 		}      
