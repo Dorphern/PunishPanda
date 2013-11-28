@@ -33,11 +33,11 @@ public class FingerMenu : MonoBehaviour {
 			mediumToggle.value = true;
 	}	
 	
+	
 	public void OnFingerClickedSmall()
 	{
 		if(smallToggle!=null && smallToggle.value)
 		{
-			Debug.Log ("selected small");
 			InstanceFinder.StatsManager.FingerSize = smallFingerSize;
 			//InstanceFinder.StatsManager.Save();
 		}
@@ -48,7 +48,6 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(mediumToggle!=null && mediumToggle.value)
 		{
-			Debug.Log ("selected medium");
 			InstanceFinder.StatsManager.FingerSize = mediumFingerSize;
 			//InstanceFinder.StatsManager.Save();
 		}	
@@ -59,7 +58,6 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(largeToggle!=null && largeToggle.value)
 		{
-			Debug.Log ("selected large");
 			InstanceFinder.StatsManager.FingerSize = largeFingerSize;
 			//InstanceFinder.StatsManager.Save();
 		}
@@ -70,7 +68,6 @@ public class FingerMenu : MonoBehaviour {
 	{
 		if(xlToggle!=null && xlToggle.value)
 		{
-			Debug.Log ("selected XL");
 			InstanceFinder.StatsManager.FingerSize = XL_Finger_Size;
 			//InstanceFinder.StatsManager.Save();
 		}
