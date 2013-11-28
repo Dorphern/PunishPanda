@@ -42,13 +42,17 @@ public class PauseMenuManager : MonoBehaviour {
 		//set start-tutorial texture to component
 		textureComponent.mainTexture = TutorialTexture;
 		//set it to its native-dimensions
-		textureComponent.width = TutorialTexture.width;
-		textureComponent.height = TutorialTexture.height;
+		if(textureComponent.mainTexture != null)
+		{
+			textureComponent.width = TutorialTexture.width;
+			textureComponent.height = TutorialTexture.height;
 		
 
-		//display start-tutorial texture (if it has one..)
-		skippedTutorial = false;
-		StartCoroutine(showTutorial());
+			//display start-tutorial texture (if it has one..)
+			skippedTutorial = false;
+		
+			StartCoroutine(showTutorial());
+		}
 
 	}
 	
@@ -75,13 +79,22 @@ public class PauseMenuManager : MonoBehaviour {
 
 		//set menu-hint texture
 		textureComponent.mainTexture = HintTexture;
-		textureComponent.width = HintTexture.width;
-		textureComponent.height = HintTexture.height;
-		HintScreen.SetActive(true);
-	    PauseMenu.SetActive(false);
+		if(textureComponent.mainTexture != null)
+		{
+			textureComponent.width = HintTexture.width;
+			textureComponent.height = HintTexture.height;
+			HintScreen.SetActive(true);
+	    	PauseMenu.SetActive(false);
 		
-		hintAlphaComponent.PlayForward();
-		tintAlphaComponent.PlayForward();
+		
+			hintAlphaComponent.PlayForward();
+			tintAlphaComponent.PlayForward();
+		}
+		else
+		{
+			Debug.Log ("A Hint picture is NOT setup for this level!");
+		}
+			
 	}
 	
 	public void OnHintReturnClick()
