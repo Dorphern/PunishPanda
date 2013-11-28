@@ -44,20 +44,20 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 			StatsManager sm = InstanceFinder.StatsManager;
 			TrapInfo[] ti = sm.GetTrapInfo();
 			//AddStatisticMember(statisticsListGridRoot, "", "", null);
-			AddStatisticMember(statisticsListGridRoot, "Total amount of slaps performed", sm.PandaSlaps.ToString(), null);
+			AddStatisticMember(statisticsListGridRoot, "Total amount of slaps", sm.PandaSlaps.ToString(), null);
 			AddStatisticMember(statisticsListGridRoot, "Lifetime score collected", sm.TotalScore.ToString(), null);			
 			AddStatisticMember(statisticsListGridRoot, "Games played", sm.GamesPlayed.ToString(), null);
 			AddStatisticMember(statisticsListGridRoot, "Pandas killed", sm.PandasKilled.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Perfect panda kills", sm.PandasKilledPerfect.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Favourite panda trap",FindPrefferedTrap(ti).name, null);
+			AddStatisticMember(statisticsListGridRoot, "Perfect kills", sm.PandasKilledPerfect.ToString(), null);
+			AddStatisticMember(statisticsListGridRoot, "Favourite trap",FindPrefferedTrap(ti).name, null);
 			
 			for(int i=0; i<ti.Length; i++)
 			{
-				AddStatisticMember(statisticsListGridRoot, "Pandas killed on " + ti[i].name, ti[i].kills.ToString(), null);
+				AddStatisticMember(statisticsListGridRoot, "Killed on " + ti[i].name, ti[i].kills.ToString(), null);
 			}
 			
-			AddStatisticMember(statisticsListGridRoot, "Blood collected", sm.LiterBlood.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Total ammount of combo kills", sm.PandasComboKilled.ToString(), null);
+			AddStatisticMember(statisticsListGridRoot, "Blood collected", sm.LiterBlood.ToString() + " liters", null);
+			AddStatisticMember(statisticsListGridRoot, "Total combo kills", sm.PandasComboKilled.ToString(), null);
 			
 			statisticsListGridRoot.GetComponent<UIGrid>().Reposition();
 		}
