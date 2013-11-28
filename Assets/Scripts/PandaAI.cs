@@ -484,7 +484,7 @@ public class PandaAI : MonoBehaviour {
         {
             animations.PlayLedgeFallAnimation(pandaStateManager.GetDirection());
         }
-        if (c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown || c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp)
+        if (c.gameObject.GetComponent<Collidable>() != null && (c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown || c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp))
         {
             pandaStateManager.ChangeState(PandaState.Escape);
             pandaMovementController.PandaEscape(c, c.gameObject.GetComponent<Collidable>().type);
