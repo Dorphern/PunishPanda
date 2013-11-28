@@ -23,6 +23,9 @@ public class LevelData
     [SerializeField]
     public Texture2D HintscreenTexture;
 
+    [SerializeField]
+    public Texture2D TutorialTexture;
+
     public bool Toggled;
 
     [SerializeField]
