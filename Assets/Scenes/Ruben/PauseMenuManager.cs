@@ -15,6 +15,8 @@ public class PauseMenuManager : MonoBehaviour {
 	private UITexture textureComponent;
 	private TweenAlpha hintAlphaComponent;
 	private TweenAlpha tintAlphaComponent;
+	private bool skippedTutorial;
+	
 		
 	private bool MenuIsActive;
 	private Texture2D HintTexture;
@@ -40,17 +42,13 @@ public class PauseMenuManager : MonoBehaviour {
 		//set start-tutorial texture to component
 		textureComponent.mainTexture = TutorialTexture;
 		//set it to its native-dimensions
-		textureComponent.width = 1024;
-		textureComponent.height = 1024;
+		textureComponent.width = TutorialTexture.width;
+		textureComponent.height = TutorialTexture.height;
 		
 
 		//display start-tutorial texture (if it has one..)
+		skippedTutorial = false;
 		StartCoroutine(showTutorial());
-		
-		
-		
-		
-		
 
 	}
 	
@@ -58,6 +56,7 @@ public class PauseMenuManager : MonoBehaviour {
 	{
 		//Enable Screen tint
 		PauseTint.SetActive(true);
+		tintAlphaComponent.PlayForward();
 		//Enable PauseMENU
 		PauseMenu.SetActive (true);
 		MenuIsActive = true;
@@ -66,24 +65,36 @@ public class PauseMenuManager : MonoBehaviour {
 	
 	public void OnResumeClick()
 	{
+		tintAlphaComponent.Reset();
 		PauseTint.SetActive(false);
 		MenuIsActive = false;
 	}
 	
 	public void OnHintClick()
 	{
+
 		//set menu-hint texture
 		textureComponent.mainTexture = HintTexture;
+		textureComponent.width = HintTexture.width;
+		textureComponent.height = HintTexture.height;
 		HintScreen.SetActive(true);
 	    PauseMenu.SetActive(false);
+		
+		hintAlphaComponent.PlayForward();
+		tintAlphaComponent.PlayForward();
 	}
 	
 	public void OnHintReturnClick()
 	{
+		skippedTutorial = true;
+		
+		hintAlphaComponent.Reset();
+		tintAlphaComponent.Reset();
+	
 		HintScreen.SetActive(false);
 		PauseTint.SetActive(false);
 		PauseAndReset.SetActive (true);
-	    //PauseMenu.SetActive(true);
+
 	}
 	
 	
@@ -121,29 +132,29 @@ public class PauseMenuManager : MonoBehaviour {
 		
 		hintAlphaComponent.Play();
 		tintAlphaComponent.Play();
-		
-		Debug.Log ("waiting..");
+
 		float pauseEndTime = Time.realtimeSinceStartup + 3;
     	while (Time.realtimeSinceStartup < pauseEndTime)
     	{
         	yield return 0;
     	}
-		Debug.Log ("DONE WAITING");
+
 		
-		//play fade out and wait for it to finish.
-		hintAlphaComponent.PlayReverse();
-		tintAlphaComponent.PlayReverse();
-		float fadeOutTime = Time.realtimeSinceStartup + 1;
-    	while (Time.realtimeSinceStartup < fadeOutTime)
-    	{
-        	yield return 0;
-    	}
+		if(skippedTutorial == false)
+		{
+			hintAlphaComponent.PlayReverse();
+			tintAlphaComponent.PlayReverse();
+			float fadeOutTime = Time.realtimeSinceStartup + 1;
+    		while (Time.realtimeSinceStartup < fadeOutTime)
+    		{
+        		yield return 0;
+    		}
 		
-		
-		pausegame.ResumeGame();
-		PauseAndReset.SetActive (true);
-		PauseTint.SetActive(false);
-		HintScreen.SetActive(false);
-		
+			pausegame.ResumeGame();
+			PauseAndReset.SetActive (true);
+			PauseTint.SetActive(false);
+			HintScreen.SetActive(false);
+		}
+
 	}
 }
