@@ -22,6 +22,7 @@ public class RuntimePlayer : MonoBehaviour
         firstClip = true;
         runtimeInfo = playingInfo;
 
+
         PlayingNode = node;
         DSPTime time = dspPool.GetObject();
         time.CurrentEndTime = AudioSettings.dspTime;
@@ -242,7 +243,6 @@ public class RuntimePlayer : MonoBehaviour
 
             length = RuntimeHelper.LengthFromPitch(length, Current.pitch);
             endTimes[currentIndex] = playAtDSPTime + length;
-
 
             Current.PlayScheduled(playAtDSPTime);
 

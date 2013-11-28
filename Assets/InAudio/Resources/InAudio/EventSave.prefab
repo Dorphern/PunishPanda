@@ -126,6 +126,10 @@ GameObject:
   - 114: {fileID: 11400230}
   - 114: {fileID: 11400232}
   - 114: {fileID: 11400234}
+  - 114: {fileID: 11400236}
+  - 114: {fileID: 11400238}
+  - 114: {fileID: 11400240}
+  - 114: {fileID: 11400242}
   m_Layer: 0
   m_Name: EventSave
   m_TagString: Untagged
@@ -177,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 568918722
   Type: 1
-  FoldedOut: 1
+  FoldedOut: 0
   Name: Panda events
   Parent: {fileID: 11400006}
   Delay: 0
@@ -1758,7 +1762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 1675128547
   Type: 1
-  FoldedOut: 0
+  FoldedOut: 1
   Name: Settings
   Parent: {fileID: 11400006}
   Delay: 0
@@ -1783,7 +1787,7 @@ MonoBehaviour:
   GUID: 1321070839
   Type: 3
   FoldedOut: 1
-  Name: Unmute SFX
+  Name: Unmute Music
   Parent: {fileID: 11400174}
   Delay: 0
   Filtered: 0
@@ -1804,7 +1808,7 @@ MonoBehaviour:
   GUID: 1032380080
   Type: 3
   FoldedOut: 1
-  Name: Mute SFX
+  Name: Mute Music
   Parent: {fileID: 11400174}
   Delay: 0
   Filtered: 0
@@ -1825,7 +1829,7 @@ MonoBehaviour:
   GUID: 730067028
   Type: 3
   FoldedOut: 1
-  Name: unmute Music
+  Name: unmute SFX
   Parent: {fileID: 11400174}
   Delay: 0
   Filtered: 0
@@ -1846,7 +1850,7 @@ MonoBehaviour:
   GUID: 706879976
   Type: 3
   FoldedOut: 1
-  Name: Mute Sound
+  Name: Mute SFX
   Parent: {fileID: 11400174}
   Delay: 0
   Filtered: 0
@@ -1938,13 +1942,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 539449412
   Type: 1
-  FoldedOut: 0
-  Name: Stringer
+  FoldedOut: 1
+  Name: Stinger
   Parent: {fileID: 11400006}
   Delay: 0
   Filtered: 0
   Children:
   - {fileID: 11400194}
+  - {fileID: 11400236}
   - {fileID: 11400196}
   ActionList: []
 --- !u!114 &11400194
@@ -1961,7 +1966,7 @@ MonoBehaviour:
   GUID: 693177777
   Type: 3
   FoldedOut: 1
-  Name: Fade stringer in
+  Name: Fade stinger in win
   Parent: {fileID: 11400192}
   Delay: 0
   Filtered: 0
@@ -1990,6 +1995,7 @@ MonoBehaviour:
   Children: []
   ActionList:
   - {fileID: 11400200}
+  - {fileID: 11400242}
 --- !u!114 &11400198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2313,6 +2319,78 @@ MonoBehaviour:
   Delay: 0
   EventActionType: 1
   Node: {fileID: 11400318, guid: ddaf7f3484a7b0a4b8af27084d85b6cf, type: 2}
+--- !u!114 &11400236
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ebc63b0afd5be46bad1f9913414e93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GUID: 1058622297
+  Type: 3
+  FoldedOut: 1
+  Name: Fade stinger in fail
+  Parent: {fileID: 11400192}
+  Delay: 0
+  Filtered: 0
+  Children: []
+  ActionList:
+  - {fileID: 11400238}
+  - {fileID: 11400240}
+--- !u!114 &11400238
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa602f909486304a8bacf94ffd1ad2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  EventActionType: 7
+  Bus: {fileID: 11400016, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
+  Volume: 1
+  VolumeMode: 0
+  FadeCurve: 1
+  Duration: 0
+--- !u!114 &11400240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4798fae9a5866b4409009d5593a6bd5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  EventActionType: 1
+  Node: {fileID: 11400330, guid: ddaf7f3484a7b0a4b8af27084d85b6cf, type: 2}
+--- !u!114 &11400242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa602f909486304a8bacf94ffd1ad2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  EventActionType: 7
+  Bus: {fileID: 11400016, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
+  Volume: 1
+  VolumeMode: 0
+  FadeCurve: 1
+  Duration: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

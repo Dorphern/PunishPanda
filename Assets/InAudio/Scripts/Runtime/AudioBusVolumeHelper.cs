@@ -5,9 +5,11 @@ using UnityEngine;
 public static class AudioBusVolumeHelper {
     public static void SetTargetVolume(AudioBus bus, float targetVolume, EventBusAction.VolumeSetMode setMode, float duration, FadeCurveType curveType)
     {
+        bus.Dirty = true;
         if (duration == 0)
         {
             bus.Fader.Activated = false;
+
             bus.RuntimeSelfVolume = targetVolume;
         }
         else
@@ -28,7 +30,6 @@ public static class AudioBusVolumeHelper {
                     newVolume);
             }
         }
-
     }
 
     public static void UpdateBusVolumes(AudioBus bus)
@@ -39,29 +40,33 @@ public static class AudioBusVolumeHelper {
         {
             double currentTime = AudioSettings.dspTime;
             bus.RuntimeSelfVolume = (float)fader.Lerp(AudioSettings.dspTime);
-
+            bus.Dirty = true;
             if (/*bus.RuntimeSelfVolume == fader.EndValue ||*/  currentTime >= fader.EndTime)
             {
                 fader.Activated = false;
             }
         }
 
-        /**/
-
         float parentVolume;
         if (bus.Parent != null)
         {
-            parentVolume = bus.Parent.RuntimeVolume;
+            var busParent = bus.Parent;
+            parentVolume = busParent.RuntimeVolume;
         }
         else
         {
             parentVolume = 1.0f;
         }
+
+        if (bus.Parent != null)
+            bus.Dirty |= bus.Parent.Dirty;
+
         float oldVolume = bus.RuntimeVolume;
-        
         bus.RuntimeVolume = bus.Volume * bus.RuntimeSelfVolume * parentVolume;
-        
         if (bus.RuntimeVolume != oldVolume)
+            bus.Dirty = true;
+        
+        if (bus.Dirty)
         {
             var players = bus.RuntimePlayers;
             for (int i = 0; i < players.Count; ++i)
@@ -81,6 +86,8 @@ public static class AudioBusVolumeHelper {
         {
             UpdateBusVolumes(bus.Children[i]);
         }
+
+        bus.Dirty = false;
     }
 
     public static void InitVolumes(AudioBus bus)

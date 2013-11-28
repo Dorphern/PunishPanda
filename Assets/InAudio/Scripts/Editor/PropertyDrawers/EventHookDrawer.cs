@@ -42,7 +42,7 @@ public class EventHookDrawer : PropertyDrawer
         //if (EventAttribute.FoldedOut)
         {
             GUI.skin.label.alignment = TextAnchor.MiddleLeft;
-            for (int i = 0; i < prop.arraySize; ++i)
+            for (int i = prop.arraySize - 1; i >= 0; --i)
             {
                 labelPos.y += LineHeight;
                 labelPos.height = 20;
