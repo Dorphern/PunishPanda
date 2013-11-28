@@ -29,7 +29,10 @@ public class PauseMenuManager : MonoBehaviour {
 		pausegame = GetComponent<PauseGame>();
 
 		//get start-tutorial texture:
-		TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+	    if (Localization.instance.currentLanguage == "English")
+	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+	    else
+	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.DanishTutorialTexture;
 		//get menu-hint texture:
 		HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
 		

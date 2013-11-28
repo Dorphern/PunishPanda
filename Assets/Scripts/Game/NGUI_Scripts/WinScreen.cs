@@ -70,8 +70,14 @@ public class WinScreen : MonoBehaviour {
      
     private void SetWinScreenData()
     {
+        
+
         LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
         funFactsTexture.mainTexture = levelData.FunFactsTexture;
+        if (Localization.instance.currentLanguage == "English")
+            FunFactsLabel.text = levelData.FunFactsText;
+        else
+            FunFactsLabel.text = levelData.DanishFunFactsText;
         Level level = InstanceFinder.GameManager.ActiveLevel;
         int score = level.GetScore();
         int highscore = levelData.HighScore;
