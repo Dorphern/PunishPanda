@@ -73,6 +73,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
             treeDrawer.Filter(ShouldFilter);
             searchingFor = "";
             lowercaseSearchingFor = "";
+            treeDrawer.FocusOnSelectedNode();
 
             GUI.FocusControl(null);
         }

@@ -140,5 +140,6 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         searchingFor = audioBus.ID.ToString();
         lowercaseSearchingFor = searchingFor;
         treeDrawer.Filter(ShouldFilter);
+        SelectedNode = audioBus;
     }
 }
