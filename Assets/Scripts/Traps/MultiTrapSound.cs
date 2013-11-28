@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("PunishPanda/Multi Trap Sound")]
 public class MultiTrapSound : MonoBehaviour
 {
 
