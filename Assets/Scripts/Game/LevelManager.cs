@@ -67,7 +67,7 @@ public class LevelManager : MonoBehaviour
         
 		SaveData();
         System.GC.Collect();
-        if (currentWorld.Levels.Count > index)
+        if (currentWorld.Levels.Count > index && index!=-1)
         {
             isInMainMenu = false;
             currentLevelIndex = index;
@@ -166,7 +166,7 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            return currentWorld.Levels.Count > currentLevelIndex;
+            return currentWorld.Levels.Count > currentLevelIndex && currentLevelIndex!=-1;
         }
     }
 

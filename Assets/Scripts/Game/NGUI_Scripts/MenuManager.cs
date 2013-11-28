@@ -79,7 +79,7 @@ public class MenuManager: MonoBehaviour {
 				currentMenu = MenuTypes.Levels;
 				InstanceFinder.LevelManager.loadLevelsScreenFlag = false;	
 			} 
-			// initialize the Main Menu if it is in the dictionary
+			// initialize the Default Menu if it is in the dictionary
 			else if(menuDict.ContainsKey(StartMenu))
 			{	
 				GameObject menu;
@@ -117,5 +117,10 @@ public class MenuManager: MonoBehaviour {
 	public void ReturnToMainMenu()
 	{
 		SwitchToMenu(MenuTypes.MainMenu);
+	}
+	
+	public MenuTypes GetCurrentMenuType()
+	{
+		return currentMenu;	
 	}
 }
