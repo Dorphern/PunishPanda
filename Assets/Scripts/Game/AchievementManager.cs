@@ -104,6 +104,8 @@ public class Achievement
 }
 
 public class AchievementManager : MonoBehaviour {
+    [EventHookAttribute("On Achievement")]
+    public List<AudioEvent> OnAchievementEvents = new List<AudioEvent>();
 
 	public List<Achievement> achievementList = new List<Achievement>();
 	public bool debug = false;
@@ -127,6 +129,7 @@ public class AchievementManager : MonoBehaviour {
 			
 			if(ach.AddProgress(progress))
 			{
+                HDRSystem.PostEvents(gameObject, OnAchievementEvents);
 				onAchievementCompleted(ach);
 				return true;		
 			}
