@@ -9,6 +9,7 @@ public class Achievement
 {
 	public string name;
 	public string description;
+
 	public float goal;
 	
 	
@@ -163,8 +164,12 @@ public class AchievementManager : MonoBehaviour {
 	private void LoadAchievements()
 	{
 		achievements = new Dictionary<string, Achievement>();
+	    var localization = Localization.instance;
 		for(int i=0;i<achievementList.Count;i++)
 		{
+            
+
+
 			if(achievements.ContainsKey(achievementList[i].name))
 			{
 				if(debug)
@@ -176,6 +181,7 @@ public class AchievementManager : MonoBehaviour {
 			if(progress!= -1)
 				achievementList[i].LoadAchievement(progress);
 			
+            
 			achievements.Add(achievementList[i].name, achievementList[i]);
 		}
 	}
@@ -184,12 +190,22 @@ public class AchievementManager : MonoBehaviour {
 	{
 		List<string> keys = new List<string>(achievements.Keys);
 		Achievement ach;
-		for(int i=0;i<keys.Count;i++)
-		{
-			ach = achievements[keys[i]];
-			float progress =  ach.GetProgress();
-			PlayerPrefs.SetFloat(ach.name, progress);
-		}
+
+	    //using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\Achiev.txt"))
+	    {
+	        for (int i = 0; i < keys.Count; i++)
+	        {
+	            ach = achievements[keys[i]];
+
+                /*string achievVal = ach.name + "=" + ach.name;
+                string achievDes = ach.description + "=" + ach.description;
+                file.WriteLine(achievVal);
+                file.WriteLine(achievDes);*/
+
+	            float progress = ach.GetProgress();
+	            PlayerPrefs.SetFloat(ach.name, progress);
+	        }
+	    }
 	}
 	
 	public List<Achievement> AchievementsToList()
