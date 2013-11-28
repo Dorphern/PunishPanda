@@ -6,7 +6,7 @@ public class DoorTrap : TrapBase {
 	public string animationName;
 	private AnimationState trapClip;
 	
-	void Start()
+	void Awake()
 	{
 		trapClip = this.animation[animationName];	
 	}
