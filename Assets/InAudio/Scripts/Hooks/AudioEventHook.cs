@@ -18,6 +18,9 @@ public class AudioEventHook : MonoBehaviour
     [EventHookAttribute("On Invisible")]
     public List<AudioEvent> OnInvisibleEvents = new List<AudioEvent>();
 
+    /*[EventHookCollisionAttribute("On Collision", this)]
+    public List<AudioEvent> OnCollisionEvents = new List<AudioEvent>();*/
+
     void OnEnable()
     {
         for (int i = 0; i < OnEnableEvents.Count; ++i)

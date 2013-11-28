@@ -71,6 +71,11 @@ public class Level : MonoBehaviour
         HDRSystem.PostEvents(gameObject, onReset);
     }
 
+    public void OnNextLevel()
+    {
+        HDRSystem.PostEvents(gameObject, onReset);
+    }
+
     public void Continue()
     { 
         paused = false;
