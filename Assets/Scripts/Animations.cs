@@ -27,6 +27,8 @@ public class Animations : MonoBehaviour {
         pandaAI = GetComponent<PandaAI>();
         characterController = GetComponent<CharacterController>();
         pandaMovementController = GetComponent<PandaMovementController>();
+
+        anim.SetInteger("Direction", (int) stateManager.initDirection);
     }
 
     IEnumerator SetNewPandaState (PandaState state)
