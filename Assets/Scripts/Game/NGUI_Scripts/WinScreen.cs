@@ -8,6 +8,7 @@ using PunishPanda;
 public class WinScreen : MonoBehaviour {
 	
 	public GameObject winScreen;
+	public GameObject NewHighScoreTexture;
 	public UITexture funFactsTexture;
 	public UISprite oneStarTexture;
 	public UISprite twoStarTexture;
@@ -19,6 +20,7 @@ public class WinScreen : MonoBehaviour {
 	public UILabel  TotalScoreLabel;
 	public UIRunTween ZoomInTween;
 	public UIRunTween ZoomOutTween;
+	public UIRunTween ZoomOutScoreTween;
 	
 	public AnimationCurve ScoreCurve;
 	public float scoreCurveDuration;
@@ -114,16 +116,17 @@ public class WinScreen : MonoBehaviour {
 
     }
 	
-	void PlayStarAnimations(int score)
-	{
-		if(oneStarTexture!=null && !oneStarTexture.gameObject.active && score>=oneStarScore)
-			oneStarTexture.gameObject.SetActive(true);
-		if(twoStarTexture!=null && !twoStarTexture.gameObject.active && score>=twoStarScore)
-			twoStarTexture.gameObject.SetActive(true);		
-		if(threeStarTexture!=null && !threeStarTexture.gameObject.active && score>=threeStarScore)
-			threeStarTexture.gameObject.SetActive(true);
-		
-	}
+//	void PlayStarAnimations(int score)
+//	{
+//		if(oneStarTexture!=null && !oneStarTexture.gameObject.active && score>=oneStarScore)
+//			oneStarTexture.gameObject.SetActive(true);
+//		if(twoStarTexture!=null && !twoStarTexture.gameObject.active && score>=twoStarScore)
+//			twoStarTexture.gameObject.SetActive(true);		
+//		if(threeStarTexture!=null && !threeStarTexture.gameObject.active && score>=threeStarScore)
+//			threeStarTexture.gameObject.SetActive(true);
+//		
+//	}
+
 	
 	IEnumerator PlayWinAnimations(int score, int highscore)
 	{
@@ -167,7 +170,7 @@ public class WinScreen : MonoBehaviour {
 				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				int val =   Convert.ToInt32 (  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 				TotalScoreLabel.text = (val).ToString("N0");
-				PlayStarAnimations(val);
+				//PlayStarAnimations(val);
 				yield return null;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 			}
@@ -197,7 +200,7 @@ public class WinScreen : MonoBehaviour {
 				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				int val =  Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 				TotalScoreLabel.text = (val).ToString("N0");
-				PlayStarAnimations(val);
+				//PlayStarAnimations(val);
 				yield return null;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 			}
@@ -226,12 +229,10 @@ public class WinScreen : MonoBehaviour {
 				
 				while(timeElapsed <= scoreCurveDuration)
 				{
-					Debug.Log(timeElapsed);
-					Debug.Log(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration));
 					scoreLabel.text = (( Mathf.Clamp(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration),0f,1f)*intermediateTotal)).ToString("N0");
 					int val =  Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 					TotalScoreLabel.text = (val).ToString("N0");
-					PlayStarAnimations(val);
+					//PlayStarAnimations(val);
 					yield return null;
 					timeElapsed = Time.realtimeSinceStartup - startTime;
 				}
@@ -262,7 +263,7 @@ public class WinScreen : MonoBehaviour {
 				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				int val = Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 				TotalScoreLabel.text = (val).ToString();
-				PlayStarAnimations(val);
+				//PlayStarAnimations(val);
 				yield return null;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
 			}
@@ -270,17 +271,48 @@ public class WinScreen : MonoBehaviour {
 			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 		}
 		else
+		{
 			scoreLabel.text = (0).ToString();
+		}
+		
+		yield return new WaitForSeconds(0.5f);
+		ZoomOutTween.RunTween();
+		ZoomOutScoreTween.RunTween();
+		yield return new WaitForSeconds(0.5f);
 		
 		total += intermediateTotal;
 		
 		
-		yield return new WaitForSeconds(0.5f);
+		
+		
+		if(oneStarTexture!=null && twoStarTexture!=null && threeStarTexture!=null)
+		{
+			if(score>=oneStarScore)
+			{
+				oneStarTexture.gameObject.SetActive(true);
+				
+			}
+			
+			if(score>=twoStarScore)
+			{
+				yield return new WaitForSeconds(0.8f);
+				twoStarTexture.gameObject.SetActive(true);
+				
+			}
+			
+			if(score>=threeStarScore)
+			{
+				yield return new WaitForSeconds(1f);
+				threeStarTexture.gameObject.SetActive(true);
+				
+			}
+			
+		}
 		
 		// if new highscore reached
 		if(highscore < score)
 		{
-			
+			NewHighScoreTexture.SetActive(true);
 		}
 		else
 		{
