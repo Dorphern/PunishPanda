@@ -28,6 +28,9 @@ public class PandaAI : MonoBehaviour {
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
     public bool landingHard;
+    public bool pandaEscaped;
+	
+	public bool isMainMenuPanda;
 
     private Animator anim;
     private PandaState lastPandaState;
@@ -141,11 +144,13 @@ public class PandaAI : MonoBehaviour {
 		// if the panda is idle we need to handle its movement back into walking
         if (pandaStateManager.GetState() == PandaState.Idle)
         {
-            pandaStateManager.ChangeState(PandaState.Walking);
+			//HACK FOR MAIN MENU PANDA<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			if(isMainMenuPanda == false)
+            	pandaStateManager.ChangeState(PandaState.Walking);
+			
             if (dot > 0)
             { // Slapped in the back
                 animations.SetSlapped(false);
-				Debug.Log ("idle-BACK-SLAP");
 				bloodOnSlap.EmmitSlapBlood(slapDirection);
             }
             else
@@ -178,7 +183,6 @@ public class PandaAI : MonoBehaviour {
                     animations.SetSlapped(false);
                 }
 					pandaStateManager.ChangeState(PandaState.Boosting);
-					Debug.Log ("BACK-SLAP");
 					bloodOnSlap.EmmitSlapBlood(slapDirection);
 			}
 	        else
@@ -189,7 +193,6 @@ public class PandaAI : MonoBehaviour {
 	            //	pandaStateManager.ChangeState(PandaState.Walking);
                 ChangeDirection(null);
                 animations.SetSlapped(true);
-				Debug.Log ("TURN-SLAP");
 				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
 	        }
 		}
@@ -330,6 +333,8 @@ public class PandaAI : MonoBehaviour {
 				if(ApplyIdle!=null)
                 {
 					ApplyIdle();
+					if(isMainMenuPanda == true)
+						pandaMovementController.UpdateDirection(pandaStateManager.GetDirection());
                 }
 				break;
             case PandaState.Jumping:

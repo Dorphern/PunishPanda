@@ -273,20 +273,24 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
-        Vector3 curr = transform.eulerAngles;
-        float goalY = (dir == PandaDirection.Right ? 0 : 180);
-        if ((int) curr.y != (int) goalY)
-        {
-            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
-            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
-            transform.eulerAngles = curr;
-        }
+        UpdateDirection(dir);
 
         // Determine movement direction based on movement dir
         movement.offset.x = movement.currentSpeed * (dir == PandaDirection.Left ? -1 : 1);
 		
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
+	}
+	
+	public void UpdateDirection (PandaDirection dir) {
+		Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        if ((int) curr.y != (int) goalY)
+        {
+            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
+            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
+            transform.eulerAngles = curr;
+        }	
 	}
 
 	#region JumpingCode (NOT IN USE)
