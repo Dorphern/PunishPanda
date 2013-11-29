@@ -21,7 +21,7 @@ public enum PandaState
     Slapped         = 7,
 	FallTransition  = 8,
 	Boosting        = 9,
-    Escape          =10
+    Escape          = 10
 }
 
 
@@ -45,7 +45,7 @@ public class PandaStateManager : MonoBehaviour {
     public event DirectionHandler onDirectionEnter;
 
     [SerializeField] private PandaState initState = PandaState.Idle;
-	[SerializeField] private PandaDirection initDirection = PandaDirection.Left;
+	[SerializeField] public PandaDirection initDirection = PandaDirection.Left;
     private PandaState currentState;
     private PandaDirection currentDirection;
     private int slapCount = 0;
