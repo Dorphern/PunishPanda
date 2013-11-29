@@ -133,11 +133,13 @@ public class PandaMovementController : MonoBehaviour {
     
     public void PandaEscapeAway ()
     {
+        /*
         Debug.Log(escape.bambooDirection);
         if (escape.bambooDirection == CollidableTypes.BambooEscapeDown)
             escape.pandaEscapedSlide = true;
         else
             escape.pandaEscapeCrawl = true;
+         */
     }
 
     public void SetDirection (PandaDirection dir)
@@ -385,9 +387,10 @@ public class PandaMovementController : MonoBehaviour {
 
     private IEnumerator JumpToBamboo(float timeToWaitUp, float timeToWaitDown, Transform c, CollidableTypes bambooDirection)
     {
-        
-        float timeToWait;
 
+        float timeToWait = 0f;
+        yield return new WaitForSeconds(timeToWait);
+        /*
         if (CollidableTypes.BambooEscapeDown == bambooDirection)
             timeToWait = timeToWaitDown;
         else
@@ -404,7 +407,7 @@ public class PandaMovementController : MonoBehaviour {
             escape.pandaJumpToBambooUp = true;
         }
             
-
+        */
     }
     # endregion
 
