@@ -17,6 +17,7 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
     private Animations animations;
+    private PandaStateManager pandastateManger;
 	Vector3 lastPos;
     Vector3 dampedVelocity;
 	
@@ -58,6 +59,7 @@ public class PandaMovementController : MonoBehaviour {
     class Falling
     {
         public float velocityThreshold = 1f; /* At what speed are we actually falling ? */
+        public float hardLandingThreshold = 10f;
     }
 	
 
@@ -108,6 +110,7 @@ public class PandaMovementController : MonoBehaviour {
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
         animations = GetComponent<Animations>();
+        pandastateManger = GetComponent<PandaStateManager>();
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -126,15 +129,20 @@ public class PandaMovementController : MonoBehaviour {
 	void FixedUpdate ()
 	{
 	    // Make sure the character stays in the 2D plane
-	    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-        dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
+        if(pandastateManger.GetState() != PandaState.Escape)
+        {
+            
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
+        }
 
+        dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
+       
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
         {
-            //if(dampedVelocity < 10f)
-            //{
-            //    animations.
-            //}
+            pandaAI.landingHard = dampedVelocity.y < -falling.hardLandingThreshold;
             pandaAI.Falling();
         }
 
@@ -189,20 +197,24 @@ public class PandaMovementController : MonoBehaviour {
 		// in order for the isGrounded flag to work we always need to apply gravity
 		movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		
-        Vector3 curr = transform.eulerAngles;
-        float goalY = (dir == PandaDirection.Right ? 0 : 180);
-        if ((int) curr.y != (int) goalY)
-        {
-            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
-            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
-            transform.eulerAngles = curr;
-        }
+        UpdateDirection(dir);
 
         // Determine movement direction based on movement dir
         movement.offset.x = movement.currentSpeed * (dir == PandaDirection.Left ? -1 : 1);
 		
 		// CharacterController.Move() should only be called once per frame
 		controller.Move(movement.offset * Time.fixedDeltaTime);
+	}
+	
+	public void UpdateDirection (PandaDirection dir) {
+		Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        if ((int) curr.y != (int) goalY)
+        {
+            curr.y += (Time.fixedDeltaTime / pandaAI.turnSpeed) * 180 * (goalY < curr.y ? -1 : 1);
+            curr.y = Mathf.Clamp(curr.y, 0f, 180f);
+            transform.eulerAngles = curr;
+        }	
 	}
 
 	#region JumpingCode (NOT IN USE)

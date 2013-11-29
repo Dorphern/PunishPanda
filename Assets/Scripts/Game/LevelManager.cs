@@ -67,10 +67,11 @@ public class LevelManager : MonoBehaviour
         
 		SaveData();
         System.GC.Collect();
-        if (currentWorld.Levels.Count > index)
+        if (currentWorld.Levels.Count > index && index!=-1)
         {
             isInMainMenu = false;
             currentLevelIndex = index;
+			AddStatistics();
             Application.LoadLevel(CurrentLevel.LevelName);
         }
     }
@@ -79,6 +80,7 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = false;
+		AddStatistics();
 		SaveData();
         Application.LoadLevel(CurrentLevel.LevelName);
     }
@@ -87,16 +89,18 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = false;
-		SaveData();
         ++currentLevelIndex;
         if (MoreLevelsInWorld)
         {
+			AddStatistics();
+			SaveData();
             Application.LoadLevel(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
             isInMainMenu = true;
+			SaveData();
             Application.LoadLevel("MainMenu");
         }
     }
@@ -160,7 +164,7 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            return currentWorld.Levels.Count > currentLevelIndex;
+            return currentWorld.Levels.Count > currentLevelIndex && currentLevelIndex!=-1;
         }
     }
 
@@ -183,11 +187,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 	
+	void AddStatistics()
+	{
+		if(InstanceFinder.StatsManager!=null)
+			InstanceFinder.StatsManager.GamesPlayed++;
+	}
+	
 	// adding this to ensure that data is saved when a level change occurs
 	void SaveData()
 	{
 		InstanceFinder.StatsManager.GamesPlayed++;
 		InstanceFinder.AchievementManager.SaveAchievements();
-		//InstanceFinder.StatsManager.Save();	
+		InstanceFinder.StatsManager.Save();	
 	}
 }
