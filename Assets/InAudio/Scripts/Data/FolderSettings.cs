@@ -42,7 +42,7 @@ namespace InAudio
         public const string ComponentPathPrefabs = "InAudio/Prefab Scripts/";
         //public const string ComponentPathPrefabsManager = "InAudio/Prefab Scripts/Manager";
         public const string ComponentPathPrefabsManager = ComponentPathPrefabs + "Manager/";
-        public const string ComponentPathInternalGUIPrefs = ComponentPathInternal + "GUI Prefs/";
+        public const string ComponentPathPrefabsGUIPrefs = ComponentPathPrefabs + "GUI Prefs/";
 
         
 
