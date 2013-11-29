@@ -19,9 +19,18 @@ public class LevelData
     public Texture2D FunFactsTexture;
     [SerializeField]
     public string FunFactsText;
+    [SerializeField]
+    public string DanishFunFactsText;
 
     [SerializeField]
     public Texture2D HintscreenTexture;
+
+    [SerializeField]
+    public Texture2D TutorialTexture;
+
+    [SerializeField]
+    public Texture2D DanishTutorialTexture;
+
 
     public bool Toggled;
 

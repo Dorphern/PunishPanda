@@ -18,7 +18,6 @@ public class PounderTrap : TrapBase
     
 
     # region Public Methods
-
     override public TrapType GetTrapType ()
     {
         return TrapType.Pounder;
@@ -29,7 +28,6 @@ public class PounderTrap : TrapBase
         base.ActivateTrap();
         StartCoroutine(PlayPoundingAnimation());
     }
-
     # endregion
 
     # region Private Methods
