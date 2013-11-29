@@ -98,6 +98,8 @@ public class LevelDataDrawer : IReorderableListAdaptor
             position.y += itemHeight;
             currentLevel.FunFactsText = EditorGUI.TextField(position, "Fact text", currentLevel.FunFactsText);
             position.y += itemHeight;
+            currentLevel.DanishFunFactsText = EditorGUI.TextField(position, "Danish Fact text", currentLevel.DanishFunFactsText);
+            position.y += itemHeight;
 
             position.height = 100;
             position.width = 100;
@@ -116,11 +118,25 @@ public class LevelDataDrawer : IReorderableListAdaptor
             position.x -= 150;
             position.height = 100;
             position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Danish Hint Screen Texture"));
+            position.x += 150;
+            currentLevel.DanishHintscreenTexture = EditorGUI.ObjectField(position, currentLevel.DanishHintscreenTexture, typeof(Texture2D), false) as Texture2D;
+
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
             EditorGUI.PrefixLabel(position, 0, new GUIContent("Tutorial Texture"));
             position.x += 150;
             currentLevel.TutorialTexture = EditorGUI.ObjectField(position, currentLevel.TutorialTexture, typeof(Texture2D), false) as Texture2D;
 
-
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Danish Tutorial Texture"));
+            position.x += 150;
+            currentLevel.DanishTutorialTexture = EditorGUI.ObjectField(position, currentLevel.DanishTutorialTexture, typeof(Texture2D), false) as Texture2D;
         }
     }
 
@@ -128,7 +144,7 @@ public class LevelDataDrawer : IReorderableListAdaptor
     {
         var currentLevel = levelDataList[index];
         if (currentLevel.Toggled)
-            return itemHeight * 11 + 330;
+            return itemHeight * 12 + 550;
         else
             return itemHeight;
     }

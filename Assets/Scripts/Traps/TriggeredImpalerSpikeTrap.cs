@@ -5,6 +5,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 {
     [SerializeField] float sleepTime = 2f;
     protected float inactivePosition = -1.7f;
+    protected string animationName = "Triggered Spike Animation";
 
     # region Public Methods
 
@@ -27,11 +28,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 
     void Awake ()
     {
-        transform.position = new Vector3(
-            transform.position.x + inactivePosition,
-            transform.position.y,
-            transform.position.z
-        );
+        
     }
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
