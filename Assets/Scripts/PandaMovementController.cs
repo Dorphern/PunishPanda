@@ -86,7 +86,7 @@ public class PandaMovementController : MonoBehaviour {
 
     # region Public Methods
 	
-	public bool IsNotMoving()
+	public bool IsNotMoving ()
 	{
 		Vector3 diff = lastPos - transform.position;
 		if(diff.magnitude < movement.notMovingThreshold)
@@ -94,7 +94,7 @@ public class PandaMovementController : MonoBehaviour {
 		return false;	
 	}
 	
-	public void JumpOff()
+	public void JumpOff ()
 	{
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
@@ -122,22 +122,29 @@ public class PandaMovementController : MonoBehaviour {
         return controller.isGrounded;
     }
 
-    public void PandaEscape(Collider c, CollidableTypes bambooDirection)
+    public void PandaEscape (Collider c, CollidableTypes bambooDirection)
     {
        escape.bambooDirection = bambooDirection;
        escape.bambooPosition = c.transform;
        StartCoroutine(JumpToBamboo(0.7f, 0.3f, escape.bambooPosition, bambooDirection));
         
     }
-    public void PandaEscape()
+    
+    public void PandaEscape ()
     {
         if (escape.bambooDirection == CollidableTypes.BambooEscapeDown)
             escape.pandaEscapedSlide = true;
         else
             escape.pandaEscapeCrawl = true;
-
     }
 
+    public void SetDirection (PandaDirection dir)
+    {
+        Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        curr.y = goalY;
+        transform.eulerAngles = curr;
+    }
     # endregion
 
     # region Private Methods

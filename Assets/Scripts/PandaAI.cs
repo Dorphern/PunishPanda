@@ -78,11 +78,6 @@ public class PandaAI : MonoBehaviour {
 		}
 	}
 	
-	void Update()
-	{
-
-	}
-	
 	public void PandaPushingFinger()
 	{
 		if(pandaStateManager.GetState()!=PandaState.Idle)
@@ -288,6 +283,11 @@ public class PandaAI : MonoBehaviour {
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
+
+    public void ChangeDirection (ControllerColliderHit hit)
+    {
+        pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
+    }
 	#endregion
 	
 	# region Private Methods
@@ -310,6 +310,8 @@ public class PandaAI : MonoBehaviour {
 
         pandaStateManager.onStateEnter += StateChange;
         pandaStateManager.onDirectionEnter += DirectionChange;
+
+        pandaMovementController.SetDirection(pandaStateManager.initDirection);
 	}
 	
 	// Update is called once per frame
@@ -422,11 +424,6 @@ public class PandaAI : MonoBehaviour {
             }
             pandaStateManager.ChangeState(PandaState.Walking);
         }
-	}
-	
-	public void ChangeDirection(ControllerColliderHit hit)
-	{
-        pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 	}
 
 	void PandaChangeDirection(ControllerColliderHit hit)
