@@ -60,13 +60,9 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     public void SelectPreviousNode()
     {
-        selectedNode = TreeWalker.FindPreviousUnfoldedNode(SelectedNode);
+        selectedNode = TreeWalker.FindPreviousUnfoldedNode(SelectedNode, arg => !arg.IsFiltered);
     }
 
-    public void SelectNextNode()
-    {
-        selectedNode = TreeWalker.FindNextUnfoldedNode(SelectedNode);
-    }
 
     public bool DrawTree(T treeRoot, Rect area)
     {
@@ -77,9 +73,13 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         root = treeRoot;
         _area = area;
 
+        if (selectedNode.IsFiltered)
+            selectedNode = treeRoot;
+
         if (triggerFilter)
         {
             FilterNodes(treeRoot, filterFunc);
+            
             triggerFilter = false;
             IsDirty = true;
         }
@@ -169,7 +169,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         if (Event.current.IsKeyDown(KeyCode.UpArrow))
         {
             hasPressedUp = true;
-            selectedNode = TreeWalker.FindPreviousUnfoldedNode(selectedNode);
+            selectedNode = TreeWalker.FindPreviousUnfoldedNode(selectedNode, arg => !arg.IsFiltered);
             Event.current.Use();
         }
         if (Event.current.IsKeyDown(KeyCode.DownArrow))
