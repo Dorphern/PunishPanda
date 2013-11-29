@@ -74,7 +74,7 @@ public class PandaAI : MonoBehaviour {
 				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
 			}
 			pandaStateManager.ChangeState(PandaState.Idle);
-			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
+			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
 		}
 	}
 	
@@ -424,7 +424,7 @@ public class PandaAI : MonoBehaviour {
                 else if (fallDir.x > 0)
                     fallDir.x += 1f;
 
-                BloodSplatter.Instance.ProjectBlood(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
+                BloodSplatter.Instance.ProjectFloorHit(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
             }
             pandaStateManager.ChangeState(PandaState.Walking);
         }
