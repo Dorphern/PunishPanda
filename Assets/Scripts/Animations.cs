@@ -111,7 +111,6 @@ public class Animations : MonoBehaviour {
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
-        anim.SetInteger("CollidableTypes", 0);
 
         StartCoroutine(ResetSlap());
     }
