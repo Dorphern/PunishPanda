@@ -234,7 +234,7 @@ public class PandaAI : MonoBehaviour {
      * Attempt a kill on the panda from a death trap
      * return true if the panda was successfully killed
      **/
-    public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
+    public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect, Collider c)
     {
         // Disable death if the panda is already dead
         //if (pandaStateManager.GetState() == PandaState.Died)
@@ -242,9 +242,20 @@ public class PandaAI : MonoBehaviour {
         //    return false;
         //}
 
-        Debug.Log("Hit death object: " + trap.GetTrapType());		
-		
-        pandaStateManager.ChangeState(PandaState.Died);
+        Debug.Log("Hit death object: " + trap.GetTrapType());
+        Debug.Log(c + "COLLIDER");
+        if (trap.GetTrapType() == TrapType.EscapeBamboo)
+        {
+            pandaStateManager.ChangeState(PandaState.Escape);
+            pandaMovementController.PandaEscape(c, c.gameObject.GetComponent<Collidable>().type);
+
+        }
+
+        else
+        {
+            pandaStateManager.ChangeState(PandaState.Died);
+        }
+
 
         // change state from playAnimation PlayDeathAnimation
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, true, pandaStateManager.GetDirection(), lastPandaState);
@@ -484,11 +495,11 @@ public class PandaAI : MonoBehaviour {
         {
             animations.PlayLedgeFallAnimation(pandaStateManager.GetDirection());
         }
-        if (c.gameObject.GetComponent<Collidable>() != null && (c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown || c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp))
-        {
-            pandaStateManager.ChangeState(PandaState.Escape);
-            pandaMovementController.PandaEscape(c, c.gameObject.GetComponent<Collidable>().type);
-        }
+    //    if (c.gameObject.GetComponent<Collidable>() != null && (c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown || c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp))
+    //    {
+    //        pandaStateManager.ChangeState(PandaState.Escape);
+    //        
+    //    }
 
     }
 	

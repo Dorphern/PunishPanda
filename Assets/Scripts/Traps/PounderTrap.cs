@@ -59,7 +59,7 @@ public class PounderTrap : TrapBase
         {
             HDRSystem.PostEvent(gameObject, crushDeathsAudioEvents[i]);
         }
-        return pandaAI.AttemptDeathTrapKill(this, isPerfect);
+        return pandaAI.AttemptDeathTrapKill(this, isPerfect, GetComponentInChildren<Collider>());
     }
 
     # endregion
