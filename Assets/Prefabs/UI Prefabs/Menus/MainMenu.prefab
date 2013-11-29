@@ -5069,7 +5069,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aafa446571ac3ca4abe83f9f988039b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slapStateLength: 1
+  boostEnabled: 0
+  boostDuration: 1
+  dismemberedPanda: {fileID: 0}
+  lastPushingMagnitude: 0
+  pandaCollisionDelay: .0199999996
+  stuckOnSpikes: 0
+  landingHard: 0
+  pandaEscaped: 0
+  slapAudioEvents: []
+  turnSpeed: .416999996
+  jumpEvents: []
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5111,6 +5121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4931b6190f1fcc4889b39f3aea4b4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PandaMouthFront: {fileID: 0}
+  PandaMouthBack: {fileID: 0}
   particleVersion: 1
   slapAudioEvents: []
 --- !u!114 &11400008
@@ -5342,6 +5354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4931b6190f1fcc4889b39f3aea4b4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PandaMouthFront: {fileID: 0}
+  PandaMouthBack: {fileID: 0}
   particleVersion: 1
   slapAudioEvents: []
 --- !u!114 &11400030
@@ -5373,6 +5387,8 @@ MonoBehaviour:
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
+  landingHard: 0
+  pandaEscaped: 0
   slapAudioEvents: []
   turnSpeed: .416999996
   jumpEvents: []
@@ -5414,6 +5430,7 @@ MonoBehaviour:
     jumpOffDir: 45
   falling:
     velocityThreshold: 1
+    hardLandingThreshold: 10
   hangingOffSet: 30
   pushingForce: 15
   velocityDampingSpeed: .100000001
@@ -5486,6 +5503,7 @@ MonoBehaviour:
     jumpOffDir: 45
   falling:
     velocityThreshold: 1
+    hardLandingThreshold: 10
   hangingOffSet: 30
   pushingForce: 15
   velocityDampingSpeed: .100000001

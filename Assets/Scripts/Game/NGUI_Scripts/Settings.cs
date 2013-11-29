@@ -6,7 +6,6 @@ public class Settings : MonoBehaviour {
 	MenuManager menuMan;
 	public UISlider _musicSlider;
 	public UISlider _soundEFXSlider;
-	public UILabel languageLabel;
 	
 	public GameObject SFX_Lever;
 	public GameObject Music_Lever;
@@ -39,24 +38,7 @@ public class Settings : MonoBehaviour {
 			_soundEFXSlider.value = 0;
 
 		
-		if(languageLabel!=null)
-		{
-			bool initflag = true;
-			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
-			{
-				if(InstanceFinder.Localization.languages[i].name==lang)
-				{
-					languageLabel.text = lang;
-					initflag = false;
-				}
-			}
-			//if the language file is not found default to the default value
-			if(initflag)
-			{
-				languageLabel.text = InstanceFinder.StatsManager.language;
-			}
-		}
-		// language button initialization goes here
+
 		
 		//initialize Switches
 		MusicAnimationFlag = 0;
