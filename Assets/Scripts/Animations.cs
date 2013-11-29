@@ -7,6 +7,7 @@ public class Animations : MonoBehaviour {
     private PandaStateManager stateManager;
     private CharacterController characterController;
     private PandaMovementController pandaMovementController;
+    private Collidable collidable;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
@@ -29,6 +30,9 @@ public class Animations : MonoBehaviour {
         pandaMovementController = GetComponent<PandaMovementController>();
 
         anim.SetInteger("Direction", (int) stateManager.initDirection);
+
+        collidable = GetComponent<Collidable>();
+
     }
 
     IEnumerator SetNewPandaState (PandaState state)
@@ -54,7 +58,7 @@ public class Animations : MonoBehaviour {
         anim.SetBool("LandingHard", false);
         if(statePanda == PandaState.Escape)
         {
-            pandaMovementController.PandaEscape();
+            pandaMovementController.PandaEscapeAway();
         }
     }
     # endregion
@@ -107,13 +111,14 @@ public class Animations : MonoBehaviour {
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
-        anim.SetBool("LedgeFall", false);
+        anim.SetInteger("CollidableTypes", 0);
 
         StartCoroutine(ResetSlap());
     }
-    public void PlayLedgeFallAnimation(PandaDirection pandaDirection)
+
+    public void PlayTriggerAnimations(PandaDirection pandaDirection, CollidableTypes collidableType)
     {
-        anim.SetBool("LedgeFall", true);
+        anim.SetInteger("CollidableType", (int)collidableType);
         anim.SetInteger("Direction", (int)pandaDirection);
     }
     # endregion

@@ -296,7 +296,8 @@ public class PandaAI : MonoBehaviour {
     {
         Debug.Log("Bamboo Collider" + bambooCollider);
         pandaStateManager.ChangeState(PandaState.Escape);
-        pandaMovementController.PandaEscape(bambooCollider, bambooCollider.gameObject.GetComponent<Collidable>().type);
+        animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), bambooCollider.gameObject.GetComponent<Collidable>().type);
+        pandaMovementController.PandaEscapeJump(bambooCollider, bambooCollider.gameObject.GetComponent<Collidable>().type);
     }
 
 
@@ -497,11 +498,11 @@ public class PandaAI : MonoBehaviour {
     {
         if (c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.LedgeFall && pandaStateManager.GetState() == PandaState.Walking)
         {
-            animations.PlayLedgeFallAnimation(pandaStateManager.GetDirection());
+            animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
         }
-        if (c.gameObject.GetComponent<Collidable>() != null && (c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown || c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp))
+        if (c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<TrapBase>().GetTrapType() == TrapType.EscapeBamboo)
         {
-
+            Escaping(c);
 
         }
 
