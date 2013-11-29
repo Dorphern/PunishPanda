@@ -44,6 +44,8 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
         }
     }
 
+    public abstract T Root();
+
     public virtual void OnEnable()
     {
         treeDrawer.Filter(n => false);
@@ -65,14 +67,16 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
         {
             searchingFor = content;
             lowercaseSearchingFor = searchingFor.ToLower().Trim();
-            treeDrawer.Filter(ShouldFilter);
+            treeDrawer.Filter(SearchFilter);
+            
         }
 
         if (GUILayout.Button("x", GUILayout.Width(25)) && Event.current.type != EventType.Repaint)
         {
-            treeDrawer.Filter(ShouldFilter);
+            treeDrawer.Filter(SearchFilter);
             searchingFor = "";
             lowercaseSearchingFor = "";
+            treeDrawer.FocusOnSelectedNode();
 
             GUI.FocusControl(null);
         }
@@ -100,18 +104,18 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
     {
         searchingFor = node.ID.ToString(); 
         lowercaseSearchingFor = searchingFor;
-        treeDrawer.Filter(ShouldFilter);
-        treeDrawer.SelectedNode = node;
+        treeDrawer.Filter(SearchFilter);
+
     }
 
-    protected virtual bool ShouldFilter(T node)
+    protected virtual bool SearchFilter(T node)
     {
         if (string.IsNullOrEmpty(lowercaseSearchingFor))
             return false;
         else
         {
             //Check name
-            bool nameFiltered = !node.GetName.ToLower().StartsWith(lowercaseSearchingFor);
+            bool nameFiltered = !node.GetName.ToLower().Contains(lowercaseSearchingFor);
             //If name doesn't match, check if ID matches
             if (nameFiltered)
             {
