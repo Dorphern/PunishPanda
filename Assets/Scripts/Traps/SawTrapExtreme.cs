@@ -5,6 +5,7 @@ public class SawTrapExtreme : TrapBase {
 
     [SerializeField] GameObject dirtySaw;
     [SerializeField] GameObject cleanSaw;
+	[SerializeField] protected BladeDirection bladeDirection = BladeDirection.Clockwise;
 
     # region Public Methods
 
@@ -31,6 +32,11 @@ public class SawTrapExtreme : TrapBase {
         dirtySaw.SetActive(dirty);
         cleanSaw.SetActive(!dirty);
     }
+	
+	public override BladeDirection GetSpinDirection ()
+	{
+		return bladeDirection;
+	}
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
