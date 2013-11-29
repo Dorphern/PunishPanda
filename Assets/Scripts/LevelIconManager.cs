@@ -20,6 +20,8 @@ public class LevelIconManager : MonoBehaviour {
 	public GameObject unlockedLabel;
 	public GameObject lockedLabel;
 	private UILabel Number;
+	
+	
 
 	
 	void Start () {
@@ -35,6 +37,13 @@ public class LevelIconManager : MonoBehaviour {
 		if(isLocked == true)
 			LockLevel ();
 		
+		//TO DO:
+		//CHECK IF LOCKED OR NOT
+		int LevelIndex;
+		//convert string to int.
+		//LevelIndex = int.TryParse(LevelNumber,LevelIndex);
+		
+		//isLocked = InstanceFinder.LevelManager.CurrentWorld.Levels[0].UnlockedLevel;
 
 		
 

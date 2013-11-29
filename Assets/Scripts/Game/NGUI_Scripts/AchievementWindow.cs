@@ -38,18 +38,24 @@ public class AchievementWindow : MonoBehaviour {
 		while(completedAchievements.Count>0)
 		{
 			Achievement ach = completedAchievements.Dequeue();
-			if(achievementTitleLabel!=null)
-				achievementTitleLabel.text = ach.name;
-			if(achievementTextLabel!=null)
-				achievementTextLabel.text = ach.description;
-			if(achievementIcon!=null)
-				achievementIcon.mainTexture = ach.achievementIcon;
-			// add a bit of time between setting up the achievement window and dropping it
-			yield return new WaitForSeconds(0.01f);
-			rt.RunTween();
-			yield return new WaitForSeconds(3f);
-			rt.RunTween();
-			yield return new WaitForSeconds(1.5f);
+			if(ach!=null){
+				if(achievementTitleLabel!=null)
+					achievementTitleLabel.text = ach.name;
+				if(achievementTextLabel!=null)
+					achievementTextLabel.text = ach.description;
+				// disabling this since it causes null pointer exceptions
+//				if(achievementIcon!=null && ach.achievementIcon!=null)
+//					achievementIcon.mainTexture = ach.achievementIcon;
+				// add a bit of time between setting up the achievement window and dropping it
+				yield return new WaitForSeconds(0.01f);
+				yield return new WaitForEndOfFrame();
+				rt.RunTween();
+				yield return new WaitForSeconds(3f);
+				yield return new WaitForEndOfFrame();
+				rt.RunTween();
+				yield return new WaitForSeconds(1.5f);
+				yield return new WaitForEndOfFrame();
+			}
 		}
 		isRunning = false;
 		
