@@ -33,6 +33,7 @@ public class PandaDismemberment : MonoBehaviour
 		for(int i = 0; i < transform.childCount; i++)
 		{
 			explosionForce.x = Random.Range(minHorizontalForce, maxHorizontalForce);
+			explosionForce.x *= Random.Range(0, 2) * 2 - 1;
 			explosionForce.y = Random.Range(minVerticalForce, maxVerticalForce);
 			explosionForce.z = - Random.Range(minVerticalForce, maxVerticalForce);
             transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddForce(explosionForce + rotationDir*Random.Range(MinRotationStrength, MaxRotationStrength), ForceMode.Impulse);
