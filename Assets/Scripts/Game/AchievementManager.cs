@@ -128,7 +128,7 @@ public class AchievementManager : MonoBehaviour {
 			Achievement ach;
 			achievements.TryGetValue(name, out ach);
 			
-			if(ach.AddProgress(progress))
+			if(ach.AddProgress(progress) && onAchievementCompleted!=null)
 			{
                 HDRSystem.PostEvents(gameObject, OnAchievementEvents);
 				onAchievementCompleted(ach);
@@ -150,7 +150,7 @@ public class AchievementManager : MonoBehaviour {
 			Achievement ach;
 			achievements.TryGetValue(name, out ach);
 			
-			if(ach.SetProgress(progress))
+			if(ach.SetProgress(progress) && onAchievementCompleted!=null)
 			{
 				onAchievementCompleted(ach);
 				return true;		
