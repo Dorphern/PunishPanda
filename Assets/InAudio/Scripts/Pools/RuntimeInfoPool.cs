@@ -1,7 +1,7 @@
 using InAudio;
 using InAudio.RuntimeHelperClass;
 
-public class RuntimeInfoPool : ObjectPool<RuntimeInfo>{
+public class RuntimeInfoPool : InAudioObjectPool<RuntimeInfo>{
     public new RuntimeInfo GetObject()
     {
         if (freeObjects.Count == 0)
