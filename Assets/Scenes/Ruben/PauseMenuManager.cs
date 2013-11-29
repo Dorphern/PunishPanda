@@ -29,7 +29,10 @@ public class PauseMenuManager : MonoBehaviour {
 		pausegame = GetComponent<PauseGame>();
 
 		//get start-tutorial texture:
-		TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+	    if (Localization.instance.currentLanguage == "English")
+	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+	    else
+	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.DanishTutorialTexture;
 		//get menu-hint texture:
 		HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
 		
@@ -39,21 +42,35 @@ public class PauseMenuManager : MonoBehaviour {
 		hintAlphaComponent = HintObj.GetComponent<TweenAlpha>();
 		tintAlphaComponent = PauseTint.GetComponent<TweenAlpha>();
 		
-		//set start-tutorial texture to component
-		textureComponent.mainTexture = TutorialTexture;
-		//set it to its native-dimensions
-		if(textureComponent.mainTexture != null)
+		if(!InstanceFinder.GameManager.debugMode)
 		{
-			textureComponent.width = TutorialTexture.width;
-			textureComponent.height = TutorialTexture.height;
-		
-
-			//display start-tutorial texture (if it has one..)
-			skippedTutorial = false;
-		
-			StartCoroutine(showTutorial());
+			//get start-tutorial texture:
+			if(InstanceFinder.LevelManager.CurrentLevel != null)
+				TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+			//get menu-hint texture:
+			if(InstanceFinder.LevelManager.CurrentLevel != null)
+				HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
+			
+			
+			//get components
+			textureComponent = HintObj.GetComponent<UITexture>();
+			hintAlphaComponent = HintObj.GetComponent<TweenAlpha>();
+			
+			//set start-tutorial texture to component
+			textureComponent.mainTexture = TutorialTexture;
+			//set it to its native-dimensions
+			if(textureComponent.mainTexture != null)
+			{
+				textureComponent.width = TutorialTexture.width;
+				textureComponent.height = TutorialTexture.height;
+			
+	
+				//display start-tutorial texture (if it has one..)
+				skippedTutorial = false;
+			
+				StartCoroutine(showTutorial());
+			}
 		}
-
 	}
 	
 	public void OnPauseClick()
