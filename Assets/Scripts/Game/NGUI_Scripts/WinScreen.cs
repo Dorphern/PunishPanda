@@ -66,8 +66,14 @@ public class WinScreen : MonoBehaviour {
      
     private void SetWinScreenData()
     {
+        
+
         LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
         funFactsTexture.mainTexture = levelData.FunFactsTexture;
+        if (Localization.instance.currentLanguage == "English")
+            FunFactsLabel.text = levelData.FunFactsText;
+        else
+            FunFactsLabel.text = levelData.DanishFunFactsText;
         Level level = InstanceFinder.GameManager.ActiveLevel;
         int score = level.GetScore();
         int highscore = levelData.HighScore;
@@ -136,8 +142,9 @@ public class WinScreen : MonoBehaviour {
 			perfectKills += ck.PerfectKills;			
 		}
 		// normal kills
-		
-		ScoreTypeLabel.text = "Normal Kill";
+
+
+        ScoreTypeLabel.text = Localization.instance.Get("NormalKill");
 		intermediateTotal = pointSystem.PerKill;
 		
 		
@@ -171,7 +178,7 @@ public class WinScreen : MonoBehaviour {
 		}
 		
 		// perfect kills
-		ScoreTypeLabel.text = "Perfect Kill";
+		ScoreTypeLabel.text = Localization.instance.Get("PerfectKill");
 		intermediateTotal = pointSystem.PerfectKill;
 		for(int i=0; i< perfectKills; i++)
 		{
@@ -205,7 +212,7 @@ public class WinScreen : MonoBehaviour {
 			
 			if(ck.ComboCount > 1)
 			{
-				ScoreTypeLabel.text = ck.ComboCount + "x Combo";
+				ScoreTypeLabel.text = ck.ComboCount + Localization.Localize("Combo");
 				intermediateTotal = pointSystem.Combo * ck.ComboCount;
 				
 				ZoomInTween.RunTween();
@@ -233,7 +240,7 @@ public class WinScreen : MonoBehaviour {
 		}
 		
 		// time score calc
-		ScoreTypeLabel.text = "Time";
+		ScoreTypeLabel.text = Localization.instance.Get("Time");
 		
 		
 		intermediateTotal = timeScore;
@@ -273,7 +280,7 @@ public class WinScreen : MonoBehaviour {
 		}
 		else
 		{
-			newHighScoreLabel.text = "Highscore: " + highscore;
+			//newHighScoreLabel.text = "Highscore: " + highscore;
 			newHighScoreLabel.gameObject.SetActive(true);
 		}
 			
