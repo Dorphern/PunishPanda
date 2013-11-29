@@ -1,4 +1,5 @@
 using InAudio;
+using InAudio.ExtensionMethods;
 using InAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
@@ -41,6 +42,11 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
             {
                 inspectorSkin = CreaterGUIHelper.GetEditorSkin();
             }
+        }
+
+        if (Event.current.IsKeyDown(KeyCode.W) && Event.current.control)
+        {
+            window.Close();
         }
     }
 

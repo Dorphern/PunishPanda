@@ -13,7 +13,7 @@ public class LimbSounds : MonoBehaviour {
     [EventHookAttribute("On Limb Collide")]
     private List<AudioEvent> limbCollider = new List<AudioEvent>();
 
-    void OnTriggerEnter(Collider collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (onlyPlayOnce && !hasPlayed)
         {
