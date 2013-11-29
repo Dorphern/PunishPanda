@@ -139,7 +139,15 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
     {
         searchingFor = audioBus.ID.ToString();
         lowercaseSearchingFor = searchingFor;
-        treeDrawer.Filter(ShouldFilter);
-        SelectedNode = audioBus;
+        treeDrawer.Filter(SearchFilter);
+        if (!audioBus.IsFiltered)
+            SelectedNode = audioBus;
+        else
+            SelectedNode = InAudioInstanceFinder.DataManager.BusTree;
+    }
+
+    public override AudioBus Root()
+    {
+        return InAudioInstanceFinder.DataManager.BusTree;
     }
 }

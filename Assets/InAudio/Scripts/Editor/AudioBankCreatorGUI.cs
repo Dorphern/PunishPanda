@@ -129,4 +129,9 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
         else
             AudioBankWorker.CreateBank(parent.gameObject, parent, GUIDCreator.Create());
     }
+
+    public override AudioBankLink Root()
+    {
+        return InAudioInstanceFinder.DataManager.BankLinkTree;
+    }
 }

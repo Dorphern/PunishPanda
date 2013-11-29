@@ -289,7 +289,6 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         menu.AddDisabledItem(new GUIContent(@"Convert To/Voice"));*/
 
         #endregion
-        
 
         menu.AddSeparator("");
 
@@ -321,7 +320,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
     {
         searchingFor = node.GUID.ToString();
         lowercaseSearchingFor = searchingFor.ToLower().Trim();
-        treeDrawer.Filter(ShouldFilter);
+        treeDrawer.Filter(SearchFilter);
         SelectedNode = node;
     }
 
@@ -335,5 +334,10 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         searchingFor = "Finding nodes in bank";
         lowercaseSearchingFor = "Finding nodes in bank";
         treeDrawer.Filter(filter);   
+    }
+
+    public override AudioNode Root()
+    {
+        return InAudioInstanceFinder.DataManager.AudioTree;
     }
 }
