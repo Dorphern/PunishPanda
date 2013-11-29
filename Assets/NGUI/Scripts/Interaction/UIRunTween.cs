@@ -12,7 +12,7 @@ using System.Collections.Generic;
 /// </summary>
 
 [ExecuteInEditMode]
-[AddComponentMenu("NGUI/Interaction/Play Tween")]
+[AddComponentMenu("NGUI/Interaction/Run Tween")]
 public class UIRunTween : MonoBehaviour
 {
 	/// <summary>
