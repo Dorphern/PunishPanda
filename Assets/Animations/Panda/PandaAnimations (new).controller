@@ -71,8 +71,8 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: LedgeFall
-    m_Type: 4
+  - m_Name: CollidableType
+    m_Type: 3
     m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -156,8 +156,8 @@ Transition:
   m_TransitionDuration: .286829203
   m_TransitionOffset: .128223076
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: LedgeFall
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .647058845
   m_Atomic: 1
@@ -176,7 +176,7 @@ Transition:
   m_Conditions:
   - m_ConditionMode: 6
     m_ConditionEvent: PandaState
-    m_EventTreshold: 4
+    m_EventTreshold: 10
     m_ExitTime: .785714269
   - m_ConditionMode: 6
     m_ConditionEvent: Direction
@@ -185,6 +185,10 @@ Transition:
   - m_ConditionMode: 1
     m_ConditionEvent: NewState
     m_EventTreshold: 0
+    m_ExitTime: .785714269
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 9
     m_ExitTime: .785714269
   m_Atomic: 1
   m_Solo: 0
@@ -381,7 +385,7 @@ Transition:
   m_TransitionOffset: .0283499043
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .810377657
   m_Atomic: 1
@@ -469,7 +473,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .793103456
   m_Atomic: 1
@@ -486,10 +490,6 @@ Transition:
   m_TransitionDuration: .214285716
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: LedgeFall
-    m_EventTreshold: 0
-    m_ExitTime: .785714269
   - m_ConditionMode: 6
     m_ConditionEvent: PandaState
     m_EventTreshold: 1
@@ -497,6 +497,10 @@ Transition:
   - m_ConditionMode: 6
     m_ConditionEvent: Direction
     m_EventTreshold: 0
+    m_ExitTime: .785714269
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 7
     m_ExitTime: .785714269
   m_Atomic: 1
   m_Solo: 0
@@ -553,7 +557,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .810377657
   m_Atomic: 1
@@ -700,8 +704,8 @@ Transition:
     m_ConditionEvent: TrapPosition
     m_EventTreshold: 0
     m_ExitTime: .333333313
-  - m_ConditionMode: 2
-    m_ConditionEvent: LedgeFall
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .333333313
   - m_ConditionMode: 1
@@ -723,7 +727,7 @@ Transition:
   m_TransitionOffset: .0336419605
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .357206494
   m_Atomic: 1
@@ -740,13 +744,13 @@ Transition:
   m_TransitionDuration: .100000001
   m_TransitionOffset: .0175606739
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: LedgeFall
+  - m_ConditionMode: 5
+    m_ConditionEvent: Slapped
     m_EventTreshold: 0
     m_ExitTime: 1
-  - m_ConditionMode: 5
-    m_ConditionEvent: LedgeFall
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 7
     m_ExitTime: 1
   m_Atomic: 1
   m_Solo: 0
@@ -824,10 +828,6 @@ Transition:
   m_TransitionDuration: .304919243
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: LedgeFall
-    m_EventTreshold: 0
-    m_ExitTime: 1
   - m_ConditionMode: 6
     m_ConditionEvent: PandaState
     m_EventTreshold: 1
@@ -835,6 +835,10 @@ Transition:
   - m_ConditionMode: 6
     m_ConditionEvent: Direction
     m_EventTreshold: 1
+    m_ExitTime: 1
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 7
     m_ExitTime: 1
   m_Atomic: 1
   m_Solo: 0
@@ -932,9 +936,9 @@ Transition:
     m_ConditionEvent: PandaState
     m_EventTreshold: 3
     m_ExitTime: .300000012
-  - m_ConditionMode: 1
-    m_ConditionEvent: LedgeFall
-    m_EventTreshold: 3
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 10
     m_ExitTime: .300000012
   m_Atomic: 1
   m_Solo: 0
@@ -951,7 +955,7 @@ Transition:
   m_TransitionOffset: .506011009
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .895081997
   m_Atomic: 1
@@ -1023,6 +1027,10 @@ Transition:
   - m_ConditionMode: 1
     m_ConditionEvent: NewState
     m_EventTreshold: 1
+    m_ExitTime: .785714269
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 9
     m_ExitTime: .785714269
   m_Atomic: 1
   m_Solo: 0
@@ -1116,13 +1124,13 @@ Transition:
   m_TransitionDuration: .097938247
   m_TransitionOffset: .021742085
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: LedgeFall
-    m_EventTreshold: 0
-    m_ExitTime: .647058845
   - m_ConditionMode: 5
-    m_ConditionEvent: LedgeFall
+    m_ConditionEvent: Slapped
     m_EventTreshold: 0
+    m_ExitTime: 1.00287759
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 7
     m_ExitTime: 1.00287759
   m_Atomic: 1
   m_Solo: 0
@@ -1138,8 +1146,8 @@ Transition:
   m_TransitionDuration: .352941185
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: LedgeFall
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .647058845
   m_Atomic: 1
@@ -1191,7 +1199,7 @@ Transition:
   m_TransitionOffset: .038272433
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .364058167
   m_Atomic: 1
@@ -1220,6 +1228,10 @@ Transition:
     m_ConditionEvent: NewState
     m_EventTreshold: 0
     m_ExitTime: .785714269
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 8
+    m_ExitTime: .785714269
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -1246,6 +1258,10 @@ Transition:
     m_ConditionEvent: NewState
     m_EventTreshold: 1
     m_ExitTime: .785714269
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 8
+    m_ExitTime: .785714269
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -1261,7 +1277,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 0
     m_ExitTime: .793103456
   m_Atomic: 1
@@ -1586,8 +1602,8 @@ Transition:
     m_ConditionEvent: TrapType
     m_EventTreshold: 1
     m_ExitTime: .333333313
-  - m_ConditionMode: 2
-    m_ConditionEvent: LedgeFall
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
     m_EventTreshold: 1
     m_ExitTime: .333333313
   - m_ConditionMode: 1
@@ -1910,9 +1926,9 @@ Transition:
     m_ConditionEvent: TrapPosition
     m_EventTreshold: 90
     m_ExitTime: .899999976
-  - m_ConditionMode: 2
-    m_ConditionEvent: LedgeFall
-    m_EventTreshold: 90
+  - m_ConditionMode: 6
+    m_ConditionEvent: CollidableType
+    m_EventTreshold: 0
     m_ExitTime: .899999976
   - m_ConditionMode: 1
     m_ConditionEvent: NewState
@@ -2726,18 +2742,6 @@ StateMachine:
   - {x: 600, y: 168, z: 0}
   m_OrderedTransitions:
     data:
-      first: {fileID: 110251156}
-      second:
-      - {fileID: 110142582}
-    data:
-      first: {fileID: 110233506}
-      second:
-      - {fileID: 110109099}
-      - {fileID: 110181565}
-      - {fileID: 110193844}
-      - {fileID: 110105722}
-      - {fileID: 110165057}
-    data:
       first: {fileID: 0}
       second:
       - {fileID: 110190751}
@@ -2821,6 +2825,25 @@ StateMachine:
       second:
       - {fileID: 110166430}
     data:
+      first: {fileID: 110298851}
+      second: []
+    data:
+      first: {fileID: 110297522}
+      second:
+      - {fileID: 110155406}
+    data:
+      first: {fileID: 110232923}
+      second:
+      - {fileID: 110119177}
+    data:
+      first: {fileID: 110237011}
+      second:
+      - {fileID: 110133060}
+    data:
+      first: {fileID: 110259384}
+      second:
+      - {fileID: 110152716}
+    data:
       first: {fileID: 110208064}
       second:
       - {fileID: 110198745}
@@ -2872,21 +2895,32 @@ StateMachine:
       second:
       - {fileID: 110123471}
     data:
-      first: {fileID: 110232923}
-      second:
-      - {fileID: 110119177}
+      first: {fileID: 110273379}
+      second: []
     data:
-      first: {fileID: 110237011}
-      second:
-      - {fileID: 110133060}
+      first: {fileID: 110215918}
+      second: []
     data:
-      first: {fileID: 110259384}
-      second:
-      - {fileID: 110152716}
+      first: {fileID: 110259932}
+      second: []
     data:
-      first: {fileID: 110297522}
+      first: {fileID: 110281757}
+      second: []
+    data:
+      first: {fileID: 110281874}
+      second: []
+    data:
+      first: {fileID: 110233506}
       second:
-      - {fileID: 110155406}
+      - {fileID: 110109099}
+      - {fileID: 110181565}
+      - {fileID: 110193844}
+      - {fileID: 110105722}
+      - {fileID: 110165057}
+    data:
+      first: {fileID: 110251156}
+      second:
+      - {fileID: 110142582}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 24, y: -144, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
