@@ -3,9 +3,17 @@ using System.Collections;
 
 public class PandaEscape : TrapBase
 {
+    private PandaAI pandaAi;
+    private Collider boxCollider;
 
     protected string animationInName = "bambooIn";
     protected string animationOutName = "bambooOut";
+
+    void start()
+    {
+        pandaAi = GetComponent<PandaAI>();
+        boxCollider = gameObject.GetComponent<Collider>();
+    }
 
     # region Public Methods
     public override TrapType GetTrapType ()
@@ -37,6 +45,7 @@ public class PandaEscape : TrapBase
         if (collision.gameObject.layer == 8)
         {
             InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
+            pandaAi.Escaping(boxCollider);
         }
     }
     # endregion

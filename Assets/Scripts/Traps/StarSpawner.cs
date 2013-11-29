@@ -25,7 +25,7 @@ public class StarSpawner : TrapBase
 	
 	protected override bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
 	{
-        return pandaAI.AttemptDeathTrapKill(this, isPerfect, GetComponentInChildren<Collider>());	
+        return pandaAI.AttemptDeathTrapKill(this, isPerfect);	
 	}
 	
 	public override void ActivateTrap ()

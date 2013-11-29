@@ -34,7 +34,7 @@ public class SawTrapExtreme : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-        return pandaAI.AttemptDeathTrapKill(this, isPerfect, GetComponentInChildren<Collider>());
+        return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 
     # endregion
