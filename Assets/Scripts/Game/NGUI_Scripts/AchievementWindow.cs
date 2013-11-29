@@ -43,8 +43,9 @@ public class AchievementWindow : MonoBehaviour {
 					achievementTitleLabel.text = ach.name;
 				if(achievementTextLabel!=null)
 					achievementTextLabel.text = ach.description;
-				if(achievementIcon!=null && ach.achievementIcon!=null)
-					achievementIcon.mainTexture = ach.achievementIcon;
+				// disabling this since it causes null pointer exceptions
+//				if(achievementIcon!=null && ach.achievementIcon!=null)
+//					achievementIcon.mainTexture = ach.achievementIcon;
 				// add a bit of time between setting up the achievement window and dropping it
 				yield return new WaitForSeconds(0.01f);
 				yield return new WaitForEndOfFrame();
