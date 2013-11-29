@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class ElectricityTrap : TrapBase {
@@ -14,6 +15,14 @@ public class ElectricityTrap : TrapBase {
     protected int electricIndex = 0;
     protected float electricityTextureTileWidth;
 
+    [SerializeField]
+    [EventHookAttribute("On Trap Awake")]
+    private List<AudioEvent> onTrapAwake = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Trap Disable")]
+    private List<AudioEvent> onTrapDisable = new List<AudioEvent>();
+
     void Awake ()
     {
         electricityTextureTileWidth = 1f / electricTextureCount;
@@ -27,6 +36,7 @@ public class ElectricityTrap : TrapBase {
     public override void ActivateTrap ()
     {
         base.ActivateTrap();
+        HDRSystem.PostEvents(gameObject, onTrapAwake);
         electricity.SetActive(true);
         StartCoroutine(PlayTextureChange());
     }
@@ -34,6 +44,7 @@ public class ElectricityTrap : TrapBase {
     public override void DeactivateTrap ()
     {
         base.DeactivateTrap();
+        HDRSystem.PostEvents(gameObject, onTrapDisable);
         electricity.SetActive(false);
     }
 

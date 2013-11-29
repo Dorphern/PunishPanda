@@ -47,7 +47,7 @@ public class LevelManager : MonoBehaviour
         System.GC.Collect();
         isInMainMenu = true;
 		SaveData();
-        Application.LoadLevel(mainMenuName);
+        LoadLevel(mainMenuName);
     }
 	
 	[HideInInspector]
@@ -59,7 +59,7 @@ public class LevelManager : MonoBehaviour
         isInMainMenu = true;
 		loadLevelsScreenFlag = true;
 		SaveData();
-        Application.LoadLevel(mainMenuName);
+        LoadLevel(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
@@ -72,7 +72,7 @@ public class LevelManager : MonoBehaviour
             isInMainMenu = false;
             currentLevelIndex = index;
 			AddStatistics();
-            Application.LoadLevel(CurrentLevel.LevelName);
+            LoadLevel(CurrentLevel.LevelName);
         }
     }
 
@@ -80,9 +80,10 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = false;
+        InstanceFinder.GameManager.ActiveLevel.OnLevelReset();
 		AddStatistics();
 		SaveData();
-        Application.LoadLevel(CurrentLevel.LevelName);
+        LoadLevel(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
@@ -90,18 +91,19 @@ public class LevelManager : MonoBehaviour
         System.GC.Collect();
         isInMainMenu = false;
         ++currentLevelIndex;
+        InstanceFinder.GameManager.ActiveLevel.OnNextLevel();
         if (MoreLevelsInWorld)
         {
 			AddStatistics();
 			SaveData();
-            Application.LoadLevel(CurrentLevel.LevelName);
+            LoadLevel(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
             isInMainMenu = true;
 			SaveData();
-            Application.LoadLevel("MainMenu");
+            LoadLevel("MainMenu");
         }
     }
 
@@ -168,10 +170,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void LoadLevel(string name)
+    {
+        if(InstanceFinder.GameManager.ActiveLevel != null)
+            InstanceFinder.GameManager.ActiveLevel.OnNextLevel();
+        Application.LoadLevel(name);
+    }
+
     private void LoadLevelWithTransition(string levelName)
     {
         LevelToLoad = levelName;
-        Application.LoadLevel(transitionLevelName);
+        LoadLevel(transitionLevelName);
     }
 
     private void NextWorld()

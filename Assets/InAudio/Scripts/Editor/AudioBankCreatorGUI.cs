@@ -1,5 +1,5 @@
 using InAudio;
-using InAudio.HDREditorGUI;
+using InAudio.InAudioEditorGUI;
 using InAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
@@ -16,13 +16,13 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
     {
         BaseOnGUI();
 
-        var dataManager = HDRInstanceFinder.DataManager;
+        var dataManager = InAudioInstanceFinder.DataManager;
         if (dataManager != null)
         {
             var root = dataManager.BankLinkTree;
-            int id = HDRInstanceFinder.InAudioGuiUserPrefs.SelectedBankLinkID;
+            int id = InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedBankLinkID;
             var selectedNode = UpdateSelectedNode(root, id);
-            HDRInstanceFinder.InAudioGuiUserPrefs.SelectedBankLinkID = selectedNode != null ? selectedNode.ID : 0;
+            InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedBankLinkID = selectedNode != null ? selectedNode.ID : 0;
         }
 
         this.leftWidth = leftWidth;
@@ -41,7 +41,7 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
         EditorGUILayout.BeginVertical();
 
-        isDirty |= treeDrawer.DrawTree(HDRInstanceFinder.DataManager.BankLinkTree, treeArea);
+        isDirty |= treeDrawer.DrawTree(InAudioInstanceFinder.DataManager.BankLinkTree, treeArea);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndVertical();
@@ -104,7 +104,7 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
         /*if (!node.IsRoot)
         {
-            menu.AddItem(new GUIContent(@"Delete"), false, data => DeleteNode(HDRInstanceFinder.DataManager.BankLinkTree, data as AudioBankLink), node);
+            menu.AddItem(new GUIContent(@"Delete"), false, data => DeleteNode(InAudioInstanceFinder.DataManager.BankLinkTree, data as AudioBankLink), node);
         }
         else*/
             menu.AddDisabledItem(new GUIContent(@"Delete"));
@@ -122,10 +122,16 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
     private void CreateBank(AudioBankLink parent, AudioBankTypes type)
     {
-        Undo.RegisterUndo(parent, "Bank " + (type == AudioBankTypes.Folder ? "Folder " : "") + "Creation");
+        //TODO make real undo
+        UndoHelper.RecordObjectFull(parent, "Bank " + (type == AudioBankTypes.Folder ? "Folder " : "") + "Creation");
         if (type == AudioBankTypes.Folder)
             AudioBankWorker.CreateFolder(parent.gameObject, parent, GUIDCreator.Create());
         else
             AudioBankWorker.CreateBank(parent.gameObject, parent, GUIDCreator.Create());
+    }
+
+    public override AudioBankLink Root()
+    {
+        return InAudioInstanceFinder.DataManager.BankLinkTree;
     }
 }
