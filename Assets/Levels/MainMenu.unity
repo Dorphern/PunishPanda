@@ -2060,7 +2060,7 @@ GameObject:
   - 23: {fileID: 225297691}
   - 65: {fileID: 225297689}
   m_Layer: 0
-  m_Name: logo_distance6
+  m_Name: logo_distance3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2073,8 +2073,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 225297687}
   m_LocalRotation: {x: 0, y: .995169103, z: -.0981764346, w: 0}
-  m_LocalPosition: {x: -.199999809, y: 3.6333065, z: 1.6488924}
-  m_LocalScale: {x: 1.70000005, y: 1.70000005, z: 1.70000005}
+  m_LocalPosition: {x: -.199999809, y: 2.7631886, z: 1.5576247}
+  m_LocalScale: {x: 1.20000005, y: 1.20000005, z: 1.20000005}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!65 &225297689
@@ -3621,7 +3621,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
       propertyPath: controls.tapping
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0f0d70d6301bb114cac8328a5122603c, type: 2}
@@ -3931,11 +3931,15 @@ MonoBehaviour:
   decalsPrefab: {fileID: 100002, guid: 65c1175dbcae6a64da4f8da8b25c48aa, type: 2}
   combinedMeshTransform: 3
   mainMenuSlap: 0
-  maxSpaltCount: 50
+  levelHasPlatforms: 1
+  maxSpaltCount: 30
   decalProjectorOffset: 1
-  decalProjectorScale: {x: 1.79999995, y: 1.79999995, z: 1.79999995}
   slapDelay: .0500000007
-  decalOffsetAngle: 45
+  decalOffsetAngle: 60
+  slapMinScale: 2.4000001
+  slapMaxScale: 4
+  hitMinScale: 5
+  hitMaxScale: 6
   slapUVmin: 0
   slapUVmax: 7
   hitUVmin: 8
@@ -4001,7 +4005,7 @@ Transform:
   m_PrefabInternal: {fileID: 1724125430}
   m_GameObject: {fileID: 377738469}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.38586998, y: .467430115, z: 7.15255737e-07}
+  m_LocalPosition: {x: -1.19293404, y: .468595505, z: 9.53674316e-07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 179563555}
@@ -6551,7 +6555,7 @@ MonoBehaviour:
     slapping: 1
     bouncing: 0
     holding: 0
-    tapping: 1
+    tapping: 0
 --- !u!4 &569614977
 Transform:
   m_ObjectHideFlags: 0
@@ -8007,6 +8011,72 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 200, y: 200, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &706905584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 706905588}
+  - 33: {fileID: 706905587}
+  - 23: {fileID: 706905586}
+  - 65: {fileID: 706905585}
+  m_Layer: 0
+  m_Name: logo_distance6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!65 &706905585
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706905584}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.67377281, y: 2.52476692, z: .518458247}
+  m_Center: {x: 9.83476639e-07, y: 4.17232485e-07, z: 1.1920929e-07}
+--- !u!23 &706905586
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706905584}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: fac3b623f4cc7ef4f88af21a3b8e6b1d, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+--- !u!33 &706905587
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706905584}
+  m_Mesh: {fileID: 4300000, guid: af4ca27f4588da747a5d904afc9d6e4b, type: 3}
+--- !u!4 &706905588
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 706905584}
+  m_LocalRotation: {x: 0, y: .995169103, z: -.0981764346, w: 0}
+  m_LocalPosition: {x: -.199999809, y: 3.6333065, z: 1.6488924}
+  m_LocalScale: {x: 1.70000005, y: 1.70000017, z: 1.69999993}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!114 &708876279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15106,13 +15176,11 @@ MonoBehaviour:
     UnlockedFunFact: 0
     FunFactsTexture: {fileID: 2800000, guid: a8724c9d750382646beac82c89a873a6, type: 3}
     FunFactsText: The kkk was founded by pandas
-    DanishFunFactsText: KKK blev grundlagt af pandaer
-    HintscreenTexture: {fileID: 2800000, guid: 98802b1126889064eb0946633e411dc9, type: 3}
-    DanishHintscreenTexture: {fileID: 2800000, guid: 05f98e64a564a71489880430d349700d,
-      type: 3}
-    TutorialTexture: {fileID: 2800000, guid: d1d3ef413f6b9c242bbfa4ee90f88f61, type: 3}
-    DanishTutorialTexture: {fileID: 2800000, guid: 05f98e64a564a71489880430d349700d,
-      type: 3}
+    DanishFunFactsText: 
+    HintscreenTexture: {fileID: 2800000, guid: dea810f351568fb4e886129e5ceb573b, type: 3}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
     Toggled: 1
     MaxTimeScore: 0
     LevelLength: 20
@@ -17183,7 +17251,7 @@ Transform:
   m_PrefabInternal: {fileID: 1724125430}
   m_GameObject: {fileID: 1686587663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .469760776, z: -6}
+  m_LocalPosition: {x: 0, y: .469760776, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1452464854}
@@ -17766,6 +17834,42 @@ Prefab:
     - target: {fileID: 400656, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
       propertyPath: m_LocalPosition.y
       value: 265.501007
+      objectReference: {fileID: 0}
+    - target: {fileID: 400402, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: .468595505
+      objectReference: {fileID: 0}
+    - target: {fileID: 400516, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 255.260315
+      objectReference: {fileID: 0}
+    - target: {fileID: 400516, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -25.9511948
+      objectReference: {fileID: 0}
+    - target: {fileID: 400526, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalScale.x
+      value: .00375939859
+      objectReference: {fileID: 0}
+    - target: {fileID: 400526, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalScale.y
+      value: .00375939859
+      objectReference: {fileID: 0}
+    - target: {fileID: 400526, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalScale.z
+      value: .00375939859
+      objectReference: {fileID: 0}
+    - target: {fileID: 400710, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 400402, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.19293404
+      objectReference: {fileID: 0}
+    - target: {fileID: 400402, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 9.53674316e-07
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bafcb458c9531f47849dd00648f2522, type: 2}
@@ -20386,9 +20490,97 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achievementList:
-  - name: Happy Slapper
+  - name: First kill
     description: kill your first panda
-    goal: 2
+    goal: 1
+    achievementIcon: {fileID: 2800000, guid: a8a11585d13dae64c8cb7e9ed3e9dbba, type: 3}
+  - name: Getting the hang of this
+    description: Kill 10 pandas
+    goal: 10
+    achievementIcon: {fileID: 0}
+  - name: Fun Times
+    description: Kill 50 pandas
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Serial Killah
+    description: Kill 100 pandas
+    goal: 100
+    achievementIcon: {fileID: 0}
+  - name: Massmurdah
+    description: Kill 200 pandas
+    goal: 200
+    achievementIcon: {fileID: 0}
+  - name: Exterminator
+    description: Kill 1600 pandas
+    goal: 1600
+    achievementIcon: {fileID: 0}
+  - name: High-Five
+    description: Slap your first panda
+    goal: 1
+    achievementIcon: {fileID: 2800000, guid: a8a11585d13dae64c8cb7e9ed3e9dbba, type: 3}
+  - name: Happy Slapper
+    description: Slap 10 pandas
+    goal: 10
+    achievementIcon: {fileID: 0}
+  - name: Red finger
+    description: Slap 100 Pandas
+    goal: 100
+    achievementIcon: {fileID: 0}
+  - name: Mosquito
+    description: Collect 5 liters of blood
+    goal: 5
+    achievementIcon: {fileID: 0}
+  - name: Bloody Mary
+    description: collect 20 liters of blood
+    goal: 20
+    achievementIcon: {fileID: 0}
+  - name: Blood sucker
+    description: Collect 50 liters of blood
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Dracula
+    description: Collect 100 liters of blood
+    goal: 100
+    achievementIcon: {fileID: 0}
+  - name: Star hunter
+    description: Collect all stars
+    goal: 100
+    achievementIcon: {fileID: 0}
+  - name: Combo noob
+    description: Get you first combo kill
+    goal: 1
+    achievementIcon: {fileID: 0}
+  - name: Combo crazy
+    description: Get 30 combo kills
+    goal: 30
+    achievementIcon: {fileID: 0}
+  - name: Combo king
+    description: Get 60 combo kills
+    goal: 60
+    achievementIcon: {fileID: 0}
+  - name: Shock therapy
+    description: Kill 50 pandas on shock traps
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Pretty Panda Pieces!
+    description: Kill 50 pandas on roundsaw traps
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Meat poudin!
+    description: Kill 50 pandas on Pounder traps
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Ninja Skills
+    description: Kill 50 pandas on Throwing star traps
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Voodoo
+    description: Kill 50 pandas on spikes
+    goal: 50
+    achievementIcon: {fileID: 0}
+  - name: Panda Hudini
+    description: Let 30 pandas escape
+    goal: 50
     achievementIcon: {fileID: 0}
   debug: 0
 --- !u!114 &2067360900
@@ -20772,7 +20964,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: a7f2f0f5d9464694c817b4f72fc8f4e9, type: 2}
       propertyPath: maxSpaltCount
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: a7f2f0f5d9464694c817b4f72fc8f4e9, type: 2}
       propertyPath: mainMenuSlap
