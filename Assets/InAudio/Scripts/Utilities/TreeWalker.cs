@@ -215,7 +215,7 @@ public static class TreeWalker
     }
 
     
-
+#if UNITY_EDITOR
     public static T FindNextNode<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
     {
         var nodeChildren = node.GetChildren;
@@ -277,7 +277,7 @@ public static class TreeWalker
             return calledFrom;
         }
     }
-
+#endif
     public static bool IsParentOf<T>(T node, T potentialParent) where T : Object, ITreeNode<T>
     {
         if (node == potentialParent)
@@ -288,4 +288,5 @@ public static class TreeWalker
 
         return false;
     }
+
 }

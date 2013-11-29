@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace InAudio
 {
-    [AddComponentMenu(FolderSettings.ComponentPathInternalManager + "Audio Player")]
+    [AddComponentMenu(FolderSettings.ComponentPathPrefabsManager + "Audio Player")]
     public class AudioGOPool : MonoBehaviour
     {
         private List<RuntimePlayer> freeObjects = new List<RuntimePlayer>();

@@ -3,6 +3,7 @@ using InAudio;
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu(FolderSettings.ComponentPathPrefabsManager + "InAudio System")]
 public class HDRSystem : MonoBehaviour
 {
     /******************/
