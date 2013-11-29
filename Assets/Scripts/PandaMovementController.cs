@@ -203,12 +203,13 @@ public class PandaMovementController : MonoBehaviour {
         {
             if (pandaStateManager.GetDirection() == PandaDirection.Left)
             {                
-                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.3f, transform.position.y, -1f), 10f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.5f, transform.position.y, -1f), 10f * Time.deltaTime);
             }                
             else                
             {
-                transform.position = Vector3.Slerp(transform.position, escape.targetJumpPos, 5f * Time.deltaTime);
-                transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.3f, escape.bambooPosition.position.y - 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
+                //transform.position = Vector3.Lerp(transform.position, escape.targetJumpPos, 5f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.3f, transform.position.y, -1f), 10f * Time.deltaTime);
+                //transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.3f, escape.bambooPosition.position.y - 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
             }
         }
         if (escape.pandaJumpToBambooUp)
