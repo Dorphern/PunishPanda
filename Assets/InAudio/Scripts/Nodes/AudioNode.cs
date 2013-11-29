@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using InAudio;
 
-[AddComponentMenu(FolderSettings.ComponentPathInternalData+"Audio/Audio Node")]
 public class AudioNode : MonoBehaviour, ITreeNode<AudioNode>
 {
     public int GUID;
