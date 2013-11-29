@@ -16,7 +16,7 @@ namespace InAudio
 
         public const string BankLoadFolder = RelativePathResources + "Banks/";
                
-#if UNITY_EDITOR
+
         public const string FullPathResources = "Assets/" + Name + "/Resources/" + Name + "/";
         public const string IconPath = "InAudio/Icons/";
 
@@ -35,10 +35,16 @@ namespace InAudio
 
         public const string GUIUserPrefs = RelativePathResources + "Other/GUIUserPrefs";
 
+        public const string ComponentPathInternalData = "InAudio/Internal/Data/";
+
         public const string ComponentPathInternal = "InAudio/Internal/";
         public const string ComponentPathInternalPools = "InAudio/Internal/Pools/";
-        public const string ComponentPathInternalManager = ComponentPathInternal + "Manager/";
-#endif
+        public const string ComponentPathPrefabs = "InAudio/Prefab Scripts/";
+        //public const string ComponentPathPrefabsManager = "InAudio/Prefab Scripts/Manager";
+        public const string ComponentPathPrefabsManager = ComponentPathPrefabs + "Manager/";
+        public const string ComponentPathInternalGUIPrefs = ComponentPathInternal + "GUI Prefs/";
+
+        
 
 
 
