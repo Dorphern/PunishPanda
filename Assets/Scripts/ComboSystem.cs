@@ -38,10 +38,21 @@ public class ComboSystem : MonoBehaviour
     [SerializeField] private UILabel comboLabel;
 
     [SerializeField] private GameObject killObject;
-    [SerializeField] private UILabel killLabel;
+    [SerializeField] private UILabel perfectKillLabel;
+    [SerializeField] private UILabel normalKillLabel;
 
-    [SerializeField] private string normalKillString;
-    [SerializeField] private string perfectKillString;
+
+    [SerializeField]
+    [EventHookAttribute("Slobby Kill")]
+    private List<AudioEvent> slobbyKillEvents;
+
+    [SerializeField]
+    [EventHookAttribute("Perfect Kill")]
+    private List<AudioEvent> perfectKillEvents;
+
+    [SerializeField]
+    [EventHookAttribute("Combo Kill")]
+    private List<AudioEvent> comboKillEvents;
 
     [SerializeField]
     private UITweener[] tweens;
@@ -99,7 +110,6 @@ public class ComboSystem : MonoBehaviour
 
     public void OnPandaDeath(bool perfectKill)
     {
-        Debug.Log("panda death");
         this.perfectKill = perfectKill;
         isDoingCombo = true;
 
@@ -112,6 +122,18 @@ public class ComboSystem : MonoBehaviour
         lastPandaKillTime = Time.time;
         levelDeaths.AlivePandas -= 1;
         InstanceFinder.StatsManager.PandasKilled++;
+
+        if (pandaComboKills > 1)
+        {
+            HDRSystem.PostEvents(gameObject, comboKillEvents);
+        }
+        else
+        {
+            if (perfectKill)
+                HDRSystem.PostEvents(gameObject, perfectKillEvents);
+            else
+                HDRSystem.PostEvents(gameObject, slobbyKillEvents);
+        }
     }
 	
 	// Update is called once per frame
@@ -141,10 +163,14 @@ public class ComboSystem : MonoBehaviour
         {
             killObject.SetActive(true);
             if (perfectKill)
-                killLabel.text = perfectKillString;
+            {
+                Debug.Log("perfect kill");
+                perfectKillLabel.gameObject.SetActive(true);
+            }
             else
             {
-                killLabel.text = normalKillString;
+                Debug.Log("normal kill");
+                normalKillLabel.gameObject.SetActive(true);
             }
         }
         else if (pandaComboKills > 1)
@@ -198,6 +224,8 @@ public class ComboSystem : MonoBehaviour
         Reset();
         comboObject.SetActive(false);
         killObject.SetActive(false);
+        normalKillLabel.gameObject.SetActive(false);
+        perfectKillLabel.gameObject.SetActive(false);
     }
 	
 	void AddStatistics()

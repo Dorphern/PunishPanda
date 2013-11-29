@@ -167,7 +167,18 @@ public static class TreeWalker
                     return previousNode;
                 else
                 {
-                    previousNode = previousNode.GetChildren[previousNode.GetChildren.Count - 1];
+                    bool set = false;
+                    for (int i = previousNode.GetChildren.Count - 1; i >= 0; i--)
+                    {
+                        if (predicate(previousNode.GetChildren[i]))
+                        {
+                            previousNode = previousNode.GetChildren[i];
+                            set = true;
+                            break;
+                        }
+                    }
+                    if(!set)
+                        previousNode = previousNode.GetChildren[previousNode.GetChildren.Count - 1];
                 }
             }
             return previousNode;
