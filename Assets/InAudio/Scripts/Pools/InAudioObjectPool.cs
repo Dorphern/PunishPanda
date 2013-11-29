@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using InAudio;
 using UnityEngine;
 
-
-public class ObjectPool<T> : MonoBehaviour where T : new()
+[AddComponentMenu(FolderSettings.ComponentPathInternalPools + "Game Object Pool")]
+public class InAudioObjectPool<T> : MonoBehaviour where T : new()
 {
     [SerializeField]
     protected int allocateSize = 10;

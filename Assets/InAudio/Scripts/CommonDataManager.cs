@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using InAudio;
 using UnityEngine;
 
+[AddComponentMenu(FolderSettings.ComponentPathPrefabsManager+"Common Data Manager")]
 public class CommonDataManager : MonoBehaviour {
     
     [SerializeField]
