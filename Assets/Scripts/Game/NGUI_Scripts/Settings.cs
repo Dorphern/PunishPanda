@@ -55,6 +55,7 @@ public class Settings : MonoBehaviour {
 	public void OnCreditsClicked()
 	{
 		//Debug.Log("Credits!");
+		menuMan.SwitchToMenu (MenuTypes.Credits);
 	}
 	
 	public void OnReturnClicked()
