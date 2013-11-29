@@ -22,6 +22,7 @@ public class InputHandler : MonoBehaviour {
 //	private PandaAI pushedPanda;
 	private float fingerSize;
 	private string debugLine;
+	private bool paused; 
 	
 	[System.Serializable]
 	public class Controls 
@@ -47,6 +48,8 @@ public class InputHandler : MonoBehaviour {
 		}
 	}
 	
+	public void PausedGame(){ paused = true; }
+	public void UnpausedGame(){ paused = false;}
 	
 	void Update () 
 	{
@@ -57,7 +60,8 @@ public class InputHandler : MonoBehaviour {
 		}
 		
 #if UNITY_EDITOR
-		MouseUpdate();
+		if(paused == false)
+			MouseUpdate();
 #else
         TouchUpdate();
 #endif
