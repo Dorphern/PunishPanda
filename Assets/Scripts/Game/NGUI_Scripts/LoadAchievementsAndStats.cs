@@ -24,7 +24,8 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 		yield return new WaitForSeconds(.1f);
 		init ();
 	}
-	
+
+    //private System.IO.StreamWriter file;
 	// Use this for initialization
 	void init() {
 		
@@ -32,10 +33,10 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 		if(achievementListGridRoot!=null && achievementsElement!=null)
 		{
 			List<Achievement> achs = InstanceFinder.AchievementManager.AchievementsToList();
-			foreach(Achievement ach in achs)
-			{
-				AddAchievementMember(achievementListGridRoot, ach);
-			}
+		    for (int i = 0; i < achs.Count; i++)
+		    {
+                AddAchievementMember(achievementListGridRoot, achs[i]);
+		    }
 			achievementListGridRoot.GetComponent<UIGrid>().Reposition();
 		}
 		
@@ -43,23 +44,29 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 		{
 			StatsManager sm = InstanceFinder.StatsManager;
 			TrapInfo[] ti = sm.GetTrapInfo();
-			//AddStatisticMember(statisticsListGridRoot, "", "", null);
-			AddStatisticMember(statisticsListGridRoot, "Total amount of slaps", sm.PandaSlaps.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Lifetime score collected", sm.TotalScore.ToString(), null);			
-			AddStatisticMember(statisticsListGridRoot, "Games played", sm.GamesPlayed.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Pandas killed", sm.PandasKilled.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Perfect kills", sm.PandasKilledPerfect.ToString(), null);
-			AddStatisticMember(statisticsListGridRoot, "Favourite trap",FindPrefferedTrap(ti).name, null);
-			
-			for(int i=0; i<ti.Length; i++)
-			{
-				AddStatisticMember(statisticsListGridRoot, "Killed on " + ti[i].name, ti[i].kills.ToString(), null);
-			}
-			
-			AddStatisticMember(statisticsListGridRoot, "Blood collected", sm.LiterBlood.ToString() + " liters", null);
-			AddStatisticMember(statisticsListGridRoot, "Total combo kills", sm.PandasComboKilled.ToString(), null);
-			
-			statisticsListGridRoot.GetComponent<UIGrid>().Reposition();
+
+		    //using (file = new System.IO.StreamWriter(@"C:\stasts.txt"))
+		    {
+
+		        //AddStatisticMember(statisticsListGridRoot, "", "", null);
+		        AddStatisticMember(statisticsListGridRoot, "Total amount of slaps", sm.PandaSlaps.ToString(), null);
+		        AddStatisticMember(statisticsListGridRoot, "Lifetime score collected", sm.TotalScore.ToString(), null);
+		        AddStatisticMember(statisticsListGridRoot, "Games played", sm.GamesPlayed.ToString(), null);
+		        AddStatisticMember(statisticsListGridRoot, "Pandas killed", sm.PandasKilled.ToString(), null);
+		        AddStatisticMember(statisticsListGridRoot, "Perfect kills", sm.PandasKilledPerfect.ToString(), null);
+		        AddStatisticMember(statisticsListGridRoot, "Favourite trap", FindPrefferedTrap(ti).name, null);
+
+		        for (int i = 0; i < ti.Length; i++)
+		        {
+		            AddStatisticMember(statisticsListGridRoot, "Killed on " + ti[i].name, ti[i].kills.ToString(), null);
+		        }
+
+		        AddStatisticMember(statisticsListGridRoot, "Blood collected", sm.LiterBlood.ToString() + " liters", null);
+		        AddStatisticMember(statisticsListGridRoot, "Total combo kills", sm.PandasComboKilled.ToString(), null);
+
+		        statisticsListGridRoot.GetComponent<UIGrid>().Reposition();
+		    }
+		    //file = null;
 		}
 		
 	}
@@ -83,9 +90,9 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 		GameObject go = NGUITools.AddChild(root, achievementsElement);
 		go.name = "Achievement" + achievementsIterator;
 		achievementsIterator++;
-        go.transform.FindChild("TitleLabel").GetComponent<UILabel>().text =ach.name;
-		go.transform.FindChild("DescriptionLabel").GetComponent<UILabel>().text = ach.description;
-		if(achievementCompletedTexture != null && ach.HasBeenCompleted())
+	    go.transform.FindChild("TitleLabel").GetComponent<UILabel>().text = ach.name;
+	    go.transform.FindChild("DescriptionLabel").GetComponent<UILabel>().text = ach.description;
+	    if(achievementCompletedTexture != null && ach.HasBeenCompleted())
 				go.transform.FindChild("ElementTexture").GetComponent<UITexture>().mainTexture = achievementCompletedTexture;
 //		if(ach.achievementIcon!=null)
 //			go.transform.FindChild("ElementTexture").GetComponent<UITexture>().mainTexture = ach.achievementIcon;
@@ -93,7 +100,7 @@ public class LoadAchievementsAndStats : MonoBehaviour {
 	
 	void AddStatisticMember(GameObject root, string name, string description, Texture image)
 	{
-		
+		//file.WriteLine(name + "="+name);
 		GameObject go = NGUITools.AddChild(root, statisticsElement);
 		go.name = "Statistic" + statsIterator;
 		statsIterator++;
