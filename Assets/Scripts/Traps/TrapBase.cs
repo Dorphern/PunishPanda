@@ -141,7 +141,7 @@ public abstract class TrapBase : MonoBehaviour {
 
 	void AddStatistics()
 	{
-		TrapType tt = GetTrapType();
+		//TrapType tt = GetTrapType();
 		if(InstanceFinder.StatsManager!=null)
 		{
 			switch(GetTrapType())

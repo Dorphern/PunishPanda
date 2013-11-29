@@ -23,7 +23,7 @@ public class Settings : MonoBehaviour {
 		
 		bool music = InstanceFinder.StatsManager.MusicEnabled;
 		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
-		string lang = InstanceFinder.StatsManager.language;
+		//string lang = InstanceFinder.StatsManager.language;
 		
 
 		if(music)
