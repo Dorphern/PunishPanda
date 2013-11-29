@@ -11,27 +11,73 @@ public class PauseMenuManager : MonoBehaviour {
 	public GameObject PauseTint;
 	public GameObject HintScreen;
 	public GameObject HintObj;
-	private UITexture HintComponent;
+	public GameObject PauseAndReset;
+	private UITexture textureComponent;
+	private TweenAlpha hintAlphaComponent;
+	private TweenAlpha tintAlphaComponent;
+	private bool skippedTutorial;
 	
+		
 	private bool MenuIsActive;
 	private Texture2D HintTexture;
+	private Texture2D TutorialTexture;
+	
 	
 	
 	void Start()
 	{
 		pausegame = GetComponent<PauseGame>();
-		//get hint texture:
+
+		//get start-tutorial texture:
+	    if (Localization.instance.currentLanguage == "English")
+	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+	    else
+	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.DanishTutorialTexture;
+		//get menu-hint texture:
 		HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
-		UITexture HintComponent = HintObj.GetComponent<UITexture>();
 		
-		HintComponent.mainTexture = HintTexture;
 		
+		//get components
+		textureComponent = HintObj.GetComponent<UITexture>();
+		hintAlphaComponent = HintObj.GetComponent<TweenAlpha>();
+		tintAlphaComponent = PauseTint.GetComponent<TweenAlpha>();
+		
+		if(!InstanceFinder.GameManager.debugMode)
+		{
+			//get start-tutorial texture:
+			if(InstanceFinder.LevelManager.CurrentLevel != null)
+				TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+			//get menu-hint texture:
+			if(InstanceFinder.LevelManager.CurrentLevel != null)
+				HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
+			
+			
+			//get components
+			textureComponent = HintObj.GetComponent<UITexture>();
+			hintAlphaComponent = HintObj.GetComponent<TweenAlpha>();
+			
+			//set start-tutorial texture to component
+			textureComponent.mainTexture = TutorialTexture;
+			//set it to its native-dimensions
+			if(textureComponent.mainTexture != null)
+			{
+				textureComponent.width = TutorialTexture.width;
+				textureComponent.height = TutorialTexture.height;
+			
+	
+				//display start-tutorial texture (if it has one..)
+				skippedTutorial = false;
+			
+				StartCoroutine(showTutorial());
+			}
+		}
 	}
 	
 	public void OnPauseClick()
 	{
 		//Enable Screen tint
 		PauseTint.SetActive(true);
+		tintAlphaComponent.PlayForward();
 		//Enable PauseMENU
 		PauseMenu.SetActive (true);
 		MenuIsActive = true;
@@ -40,20 +86,45 @@ public class PauseMenuManager : MonoBehaviour {
 	
 	public void OnResumeClick()
 	{
+		tintAlphaComponent.Reset();
 		PauseTint.SetActive(false);
 		MenuIsActive = false;
 	}
 	
 	public void OnHintClick()
 	{
-		HintScreen.SetActive(true);
-	    PauseMenu.SetActive(false);
+
+		//set menu-hint texture
+		textureComponent.mainTexture = HintTexture;
+		if(textureComponent.mainTexture != null)
+		{
+			textureComponent.width = HintTexture.width;
+			textureComponent.height = HintTexture.height;
+			HintScreen.SetActive(true);
+	    	PauseMenu.SetActive(false);
+		
+		
+			hintAlphaComponent.PlayForward();
+			tintAlphaComponent.PlayForward();
+		}
+		else
+		{
+			Debug.Log ("A Hint picture is NOT setup for this level!");
+		}
+			
 	}
 	
 	public void OnHintReturnClick()
 	{
+		skippedTutorial = true;
+		
+		hintAlphaComponent.Reset();
+		tintAlphaComponent.Reset();
+	
 		HintScreen.SetActive(false);
-	    PauseMenu.SetActive(true);
+		PauseTint.SetActive(false);
+		PauseAndReset.SetActive (true);
+
 	}
 	
 	
@@ -79,4 +150,41 @@ public class PauseMenuManager : MonoBehaviour {
 			PauseMenu.SetActive (false);
 	}
 	
+	//for showhing tutorial screen/animation at levelstart
+	IEnumerator showTutorial()
+	{
+		
+		
+		pausegame.StopTime();
+		PauseAndReset.SetActive (false);
+		PauseTint.SetActive(true);
+		HintScreen.SetActive(true);
+		
+		hintAlphaComponent.Play();
+		tintAlphaComponent.Play();
+
+		float pauseEndTime = Time.realtimeSinceStartup + 3;
+    	while (Time.realtimeSinceStartup < pauseEndTime)
+    	{
+        	yield return 0;
+    	}
+
+		
+		if(skippedTutorial == false)
+		{
+			hintAlphaComponent.PlayReverse();
+			tintAlphaComponent.PlayReverse();
+			float fadeOutTime = Time.realtimeSinceStartup + 1;
+    		while (Time.realtimeSinceStartup < fadeOutTime)
+    		{
+        		yield return 0;
+    		}
+		
+			pausegame.ResumeGame();
+			PauseAndReset.SetActive (true);
+			PauseTint.SetActive(false);
+			HintScreen.SetActive(false);
+		}
+
+	}
 }
