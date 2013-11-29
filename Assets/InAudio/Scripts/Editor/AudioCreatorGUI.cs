@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using InAudio;
-using InAudio.HDREditorGUI;
+using InAudio.InAudioEditorGUI;
 using InAudio.ExtensionMethods;
 using InAudio.TreeDrawer;
 using UnityEditor;
@@ -20,17 +20,17 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
     public bool OnGUI(int leftWidth, int height)
     {
         BaseOnGUI();
-        var root = HDRInstanceFinder.DataManager.AudioTree; 
-        int id = HDRInstanceFinder.InAudioGuiUserPrefs.SelectedAudioNodeID;
+        var root = InAudioInstanceFinder.DataManager.AudioTree;
+        int id = InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedAudioNodeID;
         var selectedNode = UpdateSelectedNode(root, id);
-        HDRInstanceFinder.InAudioGuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
+        InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedAudioNodeID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
         this.height = height;
      
         EditorGUIHelper.DrawColums(DrawLeftSide, DrawRightSide);
         
-        return isDirty; 
+        return isDirty;
     }
 
     private void DrawLeftSide(Rect area) 
@@ -147,7 +147,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
             }
             else
             {
-                UndoHelper.RecordObjects(
+                UndoHelper.RecordObject(
                     new UnityEngine.Object[] { node, nodeToMove, nodeToMove.Parent, oldBank.LazyBankFetch, newBank.LazyBankFetch },
                     "Audio Node Move");
             }
@@ -156,7 +156,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         }
         else if (node.Type != AudioNodeType.Audio) //Create new audio nodes when we drop clips
         {
-            UndoHelper.RecordObjects(UndoHelper.NodeUndo(node), "Adding Nodes to " + node.Name);
+            UndoHelper.RecordObject(UndoHelper.NodeUndo(node), "Adding Nodes to " + node.Name);
             for (int i = 0; i < objects.Length; ++i)
             {
                 var clip = objects[i] as AudioClip;
@@ -181,7 +181,7 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         } 
         else //Then it must be an audio clip dropped on an audio node, so assign the clip to that node
         {
-            UndoHelper.RecordObjects(UndoHelper.NodeUndo(node),  "Change Audio Clip In " + node.Name);
+            UndoHelper.RecordObject(UndoHelper.NodeUndo(node),  "Change Audio Clip In " + node.Name);
             (node.NodeData as AudioData).EditorClip = objects[0] as AudioClip;
             AudioBankWorker.SwapClipInBank(node, objects[0] as AudioClip);
         }
@@ -255,42 +255,40 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
 
         #endregion
 
-        if (!UndoHelper.IsNewUndo)
-        {
-            menu.AddSeparator("");
+       
+        menu.AddSeparator("");
 
-            #region Convert to
+        #region Convert to
 
-            if (node.Children.Count == 0)
-                menu.AddItem(new GUIContent(@"Convert To/Audio"), false,
-                    (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Audio), node);
-            else
-                menu.AddDisabledItem(new GUIContent(@"Convert To/Audio"));
-            if (node.Type != AudioNodeType.Root)
-            {
-                menu.AddItem(new GUIContent(@"Convert To/Random"), false,
-                    (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Random), node);
-                menu.AddItem(new GUIContent(@"Convert To/Sequence"), false,
-                    (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Sequence), node);
-                menu.AddItem(new GUIContent(@"Convert To/Multi"), false,
-                    (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Multi), node);
-                //menu.AddItem(new GUIContent(@"Convert To/Track"), false, (obj) =>       AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Track), node);
-            }
-            else
-            {
-                menu.AddDisabledItem(new GUIContent(@"Convert To/Random"));
-                menu.AddDisabledItem(new GUIContent(@"Convert To/Sequence"));
-                menu.AddDisabledItem(new GUIContent(@"Convert To/Multi"));
-                //menu.AddDisabledItem(new GUIContent(@"Add Parent/Track"));
-            }
-
-            /*if (node.Children.Count == 0)
-            menu.AddItem(new GUIContent(@"Convert To/Voice"), false, (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Audio), node);
+        if (node.Children.Count == 0)
+            menu.AddItem(new GUIContent(@"Convert To/Audio"), false,
+                (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Audio), node);
         else
-            menu.AddDisabledItem(new GUIContent(@"Convert To/Voice"));*/
-
-            #endregion
+            menu.AddDisabledItem(new GUIContent(@"Convert To/Audio"));
+        if (node.Type != AudioNodeType.Root)
+        {
+            menu.AddItem(new GUIContent(@"Convert To/Random"), false,
+                (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Random), node);
+            menu.AddItem(new GUIContent(@"Convert To/Sequence"), false,
+                (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Sequence), node);
+            menu.AddItem(new GUIContent(@"Convert To/Multi"), false,
+                (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Multi), node);
+            //menu.AddItem(new GUIContent(@"Convert To/Track"), false, (obj) =>       AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Track), node);
         }
+        else
+        {
+            menu.AddDisabledItem(new GUIContent(@"Convert To/Random"));
+            menu.AddDisabledItem(new GUIContent(@"Convert To/Sequence"));
+            menu.AddDisabledItem(new GUIContent(@"Convert To/Multi"));
+            //menu.AddDisabledItem(new GUIContent(@"Add Parent/Track"));
+        }
+
+        /*if (node.Children.Count == 0)
+        menu.AddItem(new GUIContent(@"Convert To/Voice"), false, (obj) => AudioNodeWorker.ConvertNodeType(node, AudioNodeType.Audio), node);
+    else
+        menu.AddDisabledItem(new GUIContent(@"Convert To/Voice"));*/
+
+        #endregion
 
         menu.AddSeparator("");
 
@@ -309,8 +307,9 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
 
     private void CreateChild(AudioNode parent, AudioNodeType type)
     {
-        //Undo.RegisterUndo(new UnityEngine.Object[] { parent, parent.GetBank()}, "");
+        UndoHelper.RecordObjectFull(new UnityEngine.Object[] { parent, parent.GetBank().LazyBankFetch}, "Create Audio Node");
         var newNode = AudioNodeWorker.CreateChild(parent, type);
+
         if (type == AudioNodeType.Audio)
         {
             AudioBankWorker.AddNodeToBank(newNode, null);
@@ -321,7 +320,8 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
     {
         searchingFor = node.GUID.ToString();
         lowercaseSearchingFor = searchingFor.ToLower().Trim();
-        treeDrawer.Filter(ShouldFilter);   
+        treeDrawer.Filter(SearchFilter);
+        SelectedNode = node;
     }
 
     protected override bool OnNodeDraw(AudioNode node, bool isSelected)
@@ -334,5 +334,10 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         searchingFor = "Finding nodes in bank";
         lowercaseSearchingFor = "Finding nodes in bank";
         treeDrawer.Filter(filter);   
+    }
+
+    public override AudioNode Root()
+    {
+        return InAudioInstanceFinder.DataManager.AudioTree;
     }
 }

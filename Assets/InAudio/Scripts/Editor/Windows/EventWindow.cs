@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class EventWindow : HDRBaseWindow
+public class EventWindow : InAudioBaseWindow
 {
     private AudioEventCreatorGUI audioEventCreatorGUI;
 

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Collections;
 using Object = UnityEngine.Object;
+using Debug = UnityEngine.Debug;
 
 public static class TreeWalker
 {
@@ -132,53 +134,60 @@ public static class TreeWalker
         }
     }
 
-    public static T FindNextUnfoldedNode<T>(T node) where T : Object, ITreeNode<T>
+
+    public static T FindPreviousUnfoldedNode<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
     {
-        if (node.IsFoldedOut && node.GetChildren.Count > 0)
-            return node.GetChildren[0];
-
-        T found = node;
-        if (node.IsFoldedOut && node.GetChildren.Count == 0)
-        {
-            found = FindNextSibling(node);
-            if (found.IsRoot) //Is root node
-                return node;
-            else 
-                return found;
-        }
-
-        found = FindNextSibling(node);
-        if (found.GetParent == null)
+        int index = FindIndexInParent(node);
+        if (node.IsRoot)
             return node;
-        else 
-            return found;
+        else if (index == 0)
+        {
+            return node.GetParent;
+        }
+        else
+        {
+            T previousNode = null;
+
+            for (int i = index - 1; i >= 0; i--)
+            {
+                if (predicate(node.GetParent.GetChildren[i]))
+                {
+                    previousNode = node.GetParent.GetChildren[i];
+                    break;
+                }
+            }
+            if (previousNode == null)
+            {
+                return node.GetParent;
+            }
+
+            while (previousNode.IsFoldedOut)
+            {
+                if (previousNode.GetChildren.Count == 0)
+                    return previousNode;
+                else
+                {
+                    bool set = false;
+                    for (int i = previousNode.GetChildren.Count - 1; i >= 0; i--)
+                    {
+                        if (predicate(previousNode.GetChildren[i]))
+                        {
+                            previousNode = previousNode.GetChildren[i];
+                            set = true;
+                            break;
+                        }
+                    }
+                    if(!set)
+                        previousNode = previousNode.GetChildren[previousNode.GetChildren.Count - 1];
+                }
+            }
+            return previousNode;
+        }
     }
 
 #endif
 
-    public static T FindNextNode<T>(T node) where T : Object, ITreeNode<T>
-    {
-        if (node.GetChildren.Count > 0)
-            return node.GetChildren[0];
-
-        T found = node;
-        if (node.GetChildren.Count == 0)
-        {
-            found = FindNextSibling(node);
-            if (found.IsRoot)
-                return node;
-            else 
-                return found;
-        }
-
-        found = FindNextSibling(node);
-        if (found.IsRoot)
-            return node;
-        else 
-            return found;
-    }
-
-    public static T FindNextSibling<T>(T node) where T : Object, ITreeNode<T>
+  public static T FindNextSibling<T>(T node) where T : Object, ITreeNode<T>
     {
         //Keep walking up as the current node may be n deep
         while (node != null && node.GetParent != null)
@@ -204,4 +213,80 @@ public static class TreeWalker
         }
         return node;
     }
+
+    
+#if UNITY_EDITOR
+    public static T FindNextNode<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        var nodeChildren = node.GetChildren;
+        if (node.IsFoldedOut && predicate(node) && nodeChildren.Count > 0)
+        {
+            for (int i = 0; i < nodeChildren.Count; i++)
+            {
+                if (predicate(nodeChildren[i]))
+                    return nodeChildren[i];
+            }
+        }
+
+        if (node.GetParent != null)
+        {
+            //Find next sibling
+            int index = FindIndexInParent(node);
+            var parentChildren = node.GetParent.GetChildren;
+            for (int i = index + 1; i < parentChildren.Count; i++)
+            {
+                if (predicate(parentChildren[i]))
+                    return parentChildren[i];
+            }
+
+            //No sibling found, check the sibling for the next parent
+            
+            //var nextNode = FindSibling(node.GetParent, node, predicate);
+            var nextNode = FindSibling(node.GetParent, node, predicate);
+
+            if (!IsParentOf(nextNode, node))
+                return nextNode;
+            else
+                return node;
+        }
+
+        return node;
+    }
+
+    public static T FindSibling<T>(T node, T calledFrom, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        int nextIndex = node.GetChildren.FindIndex(t => t == calledFrom) + 1;
+        //No more children, go to the parent
+        if (nextIndex >= node.GetChildren.Count)
+        {
+            if (!node.IsRoot)
+            {
+                return FindSibling(node.GetParent, node, predicate);
+
+            }
+            else
+                return node;
+        }
+        else //There are children, 
+        {
+            for (int i = nextIndex; i < node.GetChildren.Count; i++)
+            {
+                if(predicate(node.GetChildren[nextIndex]))
+                    return node.GetChildren[nextIndex];
+            }
+            return calledFrom;
+        }
+    }
+#endif
+    public static bool IsParentOf<T>(T node, T potentialParent) where T : Object, ITreeNode<T>
+    {
+        if (node == potentialParent)
+            return true;
+
+        if (potentialParent.GetParent != null)
+            return IsParentOf(node, potentialParent.GetParent);
+
+        return false;
+    }
+
 }

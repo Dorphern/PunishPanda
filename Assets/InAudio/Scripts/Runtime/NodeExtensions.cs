@@ -17,6 +17,16 @@ namespace InAudio.ExtensionMethods
 
     public static class AudioNodeExtensions
     {
+        public static AudioBus GetBus(this AudioNode node)
+        {
+            if (node.OverrideParentBus || node.IsRoot)
+            {
+                return node.Bus;
+            }
+            else
+                return GetBus(node.Parent);
+        }
+
         public static AudioBankLink GetBank(this AudioNode node) 
         {
             if (node.IsRoot)

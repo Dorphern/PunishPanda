@@ -2,7 +2,7 @@ using InAudio;
 using UnityEditor;
 using UnityEngine;
 
-namespace InAudio.HDREditorGUI
+namespace InAudio.InAudioEditorGUI
 {
 
 public static class FolderDrawer
@@ -10,9 +10,11 @@ public static class FolderDrawer
     public static void Draw(AudioNode node)
     {
         EditorGUILayout.BeginVertical();
-        UndoHandler.CheckUndo(new UnityEngine.Object[] { node, node.NodeData });
-        node.Name = EditorGUILayout.TextField("Name", node.Name);
-        UndoHandler.CheckGUIChange();
+
+        #region Bank 
+
+        UndoHelper.GUIUndo(node, "Name Change", ref node.Name, () =>
+            EditorGUILayout.TextField("Name", node.Name));
 
         if (node.Type != AudioNodeType.Root)
         {
@@ -46,7 +48,12 @@ public static class FolderDrawer
         }
         else
         {
-            EditorGUILayout.LabelField("Using Bank", parentLink.GetName); 
+            if (parentLink != null)
+                EditorGUILayout.LabelField("Using Bank", parentLink.GetName);
+            else
+            {
+                EditorGUILayout.LabelField("Using Bank", "Missing");
+            }
         }
 
         bool wasEnabled = GUI.enabled;
@@ -85,6 +92,14 @@ public static class FolderDrawer
         else
             EditorGUILayout.LabelField("Node Bank", "Missing Bank");
         GUI.enabled = true;
+#endregion
+
+        EditorGUILayout.Separator();
+        EditorGUILayout.Separator();
+        #region Bus
+        DataDrawerHelper.DrawBus(node);
+        #endregion
+
         EditorGUILayout.EndVertical();
     } 
 
