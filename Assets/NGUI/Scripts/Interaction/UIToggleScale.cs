@@ -17,6 +17,7 @@ public class UIToggleScale : MonoBehaviour
 	public Vector3 hover = new Vector3(1.1f, 1.1f, 1.1f);
 	public Vector3 pressed = new Vector3(1.05f, 1.05f, 1.05f);
 	public Vector3 selected = new Vector3(1.5f, 1.5f, 1.5f);
+	public Vector3 Default = new Vector3(1.5f, 1.5f, 1.5f);
 	public float duration = 0.2f;
 
 	Vector3 mScale;
