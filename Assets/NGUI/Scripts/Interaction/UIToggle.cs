@@ -6,6 +6,7 @@
 using UnityEngine;
 using AnimationOrTween;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Simple toggle functionality.
@@ -68,7 +69,10 @@ public class UIToggle : UIWidgetContainer
 	/// </summary>
 
 	public List<EventDelegate> onChange = new List<EventDelegate>();
-
+	
+	public event Action OnToggleActivate;
+	public event Action OnToggleDeactivate;
+	
 	/// <summary>
 	/// Deprecated functionality. Use the 'group' option instead.
 	/// </summary>
@@ -98,6 +102,8 @@ public class UIToggle : UIWidgetContainer
 
 	void OnEnable ()  { list.Add(this); }
 	void OnDisable () { list.Remove(this); }
+	
+	
 
 	/// <summary>
 	/// Activate the initial state.
@@ -179,10 +185,17 @@ public class UIToggle : UIWidgetContainer
 			// Uncheck all other toggles
 			if (group != 0 && state)
 			{
+				if(OnToggleActivate!=null)
+					OnToggleActivate();
 				for (int i = 0, imax = list.size; i < imax; )
 				{
 					UIToggle cb = list[i];
-					if (cb != this && cb.group == group) cb.Set(false);
+					if (cb != this && cb.group == group) 
+					{
+						if(cb.OnToggleDeactivate!=null)
+							cb.OnToggleDeactivate();
+						cb.Set(false);
+					}
 					
 					if (list.size != imax)
 					{
@@ -243,10 +256,17 @@ public class UIToggle : UIWidgetContainer
 			// Uncheck all other toggles
 			if (group != 0 && state)
 			{
+				if(OnToggleActivate!=null)
+					OnToggleActivate();
 				for (int i = 0, imax = list.size; i < imax; )
 				{
 					UIToggle cb = list[i];
-					if (cb != this && cb.group == group) cb.Set(false);
+					if (cb != this && cb.group == group) 
+					{
+						if(OnToggleDeactivate!=null)
+							cb.OnToggleDeactivate();
+						cb.Set(false);
+					}
 					
 					if (list.size != imax)
 					{
