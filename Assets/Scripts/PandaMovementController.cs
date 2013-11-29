@@ -203,7 +203,7 @@ public class PandaMovementController : MonoBehaviour {
         {
             if (pandaStateManager.GetDirection() == PandaDirection.Left)
             {                
-                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.5f, transform.position.y, -1f), 10f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.2f, transform.position.y, -1f), 10f * Time.deltaTime);
             }                
             else                
             {
