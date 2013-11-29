@@ -24,6 +24,7 @@ public class BloodSplatter : MonoBehaviour {
 	public GameObject decalsPrefab;
 	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
 	public bool mainMenuSlap = false;
+	public bool levelHasPlatforms = true;
 	
 	public int maxSpaltCount = 100;
 	
@@ -107,6 +108,12 @@ public class BloodSplatter : MonoBehaviour {
 	
 	private void Start () 
 	{
+		if(levelHasPlatforms)
+		{
+			slapMaxScale = 2f;
+			slapMinScale = 2f;
+		}
+		
 			// Instantiate the prefab and get its decals instance.
 		GameObject l_Instance = Instantiate (decalsPrefab) as GameObject;
 		m_Decals = l_Instance.GetComponentInChildren <DS_Decals> ();
