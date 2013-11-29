@@ -20,6 +20,7 @@ public class InstanceFinder : MonoBehaviour
         {
             GameManager = (Object.Instantiate(gameManagerPrefab) as GameObject).GetComponent<GameManager>();
             GameManager.Initialize();
+			GameManager.debugMode =true;
             LevelManager.TransitionIntoLevel();
             return true;
         }
