@@ -122,15 +122,16 @@ public class PandaMovementController : MonoBehaviour {
         return controller.isGrounded;
     }
 
-    public void PandaEscape (Collider c, CollidableTypes bambooDirection)
+    public void PandaEscapeJump (Collider c, CollidableTypes bambooDirection)
     {
        escape.bambooDirection = bambooDirection;
        escape.bambooPosition = c.transform;
        StartCoroutine(JumpToBamboo(0.7f, 0.3f, escape.bambooPosition, bambooDirection));
+       escape.targetJumpPos = new Vector3(escape.bambooPosition.position.x + 0.3f, transform.position.y + 1f, -1f);
         
     }
     
-    public void PandaEscape ()
+    public void PandaEscapeAway ()
     {
         if (escape.bambooDirection == CollidableTypes.BambooEscapeDown)
             escape.pandaEscapedSlide = true;
@@ -172,12 +173,14 @@ public class PandaMovementController : MonoBehaviour {
 	void FixedUpdate ()
 	{
 	    // Make sure the character stays in the 2D plane
+        //if (pandaStateManager.GetState() != PandaState.Escape)
+        //{
+        //    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+        //}
+        //else
         if (pandaStateManager.GetState() != PandaState.Escape)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-        }
-        else
-        {
+            return;
             transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
         }
 
@@ -191,11 +194,9 @@ public class PandaMovementController : MonoBehaviour {
 
         // Store the last position of the character;
         lastPos = transform.position;
-	}
 
-    void Update ()
-    {
-        if (escape.pandaEscapedSlide)
+
+                if (escape.pandaEscapedSlide)
         {
             escape.pandaJumpToBambooDown = false;
          //   transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.3f, transform.position.y - 0.3f, -1), ref escape.yVelocity, escape.smoothTime, 2f, Time.deltaTime);
@@ -203,7 +204,7 @@ public class PandaMovementController : MonoBehaviour {
         else if(escape.pandaEscapeCrawl)
         {
             escape.pandaJumpToBambooUp = false;
-            transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.4f, escape.bambooPosition.position.y - 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
+           // transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.4f, escape.bambooPosition.position.y - 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
         }
 
         if (escape.pandaJumpToBambooDown)
@@ -215,7 +216,7 @@ public class PandaMovementController : MonoBehaviour {
             else                
             {
                 //transform.position = Vector3.Lerp(transform.position, escape.targetJumpPos, 5f * Time.deltaTime);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.1f, transform.position.y, -1f), 10f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y, -0.5f), 10f * Time.deltaTime);
                 //transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.3f, escape.bambooPosition.position.y - 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
             }
         }
@@ -223,7 +224,7 @@ public class PandaMovementController : MonoBehaviour {
         {
             if (pandaStateManager.GetDirection() == PandaDirection.Left)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x -0.5f, escape.bambooPosition.position.y -3.5f, -0.5f), 8f * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x -0.5f, transform.position.y, -0.5f), 8f * Time.deltaTime);
             }  
             else
             {
@@ -231,6 +232,11 @@ public class PandaMovementController : MonoBehaviour {
             }
 
         }
+	}
+
+    void Update ()
+    {
+
 
     }
 	
@@ -378,13 +384,16 @@ public class PandaMovementController : MonoBehaviour {
 
     private IEnumerator JumpToBamboo(float timeToWaitUp, float timeToWaitDown, Transform c, CollidableTypes bambooDirection)
     {
-        escape.targetJumpPos = new Vector3(escape.bambooPosition.position.x + 0.3f, transform.position.y + 1f, -1f);
+        
         float timeToWait;
+
         if (CollidableTypes.BambooEscapeDown == bambooDirection)
             timeToWait = timeToWaitDown;
         else
             timeToWait = timeToWaitUp;
+
         yield return new WaitForSeconds(timeToWait);
+
         if (CollidableTypes.BambooEscapeDown == bambooDirection)
         {
             escape.pandaJumpToBambooDown = true;
