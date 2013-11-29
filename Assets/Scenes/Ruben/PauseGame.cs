@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class PauseGame : MonoBehaviour {
 	
-	private float savedTimeScale;	
+	private float savedTimeScale;
+	private GameObject inputHandler;
+	private InputHandler inputScript;
 	
 	[SerializeField] [EventHookAttribute("PauseGame")]
 	List<AudioEvent> pauseGameEvent;
@@ -14,14 +16,16 @@ public class PauseGame : MonoBehaviour {
 	void Start () 
 	{
 		savedTimeScale = Time.timeScale;
-		//Debug.Log ("savingTimeScale " + gameObject);
+		inputHandler = GameObject.Find("InputHandler");
+		inputScript = (InputHandler) inputHandler.GetComponent(typeof(InputHandler));
 	}
 	
 
 	public void StopTime()
 	{
 		Time.timeScale = 0;
-		//Debug.Log ("StopTime()" + gameObject);
+		inputScript.PausedGame();
+		
 		//PAUSE AUDIO ALSO??
 		for(int i = 0; i < pauseGameEvent.Count; ++i)
 		{
@@ -31,8 +35,9 @@ public class PauseGame : MonoBehaviour {
 	
 	public void ResumeGame()
 	{
-		//Debug.Log ("ResumeGame()" + gameObject);
 		Time.timeScale = savedTimeScale;
+		inputScript.UnpausedGame();
+		
 		for(int i = 0; i < resumeGameEvent.Count; ++i)
 		{
 			HDRSystem.PostEvent(gameObject, resumeGameEvent[i]);

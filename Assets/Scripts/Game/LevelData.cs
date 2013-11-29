@@ -26,6 +26,9 @@ public class LevelData
     public Texture2D HintscreenTexture;
 
     [SerializeField]
+    public Texture2D DanishHintscreenTexture;
+
+    [SerializeField]
     public Texture2D TutorialTexture;
 
     [SerializeField]
