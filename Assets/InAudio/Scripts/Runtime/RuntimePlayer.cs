@@ -9,6 +9,7 @@ using System.Collections;
 /// <summary>
 /// The class that actually plays the audio
 /// </summary>
+[AddComponentMenu(FolderSettings.ComponentPathPrefabs+"Audio Player/Runtime Player")]
 [RequireComponent(typeof(AudioSource))]
 public class RuntimePlayer : MonoBehaviour
 {

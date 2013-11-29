@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SocialPlatforms.Impl;
 using System;
 using PunishPanda;
 
@@ -273,7 +271,8 @@ public class WinScreen : MonoBehaviour {
 		
 		yield return new WaitForSeconds(0.5f);
 		ZoomOutTween.RunTween();
-		ZoomOutScoreTween.RunTween();
+        //TODO FIX THIS
+		//ZoomOutScoreTween.RunTween();
 		yield return new WaitForSeconds(0.5f);
 		
 		total += intermediateTotal;
