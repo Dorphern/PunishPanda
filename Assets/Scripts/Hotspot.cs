@@ -8,6 +8,10 @@ using System.Collections;
 
 public class Hotspot : MonoBehaviour {
 
+    /*
+     * @todo add arrow when active
+     */
+
     [SerializeField] private float bounceForce = 1f;
     [SerializeField] private float bounceDirection = 1f;
 
@@ -37,12 +41,12 @@ public class Hotspot : MonoBehaviour {
     public void ActivateHotspot ()
     {
         hotspotActive = true;
-		renderer.material.color = Color.green;
+		//renderer.material.color = Color.green;
     }
 
     public void DeactivateHotspot ()
     {
         hotspotActive = false;
-		renderer.material.color = Color.gray;
+		//renderer.material.color = Color.gray;
     }
 }

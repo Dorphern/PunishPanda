@@ -17,6 +17,7 @@ using System.Collections.Generic;
 
 public class SwipeController : MonoBehaviour {
 	
+	
 	public void Swipe(Vector3 currPos, Vector3 endPos)
     {
 
@@ -45,7 +46,7 @@ public class SwipeController : MonoBehaviour {
 			// we need to check for multiple collisions of the same panda
 			for(int j=0; j<i; j++)
 			{
-				if(hits[i].collider.gameObject.GetInstanceID() == hits[i].collider.gameObject.GetInstanceID())
+				if(hits[i].collider.gameObject.GetInstanceID() == hits[j].collider.gameObject.GetInstanceID())
 				{
 					doubleCollisionFlag = true;
 					break;
@@ -57,7 +58,7 @@ public class SwipeController : MonoBehaviour {
 				
 				if(collidable != null && collidable.type == CollidableTypes.Panda)
 				{
-					hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+						hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
 				}
 			}
 		}      

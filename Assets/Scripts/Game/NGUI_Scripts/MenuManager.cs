@@ -61,15 +61,15 @@ public class MenuManager: MonoBehaviour {
 		}
 		
 		// if the finger has not been calibrated before force the player to do so
-//		if(InstanceFinder.StatsManager!=null && InstanceFinder.StatsManager.FingerCalibrated== false)
-//		{
-//			GameObject menu;
-//			menuDict.TryGetValue(MenuTypes.FirstTimeFinger, out menu);
-//			menu.SetActive(true);
-//			currentMenu = MenuTypes.FirstTimeFinger;
-//		}
-//		else
-//		{
+		if(InstanceFinder.StatsManager!=null && InstanceFinder.StatsManager.FingerCalibrated== false)
+		{
+			GameObject menu;
+			menuDict.TryGetValue(MenuTypes.FirstTimeFinger, out menu);
+			menu.SetActive(true);
+			currentMenu = MenuTypes.FirstTimeFinger;
+		}
+		else
+		{
 			//makeshift solution for loading the levels screen rather than the main screen on startup
 			if(InstanceFinder.LevelManager != null && InstanceFinder.LevelManager.loadLevelsScreenFlag)
 			{
@@ -79,7 +79,7 @@ public class MenuManager: MonoBehaviour {
 				currentMenu = MenuTypes.Levels;
 				InstanceFinder.LevelManager.loadLevelsScreenFlag = false;	
 			} 
-			// initialize the Main Menu if it is in the dictionary
+			// initialize the Default Menu if it is in the dictionary
 			else if(menuDict.ContainsKey(StartMenu))
 			{	
 				GameObject menu;
@@ -87,7 +87,7 @@ public class MenuManager: MonoBehaviour {
 				menu.SetActive(true);
 				currentMenu = StartMenu;
 			}
-		//}
+		}
 	}
 	
 	public void SwitchToMenu(MenuTypes type)
@@ -117,5 +117,10 @@ public class MenuManager: MonoBehaviour {
 	public void ReturnToMainMenu()
 	{
 		SwitchToMenu(MenuTypes.MainMenu);
+	}
+	
+	public MenuTypes GetCurrentMenuType()
+	{
+		return currentMenu;	
 	}
 }

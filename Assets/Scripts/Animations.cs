@@ -5,6 +5,7 @@ public class Animations : MonoBehaviour {
 
     private Animator anim;
     private PandaStateManager stateManager;
+    private CharacterController characterController;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
@@ -20,9 +21,10 @@ public class Animations : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        anim = gameObject.GetComponentInChildren<Animator>();
-        stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();
+        anim = GetComponentInChildren<Animator>();
+        stateManager = GetComponent<PandaStateManager>();
+        pandaAI = GetComponent<PandaAI>();
+        characterController = GetComponent<CharacterController>();
     }
 
     IEnumerator SetNewPandaState (PandaState state)
@@ -41,10 +43,15 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Face", false);
     }
 
-    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo)
+    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
     {
         yield return new WaitForSeconds(animStateInfo.length);
         pandaAI.stuckOnSpikes = false;
+        anim.SetBool("LandingHard", false);
+        if(statePanda == PandaState.Escape)
+        {
+            pandaAI.pandaEscaped = true;
+        }
     }
     # endregion
 
@@ -61,7 +68,6 @@ public class Animations : MonoBehaviour {
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
-
         anim.SetBool(pandaStateLast.ToString(), false);
 
         Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
@@ -80,24 +86,31 @@ public class Animations : MonoBehaviour {
         }
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
-        StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0)));
+        anim.SetBool("Grounded", characterController.isGrounded);
+        anim.SetBool("LandingHard", pandaAI.landingHard);
+        StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
     }
-    public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap, PandaState pandaStateLast)
+    public void PlayDeathAnimation(TrapBase trap, bool hitTrap, PandaDirection pandaDirection, PandaState pandaStateLast)
     {
-        if (typeTrap == TrapType.StaticSpikes)
-            pandaAI.stuckOnSpikes = true;
         anim.SetBool(pandaStateLast.ToString(), false);
-        anim.SetBool(typeTrap.ToString(), hitTrap);
-
+        anim.SetInteger("TrapPosition", (int) trap.GetTrapPosition());
+        anim.SetInteger("TrapType", (int)trap.GetTrapType());
+        anim.SetInteger("Direction", (int) pandaDirection);
     }
 
     public void SetSlapped(bool front)
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
+        anim.SetBool("LedgeFall", false);
 
         StartCoroutine(ResetSlap());
+    }
+    public void PlayLedgeFallAnimation(PandaDirection pandaDirection)
+    {
+        anim.SetBool("LedgeFall", true);
+        anim.SetInteger("Direction", (int)pandaDirection);
     }
     # endregion
 }
