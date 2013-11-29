@@ -19,9 +19,8 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
     {
         BaseOnGUI();
 
-        var root = InAudioInstanceFinder.DataManager.EventTree;
         int id = InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedEventID;
-        var selectedNode = UpdateSelectedNode(root, id);
+        var selectedNode = UpdateSelectedNode(Root(), id);
         InAudioInstanceFinder.InAudioGuiUserPrefs.SelectedEventID = selectedNode != null ? selectedNode.ID : 0;
 
         this.leftWidth = leftWidth;
@@ -146,5 +145,10 @@ public class AudioEventCreatorGUI : BaseCreatorGUI<AudioEvent>
         });
         
         node.FoldedOut = true;
+    }
+
+    public override AudioEvent Root()
+    {
+        return InAudioInstanceFinder.DataManager.EventTree;
     }
 }

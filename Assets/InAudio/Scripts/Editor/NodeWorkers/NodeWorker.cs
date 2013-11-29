@@ -6,6 +6,9 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+namespace InAudio 
+{
+
 public static class NodeWorker  {
     public static bool IsChildOf<T>(T node, T potentialChild) where T : Object, ITreeNode<T>
     {
@@ -196,4 +199,5 @@ public static class NodeWorker  {
             FindAllNodes(node.GetChildren[i], condition, foundNodes);
         }
     }
+}
 }
