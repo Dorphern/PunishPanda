@@ -63,7 +63,8 @@ public class InputHandler : MonoBehaviour {
 		if(paused == false)
 			MouseUpdate();
 #else
-        TouchUpdate();
+		if(paused == false)
+        	TouchUpdate();
 #endif
 	}
 	
