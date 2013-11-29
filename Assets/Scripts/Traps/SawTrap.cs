@@ -6,6 +6,7 @@ public class SawTrap : TrapBase {
     [SerializeField] protected float acceleration = 0.5f;
     [SerializeField] protected float killThreshold = 0.3f; // Determine min speed for killing
     [SerializeField] protected float maxTurnSpeed = 5f;
+	[SerializeField] protected BladeDirection bladeDirection = BladeDirection.Clockwise;
 
     protected float turnSpeed = 0f;
     protected float baseAcc = 0.2f;
@@ -32,6 +33,11 @@ public class SawTrap : TrapBase {
     {
         isActive = false;
     }
+	
+	public override BladeDirection GetSpinDirection ()
+	{
+		return bladeDirection;
+	}
 
     # endregion
 

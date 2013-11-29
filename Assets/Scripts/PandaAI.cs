@@ -59,7 +59,7 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Jump")]
     private List<AudioEvent> jumpEvents;
     Animations animations;
-	
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -265,7 +265,8 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
         {
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().KilledByPosition = trap.transform.position;
+			BladeDirection bladeDirection = trap.GetSpinDirection();
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize(bladeDirection);
             Destroy(gameObject);
         }
         else if (trap.GetTrapType() == TrapType.ImpalerSpikes

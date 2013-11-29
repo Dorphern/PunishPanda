@@ -74,6 +74,11 @@ public abstract class TrapBase : MonoBehaviour {
         dirty = false;
         if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
     }
+	
+	virtual public BladeDirection GetSpinDirection ()
+	{
+		return BladeDirection.None; 
+	}
 
     public bool IsDirty ()
     {
