@@ -5,6 +5,8 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     LevelManager levelManager;
+	[HideInInspector]
+	public bool debugMode=false;
 
     void Awake()
     {
