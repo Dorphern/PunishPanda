@@ -4,6 +4,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
+[AddComponentMenu(FolderSettings.ComponentPathInternalManager + "Instance Finder")]
 public class InAudioInstanceFinder : MonoBehaviour
 {
     private static InAudioInstanceFinder instance;
