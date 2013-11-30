@@ -199,8 +199,9 @@ public class InputHandler : MonoBehaviour {
 						float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
 						if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.1f)
 						{
-							panda.PandaPushingFinger();
-							tempBlockade.pushingPandas.Add(panda);
+							bool canBePushed = panda.PandaPushingFinger();
+							if(canBePushed)
+								tempBlockade.pushingPandas.Add(panda);
 						}
 					}	
 				}
