@@ -281,17 +281,16 @@ public class PandaAI : MonoBehaviour {
         newPos.x = escape.transform.position.x;
         newPos.z = escape.transform.position.z;
         newPos.y += 0.2f;
-        if (position == TrapPosition.Ground)
+
+        if (pandaStateManager.GetDirection() == PandaDirection.Left)
         {
-            if (pandaStateManager.GetDirection() == PandaDirection.Left)
-            {
-                newPos.x += 1.4f;
-            }
-            else
-            {
-                newPos.x -= 1.4f;
-            }
+            newPos.x += 1.4f;
         }
+        else
+        {
+            newPos.x -= 1.4f;
+        }
+
         transform.position = newPos;
         // Fair dust fades away
 

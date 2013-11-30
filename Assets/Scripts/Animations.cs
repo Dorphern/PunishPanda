@@ -119,7 +119,7 @@ public class Animations : MonoBehaviour {
     {
         if (position == TrapPosition.Ceiling)
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.1f);
             animation.Play(escapeUpAnimation);
         }
         else if (position == TrapPosition.Ground)
