@@ -105,6 +105,8 @@ public class Achievement
 }
 
 public class AchievementManager : MonoBehaviour {
+    [EventHookAttribute("On Achievement")]
+    public List<AudioEvent> OnAchievementEvents = new List<AudioEvent>();
 
 	public List<Achievement> achievementList = new List<Achievement>();
 	public bool debug = false;
@@ -128,6 +130,7 @@ public class AchievementManager : MonoBehaviour {
 			
 			if(ach.AddProgress(progress) && onAchievementCompleted!=null)
 			{
+                HDRSystem.PostEvents(gameObject, OnAchievementEvents);
 				onAchievementCompleted(ach);
 				return true;		
 			}
@@ -164,7 +167,7 @@ public class AchievementManager : MonoBehaviour {
 	private void LoadAchievements()
 	{
 		achievements = new Dictionary<string, Achievement>();
-	    var localization = Localization.instance;
+	    //var localization = Localization.instance;
 		for(int i=0;i<achievementList.Count;i++)
 		{
             

@@ -23,7 +23,7 @@ public class Settings : MonoBehaviour {
 		
 		bool music = InstanceFinder.StatsManager.MusicEnabled;
 		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
-		string lang = InstanceFinder.StatsManager.language;
+		//string lang = InstanceFinder.StatsManager.language;
 		
 
 		if(music)
@@ -55,6 +55,7 @@ public class Settings : MonoBehaviour {
 	public void OnCreditsClicked()
 	{
 		//Debug.Log("Credits!");
+		menuMan.SwitchToMenu (MenuTypes.Credits);
 	}
 	
 	public void OnReturnClicked()

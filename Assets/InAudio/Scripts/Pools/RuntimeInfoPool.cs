@@ -1,6 +1,9 @@
 using InAudio;
+using InAudio.RuntimeHelperClass;
+using UnityEngine;
 
-public class RuntimeInfoPool : ObjectPool<RuntimeInfo>{
+[AddComponentMenu(FolderSettings.ComponentPathPrefabsManager + "Runtime Info Pool")]
+public class RuntimeInfoPool : InAudioObjectPool<RuntimeInfo>{
     public new RuntimeInfo GetObject()
     {
         if (freeObjects.Count == 0)

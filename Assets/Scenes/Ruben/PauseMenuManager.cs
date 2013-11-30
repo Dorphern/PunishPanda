@@ -166,8 +166,8 @@ public class PauseMenuManager : MonoBehaviour {
 		PauseTint.SetActive(true);
 		HintScreen.SetActive(true);
 		
-		hintAlphaComponent.Play();
-		tintAlphaComponent.Play();
+		hintAlphaComponent.PlayForward();
+		tintAlphaComponent.PlayForward();
 
 		float pauseEndTime = Time.realtimeSinceStartup + 3;
     	while (Time.realtimeSinceStartup < pauseEndTime)

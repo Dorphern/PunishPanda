@@ -2,7 +2,7 @@ using InAudio;
 using UnityEditor;
 using UnityEngine;
 
-public class AuxWindow : HDRBaseWindow
+public class AuxWindow : InAudioBaseWindow
 {
     private int selectedToolbar = 0;
     private readonly string[] toolbarOptions = {"Busses", "Banks", "Integrity", "Project Data"};
@@ -50,7 +50,7 @@ public class AuxWindow : HDRBaseWindow
     {
         if (Manager == null)
         {
-            Manager = HDRInstanceFinder.DataManager;
+            Manager = InAudioInstanceFinder.DataManager;
             if (Manager == null)
             {
                 ErrorDrawer.MissingAudioManager();
@@ -159,6 +159,15 @@ public class AuxWindow : HDRBaseWindow
         
     }
 
+    private bool AreAllMissing()
+    {
+        bool missingaudio = Manager.AudioTree == null;
+        bool missingaudioEvent = Manager.EventTree == null;
+        bool missingbus = Manager.BusTree == null;
+        bool missingbankLink = Manager.BankLinkTree == null;
+        return missingaudio && missingaudioEvent && missingbus && missingbankLink;
+    }
+
     private void DrawStartFromScratch()
     {
         EditorGUILayout.Space();
@@ -170,9 +179,9 @@ public class AuxWindow : HDRBaseWindow
 
         if (GUILayout.Button("Start over from scratch", GUILayout.Height(30)))
         {
-            if (EditorUtility.DisplayDialog("Create new project?", "This will delete ALL data!", "Start over from scratch", "Do nothing"))
+            if (AreAllMissing() || EditorUtility.DisplayDialog("Create new project?", "This will delete ALL data!", "Start over from scratch", "Do nothing"))
             {
-                SystemFolderHelper.DeleteFolderContent(FolderSettings.BankDeleteFolder);
+                SystemFolderHelper.DeleteFolderContent(FolderSettings.BankRelativeDictory);
 
                 int levelSize = 3;
                 GameObject audioGO = new GameObject();

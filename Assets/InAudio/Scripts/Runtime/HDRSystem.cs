@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using InAudio;
-//using UnityEditor;
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu(FolderSettings.ComponentPathPrefabsManager + "InAudio System")]
 public class HDRSystem : MonoBehaviour
 {
     /******************/
@@ -40,6 +40,22 @@ public class HDRSystem : MonoBehaviour
         if (bank != null)
             BankLoader.Unload(bank);
     }
+
+    public static void PostEvents(GameObject controllingObject, IList<AudioEvent> postEvent)
+    {
+        if (instance != null && controllingObject != null && postEvent != null)
+        {
+            int count = postEvent.Count;
+            for (int i = 0; i < count; i++)
+            {
+                AudioEvent audioEvent = postEvent[i];
+                if(audioEvent != null)
+                    instance.OnPostEvent(controllingObject, postEvent[i], controllingObject);    
+            }
+            
+        }
+    }
+
     #endregion
 
     #region Post Event By ID
@@ -77,14 +93,27 @@ public class HDRSystem : MonoBehaviour
 
     public static void LoadBank(int bankID)
     {
-        var bank = TreeWalker.FindById(HDRInstanceFinder.DataManager.BankLinkTree, bankID);
+        var bank = TreeWalker.FindById(InAudioInstanceFinder.DataManager.BankLinkTree, bankID);
         BankLoader.Load(bank);
     }
 
     public static void UnloadBank(int bankID)
     {
-        var bank = TreeWalker.FindById(HDRInstanceFinder.DataManager.BankLinkTree, bankID);
+        var bank = TreeWalker.FindById(InAudioInstanceFinder.DataManager.BankLinkTree, bankID);
         BankLoader.Unload(bank);
+    }
+    #endregion
+
+    #region Find Event by ID
+
+    public static AudioEvent FindEventByID(int id)
+    {
+        AudioEvent postEvent = null;
+        if (instance != null)
+        {
+            instance.runtimeData.Events.TryGetValue(id, out postEvent);
+        }
+        return postEvent;
     }
     #endregion
 
@@ -192,6 +221,7 @@ public class HDRSystem : MonoBehaviour
 
     private IEnumerator PostDelayedActions(GameObject controllingObject, AudioEventAction eventData, GameObject attachedToOther)
     {
+        Debug.Log("wait");
         yield return new WaitForSeconds(eventData.Delay);
         HandleEventAction(controllingObject, eventData, attachedToOther);
     }
@@ -260,24 +290,6 @@ public class HDRSystem : MonoBehaviour
 
     #region Internal data
 
-    void OnEnable()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            _runtimeEventWorker = GetComponentInChildren<RuntimeEventWorker>();
-            runtimeData = GetComponentInChildren<RuntimeAudioData>();
-            BankLoader.LoadAutoLoadedBanks();
-            runtimeData.UpdateEvents(HDRInstanceFinder.DataManager.EventTree);
-            AudioBusVolumeHelper.UpdateCombinedVolume(HDRInstanceFinder.DataManager.BusTree);
-            DontDestroyOnLoad(transform.parent.gameObject);
-        }
-        else
-        {
-            Object.Destroy(transform.parent.gameObject);
-        }
-    }
-
     private RuntimeEventWorker _runtimeEventWorker;
 
     private RuntimeAudioData runtimeData;
@@ -288,7 +300,7 @@ public class HDRSystem : MonoBehaviour
     //TODO Move this to another class
     private static void StopAllNodeInBus(AudioBus bus)
     {
-        var players = bus.GetRuntimePlayers();
+        var players = bus.RuntimePlayers;
         for (int i = 0; i < players.Count; i++)
         {
             players[i].Stop();
@@ -303,18 +315,38 @@ public class HDRSystem : MonoBehaviour
 
 
     #region Unity functions
-    void FixedUpdate()
+    void LateUpdate()
     {
-        AudioBusVolumeHelper.UpdateBusVolumes(HDRInstanceFinder.DataManager.BusTree);
+        AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);
     }
 
-    void Start()
+    void OnEnable()
     {
-        if (HDRInstanceFinder.DataManager != null && HDRInstanceFinder.DataManager.BusTree != null)
-            HDRInstanceFinder.DataManager.BusTree.Dirty = true;
+        if (instance == null)
+        {
+            instance = this;
+            _runtimeEventWorker = GetComponentInChildren<RuntimeEventWorker>();
+            runtimeData = GetComponentInChildren<RuntimeAudioData>();
+            BankLoader.LoadAutoLoadedBanks();
+            runtimeData.UpdateEvents(InAudioInstanceFinder.DataManager.EventTree);
+            //AudioBusVolumeHelper.UpdateCombinedVolume(InAudioInstanceFinder.DataManager.BusTree);
+            DontDestroyOnLoad(transform.parent.gameObject);
+
+            if (InAudioInstanceFinder.DataManager != null && InAudioInstanceFinder.DataManager.BusTree != null)
+            {
+                var busRoot = InAudioInstanceFinder.DataManager.BusTree;
+                busRoot.Dirty = true;
+                AudioBusVolumeHelper.InitVolumes(busRoot);
+                AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);
+            }
+        }
+        else
+        {
+            Object.Destroy(transform.parent.gameObject);
+        }
     }
+   
     #endregion
 
-
     #endregion
-}
+} 
