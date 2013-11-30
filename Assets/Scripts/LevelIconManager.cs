@@ -6,7 +6,7 @@ public class LevelIconManager : MonoBehaviour {
 	//Handler for the LEVELS SCREEN that checks how many
 	//stars should be shown on a Level Icon.
 	
-	public string LevelNumber;
+    public int LevelNumber;
 	public bool isLocked;
 	
 	public GameObject first;
@@ -26,17 +26,22 @@ public class LevelIconManager : MonoBehaviour {
 		firstSprite = first.GetComponent<UISprite>();
 		secondSprite = second.GetComponent<UISprite>();
 		thirdSprite = third.GetComponent<UISprite>();
-		
+
+	    string levelNumberString = LevelNumber.ToString();
 		Number = unlockedLabel.GetComponent<UILabel>();
-		Number.text = LevelNumber;
+        Number.text = levelNumberString;
 		Number = lockedLabel.GetComponent<UILabel>();
-		Number.text = LevelNumber;
-		
+        Number.text = levelNumberString;
+
+	    var levels = InstanceFinder.LevelManager.CurrentWorld.Levels;
+        if(levels.Count > LevelNumber - 1)
+	        isLocked = !levels[LevelNumber - 1].UnlockedLevel;
+        else
+            isLocked = true;
+		Debug.Log(isLocked);
+
 		if(isLocked == true)
 			LockLevel ();
-		
-
-		
 
 	}
 	
