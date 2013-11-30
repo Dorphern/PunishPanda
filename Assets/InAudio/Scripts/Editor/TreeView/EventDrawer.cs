@@ -41,11 +41,9 @@ namespace InAudio.TreeDrawer
                     folded = !folded;
                     Event.current.Use();
                 }
-
-                if (!node.IsRoot)
-                {
-                    TreeNodeDrawerHelper.DrawIcon(GUILayoutUtility.GetLastRect(), EditorResources.Folder, noMargain);
-                }
+          
+                TreeNodeDrawerHelper.DrawIcon(GUILayoutUtility.GetLastRect(), EditorResources.Folder, noMargain);
+                
                 EditorGUILayout.LabelField("");
             }
 
@@ -94,11 +92,12 @@ namespace InAudio.TreeDrawer
                         Event.current.Use();
                     }
                 }
+                labelArea.x += 25;
 
             }
             if (node.Type != EventNodeType.Event)//As Events are smaller
                 labelArea.y += 6;
-            labelArea.x += 90;
+            labelArea.x += 65;
             EditorGUI.LabelField(labelArea, node.Name);
 
             return folded;

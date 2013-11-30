@@ -1,16 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace InAudio.HDREditorGUI
+namespace InAudio.InAudioEditorGUI
 {
 public static class SequenceDataDrawer
 {
     public static void Draw(AudioNode node)
     {
-        UndoHandler.CheckUndo(new UnityEngine.Object[] {node, node.NodeData});
-        node.Name = EditorGUILayout.TextField("Name", node.Name);
+        UndoHelper.GUIUndo(node, "Name Change", ref node.Name, () =>
+            EditorGUILayout.TextField("Name", node.Name));
         NodeTypeDataDrawer.Draw(node);
-        UndoHandler.CheckGUIChange();
     }
 }
 }

@@ -31,6 +31,10 @@ public abstract class TrapBase : MonoBehaviour {
     [SerializeField] protected Texture cleanTexture;
     [SerializeField] protected Texture dirtyTexture;
 
+    public delegate void TrapActivationToggle(TrapBase trap);
+    public TrapActivationToggle OnTrapActivate;
+    public TrapActivationToggle OnTrapDeactivate;
+
     protected int pandaKillCount = 0;
     protected bool dirty = false;
 
@@ -48,11 +52,15 @@ public abstract class TrapBase : MonoBehaviour {
     virtual public void ActivateTrap ()
     {
         collider.enabled = true;
+        if (OnTrapActivate != null)
+            OnTrapActivate(this);
     }
 
     virtual public void DeactivateTrap ()
     {
         collider.enabled = false;
+        if (OnTrapDeactivate != null)
+            OnTrapDeactivate(this);
     }
 
     virtual public void SetDirty ()
@@ -138,7 +146,7 @@ public abstract class TrapBase : MonoBehaviour {
 
 	void AddStatistics()
 	{
-		TrapType tt = GetTrapType();
+		//TrapType tt = GetTrapType();
 		if(InstanceFinder.StatsManager!=null)
 		{
 			switch(GetTrapType())
