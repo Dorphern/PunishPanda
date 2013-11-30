@@ -9,20 +9,28 @@ public class WinScreen : MonoBehaviour {
 	public GameObject winScreen;
 	public GameObject NewHighScoreTexture;
 	public UITexture funFactsTexture;
-	public UISprite oneStarTexture;
-	public UISprite twoStarTexture;
-	public UISprite threeStarTexture;
+	public GameObject oneStarTexture;
+	public GameObject twoStarTexture;
+	public GameObject threeStarTexture;
 	public UILabel  FunFactsLabel;
 	public UILabel  scoreLabel;
 	public UILabel  ScoreTypeLabel;
     public UILabel  newHighScoreLabel;
 	public UILabel  TotalScoreLabel;
-	public UIRunTween ZoomInTween;
-	public UIRunTween ZoomOutTween;
+	public UIRunTween ZoomInScoreTypeTween;
+	public UIRunTween ZoomOutScoreTypeTween;
+	public UIRunTween ZoomInScoreTween;
 	public UIRunTween ZoomOutScoreTween;
+	public TweenAlpha tweenAlphaOneStarBackground;
+	public TweenAlpha tweenAlphaTwoStarBackground;
+	public TweenAlpha tweenAlphaThreeStarBackground;
 	
 	public AnimationCurve ScoreCurve;
 	public float scoreCurveDuration;
+	public float timeBeforeWinScreen = 2.0f;
+	public float timeBeforeScoreAnimation = 1f;
+	
+	public float timesteps = 2f;
 	
 	int oneStarScore, twoStarScore, threeStarScore;
 	
@@ -57,8 +65,9 @@ public class WinScreen : MonoBehaviour {
 			
 	private IEnumerator WaitWinScreen()
 	{
-		yield return new WaitForSeconds(2.0f);
+		yield return new WaitForSeconds(timeBeforeWinScreen);
         SetWinScreenData();
+		if(InputHandler.instance!=null) InputHandler.instance.PausedGame();
 		winScreen.SetActive(true);
 
         InstanceFinder.StatsManager.Save();
@@ -149,19 +158,22 @@ public class WinScreen : MonoBehaviour {
 		intermediateTotal = pointSystem.PerKill;
 		
 		
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(timeBeforeScoreAnimation);
 		for(int i=0; i< normalKills; i++)
 		{
 			
 			//score increment loop
-			ZoomInTween.RunTween();
-			yield return new WaitForSeconds(0.2f);
+			ZoomInScoreTypeTween.RunTween();
+			ZoomInScoreTween.RunTween();
+			//yield return new WaitForSeconds(timesteps);
 			startTime = Time.realtimeSinceStartup;
 			timeElapsed = Time.realtimeSinceStartup - startTime;
 			
+			
+			scoreLabel.text = (intermediateTotal).ToString("N0");
 			while(timeElapsed < scoreCurveDuration)
 			{
-				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
+				//scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				int val =   Convert.ToInt32 (  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 				TotalScoreLabel.text = (val).ToString("N0");
 				//PlayStarAnimations(val);
@@ -173,8 +185,9 @@ public class WinScreen : MonoBehaviour {
 			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 			total += intermediateTotal;
 			
-			ZoomOutTween.RunTween();
-			yield return new WaitForSeconds(0.5f);
+			ZoomOutScoreTypeTween.RunTween();
+			ZoomOutScoreTween.RunTween();
+			yield return new WaitForSeconds(timesteps);
 			
 		}
 		
@@ -184,14 +197,15 @@ public class WinScreen : MonoBehaviour {
 		for(int i=0; i< perfectKills; i++)
 		{
 			//score increment loop
-			ZoomInTween.RunTween();
-			yield return new WaitForSeconds(0.2f);		
+			ZoomInScoreTypeTween.RunTween();
+			ZoomInScoreTween.RunTween();
+			//yield return new WaitForSeconds(timesteps);		
 			startTime = Time.realtimeSinceStartup;
 			timeElapsed = Time.realtimeSinceStartup - startTime;
-			
+			scoreLabel.text = (intermediateTotal).ToString("N0");
 			while(timeElapsed < scoreCurveDuration)
 			{
-				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
+				//scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				int val =  Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 				TotalScoreLabel.text = (val).ToString("N0");
 				//PlayStarAnimations(val);
@@ -201,8 +215,9 @@ public class WinScreen : MonoBehaviour {
 			scoreLabel.text = ((intermediateTotal)).ToString("N0");
 			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 			total += intermediateTotal;
-			ZoomOutTween.RunTween();
-			yield return new WaitForSeconds(0.5f);
+			ZoomOutScoreTypeTween.RunTween();
+			ZoomOutScoreTween.RunTween();
+			yield return new WaitForSeconds(timesteps);
 			
 		}
 		
@@ -216,14 +231,15 @@ public class WinScreen : MonoBehaviour {
 				ScoreTypeLabel.text = ck.ComboCount + Localization.Localize("Combo");
 				intermediateTotal = pointSystem.Combo * ck.ComboCount;
 				
-				ZoomInTween.RunTween();
-				yield return new WaitForSeconds(0.2f);				
+				ZoomInScoreTypeTween.RunTween();
+				ZoomInScoreTween.RunTween();
+				//yield return new WaitForSeconds(timesteps);				
 				startTime = Time.realtimeSinceStartup;
 				timeElapsed = Time.realtimeSinceStartup - startTime;
-				
+				scoreLabel.text = (intermediateTotal).ToString("N0");
 				while(timeElapsed <= scoreCurveDuration)
 				{
-					scoreLabel.text = (( Mathf.Clamp(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration),0f,1f)*intermediateTotal)).ToString("N0");
+				//	scoreLabel.text = (( Mathf.Clamp(ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration),0f,1f)*intermediateTotal)).ToString("N0");
 					int val =  Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 					TotalScoreLabel.text = (val).ToString("N0");
 					//PlayStarAnimations(val);
@@ -233,8 +249,9 @@ public class WinScreen : MonoBehaviour {
 				scoreLabel.text = ((intermediateTotal)).ToString("N0");
 				TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
 				total += intermediateTotal;
-				ZoomOutTween.RunTween();
-				yield return new WaitForSeconds(0.5f);
+				ZoomOutScoreTypeTween.RunTween();
+				ZoomOutScoreTween.RunTween();
+				yield return new WaitForSeconds(timesteps);
 			}
 		}
 		
@@ -247,14 +264,15 @@ public class WinScreen : MonoBehaviour {
 		startTime = Time.realtimeSinceStartup;
 		timeElapsed = Time.realtimeSinceStartup - startTime;
 		
-		ZoomInTween.RunTween();
-		yield return new WaitForSeconds(0.2f);
+		ZoomInScoreTypeTween.RunTween();
+		ZoomInScoreTween.RunTween();
+		//yield return new WaitForSeconds(timesteps);
 		if(timeScore!=0)
 		{
-			
+			scoreLabel.text = (intermediateTotal).ToString("N0");
 			while(timeElapsed < scoreCurveDuration)
 			{
-				scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
+				//scoreLabel.text = (( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal)).ToString("N0");
 				int val = Convert.ToInt32(  total + ( ScoreCurve.Evaluate(timeElapsed/scoreCurveDuration)*intermediateTotal));
 				TotalScoreLabel.text = (val).ToString();
 				//PlayStarAnimations(val);
@@ -269,11 +287,10 @@ public class WinScreen : MonoBehaviour {
 			scoreLabel.text = (0).ToString();
 		}
 		
-		yield return new WaitForSeconds(0.5f);
-		ZoomOutTween.RunTween();
-        //TODO FIX THIS
-		//ZoomOutScoreTween.RunTween();
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(timesteps);
+		ZoomOutScoreTypeTween.RunTween();
+		ZoomOutScoreTween.RunTween();
+		yield return new WaitForSeconds(timesteps);
 		
 		total += intermediateTotal;
 		
@@ -284,34 +301,42 @@ public class WinScreen : MonoBehaviour {
 		{
 			if(score>=oneStarScore)
 			{
-				oneStarTexture.gameObject.SetActive(true);
+				oneStarTexture.SetActive(true);
+				tweenAlphaOneStarBackground.enabled = true;
 				
 			}
 			
 			if(score>=twoStarScore)
 			{
 				yield return new WaitForSeconds(0.8f);
-				twoStarTexture.gameObject.SetActive(true);
+				tweenAlphaTwoStarBackground.enabled = true;
+				twoStarTexture.SetActive(true);
 				
 			}
 			
 			if(score>=threeStarScore)
 			{
 				yield return new WaitForSeconds(1f);
-				threeStarTexture.gameObject.SetActive(true);
+				tweenAlphaThreeStarBackground.enabled = true;
+				threeStarTexture.SetActive(true);
 				
 			}
 			
 		}
 		
+		yield return new WaitForSeconds(1f);
+		
 		// if new highscore reached
 		if(highscore < score)
 		{
+			//localization of stamps
+			InstanceFinder.LevelManager.CurrentLevel.HighScore = score;
 			NewHighScoreTexture.SetActive(true);
 		}
 		else
 		{
-			//newHighScoreLabel.text = "Highscore: " + highscore;
+			string str = Localization.instance.Get("Highscore");
+			newHighScoreLabel.text = str + ": " + highscore;
 			newHighScoreLabel.gameObject.SetActive(true);
 		}
 			
