@@ -29,16 +29,8 @@ public class PandaEscape : TrapBase
     # region Private Methods
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+        pandaAI.PandaEscape(this, position);
         return false;
-    }
-
-    override protected void OnTriggerEnter (Collider collision)
-    {
-        if (collision.gameObject.layer == 8)
-        {
-            InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
-
-        }
     }
     # endregion
 }

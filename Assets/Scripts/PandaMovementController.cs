@@ -122,26 +122,6 @@ public class PandaMovementController : MonoBehaviour {
         return controller.isGrounded;
     }
 
-    public void PandaEscapeJump (Collider c, CollidableTypes bambooDirection)
-    {
-       escape.bambooDirection = bambooDirection;
-       escape.bambooPosition = c.transform;
-       StartCoroutine(JumpToBamboo(0.7f, 0.3f, escape.bambooPosition, bambooDirection));
-       escape.targetJumpPos = new Vector3(escape.bambooPosition.position.x + 0.3f, transform.position.y + 1f, -1f);
-        
-    }
-    
-    public void PandaEscapeAway ()
-    {
-        /*
-        Debug.Log(escape.bambooDirection);
-        if (escape.bambooDirection == CollidableTypes.BambooEscapeDown)
-            escape.pandaEscapedSlide = true;
-        else
-            escape.pandaEscapeCrawl = true;
-         */
-    }
-
     public void SetDirection (PandaDirection dir)
     {
         Vector3 curr = transform.eulerAngles;
@@ -197,44 +177,6 @@ public class PandaMovementController : MonoBehaviour {
 
         // Store the last position of the character;
         lastPos = transform.position;
-
-
-                if (escape.pandaEscapedSlide)
-        {
-            escape.pandaJumpToBambooDown = false;
-         //   transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x + 0.3f, transform.position.y - 0.3f, -1), ref escape.yVelocity, escape.smoothTime, 2f, Time.deltaTime);
-        }
-        else if(escape.pandaEscapeCrawl)
-        {
-            escape.pandaJumpToBambooUp = false;
-           // transform.position = Vector3.SmoothDamp(transform.position, new Vector3(transform.position.x - 0.4f, transform.position.y + 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
-        }
-
-        if (escape.pandaJumpToBambooDown)
-        {
-            if (pandaStateManager.GetDirection() == PandaDirection.Left)
-            {                
-                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y, -1f), 10f * Time.deltaTime);
-            }                
-            else                
-            {
-                //transform.position = Vector3.Lerp(transform.position, escape.targetJumpPos, 5f * Time.deltaTime);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y, -0.5f), 10f * Time.deltaTime);
-                //transform.position = Vector3.SmoothDamp(transform.position, new Vector3(escape.bambooPosition.position.x - 0.3f, escape.bambooPosition.position.y - 0.3f, -1f), ref escape.yVelocity, escape.smoothTime, 3f, Time.deltaTime);
-            }
-        }
-        if (escape.pandaJumpToBambooUp)
-        {
-            if (pandaStateManager.GetDirection() == PandaDirection.Left)
-            {
-               // transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y + 0.3f, -1f), 8f * Time.deltaTime);
-            }  
-            else
-            {
-                //transform.position = Vector3.Lerp(transform.position, new Vector3(escape.bambooPosition.position.x, transform.position.y + 0.3f, -1f), 5f * Time.deltaTime);
-            }
-
-        }
 	}
 
     void Update ()
@@ -385,30 +327,6 @@ public class PandaMovementController : MonoBehaviour {
 		movement.currentSpeed = boosting.boostSpeed;
     }
 
-    private IEnumerator JumpToBamboo(float timeToWaitUp, float timeToWaitDown, Transform c, CollidableTypes bambooDirection)
-    {
-
-        float timeToWait = 0f;
-        yield return new WaitForSeconds(timeToWait);
-        /*
-        if (CollidableTypes.BambooEscapeDown == bambooDirection)
-            timeToWait = timeToWaitDown;
-        else
-            timeToWait = timeToWaitUp;
-
-        yield return new WaitForSeconds(timeToWait);
-
-        if (CollidableTypes.BambooEscapeDown == bambooDirection)
-        {
-            escape.pandaJumpToBambooDown = true;
-        }
-        else
-        {
-            escape.pandaJumpToBambooUp = true;
-        }
-            
-        */
-    }
     # endregion
 
 }
