@@ -25,6 +25,7 @@ public class BloodSplatter : MonoBehaviour {
 	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
 	public bool mainMenuSlap = false;
 	public bool levelHasPlatforms = true;
+	public float platformsLevelScale = 1f;
 	
 	public int maxSpaltCount = 100;
 	
@@ -110,8 +111,8 @@ public class BloodSplatter : MonoBehaviour {
 	{
 		if(levelHasPlatforms)
 		{
-			slapMaxScale = 2f;
-			slapMinScale = 2f;
+			slapMaxScale = platformsLevelScale;
+			slapMinScale = platformsLevelScale;
 		}
 		
 			// Instantiate the prefab and get its decals instance.
@@ -228,24 +229,37 @@ public class BloodSplatter : MonoBehaviour {
 		
 		float scale = Random.Range(slapMinScale, slapMaxScale);
 		// First 4 slaps will be huge
-		if(slapCount < 5f)
+		if(levelHasPlatforms == false)
 		{
-			scale = slapMaxScale;	
+			if(slapCount < 5f)
+			{
+				scale = slapMaxScale;	
+			}
 		}
 		
 		float angleToFloor = Mathf.Abs(angle - 90f);
 		if(angleToFloor < 60f && angleToFloor > 30f)
 		{
-			if(scale > 1.4f)
+			if(levelHasPlatforms)
 			{
-				scale = 1.4f;
+				if(scale > 0.65f * slapMaxScale)
+					scale = 0.65f * slapMaxScale;
+			}
+			else
+			{
+				if(scale > 0.3f * slapMaxScale)
+					scale = 0.3f * slapMaxScale;
 			}
 		}
 		
 		if(angleToFloor < 30f || floorHit)
 		{
-			scale = 3f;	
+			if(levelHasPlatforms)
+				scale = slapMaxScale * 0.86f;	
+			else
+				scale = slapMaxScale * 0.56f;	
 		}
+		
 		
 		if(floorHit == false)
 		{
@@ -287,9 +301,9 @@ public class BloodSplatter : MonoBehaviour {
 			
 			float angleToFloor = Mathf.Abs(angle - 90f);
 			if(angleToFloor < 30f)
-				decalProjectorOffset = scale * 0.8f;
+				decalProjectorOffset = scale * 0.75f;
 			else
-				decalProjectorOffset = scale * 0.6f;
+				decalProjectorOffset = scale * 0.5f;
 				
 			Vector3 projectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
