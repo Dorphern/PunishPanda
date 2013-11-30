@@ -29,7 +29,6 @@ public class RuntimeEventWorker : MonoBehaviour
             return;
 
         var poolObject = audioGOPool.GetObject();
-        Debug.Log(poolObject.name);
         poolObject.transform.position = position; 
         Play(controllingObject, audioNode, poolObject);
     }
@@ -69,13 +68,15 @@ public class RuntimeEventWorker : MonoBehaviour
     {
         List<RuntimeInfo> valueTupleList;
         GOAudioNodes.TryGetValue(controllingObject, out valueTupleList);
+        
         if (valueTupleList != null)
         {
+            
             for (int i = 0; i < valueTupleList.Count; ++i)
             {
                 if (valueTupleList[i].Node == nodeToStop)
                 {
-                    valueTupleList.SwapRemoveAt(i);
+                    valueTupleList[i].Player.Stop();
                 }
             }
         } 
@@ -174,4 +175,3 @@ public class RuntimeEventWorker : MonoBehaviour
         }
     }
 }
-

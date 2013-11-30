@@ -1,5 +1,7 @@
+#if UNITY_4_1 || UNITY_4_2
 using System.Linq;
 using InAudio;
+using InAudio.InAudioEditorGUI;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +16,7 @@ public class EventHookDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
     {
-        float extraHeight = prop.arraySize*LineHeight + DragHeight + 25;
+        float extraHeight = prop.arraySize*LineHeight + DragHeight + 25; 
         return base.GetPropertyHeight(prop, label) + extraHeight;
     }
 
@@ -22,9 +24,10 @@ public class EventHookDrawer : PropertyDrawer
     {
         var labelPos = pos;
         Color backgroundColor = GUI.color;
-
+ 
         GUI.skin.label.alignment = TextAnchor.UpperLeft;
         var labelStyle = GUI.skin.GetStyle("label");
+        
         //int fontSize = labelStyle.fontSize;
         if(eventTypeStyle == null)
             eventTypeStyle = new GUIStyle(GUI.skin.GetStyle("label"));
@@ -38,9 +41,8 @@ public class EventHookDrawer : PropertyDrawer
         GUI.Label(labelPos, EventAttribute.EventType, eventTypeStyle);
         //if (EventAttribute.FoldedOut)
         {
-
             GUI.skin.label.alignment = TextAnchor.MiddleLeft;
-            for (int i = 0; i < prop.arraySize; ++i)
+            for (int i = prop.arraySize - 1; i >= 0; --i)
             {
                 labelPos.y += LineHeight;
                 labelPos.height = 20;
@@ -65,7 +67,7 @@ public class EventHookDrawer : PropertyDrawer
                 buttonPos.width = 35;
                 if (GUI.Button(buttonPos, "X"))
                 {
-                    DeleteAtIndex(prop, i);
+                    DrawerHelper.DeleteAtIndex(prop, i);
 
                 }
             }
@@ -76,7 +78,7 @@ public class EventHookDrawer : PropertyDrawer
             GUI.Button(labelPos, "Drag event here to add " + EventAttribute.EventType + " event");
             if (labelPos.Contains(Event.current.mousePosition))
             {
-                HandleDrag(prop);
+                DrawerHelper.HandleDrag(prop);
             }
 
             GUI.color = backgroundColor;
@@ -86,49 +88,96 @@ public class EventHookDrawer : PropertyDrawer
         //GUI.Label(labelPos, "Drag event here to add");
 
     }
+}
+#else
 
-    private void DeleteAtIndex(SerializedProperty prop, int index)
+using InAudio.InAudioEditorGUI;
+using UnityEditor;
+using UnityEngine;
+
+
+[CustomPropertyDrawer(typeof(EventHookAttribute))]
+public class EventHookDrawer : PropertyDrawer
+{
+    EventHookAttribute EventAttribute { get { return ((EventHookAttribute)attribute); } }
+
+    private float LineHeight = 22;
+    private float DragHeight = 20;
+    private GUIStyle eventTypeStyle;
+
+    public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
     {
-        int arraySize = prop.arraySize;
-        prop.DeleteArrayElementAtIndex(index);
-        for (int i = index; i < arraySize - 1; ++i)
-        {
-            prop.GetArrayElementAtIndex(i).objectReferenceValue = prop.GetArrayElementAtIndex(i + 1).objectReferenceValue;
-        }
-        prop.arraySize--;
+        SerializedProperty array = prop.FindPropertyRelative("Events"); 
+        float extraHeight = array.arraySize * 20 + 20 + 25;
+        return base.GetPropertyHeight(prop, label) + extraHeight;
     }
-    private void HandleDrag(SerializedProperty prop)
+
+    public override void OnGUI(Rect pos, SerializedProperty prop, GUIContent label)
     {
-        if (Event.current.type == EventType.DragUpdated || Event.current.type == EventType.DragPerform)
+        var labelPos = pos;
+        Color backgroundColor = GUI.color;
+
+        GUI.skin.label.alignment = TextAnchor.UpperLeft;
+        var labelStyle = GUI.skin.GetStyle("label");
+
+        if (eventTypeStyle == null)
+            eventTypeStyle = new GUIStyle(GUI.skin.GetStyle("label"));
+
+        SerializedProperty array = prop.FindPropertyRelative("Events");
+
+        labelPos.height = 14;
+        eventTypeStyle.fontStyle = FontStyle.Bold;
+        //labelPos.x += 13;
+        GUI.Label(labelPos, EventAttribute.EventType, eventTypeStyle);
+        //if (EventAttribute.FoldedOut)
         {
-            bool canDropObject = true;
-            int clipCount = DragAndDrop.objectReferences.Count(obj =>
+            labelPos.y -= 5; 
+            GUI.skin.label.alignment = TextAnchor.MiddleLeft;
+            for (int i = 0; i < array.arraySize; ++i)
             {
-                var audioEvent = obj as AudioEvent;
+                labelPos.y += LineHeight;
+                labelPos.height = 20;
+                AudioEvent audioEvent = array.GetArrayElementAtIndex(i).objectReferenceValue as AudioEvent;
+                if (audioEvent != null)
+                    GUI.Label(labelPos, audioEvent.GetName, labelStyle);
+                else
+                    GUI.Label(labelPos, "Missing event", labelStyle);
+
+                Rect buttonPos = labelPos;
+                buttonPos.x = pos.width - 100; //Align to right side
+                buttonPos.width = 50;
                 if (audioEvent == null)
-                    return false;
-                return audioEvent.Type == EventNodeType.Event;
-            });
+                    GUI.enabled = false;
 
-            if (clipCount != DragAndDrop.objectReferences.Length || clipCount == 0)
-                canDropObject = false;
+                if (GUI.Button(buttonPos, "Find"))
+                {
+                    EditorWindow.GetWindow<EventWindow>().Find(audioEvent);
+                }
+                GUI.enabled = true;
+                buttonPos.x = pos.width - 44;
+                buttonPos.width = 35;
+                if (GUI.Button(buttonPos, "X"))
+                {
+                    DrawerHelper.DeleteAtIndex(array, i);
 
-            if (canDropObject)
-            {
-                    DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
-
-                    if (Event.current.type == EventType.DragPerform)
-                    {
-                        int arraySize = prop.arraySize;
-                        prop.arraySize++;
-
-                        prop.GetArrayElementAtIndex(arraySize - 1).objectReferenceValue = DragAndDrop.objectReferences[0];
-                    }
+                }
             }
-            else
+            labelPos.y += DragHeight + 4;
+            labelPos.height = DragHeight;
+            GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+            GUI.color = backgroundColor;
+            GUI.Button(labelPos, "Drag event here to add " + EventAttribute.EventType + " event");
+            if (labelPos.Contains(Event.current.mousePosition))
             {
-                DragAndDrop.visualMode = DragAndDropVisualMode.None;
+                DrawerHelper.HandleDrag(array);
             }
+
+            GUI.color = backgroundColor;
+
+            labelPos.height += 1;
         }
     }
 }
+
+#endif
+//*/

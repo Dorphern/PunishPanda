@@ -40,11 +40,10 @@ namespace InAudio.TreeDrawer
             }
             Texture icon = TreeNodeDrawerHelper.LookUpIcon(node);
 
-            if (!node.IsRoot)
-            {
-                TreeNodeDrawerHelper.DrawIcon(GUILayoutUtility.GetLastRect(), icon, noMargain);
-                EditorGUILayout.LabelField("");
-            }
+         
+            TreeNodeDrawerHelper.DrawIcon(GUILayoutUtility.GetLastRect(), icon, noMargain);
+            EditorGUILayout.LabelField("");
+            
 
             EditorGUILayout.EndHorizontal();
             Rect labelArea = GUILayoutUtility.GetLastRect();
@@ -67,9 +66,10 @@ namespace InAudio.TreeDrawer
                     NodeWorker.MoveNodeOneDown(node);
                     Event.current.Use();
                 }
+                labelArea.x += 20;
             }
             labelArea.y += 6;
-            labelArea.x += 85;
+            labelArea.x += 65;
             EditorGUI.LabelField(labelArea, node.GetName);
 
             return folded;
@@ -95,7 +95,7 @@ namespace InAudio.TreeDrawer
                 AudioNode audioNode = node as AudioNode;
                 if (audioNode.Type == AudioNodeType.Audio)
                     return EditorResources.Audio;
-                if (audioNode.Type == AudioNodeType.Folder)
+                if (audioNode.Type == AudioNodeType.Folder || audioNode.IsRoot)
                     return EditorResources.Folder;
                 if (audioNode.Type == AudioNodeType.Random)
                     return EditorResources.Dice;

@@ -6,6 +6,9 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+namespace InAudio 
+{
+
 public static class NodeWorker  {
     public static bool IsChildOf<T>(T node, T potentialChild) where T : Object, ITreeNode<T>
     {
@@ -35,6 +38,18 @@ public static class NodeWorker  {
     public static void RemoveFromParent<T>(T node) where T : Object, ITreeNode<T>
     {
         node.GetParent.GetChildren.Remove(node);
+    }
+
+    public static void RemoveNullChildren<T>(T node) where T : Object, ITreeNode<T>
+    {
+        var children = node.GetChildren;
+        for (int i = 0; i < children.Count; ++i)
+        {
+            if (children[i] == null)
+            {
+                children.RemoveAt(i);
+            }
+        }
     }
 
     //public static void AssignParent<T>(T node, T newParent) where T : Object, ITreeNode<T>
@@ -75,12 +90,12 @@ public static class NodeWorker  {
         {
             if (node is AudioNode) //Forgot why audio node requires special case
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
+                UndoHelper.RecordObject(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
                     "Undo Reorder Of " + node.GetName);
             }
             else
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
+                UndoHelper.RecordObject(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
             }
         }
         var children = node.GetParent.GetChildren;
@@ -107,12 +122,12 @@ public static class NodeWorker  {
         {
             if (node is AudioNode)
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
+                UndoHelper.RecordObject(new Object[] {node.GetParent, (node.GetParent as AudioNode).NodeData},
                     "Undo Reorder Of " + node.GetName);
             }
             else
             {
-                UndoHelper.RecordObjects(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
+                UndoHelper.RecordObject(new Object[] {node.GetParent}, "Undo Reorder Of " + node.GetName);
             }
         }
 
@@ -184,4 +199,5 @@ public static class NodeWorker  {
             FindAllNodes(node.GetChildren[i], condition, foundNodes);
         }
     }
+}
 }

@@ -43,27 +43,25 @@ namespace InAudio.Runtime
 
         public double Lerp(double currentTime)
         {
-            double t = (currentTime - EndTime) / Duration;
-            if (t < 0)
-                t = -t;
+            double t = 1-(EndTime - currentTime)/Duration;
             if (FadeCurveType == FadeCurveType.Lerp)
             {
                 if (t < 0.0f)
                     return StartValue;
                 else if (t > 1.0f)
                     return EndValue;
-                return (StartValue - EndValue)*t + EndValue;
+
+                return (StartValue + t*(EndValue - StartValue));
             }
             else
             {   
-                if (t < 0.0f)
+                if (t < 0.0f) 
                     return StartValue;
                 else if (t > 1.0f)
                     return EndValue;
 
                 float ft = Mathf.SmoothStep(0.0f, 1.0f, (float)t);
-                return (StartValue - EndValue) * Mathf.SmoothStep(0.0f, 1.0f, ft) + EndValue;
-                
+                return (StartValue + ft * (EndValue - StartValue));               
             }
         }
         

@@ -10,7 +10,13 @@ namespace  InAudio
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Fix it"))
             {
-                var go = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath(FolderSettings.AudioManagerPath, typeof(GameObject)) as GameObject);
+                var go = AssetDatabase.LoadAssetAtPath(FolderSettings.AudioManagerPath, typeof (GameObject)) as GameObject;
+                if (go != null)
+                    PrefabUtility.InstantiatePrefab(go);
+                else
+                {
+                    Debug.LogError("The audio manager could not be found in the project.\nEither try and find it manually or reimport InAudio from the Asset Store");
+                }
             }
             EditorGUILayout.Separator();
             if (GUILayout.Button("Find Audio Manager Prefab")) 
