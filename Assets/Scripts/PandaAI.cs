@@ -289,7 +289,7 @@ public class PandaAI : MonoBehaviour {
             }
             else
             {
-                newPos.x -= 1.3f;
+                newPos.x -= 1.4f;
             }
         }
         transform.position = newPos;
