@@ -25,13 +25,32 @@ public class UISwipeControl : MonoBehaviour
 
     public UILabel Label;
 
+    private string XofYString;
+
     /// <summary>
     /// Game object that the draggable panel is currently centered on.
     /// </summary>
 
     public GameObject centeredObject { get { return mCenteredObject; } }
 
-    void OnEnable() { Recenter(); }
+    void OnEnable()
+    {
+        XofYString = " " + Localization.instance.Get("Of") + " ";
+        if (transform.childCount > 0)
+        {
+            Recenter(transform.GetChild(0));
+            Label.text = 1 + XofYString + transform.childCount;
+        }
+        else
+        {
+            Recenter();
+        }
+    }
+
+    void Start()
+    {
+        Label.text = (startClosetsChildIndex + 1) + XofYString + transform.childCount;
+    }
 
     void OnDragFinished()
     {
@@ -57,11 +76,13 @@ public class UISwipeControl : MonoBehaviour
 
     public float SwipeMinimum;
 
+
+
     /// <summary>
     /// Recenter the draggable list on the center-most child.
     /// </summary>
 
-    public void Recenter(bool buttonNext = false)
+    public void Recenter(Transform target = null, bool buttonNext = false)
     {
         if (mDrag == null)
         {
@@ -102,37 +123,40 @@ public class UISwipeControl : MonoBehaviour
         mDrag.currentMomentum = Vector3.zero;
 
         float min = float.MaxValue;
-        Transform target = null;
 
         if (!buttonNext)
         {
+            if(target == null)
+            { 
             //Debug.Log(touchEndPos + " " + touchStartPos);
-            if (Vector2.Distance(touchEndPos, touchStartPos) >= SwipeMinimum)
-            {
-                
-                if (touchStartPos.x < touchEndPos.x) //Move left
+                if (Vector2.Distance(touchEndPos, touchStartPos) >= SwipeMinimum)
                 {
-                    if (startClosetsChildIndex == 0) //We are at the left end of the panel, target ourself
-                    {
-                        target = startClosetsChild;
-                    }
-                    else //Else Move one to the left
-                    {
-                        startClosetsChildIndex -= 1;
-                        target = transform.GetChild(startClosetsChildIndex);
-                    }
-                }
-                else if (touchStartPos.x >= touchEndPos.x) //Move left
-                {
-                    if (startClosetsChildIndex == transform.childCount - 1) //We are at the right end of the panel, target ourself
-                    {
-                        target = startClosetsChild;
-                    }
-                    else //Else Move one to the left
-                    {
-                        startClosetsChildIndex += 1;
-                        target = transform.GetChild(startClosetsChildIndex);
 
+                    if (touchStartPos.x < touchEndPos.x) //Move left
+                    {
+                        if (startClosetsChildIndex == 0) //We are at the left end of the panel, target ourself
+                        {
+                            target = startClosetsChild;
+                        }
+                        else //Else Move one to the left
+                        {
+                            startClosetsChildIndex -= 1;
+                            target = transform.GetChild(startClosetsChildIndex);
+                        }
+                    }
+                    else if (touchStartPos.x >= touchEndPos.x) //Move left
+                    {
+                        if (startClosetsChildIndex == transform.childCount - 1)
+                            //We are at the right end of the panel, target ourself
+                        {
+                            target = startClosetsChild;
+                        }
+                        else //Else Move one to the left
+                        {
+                            startClosetsChildIndex += 1;
+                            target = transform.GetChild(startClosetsChildIndex);
+
+                        }
                     }
                 }
             }
@@ -150,8 +174,7 @@ public class UISwipeControl : MonoBehaviour
 
             }
         }
- 
-        //Debug.Log(touchEndPos + " " + touchStartPos);
+
         if (target != null)
         {
             int index;
@@ -160,15 +183,15 @@ public class UISwipeControl : MonoBehaviour
 
             if (Label != null)
             {
-                Label.text = (startClosetsChildIndex + 1) + " of " + transform.childCount;
+                Label.text = (startClosetsChildIndex + 1) + XofYString + transform.childCount;
             }
         }
-        //else
-        //{
-        //    int index;
-        //    target = ClosetsChild(target, offsetCenter, min, out index);
-        //}
 
+        if (target == null)
+        {
+            if(mCenteredObject != null)
+                target = mCenteredObject.transform;
+        }
 
         if (target != null)
         {
@@ -212,7 +235,7 @@ public class UISwipeControl : MonoBehaviour
 
     public void GoToNext()
     {
-        Recenter(true);
+        Recenter(null, true);
     }
 
     private void OnDragStarted()
