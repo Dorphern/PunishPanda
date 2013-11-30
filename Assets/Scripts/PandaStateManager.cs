@@ -67,10 +67,9 @@ public class PandaStateManager : MonoBehaviour {
     // Change the state of the panda
     public void ChangeState (PandaState state)
     {
-		// Debug
-		//this.GetComponentInChildren<TextMesh>().text = state.ToString();
-		
-        if (state == currentState)
+        if (state == currentState
+            || currentState == PandaState.Died
+            || currentState == PandaState.Escape)
         {
             return;
         }
