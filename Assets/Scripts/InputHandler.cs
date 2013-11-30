@@ -175,11 +175,17 @@ public class InputHandler : MonoBehaviour {
 			Vector3 mouseDelta = (relativCurrPos - relativLastPos);
 			
 			// if we are fast enough for swiping
-			if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
+			if(controls.slapping == true)
 			{
-                swipeController.Swipe(position, lastMousePos[fingerID]);
+				if(mouseDelta.magnitude > swipeThreshold)
+				{
+                	swipeController.Swipe(position, lastMousePos[fingerID]);
+				}
+				else
+				{
+					swipeController.oldHits.Clear();	
+				}
 			}
-			
 			// if we are slow enough for repositioning the blockade
 			
 			else if(controls.holding == true)
