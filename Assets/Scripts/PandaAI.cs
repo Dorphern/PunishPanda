@@ -101,8 +101,10 @@ public class PandaAI : MonoBehaviour {
 	
 	public void PandaPushingToWalking()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.PushingFinger)
+		{
 			pandaStateManager.ChangeState(PandaState.Walking);	
+		}
 	}
 
     public void Jump (float force, float direction)
