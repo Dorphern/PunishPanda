@@ -188,28 +188,23 @@ public class BloodSplatter : MonoBehaviour {
 	
 	public void ProjectSlap(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
-		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce, false));
+		ProjectWithDelay(rayStart, slapDirection, slapForce, false);
 		slapCount++;
 	}
 	
 	public void ProjectFloorHit(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
-		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce, true));
+		ProjectWithDelay(rayStart, slapDirection, slapForce, true);
 		
 	}
 	
-	IEnumerator ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce, bool floorHit)
+	void ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce, bool floorHit)
 	{
 		if(mainMenuSlap)
 		{
 			if(slapDirection.x > 0f)
 				rayStart.x = rayStart.x - 0.5f + slapForce * 3f;
 		}
-		
-//		ProjectBlood(rayStart, slapDirection, slapForce);
-//		NextSlapUV ();
-//		
-//		yield return new WaitForSeconds(slapDelay);
 		
 		Vector3 rotatedDirection;
 		rotatedDirection = Quaternion.AngleAxis( Random.Range(- decalOffsetAngle, decalOffsetAngle), Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
@@ -261,13 +256,6 @@ public class BloodSplatter : MonoBehaviour {
 			NextHitUV();	
 		}
 		ProjectBlood(rayStart, angle, scale, slapForce);
-		
-		yield return null;
-//		yield return new WaitForSeconds(slapDelay);
-//		
-//		rotatedDirection = Quaternion.AngleAxis( decalOffsetAngle, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
-//		ProjectBlood(rayStart, rotatedDirection, slapForce);
-//		NextSlapUV ();
 	}
 	
 	private float GetProjectionAngle()
