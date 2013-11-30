@@ -120,7 +120,7 @@ public class GA {
 	/// <summary>
 	/// Setup involving other components
 	/// </summary>
-	private static void InitializeQueue ()
+	public static void InitializeQueue ()
 	{
 		GA.API.Submit.SetupKeys(GA.SettingsGA.GameKey, GA.SettingsGA.SecretKey);
 		
