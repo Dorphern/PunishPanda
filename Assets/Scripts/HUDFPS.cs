@@ -44,7 +44,7 @@ void Update()
     {
         // display two fractional digits (f2 format)
         float fps = accum / frames;
-        string format = System.String.Format("{0:F2} FPS", fps);
+        string format = System.String.Format("{0:F2} FPS and Slap Count: {1}", fps, BloodSplatter.Instance.m_DecalProjectors.Count);
         guiText.text = format;
 
         if (fps < 30)
