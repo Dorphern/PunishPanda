@@ -113,7 +113,7 @@ public class BloodSplatter : MonoBehaviour {
 		if(InstanceFinder.LevelManager.CurrentLevelIndex != -1)
 			levelHasPlatforms = InstanceFinder.LevelManager.CurrentLevel.hasPlatforms;
 		else
-			levelHasPlatforms = true;
+			levelHasPlatforms= true;
 		if(levelHasPlatforms)
 		{
 			slapMaxScale = platformsLevelScale;
