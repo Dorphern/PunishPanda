@@ -238,6 +238,14 @@ public class PandaAI : MonoBehaviour {
 			return - Vector2.right;
 		}
 	}
+
+    public PandaDirection PandaDirection
+    {
+        get
+        {
+            return pandaStateManager.GetDirection();
+        }
+    }
 	
     /**
      * Attempt a kill on the panda from a death trap
@@ -259,23 +267,31 @@ public class PandaAI : MonoBehaviour {
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, true, pandaStateManager.GetDirection(), lastPandaState);
         
         pandaController.PandaKilled(true, isPerfect);
-        if (trap.GetTrapType() == TrapType.Electicity)
+        TrapType trapType = trap.GetTrapType();
+
+        if (trapType == TrapType.Electicity)
         {
             pandaController.EnableColliders( false );
         }
-        else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
+        else if (trapType == TrapType.Pounder || trapType == TrapType.RoundSaw)
         {
 			BladeDirection bladeDirection = trap.GetSpinDirection();
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize(bladeDirection);
-            Destroy(gameObject);
+            //(Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize(bladeDirection);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaHalfForce>().SawSplit(this, trap.transform.position, bladeDirection);
+            Destroy(this.gameObject);
         }
-        else if (trap.GetTrapType() == TrapType.ImpalerSpikes
-            || trap.GetTrapType() == TrapType.StaticSpikes)
+        else if (trapType == TrapType.ImpalerSpikes
+            || trapType == TrapType.StaticSpikes)
         {
            // pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
+        }
+        else if (trapType == TrapType.ThrowingStars && isPerfect)
+        {
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap.transform.position);
+            Destroy(this.gameObject); 
         }
 
         return true;
