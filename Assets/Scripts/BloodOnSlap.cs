@@ -16,7 +16,7 @@ public class BloodOnSlap : MonoBehaviour {
 	private string objectName;
 	private float timeStamp1;
 	private float timeStamp2;
-	
+	private GameObject slapParticles;
 	// 3D vector controlling the direction of the blood particle object
 	private Vector3 projectionDirection = Vector3.right;
 
@@ -33,6 +33,8 @@ public class BloodOnSlap : MonoBehaviour {
 		{
 			objectName = "particle_slap_v2";
 		}
+		
+		slapParticles = Instantiate(Resources.Load(objectName)) as GameObject;
 	}
 	
 	
@@ -64,7 +66,7 @@ public class BloodOnSlap : MonoBehaviour {
 		if(diff > 0.1)
 		{
 			//Object instantiates facing the Z-axis direction
-			Instantiate(Resources.Load(objectName),PandaMouthFront.transform.position, Quaternion.LookRotation(projectionDirection));
+			Instantiate(slapParticles ,PandaMouthFront.transform.position, Quaternion.LookRotation(projectionDirection));
 		}
 
 
