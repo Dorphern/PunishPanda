@@ -29,12 +29,16 @@ public class Hotspot : MonoBehaviour {
 
     void CheckPandaHit (Collider collider)
     {
-        PandaStateManager pandaStateManager = collider.GetComponent<PandaStateManager>();
-        PandaState pandaState = pandaStateManager.GetState();
-        if (pandaState == PandaState.Walking && hotspotActive)
-        {
-            collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
-        }
+		Collidable collidable = collider.GetComponent<Collidable>();
+		if(collidable != null && collidable.type == CollidableTypes.Panda)
+		{
+	        PandaStateManager pandaStateManager = collider.GetComponent<PandaStateManager>();
+	        PandaState pandaState = pandaStateManager.GetState();
+	        if (pandaState == PandaState.Walking && hotspotActive)
+	        {
+	            collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
+	        }
+		}
         
     }
 
