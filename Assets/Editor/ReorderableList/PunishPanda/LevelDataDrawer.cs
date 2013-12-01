@@ -94,6 +94,8 @@ public class LevelDataDrawer : IReorderableListAdaptor
             currentLevel.UnlockedLevel = EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
             position.y += itemHeight;
             currentLevel.UnlockedFunFact = EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
+			position.y += itemHeight;
+            currentLevel.hasPlatforms = EditorGUI.Toggle(position, "Has Platforms", currentLevel.hasPlatforms);
 
             position.y += itemHeight;
             currentLevel.FunFactsText = EditorGUI.TextField(position, "Fact text", currentLevel.FunFactsText);
