@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
+	
+	public static InputHandler instance;
+	
 	public List<FingerBlocking> blockades;
 	public SwipeController swipeController;
 	public float fingerRadius = 1f;
@@ -35,6 +38,7 @@ public class InputHandler : MonoBehaviour {
 	
 	void Start () 
 	{
+		instance = this;
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
 		selectedHotSpots = new Dictionary<int, Hotspot>();
 		
@@ -175,11 +179,17 @@ public class InputHandler : MonoBehaviour {
 			Vector3 mouseDelta = (relativCurrPos - relativLastPos);
 			
 			// if we are fast enough for swiping
-			if(controls.slapping == true && mouseDelta.magnitude > swipeThreshold)
+			if(controls.slapping == true)
 			{
-                swipeController.Swipe(position, lastMousePos[fingerID]);
+				if(mouseDelta.magnitude > swipeThreshold)
+				{
+                	swipeController.Swipe(position, lastMousePos[fingerID]);
+				}
+				else
+				{
+					swipeController.oldHits.Clear();	
+				}
 			}
-			
 			// if we are slow enough for repositioning the blockade
 			
 			else if(controls.holding == true)
@@ -199,8 +209,9 @@ public class InputHandler : MonoBehaviour {
 						float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
 						if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.1f)
 						{
-							panda.PandaPushingFinger();
-							tempBlockade.pushingPandas.Add(panda);
+							bool canBePushed = panda.PandaPushingFinger();
+							if(canBePushed)
+								tempBlockade.pushingPandas.Add(panda);
 						}
 					}	
 				}

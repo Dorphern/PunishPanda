@@ -89,19 +89,22 @@ public class PandaAI : MonoBehaviour {
         }
 	}
 	
-	public void PandaPushingFinger()
+	public bool PandaPushingFinger()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
-			Debug.Log("pushing");
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
+			return true;
 		}
+		return false;
 	}
 	
 	public void PandaPushingToWalking()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.PushingFinger)
+		{
 			pandaStateManager.ChangeState(PandaState.Walking);	
+		}
 	}
 
     public void Jump (float force, float direction)

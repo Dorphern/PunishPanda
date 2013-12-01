@@ -25,6 +25,7 @@ public class BloodSplatter : MonoBehaviour {
 	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
 	public bool mainMenuSlap = false;
 	public bool levelHasPlatforms = true;
+	public float platformsLevelScale = 1f;
 	
 	public int maxSpaltCount = 100;
 	
@@ -110,8 +111,8 @@ public class BloodSplatter : MonoBehaviour {
 	{
 		if(levelHasPlatforms)
 		{
-			slapMaxScale = 2f;
-			slapMinScale = 2f;
+			slapMaxScale = platformsLevelScale;
+			slapMinScale = platformsLevelScale;
 		}
 		
 			// Instantiate the prefab and get its decals instance.
@@ -188,28 +189,23 @@ public class BloodSplatter : MonoBehaviour {
 	
 	public void ProjectSlap(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
-		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce, false));
+		ProjectWithDelay(rayStart, slapDirection, slapForce, false);
 		slapCount++;
 	}
 	
 	public void ProjectFloorHit(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
 	{
-		StartCoroutine(ProjectWithDelay(rayStart, slapDirection, slapForce, true));
+		ProjectWithDelay(rayStart, slapDirection, slapForce, true);
 		
 	}
 	
-	IEnumerator ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce, bool floorHit)
+	void ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce, bool floorHit)
 	{
 		if(mainMenuSlap)
 		{
 			if(slapDirection.x > 0f)
 				rayStart.x = rayStart.x - 0.5f + slapForce * 3f;
 		}
-		
-//		ProjectBlood(rayStart, slapDirection, slapForce);
-//		NextSlapUV ();
-//		
-//		yield return new WaitForSeconds(slapDelay);
 		
 		Vector3 rotatedDirection;
 		rotatedDirection = Quaternion.AngleAxis( Random.Range(- decalOffsetAngle, decalOffsetAngle), Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
@@ -233,24 +229,37 @@ public class BloodSplatter : MonoBehaviour {
 		
 		float scale = Random.Range(slapMinScale, slapMaxScale);
 		// First 4 slaps will be huge
-		if(slapCount < 5f)
+		if(levelHasPlatforms == false)
 		{
-			scale = slapMaxScale;	
+			if(slapCount < 5f)
+			{
+				scale = slapMaxScale;	
+			}
 		}
 		
 		float angleToFloor = Mathf.Abs(angle - 90f);
 		if(angleToFloor < 60f && angleToFloor > 30f)
 		{
-			if(scale > 1.4f)
+			if(levelHasPlatforms)
 			{
-				scale = 1.4f;
+				if(scale > 0.65f * slapMaxScale)
+					scale = 0.65f * slapMaxScale;
+			}
+			else
+			{
+				if(scale > 0.3f * slapMaxScale)
+					scale = 0.3f * slapMaxScale;
 			}
 		}
 		
 		if(angleToFloor < 30f || floorHit)
 		{
-			scale = 3f;	
+			if(levelHasPlatforms)
+				scale = slapMaxScale * 0.86f;	
+			else
+				scale = slapMaxScale * 0.56f;	
 		}
+		
 		
 		if(floorHit == false)
 		{
@@ -261,13 +270,6 @@ public class BloodSplatter : MonoBehaviour {
 			NextHitUV();	
 		}
 		ProjectBlood(rayStart, angle, scale, slapForce);
-		
-		yield return null;
-//		yield return new WaitForSeconds(slapDelay);
-//		
-//		rotatedDirection = Quaternion.AngleAxis( decalOffsetAngle, Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
-//		ProjectBlood(rayStart, rotatedDirection, slapForce);
-//		NextSlapUV ();
 	}
 	
 	private float GetProjectionAngle()
@@ -299,9 +301,9 @@ public class BloodSplatter : MonoBehaviour {
 			
 			float angleToFloor = Mathf.Abs(angle - 90f);
 			if(angleToFloor < 30f)
-				decalProjectorOffset = scale * 0.8f;
+				decalProjectorOffset = scale * 0.75f;
 			else
-				decalProjectorOffset = scale * 0.6f;
+				decalProjectorOffset = scale * 0.5f;
 				
 			Vector3 projectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			

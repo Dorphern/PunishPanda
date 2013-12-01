@@ -16,7 +16,8 @@ using System.Collections.Generic;
  */
 
 public class SwipeController : MonoBehaviour {
-	
+	[System.NonSerializedAttribute]
+	public List<GameObject> oldHits = new List<GameObject>();
 	
 	public void Swipe(Vector3 currPos, Vector3 endPos)
     {
@@ -39,8 +40,23 @@ public class SwipeController : MonoBehaviour {
 		
         Debug.DrawLine(currPos, endPos, Color.red, 3f);
 		
-		RaycastHit[] hits = Physics.RaycastAll(ray, direction.magnitude + 0.01f, 1 << 8);
-		for(int i=0; i<hits.Length;i ++)
+		List<RaycastHit> hits = new List<RaycastHit>( Physics.RaycastAll(ray, direction.magnitude + 0.01f, 1 << 8) );
+		
+		for(int i=0; i<oldHits.Count;i ++)
+		{
+			for(int j=0; j<hits.Count;j++)
+			{
+				if(hits[j].collider.gameObject == oldHits[i])
+				{
+					hits.RemoveAt(j);
+					break;
+				}
+			}
+		}
+
+		oldHits.Clear();
+		
+		for(int i=0; i<hits.Count;i ++)
 		{
 			bool doubleCollisionFlag = false;
 			// we need to check for multiple collisions of the same panda
@@ -58,10 +74,13 @@ public class SwipeController : MonoBehaviour {
 				
 				if(collidable != null && collidable.type == CollidableTypes.Panda)
 				{
-						hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
+					hits[i].collider.GetComponent<PandaAI>().PandaSlapped(-direction2D, speed);
 				}
+				
+				oldHits.Add(hits[i].collider.gameObject);
 			}
-		}      
+		}
+		
     }
 	
 	Vector3 TranslateScreenToWorldPos(Vector3 mousePos)
