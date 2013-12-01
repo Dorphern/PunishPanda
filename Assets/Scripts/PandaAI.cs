@@ -280,7 +280,7 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.Pounder)
         {
             (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
-            Destroy(this.gameObject);
+            Destroy(this.gameObject); 
         }
         else if (trapType == TrapType.RoundSaw)
         {
@@ -300,7 +300,7 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trapType == TrapType.ThrowingStars && isPerfect)
         {
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject)
+            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
             Destroy(this.gameObject);
         }
