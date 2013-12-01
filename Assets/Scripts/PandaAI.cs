@@ -293,7 +293,7 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trapType == TrapType.ThrowingStars && isPerfect)
         {
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap.transform.position);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
             Destroy(this.gameObject); 
         }
 
