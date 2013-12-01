@@ -152,7 +152,8 @@ public class PauseMenuManager : MonoBehaviour {
 	//for showhing tutorial screen/animation at levelstart
 	IEnumerator showTutorial()
 	{
-		
+		// wait one update for data initialization
+		yield return null;
 		
 		pausegame.StopTime();
 		PauseAndReset.SetActive (false);

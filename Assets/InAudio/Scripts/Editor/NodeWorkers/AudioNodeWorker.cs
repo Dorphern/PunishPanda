@@ -56,18 +56,18 @@ public static class AudioNodeWorker  {
         switch (node.Type)
         {
             case AudioNodeType.Audio:
-                node.NodeData = node.gameObject.AddComponent<AudioData>();
+                node.NodeData = node.gameObject.AddComponentUndo<AudioData>();
                 break;
             case AudioNodeType.Random:
-                node.NodeData = node.gameObject.AddComponent<RandomData>();
+                node.NodeData = node.gameObject.AddComponentUndo<RandomData>();
                 for (int i = 0; i < node.Children.Count; ++i)
                     (node.NodeData as RandomData).weights.Add(50);
                 break;
             case AudioNodeType.Sequence:
-                node.NodeData = node.gameObject.AddComponent<SequenceData>();
+                node.NodeData = node.gameObject.AddComponentUndo<SequenceData>();
                 break;
             case AudioNodeType.Multi:
-                node.NodeData = node.gameObject.AddComponent<MultiData>();
+                node.NodeData = node.gameObject.AddComponentUndo<MultiData>();
                 break;
         }
     }
@@ -95,7 +95,7 @@ public static class AudioNodeWorker  {
 
     public static void AddNewParent(AudioNode node, AudioNodeType parentType)
     {
-        UndoHelper.RecordObjects(new Object[] { node, node.Parent, node.GetBank() }, "Undo Add New Parent for " + node.Name);
+        UndoHelper.RecordObject(new Object[] { node, node.Parent, node.GetBank() }, "Undo Add New Parent for " + node.Name);
         var newParent = CreateNode(node.gameObject, node.Parent, parentType);
         var oldParent = node.Parent;
         newParent.Bus = node.Bus;
@@ -119,7 +119,7 @@ public static class AudioNodeWorker  {
      
     public static AudioNode CreateChild(AudioNode parent, AudioNodeType newNodeType)
     {
-        UndoHelper.RecordObjects(UndoHelper.Array(parent, parent.NodeData, parent.GetBank()), "Undo Node Creation");
+        UndoHelper.RecordObject(UndoHelper.Array(parent, parent.NodeData, parent.GetBank()), "Undo Node Creation");
         OnRandomNode(parent);
 
         var child = CreateNode(parent.gameObject, parent, GUIDCreator.Create(), newNodeType);
@@ -131,18 +131,17 @@ public static class AudioNodeWorker  {
 
     public static void ConvertNodeType(AudioNode node, AudioNodeType newType)
     {
-        if (!UndoHelper.IsNewUndo)
-            UndoHelper.RecordObject(node, "Change Node Type");
-        else
+        UndoHelper.DoInGroupWithWarning(() =>
         {
-            UndoHelper.RegisterFullObjectHierarchyUndo(node.gameObject);
-        }
-        
-        if (newType == node.Type)
-            return;
+            UndoHelper.RecordObjectFull(new Object[] {node, node.NodeData}, "Change Node Type");
 
-        node.Type = newType;
-        AddNewDataType(node);
+            if (newType == node.Type)
+                return;
+
+            node.Type = newType;
+            AddNewDataType(node);
+        });
+        
     }
 
     public static AudioNode Duplicate(AudioNode audioNode)
@@ -152,7 +151,7 @@ public static class AudioNodeWorker  {
         toUndo.Add(audioNode.Parent);
         toUndo.Add(audioNode.GetBank());
 
-        UndoHelper.RecordObjects(toUndo.ToArray(), "Undo Duplication Of " + audioNode.Name);
+        UndoHelper.RecordObjectFull(toUndo.ToArray(), "Undo Duplication Of " + audioNode.Name);
 
         if (audioNode.Parent.Type == AudioNodeType.Random)
         {
@@ -176,20 +175,27 @@ public static class AudioNodeWorker  {
 
     public static void DeleteNode(AudioNode node)
     {
-        UndoHelper.RecordObjects(UndoHelper.Array(node.Parent, node.Parent.NodeData, node.GetBank().LazyBankFetch), "Undo Deletion of " + node.Name);
+        UndoHelper.DoInGroupWithWarning(() => DeleteNodeRec(node));
+    }
+
+    private static void DeleteNodeRec(AudioNode node)
+    {
+        UndoHelper.RecordObjectFull(UndoHelper.Array(node.Parent, node.Parent.NodeData, node.GetBank().LazyBankFetch), "Undo Deletion of " + node.Name);
         for (int i = node.Children.Count - 1; i > 0; --i)
             DeleteNode(node.Children[i]);
 
         if (node.Parent.Type == AudioNodeType.Random) //We also need to remove the child from the weight list
         {
             var data = node.Parent.NodeData as RandomData;
-            if(data != null)
+            if (data != null)
                 data.weights.RemoveAt(node.Parent.Children.FindIndex(node)); //Find in parent, and then remove the weight in the random node
         }
 
         AudioBankWorker.RemoveNodeFromBank(node);
 
         node.Parent.Children.Remove(node);
+        UndoHelper.Destroy(node);
+        UndoHelper.Destroy(node.NodeData);
     }
 }
 }

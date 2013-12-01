@@ -9,9 +9,9 @@ public static class BankLoader{
             return null;
         var bank = SaveAndLoad.LoadAudioBank(bankLink.ID);
 
-        if (Application.isPlaying && HDRInstanceFinder.DataManager != null)
+        if (Application.isPlaying && InAudioInstanceFinder.DataManager != null)
         {
-            HDRInstanceFinder.DataManager.BankIsLoaded(bank); 
+            InAudioInstanceFinder.DataManager.BankIsLoaded(bank); 
             for (int i = 0; i < bank.Clips.Count; i++)
             {
                 (bank.Clips[i].Node.NodeData as AudioData).Clip = bank.Clips[i].Clip;
@@ -22,7 +22,7 @@ public static class BankLoader{
 
     public static void Unload(AudioBankLink bankLink)
     {
-        AudioBank bank = HDRInstanceFinder.DataManager.GetLoadedBank(bankLink);
+        AudioBank bank = InAudioInstanceFinder.DataManager.GetLoadedBank(bankLink);
         if (bank != null)
         {
             for (int i = 0; i < bank.Clips.Count; i++)
@@ -35,7 +35,7 @@ public static class BankLoader{
 
     public static void LoadAutoLoadedBanks()
     {
-        LoadAuto(HDRInstanceFinder.DataManager.BankLinkTree);
+        LoadAuto(InAudioInstanceFinder.DataManager.BankLinkTree);
     }
 
     private static void LoadAuto(AudioBankLink bankLink)
