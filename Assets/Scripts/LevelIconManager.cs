@@ -31,17 +31,27 @@ public class LevelIconManager : MonoBehaviour {
 		Number = unlockedLabel.GetComponent<UILabel>();
         Number.text = levelNumberString;
 		Number = lockedLabel.GetComponent<UILabel>();
-        Number.text = levelNumberString;
-
-	    var levels = InstanceFinder.LevelManager.CurrentWorld.Levels;
-        if(levels.Count > LevelNumber - 1)
-	        isLocked = !levels[LevelNumber - 1].UnlockedLevel;
-        else
-            isLocked = true;
-		Debug.Log(isLocked);
-
+		Number.text = levelNumberString;
+		
+		
+		
+		
+		
+		//TO DO:
+		//CHECK IF LOCKED OR NOT
+		int LevelIndex;
+		//convert string to int.
+		//LevelIndex = int.TryParse(LevelNumber,LevelIndex);
+		
+		//isLocked = InstanceFinder.LevelManager.CurrentWorld.Levels[0].UnlockedLevel;
+		
+		
 		if(isLocked == true)
 			LockLevel ();
+		
+		
+		
+		
 
 	}
 	
