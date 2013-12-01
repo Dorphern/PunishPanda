@@ -97,7 +97,7 @@ public class UIToggleScale : MonoBehaviour
 //				}
 				
 				if(tweenTargets[i]!=null)
-					TweenScale.Begin(tweenTargets[i].gameObject, duration, selected).method = UITweener.Method.EaseIn;
+					TweenScale.Begin(tweenTargets[i].gameObject, duration, selected).method = UITweener.Method.Linear;
 			}
 		}
 	}
@@ -110,7 +110,7 @@ public class UIToggleScale : MonoBehaviour
 			for(int i=0; i<tweenTargets.Count; i++)
 			{
 				if(tweenTargets[i]!=null)
-					TweenScale.Begin(tweenTargets[i].gameObject, duration, mScale).method = UITweener.Method.EaseOut;
+					TweenScale.Begin(tweenTargets[i].gameObject, duration, mScale).method = UITweener.Method.Linear;
 			}
 		}
 	}
