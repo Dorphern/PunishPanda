@@ -89,19 +89,22 @@ public class PandaAI : MonoBehaviour {
         }
 	}
 	
-	public void PandaPushingFinger()
+	public bool PandaPushingFinger()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
-			Debug.Log("pushing");
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
+			return true;
 		}
+		return false;
 	}
 	
 	public void PandaPushingToWalking()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.PushingFinger)
+		{
 			pandaStateManager.ChangeState(PandaState.Walking);	
+		}
 	}
 
     public void Jump (float force, float direction)
@@ -138,7 +141,7 @@ public class PandaAI : MonoBehaviour {
 		// we can slap the panda only in walking and Idle state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Idle
 			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting 
-			&& pandaStateManager.GetState() != PandaState.PushingFinger)
+			&& pandaStateManager.GetState() != PandaState.Jumping && pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
         // Track a slap
