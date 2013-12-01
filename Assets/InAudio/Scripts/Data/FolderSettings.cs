@@ -16,20 +16,7 @@ namespace InAudio
 
         public const string BankLoadFolder = RelativePathResources + "Banks/";
                
-
         public const string FullPathResources = "Assets/" + Name + "/Resources/" + Name + "/";
-        public const string IconPath = "InAudio/Icons/";
-
-        public const string AudioSaveDataPath = FullPathResources + "AudioSave.prefab";
-        public const string EventSaveDataPath = FullPathResources + "EventSave.prefab";
-        public const string BusSaveDataPath = FullPathResources + "BusSave.prefab";
-        public const string BankLinkSaveDataPath = FullPathResources + "BankLinkSave.prefab";
-
-        public const string BankCreateFolder = FullPathResources + "Banks/";
-        public const string BankRelativeDictory = "/"+Name + "/Resources/" + Name + "/" + "Banks/";
-        public const string BankDeleteDictory = FullPathResources + "Banks/";
-        public const string BankSaveFolder =  FullPathResources  + "Banks/";
-
 
         public const string AudioManagerPath = "Assets/" + Name + "/Prefabs/InAudio Manager.prefab";
 
@@ -40,14 +27,23 @@ namespace InAudio
         public const string ComponentPathInternal = "InAudio/Internal/";
         public const string ComponentPathInternalPools = "InAudio/Internal/Pools/";
         public const string ComponentPathPrefabs = "InAudio/Prefab Scripts/";
-        //public const string ComponentPathPrefabsManager = "InAudio/Prefab Scripts/Manager";
         public const string ComponentPathPrefabsManager = ComponentPathPrefabs + "Manager/";
-        public const string ComponentPathInternalGUIPrefs = ComponentPathInternal + "GUI Prefs/";
-
-        
+        public const string ComponentPathPrefabsGUIPrefs = ComponentPathPrefabs + "GUI Prefs/";
 
 
+#if UNITY_EDITOR
+        public const string IconPath = "InAudio/Icons/";
 
+        public const string AudioSaveDataPath = FullPathResources + "AudioSave.prefab";
+        public const string EventSaveDataPath = FullPathResources + "EventSave.prefab";
+        public const string BusSaveDataPath = FullPathResources + "BusSave.prefab";
+        public const string BankLinkSaveDataPath = FullPathResources + "BankLinkSave.prefab";
+
+        public const string BankCreateFolder = FullPathResources + "Banks/";
+        public const string BankRelativeDictory = "/" + Name + "/Resources/" + Name + "/" + "Banks/";
+        public const string BankDeleteDictory = FullPathResources + "Banks/";
+        public const string BankSaveFolder = FullPathResources + "Banks/";
+#endif
     }
 
 }

@@ -167,7 +167,7 @@ public class AchievementManager : MonoBehaviour {
 	private void LoadAchievements()
 	{
 		achievements = new Dictionary<string, Achievement>();
-	    var localization = Localization.instance;
+	    //var localization = Localization.instance;
 		for(int i=0;i<achievementList.Count;i++)
 		{
             

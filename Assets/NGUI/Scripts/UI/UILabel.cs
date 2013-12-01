@@ -243,7 +243,7 @@ public class UILabel : UIWidget
 		}
 		set
 		{
-			value = Mathf.Clamp(value, 0, 144);
+			value = Mathf.Clamp(value, 0, 1000);
 
 			if (mFontSize != value)
 			{
@@ -317,7 +317,7 @@ public class UILabel : UIWidget
 
 	protected override void OnValidate ()
 	{
-		mFontSize = Mathf.Clamp(mFontSize, 0, 144);
+		mFontSize = Mathf.Clamp(mFontSize, 0, 1000);
 
 		UIFont fnt = mFont;
 		Font ttf = mTrueTypeFont;

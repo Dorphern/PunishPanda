@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum BladeDirection {
+	None,
+	Clockwise,
+	CounterClockwise
+}
+
 public class PandaDismemberment : MonoBehaviour 
 {
+
+	
 	public float minHorizontalForce = -5f;
 	public float maxHorizontalForce = 5f;
 	public float minVerticalForce = 1f;
@@ -10,32 +18,26 @@ public class PandaDismemberment : MonoBehaviour
 	public float minTorque = 1f;
 	public float maxTorque = 3f;
 	
+	public BladeDirection SpinDirection;
 	public int splatCount = 3;
 	
 	private Vector3 explosionForce = Vector3.zero;
 	private Vector2 splatDirection = Vector2.right;
 
-    public float MaxRotationStrength = 5.0f;
-    public float MinRotationStrength = 10.0f;
-
-    public Vector3 KilledByPosition;
-	
+	public void Initialize()
+	{
+	}
+		
 	void Start ()
 	{
-        //Calculate the direction the panda is thrown by the roundsaw
-	    Vector3 currentPos = transform.position;
-	    KilledByPosition.z = currentPos.z;
-        transform.RotateAround(KilledByPosition, new Vector3(0,0,1), -Random.Range(20,40));
-	    Vector3 newPos = transform.position;        
-	    transform.position = currentPos;
-	    Vector3 rotationDir = newPos - currentPos;
-
 		for(int i = 0; i < transform.childCount; i++)
 		{
 			explosionForce.x = Random.Range(minHorizontalForce, maxHorizontalForce);
+			
 			explosionForce.y = Random.Range(minVerticalForce, maxVerticalForce);
 			explosionForce.z = - Random.Range(minVerticalForce, maxVerticalForce);
-            transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddForce(explosionForce + rotationDir*Random.Range(MinRotationStrength, MaxRotationStrength), ForceMode.Impulse);
+			
+        	transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddForce(explosionForce, ForceMode.Impulse);
 			
 			explosionForce.x = Random.Range(minTorque, maxTorque);
 			explosionForce.y = Random.Range(minTorque, maxTorque);

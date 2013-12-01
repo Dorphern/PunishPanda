@@ -16,8 +16,7 @@ public class PauseGame : MonoBehaviour {
 	void Start () 
 	{
 		savedTimeScale = Time.timeScale;
-		inputHandler = GameObject.Find("InputHandler");
-		inputScript = (InputHandler) inputHandler.GetComponent(typeof(InputHandler));
+		inputScript = InputHandler.instance;
 	}
 	
 

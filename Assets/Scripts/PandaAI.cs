@@ -18,6 +18,7 @@ public class PandaAI : MonoBehaviour {
 	public float boostDuration = 1f;
 
     [SerializeField] protected GameObject dismemberedPanda;
+    [SerializeField] protected GameObject slicedInHalfPanda;
     
 	
 	[System.NonSerializedAttribute]
@@ -59,7 +60,7 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Jump")]
     private List<AudioEvent> jumpEvents;
     Animations animations;
-	
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -89,19 +90,22 @@ public class PandaAI : MonoBehaviour {
         }
 	}
 	
-	public void PandaPushingFinger()
+	public bool PandaPushingFinger()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
-			Debug.Log("pushing");
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
+			return true;
 		}
+		return false;
 	}
 	
 	public void PandaPushingToWalking()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.PushingFinger)
+		{
 			pandaStateManager.ChangeState(PandaState.Walking);	
+		}
 	}
 
     public void Jump (float force, float direction)
@@ -138,7 +142,7 @@ public class PandaAI : MonoBehaviour {
 		// we can slap the panda only in walking and Idle state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Idle
 			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting 
-			&& pandaStateManager.GetState() != PandaState.PushingFinger)
+			&& pandaStateManager.GetState() != PandaState.Jumping && pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
         // Track a slap
@@ -238,6 +242,14 @@ public class PandaAI : MonoBehaviour {
 			return - Vector2.right;
 		}
 	}
+
+    public PandaDirection PandaDirection
+    {
+        get
+        {
+            return pandaStateManager.GetDirection();
+        }
+    }
 	
     /**
      * Attempt a kill on the panda from a death trap
@@ -259,22 +271,38 @@ public class PandaAI : MonoBehaviour {
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, true, pandaStateManager.GetDirection(), lastPandaState);
         
         pandaController.PandaKilled(true, isPerfect);
-        if (trap.GetTrapType() == TrapType.Electicity)
+        TrapType trapType = trap.GetTrapType();
+
+        if (trapType == TrapType.Electicity)
         {
             pandaController.EnableColliders( false );
         }
-        else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
+        else if (trapType == TrapType.Pounder)
         {
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().KilledByPosition = trap.transform.position;
-            Destroy(gameObject);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
+            Destroy(this.gameObject); 
         }
-        else if (trap.GetTrapType() == TrapType.ImpalerSpikes
-            || trap.GetTrapType() == TrapType.StaticSpikes)
+        else if (trapType == TrapType.RoundSaw)
         {
-           // pandaController.EnableColliders(false);
+            BladeDirection bladeDirection = trap.GetSpinDirection();
+            
+            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+                .GetComponent<PandaHalfForce>().SawSplit(this, trap.transform.position, bladeDirection);
+            Destroy(this.gameObject);
+        }
+        else if (trapType == TrapType.ImpalerSpikes
+                 || trapType == TrapType.StaticSpikes)
+        {
+            // pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
+        }
+        else if (trapType == TrapType.ThrowingStars && isPerfect)
+        {
+            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+                .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
+            Destroy(this.gameObject);
         }
 
         return true;

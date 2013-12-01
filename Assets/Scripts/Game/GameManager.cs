@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+		GA.InitializeQueue();
+		
         var instance = InstanceFinder.GameManager;
         if (instance == null)
         {

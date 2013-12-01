@@ -6,8 +6,8 @@ public class LevelIconManager : MonoBehaviour {
 	//Handler for the LEVELS SCREEN that checks how many
 	//stars should be shown on a Level Icon.
 	
-	public string LevelNumber;
-	public bool isLocked;
+    public int LevelNumber;
+	public bool isUnlocked;
 	
 	public GameObject first;
 	public GameObject second;
@@ -26,15 +26,45 @@ public class LevelIconManager : MonoBehaviour {
 		firstSprite = first.GetComponent<UISprite>();
 		secondSprite = second.GetComponent<UISprite>();
 		thirdSprite = third.GetComponent<UISprite>();
-		
+
+	    string levelNumberString = LevelNumber.ToString();
 		Number = unlockedLabel.GetComponent<UILabel>();
-		Number.text = LevelNumber;
+        Number.text = levelNumberString;
 		Number = lockedLabel.GetComponent<UILabel>();
-		Number.text = LevelNumber;
+		Number.text = levelNumberString;
 		
-		if(isLocked == true)
-			LockLevel ();
 		
+		var levels = InstanceFinder.LevelManager.CurrentWorld.Levels;
+		int stars;
+		
+		if(LevelNumber <= levels.Count )
+		{
+			isUnlocked = levels[LevelNumber-1].UnlockedLevel;
+			//STAR CALCULATION:
+			stars = PunishPanda.Game.ScoreCalculator.Stars(levels[LevelNumber - 1], levels[LevelNumber-1].HighScore);
+			//Debug.Log ("Level:"+LevelNumber+" has "+stars+" stars");
+			if(stars == 1)
+			{
+				show1star();
+			}
+			else if(stars == 2)
+			{
+				show2stars();
+			}
+			else if(stars == 3)
+			{
+				show3stars ();
+			}
+		}
+		else {
+			//level doesnt exist in build so just lock it
+			LockLevel();
+		}
+		
+			
+		if(isUnlocked == false)
+			LockLevel ();	
+
 
 		
 

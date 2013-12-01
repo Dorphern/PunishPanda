@@ -74,10 +74,23 @@ public abstract class TrapBase : MonoBehaviour {
         dirty = false;
         if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
     }
+	
+	virtual public BladeDirection GetSpinDirection ()
+	{
+		return BladeDirection.None; 
+	}
 
     public bool IsDirty ()
     {
         return dirty;
+    }
+
+    public bool Perfect 
+    {
+        get
+        {
+            return isPerfectTrap;
+        }
     }
 
     abstract public TrapType GetTrapType ();
@@ -141,7 +154,7 @@ public abstract class TrapBase : MonoBehaviour {
 
 	void AddStatistics()
 	{
-		TrapType tt = GetTrapType();
+		//TrapType tt = GetTrapType();
 		if(InstanceFinder.StatsManager!=null)
 		{
 			switch(GetTrapType())
