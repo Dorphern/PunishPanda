@@ -144,8 +144,8 @@ public class InputHandler : MonoBehaviour {
 					tempHotSpot = hitInfo.transform.parent.GetComponent<Hotspot>();
 					tempHotSpot.ActivateHotspot();
 					selectedHotSpots.Add(fingerID, tempHotSpot);
-					hitflag = true;
-					return;
+					//hitflag = true;
+					//return;
 				}
 			}
 		}
@@ -174,60 +174,63 @@ public class InputHandler : MonoBehaviour {
 			
 			Vector3 mouseDelta = (relativCurrPos - relativLastPos);
 			
-			// if we are fast enough for swiping
-			if(controls.slapping == true)
+			float dotA = Vector2.Dot(mouseDelta.normalized, Vector2.right);
+			if(dotA != 0 || mouseDelta.normalized == Vector3.zero)
 			{
-				if(mouseDelta.magnitude > swipeThreshold)
+				// if we are fast enough for swiping
+				if(controls.slapping == true)
 				{
-                	swipeController.Swipe(position, lastMousePos[fingerID]);
+					if(mouseDelta.magnitude > swipeThreshold)
+					{
+	                	swipeController.Swipe(position, lastMousePos[fingerID]);
+					}
+					else
+					{
+						swipeController.oldHits.Clear();	
+					}
 				}
+				// if we are slow enough for repositioning the blockade
+				if(controls.holding == true && selectedHotSpots.ContainsKey(fingerID) == false)
+				{
+	                selectedBlockades.TryGetValue(fingerID, out tempBlockade);				
+					
+					// Check distance from finger to pandas
+					// if distance < threshold and distance > threshold and panda is facing finger
+						// add panda to the list of pandas associated with the finger
+						// set panda state to holding
+					foreach(PandaAI panda in InstanceFinder.GameManager.ActiveLevel.pandas)
+					{
+						if(tempBlockade.pushingPandas.Contains(panda)) continue;
+						
+						if(panda.IsFacingFinger(tempBlockade.transform.position))
+						{
+							float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
+							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.1f)
+							{
+								bool canBePushed = panda.PandaPushingFinger();
+								if(canBePushed)
+									tempBlockade.pushingPandas.Add(panda);
+							}
+						}	
+					}
+					
+					for(int i = 0; i < tempBlockade.pushingPandas.Count; i++)
+					{
+						UpdatePandasAroundBlockade(tempBlockade.pushingPandas[i] ,mouseDelta);
+					}
+	
+	                tempBlockade.RepositionBlockade(position);
+					tempBlockade.ActivateBlockade();
+				}
+				// otherwise disable the blockade
 				else
 				{
-					swipeController.oldHits.Clear();	
+	                selectedBlockades.TryGetValue(fingerID, out tempBlockade);
+					tempBlockade.DeactivateBlockade();
+					EnablePandasOnBlockadeRelease();
 				}
+	            lastMousePos[fingerID] = position;
 			}
-			// if we are slow enough for repositioning the blockade
-			
-			else if(controls.holding == true)
-			{
-                selectedBlockades.TryGetValue(fingerID, out tempBlockade);				
-				
-				// Check distance from finger to pandas
-				// if distance < threshold and distance > threshold and panda is facing finger
-					// add panda to the list of pandas associated with the finger
-					// set panda state to holding
-				foreach(PandaAI panda in InstanceFinder.GameManager.ActiveLevel.pandas)
-				{
-					if(tempBlockade.pushingPandas.Contains(panda)) continue;
-					
-					if(panda.IsFacingFinger(tempBlockade.transform.position))
-					{
-						float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
-						if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.1f)
-						{
-							bool canBePushed = panda.PandaPushingFinger();
-							if(canBePushed)
-								tempBlockade.pushingPandas.Add(panda);
-						}
-					}	
-				}
-				
-				for(int i = 0; i < tempBlockade.pushingPandas.Count; i++)
-				{
-					UpdatePandasAroundBlockade(tempBlockade.pushingPandas[i] ,mouseDelta);
-				}
-
-                tempBlockade.RepositionBlockade(position);
-				tempBlockade.ActivateBlockade();
-			}
-			// otherwise disable the blockade
-			else
-			{
-                selectedBlockades.TryGetValue(fingerID, out tempBlockade);
-				tempBlockade.DeactivateBlockade();
-				EnablePandasOnBlockadeRelease();
-			}
-            lastMousePos[fingerID] = position;
 		}
 	}
 
@@ -243,7 +246,7 @@ public class InputHandler : MonoBehaviour {
 			blockades.Add(tempBlockade);
 			selectedBlockades.Remove(fingerId);
 		}
-		else if(selectedHotSpots.ContainsKey(fingerId))
+		if(selectedHotSpots.ContainsKey(fingerId))
 		{
 			selectedHotSpots.TryGetValue(fingerId, out tempHotSpot);
 			tempHotSpot.DeactivateHotspot();
