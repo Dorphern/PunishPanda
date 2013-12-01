@@ -141,7 +141,7 @@ public class PandaAI : MonoBehaviour {
 		// we can slap the panda only in walking and Idle state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Idle
 			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting 
-			&& pandaStateManager.GetState() != PandaState.PushingFinger)
+			&& pandaStateManager.GetState() != PandaState.Jumping && pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
         // Track a slap

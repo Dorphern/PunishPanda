@@ -24,10 +24,10 @@ public class BloodSplatter : MonoBehaviour {
 	public GameObject decalsPrefab;
 	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
 	public bool mainMenuSlap = false;
-	public bool levelHasPlatforms = true;
 	public float platformsLevelScale = 1f;
 	
 	public int maxSpaltCount = 100;
+	public float fadingSpeed = 0.5f;
 	
 		// The raycast hits a collider at a certain position. This value indicated how far we need to
 		// go back from that hit point along the ray of the raycast to place the new decal projector. Set
@@ -50,6 +50,7 @@ public class BloodSplatter : MonoBehaviour {
 	public int hitUVmin;
 	public int hitUVmax;
 	
+	private bool levelHasPlatforms = false;
 		// The reference to the instantiated prefab's DS_Decals instance.
 	private DS_Decals m_Decals;
 	
@@ -109,6 +110,7 @@ public class BloodSplatter : MonoBehaviour {
 	
 	private void Start () 
 	{
+		levelHasPlatforms = InstanceFinder.LevelManager.CurrentLevel.hasPlatforms;
 		if(levelHasPlatforms)
 		{
 			slapMaxScale = platformsLevelScale;
@@ -118,6 +120,7 @@ public class BloodSplatter : MonoBehaviour {
 			// Instantiate the prefab and get its decals instance.
 		GameObject l_Instance = Instantiate (decalsPrefab) as GameObject;
 		m_Decals = l_Instance.GetComponentInChildren <DS_Decals> ();
+		m_Decals.UseVertexColors = true;
 		
 		if (m_Decals == null) 
 		{
@@ -128,6 +131,7 @@ public class BloodSplatter : MonoBehaviour {
 				// Create the decals mesh (intermediate mesh data) for our decals instance.
 				// Further we need a decals mesh cutter instance and the world to decals matrix.
 			m_DecalsMesh = new DecalsMesh (m_Decals);
+			m_DecalsMesh.PreserveVertexColorArrays = true;
 			m_DecalsMeshCutter = new DecalsMeshCutter ();
 		}
 		
@@ -228,6 +232,7 @@ public class BloodSplatter : MonoBehaviour {
 		float angle = GetProjectionAngle();
 		
 		float scale = Random.Range(slapMinScale, slapMaxScale);
+		
 		// First 4 slaps will be huge
 		if(levelHasPlatforms == false)
 		{
@@ -323,9 +328,7 @@ public class BloodSplatter : MonoBehaviour {
 				// our list and certainly from the decals mesh (the intermediate mesh
 				// format). All the mesh data that belongs to this projector will
 				// be removed.
-			DecalProjector l_DecalProjector = m_DecalProjectors [0];
-			m_DecalProjectors.RemoveAt (0);
-			m_DecalsMesh.RemoveProjector (l_DecalProjector);
+			StartCoroutine(FadeOutDecal());
 		}	
 	}
 	
@@ -353,7 +356,7 @@ public class BloodSplatter : MonoBehaviour {
 				{
 						// Create the decal projector.
 					DecalProjector l_DecalProjector = new DecalProjector (l_ProjectorPosition, l_ProjectorRotation, 
-						new Vector3(scale, scale, scale), cullingAngle, meshOffset, m_UVRectangleIndex, m_UVRectangleIndex);
+						new Vector3(scale, scale, scale), cullingAngle, meshOffset, m_UVRectangleIndex, m_UVRectangleIndex, Color.white, 0.0f);
 					
 					
 						// Add the projector to our list and the decals mesh, such that both are
@@ -377,6 +380,24 @@ public class BloodSplatter : MonoBehaviour {
 						// based on the surface you have hit.
 				}
 			}	
+	}
+	
+	private IEnumerator FadeOutDecal()
+	{
+		DecalProjector l_DecalProjector = m_DecalProjectors [0];
+		m_DecalProjectors.RemoveAt (0);
+		
+		while(l_DecalProjector.vertexColor.a >= 0)
+		{
+			l_DecalProjector.vertexColor.a -= Time.deltaTime * fadingSpeed;
+			m_DecalsMesh.UpdateVertexColors (l_DecalProjector);
+			m_Decals.UpdateVertexColors (m_DecalsMesh);
+			yield return null;
+		}
+		
+		m_DecalsMesh.RemoveProjector (l_DecalProjector);	
+		m_Decals.UpdateDecalsMeshes (m_DecalsMesh);
+		yield return null;
 	}
 	
 	private Transform GetCombinedMeshTransform(Transform baseTransform)
