@@ -24,7 +24,6 @@ public class BloodSplatter : MonoBehaviour {
 	public GameObject decalsPrefab;
 	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
 	public bool mainMenuSlap = false;
-	public bool levelHasPlatforms = true;
 	public float platformsLevelScale = 1f;
 	
 	public int maxSpaltCount = 100;
@@ -51,6 +50,7 @@ public class BloodSplatter : MonoBehaviour {
 	public int hitUVmin;
 	public int hitUVmax;
 	
+	private bool levelHasPlatforms = false;
 		// The reference to the instantiated prefab's DS_Decals instance.
 	private DS_Decals m_Decals;
 	
@@ -110,6 +110,7 @@ public class BloodSplatter : MonoBehaviour {
 	
 	private void Start () 
 	{
+		levelHasPlatforms = InstanceFinder.LevelManager.CurrentLevel.hasPlatforms;
 		if(levelHasPlatforms)
 		{
 			slapMaxScale = platformsLevelScale;
@@ -231,6 +232,7 @@ public class BloodSplatter : MonoBehaviour {
 		float angle = GetProjectionAngle();
 		
 		float scale = Random.Range(slapMinScale, slapMaxScale);
+		
 		// First 4 slaps will be huge
 		if(levelHasPlatforms == false)
 		{
