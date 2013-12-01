@@ -85,6 +85,14 @@ public abstract class TrapBase : MonoBehaviour {
         return dirty;
     }
 
+    public bool Perfect 
+    {
+        get
+        {
+            return isPerfectTrap;
+        }
+    }
+
     abstract public TrapType GetTrapType ();
 	
 	public bool TryPandaKill(PandaAI pandaAI)

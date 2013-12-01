@@ -4,6 +4,7 @@
 //----------------------------------------------
 
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Simple example script of how a button can be scaled visibly when the mouse hovers over it or it gets pressed.
@@ -12,60 +13,92 @@ using UnityEngine;
 [AddComponentMenu("NGUI/Interaction/Toggle Scale")]
 public class UIToggleScale : MonoBehaviour
 {
-	public Transform tweenTarget;
-	public Transform tweenTarget2;
-	public Vector3 hover = new Vector3(1.1f, 1.1f, 1.1f);
-	public Vector3 pressed = new Vector3(1.05f, 1.05f, 1.05f);
+	
+	public Transform tweentarget1;
+	public Transform tweentarget2;
+	public List<Transform> tweenTargets;
+//	public Vector3 hover = new Vector3(1.1f, 1.1f, 1.1f);
+//	public Vector3 pressed = new Vector3(1.05f, 1.05f, 1.05f);
 	public Vector3 selected = new Vector3(1.5f, 1.5f, 1.5f);
-	public Vector3 Default = new Vector3(1.5f, 1.5f, 1.5f);
+
 	public float duration = 0.2f;
 
 	Vector3 mScale;
 	bool mStarted = false;
 	bool mHighlighted = false;
-
-	void Start ()
+	UIToggle toggle;
+	
+	// using awake since this need to be initialized before start
+	void Awake ()
 	{
 		if (!mStarted)
 		{
 			mStarted = true;
-			if (tweenTarget == null) tweenTarget = transform;
-			mScale = tweenTarget.localScale;
-			UIToggle toggle = GetComponent<UIToggle>();
+			if (tweenTargets.Count == 0) tweenTargets.Add(transform);
+			mScale = tweenTargets[0].localScale;
+			toggle = GetComponent<UIToggle>();
 			if(toggle!=null)
 			{
-				if(toggle.value == true)
-					OnToggleActivate();
+//				if(toggle.value == true)
+//					OnToggleActivate();
 				toggle.OnToggleActivate += OnToggleActivate;
 				toggle.OnToggleDeactivate += OnToggleDeactivate;
 			}
 		}
 	}
+	
+//	void OnEnable ()
+//	{
+//		if (mStarted && tweenTargets.Count != 0)
+//		{
+//			for(int i=0; i< tweenTargets.Count; i++)
+//			{
+//				TweenScale tc = tweenTargets[i].GetComponent<TweenScale>();
 //
-//	void OnEnable () { if (mStarted && mHighlighted) OnHover(UICamera.IsHighlighted(gameObject)); }
-
-	void OnDisable ()
-	{
-		if (mStarted && tweenTarget != null)
-		{
-			TweenScale tc = tweenTarget.GetComponent<TweenScale>();
-
-			if (tc != null)
-			{
-				tc.scale = mScale;
-				tc.enabled = false;
-			}
-		}
-	}
+//				if (tc != null)
+//				{
+////					if(toggle.value = true)
+////						tc.scale = mScale;
+////					else
+////						tc.scale = mScale;
+//					//tc.enabled = true;
+//				}
+//			}
+//		}
+//	}
+//	
+//	void OnDisable ()
+//	{
+//		if (mStarted && tweenTargets.Count != 0)
+//		{
+//			for(int i=0; i< tweenTargets.Count; i++)
+//			{
+//				TweenScale tc = tweenTargets[i].GetComponent<TweenScale>();
+//
+//				if (tc != null)
+//				{
+//					tc.scale = mScale;
+//					tc.enabled = false;
+//				}
+//			}
+//		}
+//	}
 
 	void OnToggleActivate()
 	{
 		if (enabled)
 		{
-			if (!mStarted) Start();
-			TweenScale.Begin(tweenTarget.gameObject, duration, selected).method = UITweener.Method.EaseIn;
-			TweenScale.Begin(tweenTarget2.gameObject, duration, selected).method = UITweener.Method.EaseIn;
-			
+			if (!mStarted) Awake();
+			for(int i=0; i<tweenTargets.Count; i++)
+			{
+//				if(tweentarget1!=null && tweentarget2!=null)
+//				{
+//					TweenScale.Begin(tweenTargets[i].gameObject, duration, selected).method = UITweener.Method.EaseIn;
+//				}
+				
+				if(tweenTargets[i]!=null)
+					TweenScale.Begin(tweenTargets[i].gameObject, duration, selected).method = UITweener.Method.Linear;
+			}
 		}
 	}
 	
@@ -73,9 +106,12 @@ public class UIToggleScale : MonoBehaviour
 	{
 		if (enabled)
 		{
-			if (!mStarted) Start();
-			TweenScale.Begin(tweenTarget.gameObject, duration, mScale).method = UITweener.Method.BounceOut;
-			TweenScale.Begin(tweenTarget2.gameObject, duration, mScale).method = UITweener.Method.BounceOut;
+			if (!mStarted) Awake();
+			for(int i=0; i<tweenTargets.Count; i++)
+			{
+				if(tweenTargets[i]!=null)
+					TweenScale.Begin(tweenTargets[i].gameObject, duration, mScale).method = UITweener.Method.Linear;
+			}
 		}
 	}
 	

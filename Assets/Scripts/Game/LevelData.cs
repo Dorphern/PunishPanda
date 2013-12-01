@@ -14,6 +14,9 @@ public class LevelData
 
     [SerializeField] 
     public bool UnlockedFunFact; //1 == unlocked, 0 = locked
+	
+	[SerializeField] 
+    public bool hasPlatforms; // levels with platforms will have smaller blood splats
 
     [SerializeField]
     public Texture2D FunFactsTexture;
