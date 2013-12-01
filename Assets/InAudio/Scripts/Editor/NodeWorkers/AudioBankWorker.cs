@@ -101,11 +101,17 @@ public static class AudioBankWorker {
         node.OverrideParentBank = !node.OverrideParentBank;
         var newBank = node.GetBank();
         if (currentBank == newBank)
+        {
+            node.OverrideParentBank = !node.OverrideParentBank;
+            UndoHelper.RecordObjectFull(node, "Undo Changing Used Bank");
+            node.OverrideParentBank = !node.OverrideParentBank;
             return;
+        }
+
 
         //Double do this to register the correct state of the node
         node.OverrideParentBank = !node.OverrideParentBank;
-        Undo.RegisterUndo(UndoHelper.Array(currentBank.LazyBankFetch, newBank.LazyBankFetch, node), "Undo Changing Used Bank");
+        UndoHelper.RecordObjectFull(UndoHelper.Array(node, currentBank.LazyBankFetch, newBank.LazyBankFetch), "Undo Changing Used Bank");
         node.OverrideParentBank = !node.OverrideParentBank;
         
         MoveBetweenBanks(node, currentBank, newBank);

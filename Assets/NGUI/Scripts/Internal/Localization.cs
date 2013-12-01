@@ -27,9 +27,17 @@ public class Localization : MonoBehaviour
 
 	static public bool isActive { get { return mInstance != null; } }
 
-	/// <summary>
-	/// The instance of the localization class. Will create it if one isn't already around.
-	/// </summary>
+    /// <summary>
+    /// The instance of the localization class. Will create it if one isn't already around.
+    /// </summary>
+
+    public bool IsEnglish
+    {
+        get
+        {
+            return currentLanguage == "English";
+        }
+    }
 
 	static public Localization instance
 	{

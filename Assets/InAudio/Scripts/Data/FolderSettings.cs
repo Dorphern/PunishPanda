@@ -7,31 +7,43 @@ namespace InAudio
     {
         public const string Name = "InAudio";
 
-        public readonly static string FullPathResources = "Assets/" + Name + "/Resources/" + Name+"/";
-        public readonly static string RelativePathResources = "InAudio/";
+        public const string RelativePathResources = "InAudio/";
                
-        public readonly static string IconPath = "InAudio/Icons/";
+        public const string AudioLoadData      =  RelativePathResources+"AudioSave";
+        public const string EventLoadData      =  RelativePathResources+"EventSave";
+        public const string BusLoadData        =  RelativePathResources+"BusSave";
+        public const string BankLinkLoadData   =  RelativePathResources+"BankLinkSave";
+
+        public const string BankLoadFolder = RelativePathResources + "Banks/";
                
-        public readonly static string AudioSaveDataPath          = FullPathResources + "AudioSave.prefab";
-        public readonly static string EventSaveDataPath          = FullPathResources + "EventSave.prefab";
-        public readonly static string BusSaveDataPath            = FullPathResources + "BusSave.prefab";
-        public readonly static string BankLinkSaveDataPath       = FullPathResources + "BankLinkSave.prefab";
-               
-        public readonly static string AudioLoadData      =  RelativePathResources+"AudioSave";
-        public readonly static string EventLoadData      =  RelativePathResources+"EventSave";
-        public readonly static string BusLoadData        =  RelativePathResources+"BusSave";
-        public readonly static string BankLinkLoadData   =  RelativePathResources+"BankLinkSave";
-               
+        public const string FullPathResources = "Assets/" + Name + "/Resources/" + Name + "/";
 
-        public readonly static string BankCreateFolder = FullPathResources + "Banks/";
-        public readonly static string BankDeleteFolder = FullPathResources + "Banks/";
-        public readonly static string BankSaveFolder =  FullPathResources  + "Banks/";
-        public readonly static string BankLoadFolder = RelativePathResources + "Banks/";
+        public const string AudioManagerPath = "Assets/" + Name + "/Prefabs/InAudio Manager.prefab";
 
-        public readonly static string AudioManagerPath = "Assets/" + Name + "/Prefabs/InAudio Manager.prefab";
+        public const string GUIUserPrefs = RelativePathResources + "Other/GUIUserPrefs";
 
-        public readonly static string GUIUserPrefs = RelativePathResources + "Other/GUIUserPrefs";
+        public const string ComponentPathInternalData = "InAudio/Internal/Data/";
 
+        public const string ComponentPathInternal = "InAudio/Internal/";
+        public const string ComponentPathInternalPools = "InAudio/Internal/Pools/";
+        public const string ComponentPathPrefabs = "InAudio/Prefab Scripts/";
+        public const string ComponentPathPrefabsManager = ComponentPathPrefabs + "Manager/";
+        public const string ComponentPathPrefabsGUIPrefs = ComponentPathPrefabs + "GUI Prefs/";
+
+
+#if UNITY_EDITOR
+        public const string IconPath = "InAudio/Icons/";
+
+        public const string AudioSaveDataPath = FullPathResources + "AudioSave.prefab";
+        public const string EventSaveDataPath = FullPathResources + "EventSave.prefab";
+        public const string BusSaveDataPath = FullPathResources + "BusSave.prefab";
+        public const string BankLinkSaveDataPath = FullPathResources + "BankLinkSave.prefab";
+
+        public const string BankCreateFolder = FullPathResources + "Banks/";
+        public const string BankRelativeDictory = "/" + Name + "/Resources/" + Name + "/" + "Banks/";
+        public const string BankDeleteDictory = FullPathResources + "Banks/";
+        public const string BankSaveFolder = FullPathResources + "Banks/";
+#endif
     }
 
 }

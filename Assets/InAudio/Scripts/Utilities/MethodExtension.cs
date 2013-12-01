@@ -36,6 +36,14 @@ namespace InAudio.ExtensionMethods
             else
                 return arr;
         }
+
+        public static void ForEach<T>(this T[] source, Action<T> action)
+        {
+            for (int i = 0; i < source.Length; ++i)
+            {
+                action(source[i]);
+            }
+        }
     }
 
     public static class IListExtension
@@ -118,13 +126,13 @@ namespace InAudio.ExtensionMethods
             return default(T);
         }
 
-        public static void ForEach<T>(this IList<T> source, Action<T> action)
-        {
-            foreach (T element in source)
-            {
-                action(element);
-            }
-        }
+        //public static void ForEach<T>(this EventList<T> source, Action<T> action)
+        //{
+        //    for (int i = 0; i < source.Count; ++i)
+        //    {
+        //        action(source[i]);
+        //    }
+        //}
 
 
         public static void ThrowIfNull(this UnityEngine.Object obj)
@@ -193,6 +201,13 @@ namespace InAudio.ExtensionMethods
         {
             return unityEvent.type == EventType.MouseDown && area.Contains(unityEvent.mousePosition) ;
         }
+
+        public static bool IsKeyDown(this Event unityEvent, KeyCode code)
+        {
+            if (unityEvent == null)
+                return false;
+            return Event.current.type == EventType.keyDown && Event.current.keyCode == code;
+        }
     }
 
     public static class RectUtil
@@ -208,6 +223,13 @@ namespace InAudio.ExtensionMethods
             return c1 && c2 && c3 && c4;
         }
 
+        public static bool WithinWidth(this Rect a, Vector2 pos)
+        {
+            if (pos.x > a.x && pos.x < a.x + a.width)
+                return true;
+            return false;
+        }
+
         public static void FlipNegative(ref Rect r)
         {
             if (r.width < 0)
@@ -216,4 +238,6 @@ namespace InAudio.ExtensionMethods
                 r.y -= (r.height *= -1);
         }
     }
+
+
 }

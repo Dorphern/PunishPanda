@@ -59,6 +59,7 @@ public class BusDrawer
                 NodeWorker.MoveNodeOneDown(node);
                 Event.current.Use();
             }
+            labelArea.x += 25;
         }
         else
         {
@@ -73,7 +74,7 @@ public class BusDrawer
         GUI.Label(buttonArea, EditorResources.Bus, noMargain);
 
         labelArea.y += 6;
-        labelArea.x += 80;
+        labelArea.x += 50;
         EditorGUI.LabelField(labelArea, node.Name);
         
         GUI.enabled = false;
@@ -81,7 +82,18 @@ public class BusDrawer
         sliderArea.x = labelArea.x + 100;
         sliderArea.height = 16;
         sliderArea.width = 180;
-        node.CombinedVolume = EditorGUI.Slider(sliderArea, node.CombinedVolume, 0.0f, 1.0f);
+        if (!Application.isPlaying)
+        {
+            if (node.Parent != null)
+                node.CombinedVolume = node.Volume * node.SelfVolume * node.Parent.CombinedVolume * node.Parent.SelfVolume;
+            else
+                node.CombinedVolume = node.Volume * node.SelfVolume;
+            EditorGUI.Slider(sliderArea, node.CombinedVolume, 0.0f, 1.0f);
+        }
+        else
+        {
+            EditorGUI.Slider(sliderArea, node.RuntimeVolume, 0.0f, 1.0f);
+        }
         GUI.enabled = true;
 
 
