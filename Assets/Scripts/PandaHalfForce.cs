@@ -24,21 +24,30 @@ public class PandaHalfForce : MonoBehaviour
 
     private Vector3 trapPos;
     private PandaDirection pandaWalkDir;
+    private TrapBase trapBase;
 
-    public void ThrowingStarSplit(PandaAI panda, Vector3 trapPos)
+    public void ThrowingStarSplit(PandaAI panda, TrapBase trap)
     {
-        this.trapPos = trapPos;
+        this.trapPos = trap.transform.position;
         pandaWalkDir = panda.PandaDirection;
+        trapBase = trap;
 
-        StartCoroutine(SplitPandaThrowing());
+        StartCoroutine(SplitPandaThrowing(panda.transform.position));
     }
 
-    private IEnumerator SplitPandaThrowing()
+    private IEnumerator SplitPandaThrowing(Vector3 pandaPos)
     {
         yield return new WaitForSeconds(Delay);
 
-        Vector3 leftForce = new Vector3(0, 0, Random.Range(MinHeadForce, MaxHeadForce));
-        Vector3 rightForce = new Vector3(0, 0, Random.Range(-MinHeadForce, -MaxHeadForce));
+        var facingForce = Random.Range(10f, 15f);
+        Util.Draw.Sphere(trapBase.transform, Color.red, 10000f);
+        var forceDir = (pandaPos - trapBase.transform.position).normalized;
+        forceDir *= facingForce;
+        //if (Random.Range(0, 2) == 0)
+          //  facingForce = -facingForce;
+
+        Vector3 leftForce = new Vector3(0, 0, Random.Range(MinHeadForce, MaxHeadForce)) + forceDir;
+        Vector3 rightForce = new Vector3(0, 0, Random.Range(-MinHeadForce, -MaxHeadForce)) + forceDir;
         LeftHead.AddForce(leftForce, ForceMode.Impulse);
         RightHead.AddForce(rightForce, ForceMode.Impulse);
     }
