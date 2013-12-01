@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
+	
+	public static InputHandler instance;
+	
 	public List<FingerBlocking> blockades;
 	public SwipeController swipeController;
 	public float fingerRadius = 1f;
@@ -35,6 +38,7 @@ public class InputHandler : MonoBehaviour {
 	
 	void Start () 
 	{
+		instance = this;
 		selectedBlockades = new Dictionary<int, FingerBlocking>();
 		selectedHotSpots = new Dictionary<int, Hotspot>();
 		
