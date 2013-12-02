@@ -75,6 +75,7 @@ public class Animations : MonoBehaviour {
 
     public void PlayTriggerAnimations(PandaDirection pandaDirection, CollidableTypes collidableType)
     {
+        Debug.Log("ANIMCollidableTypes");
         anim.SetInteger("CollidableType", (int)collidableType);
         anim.SetInteger("Direction", (int)pandaDirection);
     }
