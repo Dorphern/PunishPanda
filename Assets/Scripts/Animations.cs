@@ -94,7 +94,11 @@ public class Animations : MonoBehaviour {
         anim.SetInteger("Direction", (int) stateManager.initDirection);
 
         collidable = GetComponent<Collidable>();
+    }
 
+    void Update ()
+    {
+        anim.SetInteger("Random", Random.Range(0, 100));
     }
 
     IEnumerator SetNewPandaState (PandaState state)
