@@ -167,7 +167,7 @@ public class PandaAI : MonoBehaviour {
             if (dot > 0f)
             {
                 // Panda is slapped in the back
-                if (boostEnabled)
+                if (boostEnabled && pandaStateManager.GetState() == PandaState.Walking) // we boost only when walking
                 {
                     //boostStartTime = Time.time;
                     if (boostco != null)
@@ -180,9 +180,9 @@ public class PandaAI : MonoBehaviour {
                         boostco = StartCoroutine("BoostingToWalking", boostDuration);
                     }
                     animations.SetSlapped(false);
-                }
 					pandaStateManager.ChangeState(PandaState.Boosting);
-					bloodOnSlap.EmmitSlapBlood(slapDirection);
+                }
+				bloodOnSlap.EmmitSlapBlood(slapDirection);
 			}
 	        else
 	        {
