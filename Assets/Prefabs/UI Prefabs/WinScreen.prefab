@@ -356,25 +356,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &100042
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 400042}
-  - 114: {fileID: 11400060}
-  - 114: {fileID: 11400040}
-  - 114: {fileID: 11400058}
-  - 114: {fileID: 11400124}
-  m_Layer: 0
-  m_Name: WinScreenScriptHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &100044
 GameObject:
   m_ObjectHideFlags: 1
@@ -834,7 +815,6 @@ Transform:
   m_LocalScale: {x: .00277777785, y: .00277777785, z: .00277777785}
   m_Children:
   - {fileID: 400028}
-  - {fileID: 400042}
   m_Father: {fileID: 0}
 --- !u!4 &400036
 Transform:
@@ -872,17 +852,6 @@ Transform:
   m_Children:
   - {fileID: 400036}
   m_Father: {fileID: 400038}
---- !u!4 &400042
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100042}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -440.500793, y: -350.999939, z: 0}
-  m_LocalScale: {x: 379.5, y: 379.5, z: 379.5}
-  m_Children: []
-  m_Father: {fileID: 400034}
 --- !u!4 &400044
 Transform:
   m_ObjectHideFlags: 1
@@ -1270,7 +1239,7 @@ MonoBehaviour:
   duration: .200000003
   disabledColor: {r: .5, g: .5, b: .5, a: 1}
   onClick:
-  - mTarget: {fileID: 11400060}
+  - mTarget: {fileID: 0}
     mMethodName: OnNextLevelButtonClicked
     oneShot: 0
 --- !u!114 &11400014
@@ -1375,7 +1344,7 @@ MonoBehaviour:
   duration: .200000003
   disabledColor: {r: .5, g: .5, b: .5, a: 1}
   onClick:
-  - mTarget: {fileID: 11400060}
+  - mTarget: {fileID: 0}
     mMethodName: OnRestartButtonClicked
     oneShot: 0
 --- !u!114 &11400022
@@ -1596,28 +1565,6 @@ MonoBehaviour:
   mFillDirection: 4
   mFillAmount: 1
   mInvert: 0
---- !u!114 &11400040
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f36a472802533b4dade335ec0f0fd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenTarget: {fileID: 100010}
-  tweenGroup: 1
-  playDirection: 1
-  resetOnPlay: 1
-  resetIfDisabled: 0
-  ifDisabledOnPlay: 0
-  disableWhenFinished: 0
-  includeChildren: 0
-  onFinished: []
-  eventReceiver: {fileID: 0}
-  callWhenFinished: 
 --- !u!114 &11400042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1695,7 +1642,7 @@ MonoBehaviour:
   duration: .200000003
   disabledColor: {r: .5, g: .5, b: .5, a: 1}
   onClick:
-  - mTarget: {fileID: 11400060}
+  - mTarget: {fileID: 0}
     mMethodName: OnLevelsButtonClicked
     oneShot: 0
 --- !u!114 &11400048
@@ -1779,15 +1726,15 @@ MonoBehaviour:
     e00: 360
     e01: 0
     e02: 0
-    e03: -12823.7637
+    e03: -7093.44336
     e10: 0
     e11: 360
     e12: 0
-    e13: -4647.16895
+    e13: -1754.78162
     e20: 0
     e21: 0
     e22: 360
-    e23: 1327.62329
+    e23: 0
     e30: 0
     e31: 0
     e32: 0
@@ -1816,76 +1763,6 @@ MonoBehaviour:
   relativeOffset: {x: -.200000003, y: 0}
   pixelOffset: {x: 0, y: 0}
   widgetContainer: {fileID: 0}
---- !u!114 &11400058
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f36a472802533b4dade335ec0f0fd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenTarget: {fileID: 100010}
-  tweenGroup: 2
-  playDirection: 1
-  resetOnPlay: 1
-  resetIfDisabled: 0
-  ifDisabledOnPlay: 0
-  disableWhenFinished: 0
-  includeChildren: 0
-  onFinished: []
-  eventReceiver: {fileID: 0}
-  callWhenFinished: 
---- !u!114 &11400060
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feca5f452667d5e46b87fd6c78d2a822, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  winScreen: {fileID: 100028}
-  NewHighScoreTexture: {fileID: 100066}
-  funFactsTexture: {fileID: 11400018}
-  oneStarTexture: {fileID: 100048}
-  twoStarTexture: {fileID: 100046}
-  threeStarTexture: {fileID: 100044}
-  FunFactsLabel: {fileID: 11400066}
-  scoreLabel: {fileID: 11400072}
-  ScoreTypeLabel: {fileID: 11400034}
-  newHighScoreLabel: {fileID: 11400016}
-  TotalScoreLabel: {fileID: 11400036}
-  ZoomInScoreTypeTween: {fileID: 0}
-  ZoomOutScoreTypeTween: {fileID: 0}
-  ZoomInScoreTween: {fileID: 0}
-  ZoomOutScoreTween: {fileID: 11400124}
-  tweenAlphaOneStarBackground: {fileID: 0}
-  tweenAlphaTwoStarBackground: {fileID: 0}
-  tweenAlphaThreeStarBackground: {fileID: 0}
-  ScoreCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-    - time: 1
-      value: .999992788
-      inSlope: -.0797694847
-      outSlope: -.0797694847
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  scoreCurveDuration: .400000006
-  timeBeforeWinScreen: 2
-  timeBeforeScoreAnimation: 1
-  timesteps: 2
 --- !u!114 &11400062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2861,28 +2738,6 @@ MonoBehaviour:
   from: {x: .5, y: .5, z: .5}
   to: {x: 0, y: 0, z: 0}
   updateTable: 0
---- !u!114 &11400124
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f36a472802533b4dade335ec0f0fd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenTarget: {fileID: 100070}
-  tweenGroup: 2
-  playDirection: 1
-  resetOnPlay: 0
-  resetIfDisabled: 0
-  ifDisabledOnPlay: 0
-  disableWhenFinished: 0
-  includeChildren: 0
-  onFinished: []
-  eventReceiver: {fileID: 0}
-  callWhenFinished: 
 --- !u!114 &11400126
 MonoBehaviour:
   m_ObjectHideFlags: 1
