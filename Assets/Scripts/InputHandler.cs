@@ -82,8 +82,11 @@ public class InputHandler : MonoBehaviour {
 			return;
 		}
 		
-		foreach(Touch touch in Input.touches)
+		Touch [] touches = Input.touches;
+		Touch touch;
+		for(int i=0; i<touches.Length; i++)
 		{
+			touch = touches[i]; 
 			// ignore extra touches
 			if(Input.touchCount > 2)
 			{
