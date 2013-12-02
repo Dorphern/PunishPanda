@@ -7,7 +7,8 @@ using PunishPanda;
 public class WinScreen : MonoBehaviour {
 	
 	public GameObject winScreen;
-	public GameObject NewHighScoreTexture;
+	public GameObject NewHighScoreTextureDanish;
+	public GameObject NewHighScoreTextureEnglish;
 	public UITexture funFactsTexture;
 	public GameObject oneStarTexture;
 	public GameObject twoStarTexture;
@@ -32,41 +33,52 @@ public class WinScreen : MonoBehaviour {
 	
 	public float timesteps = 2f;
 	
+	public bool achStatsUpdated = false;
+	
 	int oneStarScore, twoStarScore, threeStarScore;
+	int score, highscore;
+	
+	LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
+	Level level = InstanceFinder.GameManager.ActiveLevel;
 	
 	int total = 0, intermediateTotal = 0;
 
 	
 	public void OnLevelsButtonClicked()
 	{ 
+		UpdateAchievementsAndStats();
 		InstanceFinder.LevelManager.LoadLevelsMenu();
 	}
 	
 	public void OnRestartButtonClicked()
 	{
+		UpdateAchievementsAndStats();
 		InstanceFinder.LevelManager.Reload();
 	}
 	
 	public void OnNextLevelButtonClicked()
 	{
+		UpdateAchievementsAndStats();
 		InstanceFinder.LevelManager.LoadNextLevel();
 	}
 	
 	void Start()
 	{
 		InstanceFinder.GameManager.ActiveLevel.onLevelComplete += OnLevelComplete;
+		levelData = InstanceFinder.LevelManager.CurrentLevel;
+		level = InstanceFinder.GameManager.ActiveLevel;
 	}
 	
 	private void OnLevelComplete()
 	{
-		UnLockLevels();    
 		StartCoroutine(WaitWinScreen());
 	}
 			
 	private IEnumerator WaitWinScreen()
-	{
+	{		
 		yield return new WaitForSeconds(timeBeforeWinScreen);
-        SetWinScreenData();
+
+		SetWinScreenData();
 		if(InputHandler.instance!=null) InputHandler.instance.PausedGame();
 		winScreen.SetActive(true);
 
@@ -75,49 +87,54 @@ public class WinScreen : MonoBehaviour {
      
     private void SetWinScreenData()
     {
-        
-
-        LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
+ 
         funFactsTexture.mainTexture = levelData.FunFactsTexture;
         if (Localization.instance.currentLanguage == "English")
             FunFactsLabel.text = levelData.FunFactsText;
         else
             FunFactsLabel.text = levelData.DanishFunFactsText;
-        Level level = InstanceFinder.GameManager.ActiveLevel;
-        int score = level.GetScore();
-        int highscore = levelData.HighScore;
+        score = level.GetScore();
+        highscore = levelData.HighScore;
 		
 		oneStarScore = levelData.OneStar;
 		twoStarScore = levelData.TwoStars;
 		threeStarScore = levelData.ThreeStars;
 		
-		if(InstanceFinder.StatsManager!=null)
-			InstanceFinder.StatsManager.TotalScore += score;
-		
-//        if (score > highscore)
-//        {
-//            newHighScoreLabel.enabled = true;
-//            levelData.HighScore = score;
-//        }
-
-		
-		StartCoroutine(PlayWinAnimations(score, highscore));
-		
-        if(level.Stars()==3)
+		UnLockLevels();
+		if (score > highscore)
         {
-			if(InstanceFinder.AchievementManager != null)
-			{
-				// if the achievement has been completed
-				if(InstanceFinder.AchievementManager.SetProgressToAchievement(levelData.LevelName,3))
-				{
-					// that means that the stars for this level had not been collected until now
-					// thus we add progress to the star hunter achievement
-					InstanceFinder.AchievementManager.AddProgressToAchievement("Star hunter", 1);
-				}
-			}
-        }
-
+			levelData.HighScore = score;
+        }	
+		
+		StartCoroutine(PlayWinAnimations());
+		
     }
+	
+	private void UpdateAchievementsAndStats()
+	{
+		if(!achStatsUpdated)
+		{
+			Level level = InstanceFinder.GameManager.ActiveLevel;
+			if(InstanceFinder.StatsManager!=null)
+				InstanceFinder.StatsManager.TotalScore += score;
+		
+		
+			if(level.Stars()==3)
+	        {
+				if(InstanceFinder.AchievementManager != null)
+				{
+					// if the achievement has been completed
+					if(InstanceFinder.AchievementManager.SetProgressToAchievement(levelData.LevelName,3))
+					{
+						// that means that the stars for this level had not been collected until now
+						// thus we add progress to the star hunter achievement
+						InstanceFinder.AchievementManager.AddProgressToAchievement("Star Hunter", 1);
+					}
+				}
+	        }
+		}
+	}
+	
 	
 //	void PlayStarAnimations(int score)
 //	{
@@ -131,7 +148,7 @@ public class WinScreen : MonoBehaviour {
 //	}
 
 	
-	IEnumerator PlayWinAnimations(int score, int highscore)
+	IEnumerator PlayWinAnimations()
 	{
 		List<ComboKill> kills = InstanceFinder.ComboSystem.LevelDeaths.ComboKills;
 		PointSystem pointSystem = InstanceFinder.PointSystem;
@@ -264,11 +281,12 @@ public class WinScreen : MonoBehaviour {
 		startTime = Time.realtimeSinceStartup;
 		timeElapsed = Time.realtimeSinceStartup - startTime;
 		
-		ZoomInScoreTypeTween.RunTween();
-		ZoomInScoreTween.RunTween();
+
 		//yield return new WaitForSeconds(timesteps);
 		if(timeScore!=0)
 		{
+			ZoomInScoreTypeTween.RunTween();
+			ZoomInScoreTween.RunTween();
 			scoreLabel.text = (intermediateTotal).ToString("N0");
 			while(timeElapsed < scoreCurveDuration)
 			{
@@ -281,16 +299,15 @@ public class WinScreen : MonoBehaviour {
 			}
 			scoreLabel.text = ((intermediateTotal)).ToString("N0");
 			TotalScoreLabel.text = (total + ( intermediateTotal)).ToString("N0");
+			yield return new WaitForSeconds(timesteps);
+			ZoomOutScoreTypeTween.RunTween();
+			ZoomOutScoreTween.RunTween();
+			yield return new WaitForSeconds(timesteps);	
 		}
 		else
 		{
 			scoreLabel.text = (0).ToString();
 		}
-		
-		yield return new WaitForSeconds(timesteps);
-		ZoomOutScoreTypeTween.RunTween();
-		ZoomOutScoreTween.RunTween();
-		yield return new WaitForSeconds(timesteps);
 		
 		total += intermediateTotal;
 		
@@ -319,7 +336,7 @@ public class WinScreen : MonoBehaviour {
 				yield return new WaitForSeconds(1f);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
-				
+				UpdateAchievementsAndStats();
 			}
 			
 		}
@@ -328,10 +345,13 @@ public class WinScreen : MonoBehaviour {
 		
 		// if new highscore reached
 		if(highscore < score)
-		{
+		{			
 			//localization of stamps
-			InstanceFinder.LevelManager.CurrentLevel.HighScore = score;
-			NewHighScoreTexture.SetActive(true);
+			if(Localization.instance.currentLanguage == "Danish")
+				NewHighScoreTextureDanish.SetActive(true);
+			// defaulting to english
+			else
+				NewHighScoreTextureEnglish.SetActive(true);
 		}
 		else
 		{
@@ -352,7 +372,5 @@ public class WinScreen : MonoBehaviour {
         {
             levels[levelManager.CurrentLevelIndex + 1].UnlockedLevel = true;
         }
-        
-
     }
 }
