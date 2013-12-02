@@ -146,7 +146,7 @@ public class Animations : MonoBehaviour {
     {
         while (stateManager.GetState() != PandaState.Died)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
             anim.SetInteger("Random", Random.Range(0, 100));
         }
     }
