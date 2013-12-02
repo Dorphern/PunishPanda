@@ -79,7 +79,6 @@ public class Animations : MonoBehaviour {
     }
     # endregion
 
-
     # region Private Methods
     // Use this for initialization
     void Start ()
