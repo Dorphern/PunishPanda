@@ -426,7 +426,7 @@ public class PandaAI : MonoBehaviour {
             case PandaState.Died:
                 if (ApplyGravity != null && stuckOnSpikes == false)
                 {
-                    //ApplyGravity();
+                    ApplyGravity();
                 }
 
                 break;
@@ -516,9 +516,7 @@ public class PandaAI : MonoBehaviour {
 			if(pandaMovementController.IsNotMoving())
 			{
 				pandaMovementController.JumpOff();
-			}
-		
-			
+			}	
 		}
 		
 		else if(pandaStateManager.GetState() == PandaState.Walking )
@@ -547,10 +545,7 @@ public class PandaAI : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider c)
-    {
-        if(c.gameObject.GetComponent<TrapBase>() != null)
-            
-
+    {            
         if(c.gameObject.GetComponent<Collidable>() != null)
         {            
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
