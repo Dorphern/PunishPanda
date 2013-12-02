@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class ImpalerSpikeTrap : TrapBase {
-
+	
     [SerializeField] float sleepTime = 2f;
+	[SerializeField] protected ParticleSystem bloodParticles;
     protected string animationName = "Spike Animation";
     protected float inactivePosition = -2.377f;
 
@@ -46,6 +47,7 @@ public class ImpalerSpikeTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+		bloodParticles.Play();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 
