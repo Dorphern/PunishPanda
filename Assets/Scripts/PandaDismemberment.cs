@@ -24,9 +24,8 @@ public class PandaDismemberment : MonoBehaviour
 	private Vector3 explosionForce = Vector3.zero;
 	private Vector2 splatDirection = Vector2.right;
 
-	public void Initialize(BladeDirection spinDirection)
+	public void Initialize()
 	{
-		SpinDirection = spinDirection;
 	}
 		
 	void Start ()
@@ -34,18 +33,7 @@ public class PandaDismemberment : MonoBehaviour
 		for(int i = 0; i < transform.childCount; i++)
 		{
 			explosionForce.x = Random.Range(minHorizontalForce, maxHorizontalForce);
-			if(SpinDirection == BladeDirection.Clockwise)
-			{
-				explosionForce.x *= - 1f;
-			}
-			else if(SpinDirection == BladeDirection.CounterClockwise)
-			{
-				explosionForce.x *= 1f;
-			}
-			else
-			{
-				explosionForce.x *= Random.Range(0, 2) * 2 - 1;
-			}
+			
 			explosionForce.y = Random.Range(minVerticalForce, maxVerticalForce);
 			explosionForce.z = - Random.Range(minVerticalForce, maxVerticalForce);
 			
