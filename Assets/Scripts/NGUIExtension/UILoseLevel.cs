@@ -10,24 +10,16 @@ public class UILoseLevel : MonoBehaviour
     [SerializeField]
     private GameObject EscapeLabel;
 
-    private UITweener[] twenners;
-
     [SerializeField]
     private float LoseFadeTime = 4.0f;
 
 
     void OnEnable()
     {
-        twenners = GetComponentsInChildren<UITweener>();
+        EscapeLabel.GetComponent<UIPlayTween>().Play(true);
         InstanceFinder.GameManager.ActiveLevel.onLevelLost += () =>
         {
-            EscapeLabel.SetActive(true);
-            
-            for (int i = 0; i < twenners.Length; i++)
-            {
-                twenners[i].Reset();
-                twenners[i].PlayForward();
-            }
+            EscapeLabel.SetActive(true);           
             StartCoroutine(WaitForLoseFade());
         };
     }

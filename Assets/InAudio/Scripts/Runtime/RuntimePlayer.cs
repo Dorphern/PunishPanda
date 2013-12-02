@@ -37,7 +37,6 @@ public class RuntimePlayer : MonoBehaviour
 
     public void Stop()
     {
-        
         StopForReuse();
 
         spawnedFrom.ReleaseObject(this);
@@ -58,6 +57,8 @@ public class RuntimePlayer : MonoBehaviour
     {
         for (int i = 0; i < audioSources.Length; ++i)
         {
+            if(audioSources[i] == null)
+                continue;
             audioSources[i].clip = null;
             audioSources[i].Stop();
             endTimes[i] = 0;
@@ -281,6 +282,22 @@ public class RuntimePlayer : MonoBehaviour
     private void StopAndCleanup()
     {
         Stop();
+    }
+
+    void OnDestroy()
+    {
+        if (PlayingNode != null)
+        {
+            var instances = PlayingNode.CurrentInstances;
+            for (int i = 0; i < instances.Count; i++)
+            {
+                if (instances[i].Player == this)
+                {
+                    instances.SwapRemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }
 

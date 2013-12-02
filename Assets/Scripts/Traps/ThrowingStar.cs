@@ -20,8 +20,8 @@ public class ThrowingStar : MonoBehaviour
     private List<AudioEvent> onDeadEvents = new List<AudioEvent>();
 
     [SerializeField]
-    [EventHookAttribute("On Spawn Collide")]
-    private List<AudioEvent> onSpawnCollision = new List<AudioEvent>();
+    [EventHookAttribute("On Spawn")]
+    private List<AudioEvent> onSpawn = new List<AudioEvent>();
 
     [SerializeField]
     [EventHookAttribute("On Finger Collide")]
@@ -35,9 +35,9 @@ public class ThrowingStar : MonoBehaviour
     [EventHookAttribute("On Floor Collide")]
     private List<AudioEvent> onFloorCollision = new List<AudioEvent>();
 
-    void Start()
+    public void Activated()
     {
-        HDRSystem.PostEvents(gameObject, onSpawnCollision);
+        HDRSystem.PostEvents(gameObject, onSpawn);
     }
 
 
