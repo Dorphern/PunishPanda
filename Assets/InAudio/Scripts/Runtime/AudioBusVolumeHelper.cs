@@ -63,17 +63,24 @@ public static class AudioBusVolumeHelper {
 
         float oldVolume = bus.RuntimeVolume;
         bus.RuntimeVolume = bus.Volume * bus.RuntimeSelfVolume * parentVolume;
-        if (bus.RuntimeVolume != oldVolume)
+        float runtimeVolume = bus.RuntimeVolume;
+
+        if (runtimeVolume != oldVolume)
             bus.Dirty = true;
         
         if (bus.Dirty)
         {
+            for (int i = 0; i < bus.ExternalSources.Count; i++)
+            {
+                bus.ExternalSources[i].UpdateBusVolume(runtimeVolume);
+            }
+
             var players = bus.RuntimePlayers;
             for (int i = 0; i < players.Count; ++i)
             {
                 if (players[i] != null)
                 {
-                    players[i].UpdateBusVolume(bus.RuntimeVolume);
+                    players[i].UpdateBusVolume(runtimeVolume);
                 }
                 else
                 {

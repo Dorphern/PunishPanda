@@ -55,12 +55,13 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     [System.NonSerialized]
     public float RuntimeSelfVolume = 1.0f;
 
-    /*//The volume in the hiarchy
-    [System.NonSerialized]
-    public float CombinedVolume = 1.0f;*/
-
     [System.NonSerialized]
     public Fader Fader = new Fader();
+
+
+    //External audio sources in the game
+    [System.NonSerialized] public List<ExternalAudioSource> ExternalSources = new List<ExternalAudioSource>();
+
 
 
 #if UNITY_EDITOR
