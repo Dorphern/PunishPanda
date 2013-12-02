@@ -66,6 +66,7 @@ public class Animations : MonoBehaviour {
 
     public void SetSlapped(bool front)
     {
+        Debug.Log("slapped back");
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
 
@@ -106,7 +107,7 @@ public class Animations : MonoBehaviour {
 
     IEnumerator ResetSlap ()
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
 
         anim.SetBool("Slapped", false);
         anim.SetBool("Face", false);
