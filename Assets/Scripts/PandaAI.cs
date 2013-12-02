@@ -292,7 +292,8 @@ public class PandaAI : MonoBehaviour {
         }
 
         transform.position = newPos;
-        // Fair dust fades away
+        // --------------------------------------
+        // Fairy dust fades away
 
         InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
     }
@@ -333,6 +334,8 @@ public class PandaAI : MonoBehaviour {
 
         pandaStateManager.onStateEnter += StateChange;
         pandaStateManager.onDirectionEnter += DirectionChange;
+
+        pandaMovementController.SetDirection(pandaStateManager.initDirection);
 	}
 	
 	// Update is called once per frame

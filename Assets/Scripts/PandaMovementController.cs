@@ -161,12 +161,6 @@ public class PandaMovementController : MonoBehaviour {
         //    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
         //}
         //else
-        if (pandaStateManager.GetState() != PandaState.Escape)
-        {
-            return;
-            transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
-        }
-
         dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
        
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)

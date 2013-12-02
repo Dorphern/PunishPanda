@@ -58,6 +58,10 @@ public class Animations : MonoBehaviour {
         {
             StartCoroutine(PandaEscapeMove(trap.GetTrapPosition()));
         }
+
+        bool front = (trap.GetTrapPosition() == TrapPosition.WallRight && pandaDirection == PandaDirection.Right)
+            || (trap.GetTrapPosition() == TrapPosition.WallLeft && pandaDirection == PandaDirection.Left);
+        anim.SetBool("Front", front);
     }
 
     public void SetSlapped(bool front)
