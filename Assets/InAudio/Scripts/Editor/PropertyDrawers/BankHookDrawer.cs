@@ -13,11 +13,18 @@ public class BankHookDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
     {
+        if (Selection.gameObjects.Length > 1)
+            return 20;
         return base.GetPropertyHeight(prop, label) + prop.arraySize * LineHeight + DragHeight + 25;
     }
 
     public override void OnGUI(Rect pos, SerializedProperty prop, GUIContent label)
     {
+        if (Selection.gameObjects.Length > 1)
+        {
+            EditorGUI.HelpBox(pos, "Multi-object editing is not supported", MessageType.None);
+            return;
+        }
         var labelPos = pos;
         Color backgroundColor = GUI.color;
 

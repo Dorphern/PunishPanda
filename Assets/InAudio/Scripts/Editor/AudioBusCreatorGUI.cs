@@ -130,7 +130,6 @@ public class AudioBusCreatorGUI : BaseCreatorGUI<AudioBus>
         {
             UndoHelper.RegisterUndo(bus.Parent, "Bus Deletion");
             AudioBusWorker.DeleteBus(bus, InAudioInstanceFinder.DataManager.AudioTree);
-            UndoHelper.Destroy(bus);
         });
         
     }

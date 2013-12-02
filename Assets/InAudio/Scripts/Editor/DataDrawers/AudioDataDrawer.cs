@@ -11,8 +11,9 @@ public static class AudioDataDrawer
     {
         UndoHelper.GUIUndo(node, "Name Change", ref node.Name, () => 
             EditorGUILayout.TextField("Name", node.Name));
-
+        
         EditorGUILayout.Separator();
+        EditorGUILayout.BeginHorizontal();
         AudioData audio = node.NodeData as AudioData;
         var clip = (AudioClip)EditorGUILayout.ObjectField(audio.Clip, typeof(AudioClip), false);
         if (clip != audio.EditorClip) //Assign new clip
@@ -23,6 +24,15 @@ public static class AudioDataDrawer
             EditorUtility.SetDirty(node.GetBank().LazyBankFetch.gameObject);
             EditorUtility.SetDirty(node.NodeData.gameObject);
         }
+        if(GUILayout.Button("Preview", GUILayout.Width(60)))
+        {
+            if (clip != null)
+            {
+                InAudioInstanceFinder.EditorAudioSource.clip = clip;
+                InAudioInstanceFinder.EditorAudioSource.Play();
+            }
+        }
+        EditorGUILayout.EndHorizontal();
 
         NodeTypeDataDrawer.Draw(node);
     }

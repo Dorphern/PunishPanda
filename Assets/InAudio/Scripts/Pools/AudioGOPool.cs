@@ -28,13 +28,10 @@ namespace InAudio
 
         public void ReleaseObject(RuntimePlayer player)
         {
-            if (player != null)
-            {
-                player.transform.parent = transform;
-                player.transform.position = offscreen;
-                freeObjects.Add(player);
-                player.gameObject.SetActive(false);
-            }
+            player.transform.parent = transform;
+            player.transform.position = offscreen;
+            freeObjects.Add(player);
+            player.gameObject.SetActive(false);
         }
 
         public void ReserveExtra(int extra)

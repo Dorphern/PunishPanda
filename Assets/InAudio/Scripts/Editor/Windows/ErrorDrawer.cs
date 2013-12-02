@@ -63,6 +63,12 @@ namespace  InAudio
                 {
                     EditorWindow.GetWindow<AuxWindow>().SelectDataCreation();
                 }
+
+                EditorGUILayout.Separator();
+                if (GUILayout.Button("Try To Reload Data"))
+                {
+                    manager.Load(true);
+                }
             }
             return areAnyMissing;
         }

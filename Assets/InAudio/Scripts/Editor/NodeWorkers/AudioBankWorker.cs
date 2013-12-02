@@ -175,5 +175,22 @@ public static class AudioBankWorker {
             }
         }
     }
+
+    public static void DeleteBank(AudioBankLink toDelete)
+    {        
+        AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(toDelete.LazyBankFetch.gameObject));
+        toDelete.Parent.GetChildren.Remove(toDelete);
+        Object.DestroyImmediate(toDelete, true);
+    }
+
+    public static void DeleteFolder(AudioBankLink toDelete)
+    {
+        UndoHelper.DoInGroupWithWarning(() =>
+        {
+            UndoHelper.RecordObjectFull(toDelete.Parent, "Delete Bank Folder");
+            toDelete.Parent.GetChildren.Remove(toDelete);
+            UndoHelper.Destroy(toDelete);
+        });
+    }
 }
 }

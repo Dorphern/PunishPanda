@@ -166,12 +166,6 @@ public class RuntimePlayer : MonoBehaviour
         }
         for (int i = 0; i < 1 + loops || loopInfinite; ++i) //For at least once
         {
-            if (breakLoop)
-            {
-                loops = 0;
-                loopInfinite = false;
-            }
-
             if (current.Type == AudioNodeType.Audio)
             {
                 NextFreeAudioSource();
@@ -222,6 +216,18 @@ public class RuntimePlayer : MonoBehaviour
                     else
                         dspPool.ReleaseObject(dspTime);
                 }
+            }
+
+            if (breakLoop && current.Type == AudioNodeType.Sequence)
+            {
+                breakLoop = false;
+                int currentLoops = loops;
+                bool currentInfinite = loopInfinite;
+
+                loops = 0;
+                loopInfinite = false;
+                if (currentLoops > 0 || currentInfinite)
+                    continue;
             }
         }
     }
