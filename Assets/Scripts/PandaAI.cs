@@ -41,7 +41,7 @@ public class PandaAI : MonoBehaviour {
     private Vector3 oldPosition;
     private Vector3 fallDir;
 	private Coroutine boostco;
-
+	private PandaState preFallingState;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -316,9 +316,11 @@ public class PandaAI : MonoBehaviour {
 
     public void Falling ()
     {
+		
         if (pandaStateManager.GetState() != PandaState.Falling
             && pandaStateManager.GetState() != PandaState.Died)
         {
+			preFallingState = pandaStateManager.GetState();
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
@@ -444,7 +446,6 @@ public class PandaAI : MonoBehaviour {
 	{
         if (pandaStateManager.GetState() == PandaState.FallTransition || pandaStateManager.GetState() == PandaState.Falling)
         {
-
             if (landingHard == true)
             {
                 if (fallDir.x < 0)
@@ -454,7 +455,14 @@ public class PandaAI : MonoBehaviour {
 
                 BloodSplatter.Instance.ProjectFloorHit(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
             }
-            pandaStateManager.ChangeState(PandaState.Walking);
+			if(preFallingState == PandaState.Idle)
+			{
+				pandaStateManager.ChangeState(PandaState.Idle);
+			}
+			else
+			{
+				pandaStateManager.ChangeState(PandaState.Walking);
+			}
         }
 	}
 	
