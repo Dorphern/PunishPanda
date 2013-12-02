@@ -94,11 +94,8 @@ public class Animations : MonoBehaviour {
         anim.SetInteger("Direction", (int) stateManager.initDirection);
 
         collidable = GetComponent<Collidable>();
-    }
 
-    void Update ()
-    {
-        anim.SetInteger("Random", Random.Range(0, 100));
+        StartCoroutine(RandomNumberUpdater());
     }
 
     IEnumerator SetNewPandaState (PandaState state)
@@ -144,6 +141,15 @@ public class Animations : MonoBehaviour {
         anim.SetBool("NewCollidableType", true);
         yield return new WaitForEndOfFrame();
         anim.SetBool("NewCollidableType", false);
+    }
+
+    IEnumerator RandomNumberUpdater ()
+    {
+        while (stateManager.GetState() != PandaState.Died)
+        {
+            yield return new WaitForSeconds(1f);
+            anim.SetInteger("Random", Random.Range(0, 100));
+        }
     }
     # endregion
 }
