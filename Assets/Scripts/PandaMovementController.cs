@@ -10,6 +10,7 @@ public class PandaMovementController : MonoBehaviour {
     [SerializeField] Boosting boosting;
     [SerializeField] JumpingOff jumpOff;
     [SerializeField] Falling falling;
+    [SerializeField] Escape escape;
     [SerializeField] float hangingOffSet = 30f;
     [SerializeField] float pushingForce = 15f;
 	private float currentPushingMagnitude = 0f;
@@ -17,9 +18,10 @@ public class PandaMovementController : MonoBehaviour {
 	private CharacterController controller;
 	private PandaAI pandaAI;
     private Animations animations;
-    private PandaStateManager pandastateManger;
+    private PandaStateManager pandaStateManager;
 	Vector3 lastPos;
     Vector3 dampedVelocity;
+    private float escapeSlideSpeed = 0f;
 	
 	bool withinRange = false;
 
@@ -61,13 +63,30 @@ public class PandaMovementController : MonoBehaviour {
         public float velocityThreshold = 1f; /* At what speed are we actually falling ? */
         public float hardLandingThreshold = 10f;
     }
+
+    [System.Serializable]
+    public class Escape
+    {
+        public bool pandaEscapedSlide;
+        public bool pandaEscapeCrawl;
+        public CollidableTypes bambooDirection;
+        public float bambooSlideAngle = 4f;
+        public bool pandaJumpToBambooDown;
+        public bool pandaJumpToBambooUp;
+        public Transform bambooPosition;
+        public float slideDistance;
+        public Vector3 yVelocity = Vector3.zero;
+        public float smoothTime = 0.1f;
+        public Vector3 targetJumpPos;
+
+    }
 	
 
 	#endregion
 
     # region Public Methods
 	
-	public bool IsNotMoving()
+	public bool IsNotMoving ()
 	{
 		Vector3 diff = lastPos - transform.position;
 		if(diff.magnitude < movement.notMovingThreshold)
@@ -75,7 +94,7 @@ public class PandaMovementController : MonoBehaviour {
 		return false;	
 	}
 	
-	public void JumpOff()
+	public void JumpOff ()
 	{
 		ApplyJump(jumpOff.jumpOffSpeed, jumpOff.jumpOffDir);	
 	}
@@ -102,6 +121,14 @@ public class PandaMovementController : MonoBehaviour {
     {
         return controller.isGrounded;
     }
+
+    public void SetDirection (PandaDirection dir)
+    {
+        Vector3 curr = transform.eulerAngles;
+        float goalY = (dir == PandaDirection.Right ? 0 : 180);
+        curr.y = goalY;
+        transform.eulerAngles = curr;
+    }
     # endregion
 
     # region Private Methods
@@ -110,7 +137,7 @@ public class PandaMovementController : MonoBehaviour {
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
         animations = GetComponent<Animations>();
-        pandastateManger = GetComponent<PandaStateManager>();
+        pandaStateManager = GetComponent<PandaStateManager>();
 		
 		movement.currentSpeed = movement.walkSpeed;
 		
@@ -129,26 +156,27 @@ public class PandaMovementController : MonoBehaviour {
 	void FixedUpdate ()
 	{
 	    // Make sure the character stays in the 2D plane
-        if(pandastateManger.GetState() != PandaState.Escape)
-        {
-            
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, -1f);
-        }
-
+        //if (pandaStateManager.GetState() != PandaState.Escape)
+        //{
+        //    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+        //}
+        //else
         dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
-       
+        pandaAI.landingHard = dampedVelocity.y < -falling.hardLandingThreshold;
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
-        {
-            pandaAI.landingHard = dampedVelocity.y < -falling.hardLandingThreshold;
+        {            
             pandaAI.Falling();
         }
 
         // Store the last position of the character;
         lastPos = transform.position;
 	}
+
+    void Update ()
+    {
+
+
+    }
 	
 	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{

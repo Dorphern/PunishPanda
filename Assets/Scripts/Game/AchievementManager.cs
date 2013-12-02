@@ -105,11 +105,15 @@ public class Achievement
 }
 
 public class AchievementManager : MonoBehaviour {
-
-	public List<Achievement> achievementList = new List<Achievement>();
-	public bool debug = false;
+    [EventHookAttribute("On Achievement")]
+    public List<AudioEvent> OnAchievementEvents = new List<AudioEvent>();
 	
+	public bool debug = false;
+	public List<Achievement> achievementList = new List<Achievement>();
+	
+	[HideInInspector]
 	public delegate void AchievementGoalHandler(Achievement achievement);
+	[HideInInspector]
 	public event AchievementGoalHandler onAchievementCompleted;
 	
 	private Dictionary<string,Achievement> achievements;
@@ -128,6 +132,7 @@ public class AchievementManager : MonoBehaviour {
 			
 			if(ach.AddProgress(progress) && onAchievementCompleted!=null)
 			{
+                HDRSystem.PostEvents(gameObject, OnAchievementEvents);
 				onAchievementCompleted(ach);
 				return true;		
 			}
@@ -140,7 +145,7 @@ public class AchievementManager : MonoBehaviour {
 		if(!achievements.ContainsKey(name))
 		{
 			if(debug)
-				Debug.LogError("Attempted to set progress to achievement that doesn't exist: " + name);
+				Debug.Log("Attempted to set progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{
@@ -164,7 +169,7 @@ public class AchievementManager : MonoBehaviour {
 	private void LoadAchievements()
 	{
 		achievements = new Dictionary<string, Achievement>();
-	    var localization = Localization.instance;
+	    //var localization = Localization.instance;
 		for(int i=0;i<achievementList.Count;i++)
 		{
             

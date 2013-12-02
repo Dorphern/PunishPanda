@@ -6,7 +6,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     [SerializeField] float sleepTime = 2f;
     protected float inactivePosition = -1.7f;
     protected string animationName = "Triggered Spike Animation";
-
+	[SerializeField] private ParticleSystem bloodParticles;
     # region Public Methods
 
     override public TrapType GetTrapType ()
@@ -18,6 +18,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     {
         if (IsActive())
         {
+			bloodParticles.Play();
             animation.Play();
         }
     }
@@ -28,7 +29,6 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 
     void Awake ()
     {
-        
     }
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)

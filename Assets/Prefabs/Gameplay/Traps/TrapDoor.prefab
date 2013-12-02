@@ -8,6 +8,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
+  - 65: {fileID: 6500004}
+  - 114: {fileID: 11400012}
   m_Layer: 0
   m_Name: TrapDoor
   m_TagString: Untagged
@@ -97,9 +99,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: -.087155737, y: 0, z: 0, w: .99619472}
-  m_LocalPosition: {x: 3.81835842, y: 2.16624093, z: -.776588559}
-  m_LocalScale: {x: 1, y: 2, z: 2}
+  m_LocalRotation: {x: -.0956124365, y: 0, z: 0, w: .995418668}
+  m_LocalPosition: {x: -5.61919594, y: 3.68791842, z: 1.27768183}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400008}
   - {fileID: 400002}
@@ -111,8 +113,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.21969223, y: 0, z: .356568098}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.21969223, y: -.00139237801, z: .376175493}
+  m_LocalScale: {x: 1, y: 1, z: 1.84320104}
   m_Children:
   - {fileID: 400004}
   m_Father: {fileID: 400000}
@@ -146,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 100008}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
   m_LocalPosition: {x: -1.29160619, y: .00606155396, z: .318887711}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1.84320104}
   m_Children:
   - {fileID: 400006}
   m_Father: {fileID: 400000}
@@ -224,6 +226,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: .817552924, y: .0708930418, z: 1.08313847}
   m_Center: {x: -.408776462, y: .0354465209, z: -.0155545436}
+--- !u!65 &6500004
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: .600000024, z: 1.63}
+  m_Center: {x: 0, y: 0, z: 2.0999999}
 --- !u!111 &11100000
 Animation:
   m_ObjectHideFlags: 1
@@ -283,6 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effa4bc385fb0694eaa49fc52244f893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: 0
   initActivated: 0
   isPerfectTrap: 0
   maxPerfectPandaKills: -1
@@ -324,6 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effa4bc385fb0694eaa49fc52244f893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: 0
   initActivated: 0
   isPerfectTrap: 0
   maxPerfectPandaKills: -1
@@ -342,6 +358,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateTriangleStrips: 1
+--- !u!114 &11400012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6df630db814ae4c8f45429ffb59bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

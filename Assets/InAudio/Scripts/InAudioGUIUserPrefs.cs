@@ -1,6 +1,8 @@
+using InAudio;
 using UnityEngine;
 
 #if UNITY_EDITOR
+[AddComponentMenu(FolderSettings.ComponentPathPrefabsGUIPrefs + "GUI User Prefs")]
 public class InAudioGUIUserPrefs : MonoBehaviour {
     [SerializeField]
     int _selectedAudioNodeID;

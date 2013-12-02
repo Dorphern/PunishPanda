@@ -64,7 +64,6 @@ GameObject:
   - 114: {fileID: 11400004}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Electricity Trap Vertical
   m_TagString: Untagged
@@ -78,9 +77,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 2.55027652, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: -4.37113883e-08}
+  m_LocalPosition: {x: -.0644663572, y: -1.16202307, z: 0}
+  m_LocalScale: {x: .576333702, y: .576333702, z: .576333702}
   m_Children: []
   m_Father: {fileID: 400006}
 --- !u!4 &400002
@@ -100,9 +99,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 0, y: -1.10510874, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: -.0644663572, y: 2.62211728, z: 0}
+  m_LocalScale: {x: .576334, y: .576334, z: .576334}
   m_Children: []
   m_Father: {fileID: 400006}
 --- !u!4 &400006
@@ -112,12 +111,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.98635387, y: -5.33911324, z: 0}
+  m_LocalPosition: {x: .0805580616, y: .317734241, z: .77319324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 400004}
-  - {fileID: 400002}
   - {fileID: 400000}
+  - {fileID: 400002}
+  - {fileID: 400004}
   m_Father: {fileID: 0}
 --- !u!23 &2300000
 Renderer:
@@ -179,7 +178,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mesh: {fileID: 4300000, guid: 67eec133ae1c21548a5b69061973d308, type: 3}
+  m_Mesh: {fileID: 4300000, guid: a0ad26363b627ab43844cb10aea5620e, type: 3}
 --- !u!33 &3300002
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -193,7 +192,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_Mesh: {fileID: 4300000, guid: 67eec133ae1c21548a5b69061973d308, type: 3}
+  m_Mesh: {fileID: 4300000, guid: a0ad26363b627ab43844cb10aea5620e, type: 3}
 --- !u!65 &6500000
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -230,25 +229,6 @@ Animator:
   m_CullingMode: 1
   m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f1ff234b1b046d4dbb6f7fdab994ae6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnEnableEvents:
-  - {fileID: 11400142, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400138, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  OnStartEvents: []
-  OnDisableEvents: []
-  OnDestroyEvents: []
-  OnVisibleEvents: []
-  OnInvisibleEvents: []
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -281,9 +261,11 @@ MonoBehaviour:
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
   electricity: {fileID: 100002}
-  electricityBox0: {fileID: 100004}
+  electricityBox0: {fileID: 100000}
   electricityBox1: {fileID: 0}
   electricTextureCount: 6
+  onTrapAwake: []
+  onTrapDisable: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

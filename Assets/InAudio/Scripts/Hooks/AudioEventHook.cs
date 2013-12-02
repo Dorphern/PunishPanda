@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("HDR Audio/Audio Event Hook")]
+[AddComponentMenu("InAudio/Audio Event Hook")]
 public class AudioEventHook : MonoBehaviour
 {
     [EventHookAttribute("On Enable")]
     public List<AudioEvent> OnEnableEvents = new List<AudioEvent>();
-    [EventHookAttribute("On Initialize")]
+    [EventHookAttribute("On Start")]
     public List<AudioEvent> OnStartEvents = new List<AudioEvent>();
     [EventHookAttribute("On Disable")]
     public List<AudioEvent> OnDisableEvents = new List<AudioEvent>();
@@ -17,6 +17,9 @@ public class AudioEventHook : MonoBehaviour
     public List<AudioEvent> OnVisibleEvents = new List<AudioEvent>();
     [EventHookAttribute("On Invisible")]
     public List<AudioEvent> OnInvisibleEvents = new List<AudioEvent>();
+
+    /*[EventHookCollisionAttribute("On Collision", this)]
+    public List<AudioEvent> OnCollisionEvents = new List<AudioEvent>();*/
 
     void OnEnable()
     {
@@ -62,7 +65,7 @@ public class AudioEventHook : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.U))
         {
-            for (int i = 0; i < OnEnableEvents.Count; ++i)
+            for (int i = 0; i < OnDisableEvents.Count; ++i)
             {
                 HDRSystem.PostEvent(gameObject, OnEnableEvents[i]);
             }

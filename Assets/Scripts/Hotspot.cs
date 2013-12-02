@@ -11,10 +11,11 @@ public class Hotspot : MonoBehaviour {
     /*
      * @todo add arrow when active
      */
-
+	public GameObject hotspotActiveLines;
+	
     [SerializeField] private float bounceForce = 1f;
     [SerializeField] private float bounceDirection = 1f;
-
+	
     private bool hotspotActive = false;
 
     void OnTriggerEnter (Collider collider)
@@ -29,24 +30,30 @@ public class Hotspot : MonoBehaviour {
 
     void CheckPandaHit (Collider collider)
     {
-        PandaStateManager pandaStateManager = collider.GetComponent<PandaStateManager>();
-        PandaState pandaState = pandaStateManager.GetState();
-        if (pandaState == PandaState.Walking && hotspotActive)
-        {
-            collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
-        }
+		Collidable collidable = collider.GetComponent<Collidable>();
+		if(collidable != null && collidable.type == CollidableTypes.Panda)
+		{
+	        PandaStateManager pandaStateManager = collider.GetComponent<PandaStateManager>();
+	        PandaState pandaState = pandaStateManager.GetState();
+	        if (pandaState == PandaState.Walking && hotspotActive)
+	        {
+	            collider.GetComponent<PandaAI>().Jump(bounceForce, bounceDirection);
+	        }
+		}
         
     }
 
     public void ActivateHotspot ()
     {
         hotspotActive = true;
+		hotspotActiveLines.SetActive(hotspotActive);
 		//renderer.material.color = Color.green;
     }
 
     public void DeactivateHotspot ()
     {
         hotspotActive = false;
+		hotspotActiveLines.SetActive(hotspotActive);
 		//renderer.material.color = Color.gray;
     }
 }

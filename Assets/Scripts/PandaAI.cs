@@ -18,6 +18,8 @@ public class PandaAI : MonoBehaviour {
 	public float boostDuration = 1f;
 
     [SerializeField] protected GameObject dismemberedPanda;
+	[SerializeField] protected GameObject electrocutedPanda;
+    [SerializeField] protected GameObject slicedInHalfPanda;
     
 	
 	[System.NonSerializedAttribute]
@@ -28,7 +30,6 @@ public class PandaAI : MonoBehaviour {
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes;
     public bool landingHard;
-    public bool pandaEscaped;
 	
 	public bool isMainMenuPanda;
 
@@ -40,7 +41,7 @@ public class PandaAI : MonoBehaviour {
     private Vector3 oldPosition;
     private Vector3 fallDir;
 	private Coroutine boostco;
-
+	private PandaState preFallingState;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -59,7 +60,7 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Jump")]
     private List<AudioEvent> jumpEvents;
     Animations animations;
-	
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -74,34 +75,26 @@ public class PandaAI : MonoBehaviour {
 				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
 			}
 			pandaStateManager.ChangeState(PandaState.Idle);
-			BloodSplatter.Instance.ProjectBlood(transform.position, new Vector2(GetPandaFacingDirection().x, 0.01f));
+			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
 		}
 	}
-	
-	void Update()
+
+	public bool PandaPushingFinger()
 	{
-        if(pandaEscaped)
-        {
-
-            transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y - 100f, transform.position.z), Time.deltaTime * 0.06f);
-
-
-        }
-	}
-	
-	public void PandaPushingFinger()
-	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
-			Debug.Log("pushing");
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
+			return true;
 		}
+		return false;
 	}
 	
 	public void PandaPushingToWalking()
 	{
-		if(pandaStateManager.GetState()!=PandaState.Idle)
+		if(pandaStateManager.GetState() == PandaState.PushingFinger)
+		{
 			pandaStateManager.ChangeState(PandaState.Walking);	
+		}
 	}
 
     public void Jump (float force, float direction)
@@ -138,7 +131,7 @@ public class PandaAI : MonoBehaviour {
 		// we can slap the panda only in walking and Idle state
 		if(pandaStateManager.GetState() != PandaState.Walking && pandaStateManager.GetState() != PandaState.Idle
 			&& pandaStateManager.GetState() != PandaState.Falling && pandaStateManager.GetState() != PandaState.Boosting 
-			&& pandaStateManager.GetState() != PandaState.PushingFinger)
+			&& pandaStateManager.GetState() != PandaState.Jumping && pandaStateManager.GetState() != PandaState.PushingFinger)
             return;
 
         // Track a slap
@@ -174,7 +167,7 @@ public class PandaAI : MonoBehaviour {
             if (dot > 0f)
             {
                 // Panda is slapped in the back
-                if (boostEnabled)
+                if (boostEnabled && pandaStateManager.GetState() == PandaState.Walking) // we boost only when walking
                 {
                     //boostStartTime = Time.time;
                     if (boostco != null)
@@ -187,9 +180,9 @@ public class PandaAI : MonoBehaviour {
                         boostco = StartCoroutine("BoostingToWalking", boostDuration);
                     }
                     animations.SetSlapped(false);
-                }
 					pandaStateManager.ChangeState(PandaState.Boosting);
-					bloodOnSlap.EmmitSlapBlood(slapDirection);
+                }
+				bloodOnSlap.EmmitSlapBlood(slapDirection);
 			}
 	        else
 	        {
@@ -238,6 +231,14 @@ public class PandaAI : MonoBehaviour {
 			return - Vector2.right;
 		}
 	}
+
+    public PandaDirection PandaDirection
+    {
+        get
+        {
+            return pandaStateManager.GetDirection();
+        }
+    }
 	
     /**
      * Attempt a kill on the panda from a death trap
@@ -256,28 +257,74 @@ public class PandaAI : MonoBehaviour {
         pandaStateManager.ChangeState(PandaState.Died);
 
         // change state from playAnimation PlayDeathAnimation
-        gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, true, pandaStateManager.GetDirection(), lastPandaState);
+        gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, pandaStateManager.GetDirection());
         
         pandaController.PandaKilled(true, isPerfect);
-        if (trap.GetTrapType() == TrapType.Electicity)
+        TrapType trapType = trap.GetTrapType();
+
+        if (trapType == TrapType.Electicity)
         {
-            pandaController.EnableColliders( false );
+            //pandaController.EnableColliders( false );
+			StartCoroutine(SpawnElectrocutedPanda(0f));
         }
-        else if (trap.GetTrapType() == TrapType.Pounder || trap.GetTrapType() == TrapType.RoundSaw)
+        else if (trapType == TrapType.Pounder)
         {
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().KilledByPosition = trap.transform.position;
-            Destroy(gameObject);
+            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
+            Destroy(this.gameObject); 
         }
-        else if (trap.GetTrapType() == TrapType.ImpalerSpikes
-            || trap.GetTrapType() == TrapType.StaticSpikes)
+        else if (trapType == TrapType.RoundSaw)
         {
-           // pandaController.EnableColliders(false);
+            BladeDirection bladeDirection = trap.GetSpinDirection();
+            
+            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+                .GetComponent<PandaHalfForce>().SawSplit(this, trap.transform.position, bladeDirection);
+            Destroy(this.gameObject);
+        }
+        else if (trapType == TrapType.ImpalerSpikes
+                 || trapType == TrapType.StaticSpikes)
+        {
+            // pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
         }
+        else if (trapType == TrapType.ThrowingStars && isPerfect)
+        {
+            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+                .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
+            Destroy(this.gameObject);
+        }
 
         return true;
+    }
+
+    public void PandaEscape (PandaEscape escape, TrapPosition position)
+    {
+        pandaStateManager.ChangeState(PandaState.Escape);
+        animations.PlayDeathAnimation(escape, pandaStateManager.GetDirection()); 
+        pandaMovementController.SetVelocity(0, 0);
+
+        // Fairy dust! MAGIC beyond this line
+        // ---------------------------------------
+        Vector3 newPos = transform.position;
+        newPos.x = escape.transform.position.x;
+        newPos.z = escape.transform.position.z;
+        newPos.y += 0.2f;
+
+        if (pandaStateManager.GetDirection() == PandaDirection.Left)
+        {
+            newPos.x += 1.4f;
+        }
+        else
+        {
+            newPos.x -= 1.4f;
+        }
+
+        transform.position = newPos;
+        // --------------------------------------
+        // Fairy dust fades away
+
+        InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
     }
 
     public bool IsAlive ()
@@ -288,9 +335,11 @@ public class PandaAI : MonoBehaviour {
 
     public void Falling ()
     {
+		
         if (pandaStateManager.GetState() != PandaState.Falling
             && pandaStateManager.GetState() != PandaState.Died)
         {
+			preFallingState = pandaStateManager.GetState();
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
@@ -316,6 +365,8 @@ public class PandaAI : MonoBehaviour {
 
         pandaStateManager.onStateEnter += StateChange;
         pandaStateManager.onDirectionEnter += DirectionChange;
+
+        pandaMovementController.SetDirection(pandaStateManager.initDirection);
 	}
 	
 	// Update is called once per frame
@@ -416,7 +467,6 @@ public class PandaAI : MonoBehaviour {
 	{
         if (pandaStateManager.GetState() == PandaState.FallTransition || pandaStateManager.GetState() == PandaState.Falling)
         {
-
             if (landingHard == true)
             {
                 if (fallDir.x < 0)
@@ -424,9 +474,16 @@ public class PandaAI : MonoBehaviour {
                 else if (fallDir.x > 0)
                     fallDir.x += 1f;
 
-                BloodSplatter.Instance.ProjectBlood(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
+                BloodSplatter.Instance.ProjectFloorHit(new Vector2(transform.position.x, transform.position.y - 2f), new Vector3(-fallDir.x, -1, 0));
             }
-            pandaStateManager.ChangeState(PandaState.Walking);
+			if(preFallingState == PandaState.Idle)
+			{
+				pandaStateManager.ChangeState(PandaState.Idle);
+			}
+			else
+			{
+				pandaStateManager.ChangeState(PandaState.Walking);
+			}
         }
 	}
 	
@@ -491,18 +548,9 @@ public class PandaAI : MonoBehaviour {
 
     void OnTriggerEnter(Collider c)
     {
-        if (c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.LedgeFall && pandaStateManager.GetState() == PandaState.Walking)
+        if(c.gameObject.GetComponent<Collidable>() != null)
         {
-            animations.PlayLedgeFallAnimation(pandaStateManager.GetDirection());
-        }
-        if(c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeDown)
-        {
-            pandaStateManager.ChangeState(PandaState.Escape);
-            transform.position = Vector3.Slerp(transform.position, new Vector3(c.transform.position.x - 0.4f, transform.position.y, -1f), 100f * Time.deltaTime);
-        }
-        else if(c.gameObject.GetComponent<Collidable>() != null && c.gameObject.GetComponent<Collidable>().type == CollidableTypes.BambooEscapeUp)
-        {
-
+            animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
         }
     }
 	
@@ -518,6 +566,14 @@ public class PandaAI : MonoBehaviour {
 		yield return new WaitForSeconds(timeToWait);
 		if(pandaStateManager.GetState()==PandaState.Boosting)
 			pandaStateManager.ChangeState(PandaState.Walking);
+	}
+	
+	IEnumerator SpawnElectrocutedPanda(float timeToWait)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		
+		Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+		Destroy(this.gameObject);
 	}
 	# endregion		
 }

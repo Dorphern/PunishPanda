@@ -178,6 +178,9 @@ public class UIToggle : UIWidgetContainer
 		{
 			mIsActive = state;
 			startsActive = state;
+			
+
+			
 			if (activeSprite != null) activeSprite.alpha = state ? 1f : 0f;
 		}
 		else if (mIsActive != state)
@@ -249,6 +252,10 @@ public class UIToggle : UIWidgetContainer
 		{
 			mIsActive = state;
 			startsActive = state;
+			
+			if (state == true && OnToggleActivate!=null)
+				OnToggleActivate();
+			
 			if (activeSprite != null) activeSprite.alpha = state ? 1f : 0f;
 		}
 		else if (mIsActive != state)

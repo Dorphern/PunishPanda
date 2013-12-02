@@ -12,9 +12,12 @@ public class PauseMenuManager : MonoBehaviour {
 	public GameObject HintScreen;
 	public GameObject HintObj;
 	public GameObject PauseAndReset;
+	public GameObject WhiteTint;
+	
 	private UITexture textureComponent;
 	private TweenAlpha hintAlphaComponent;
 	private TweenAlpha tintAlphaComponent;
+	private TweenAlpha whiteTintAlphaComponent;
 	private bool skippedTutorial;
 	
 		
@@ -27,40 +30,28 @@ public class PauseMenuManager : MonoBehaviour {
 	void Start()
 	{
 		pausegame = GetComponent<PauseGame>();
+		
 
-		//get start-tutorial texture:
-	    if (Localization.instance.currentLanguage == "English")
-	    {
-            HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
-	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
-	    }
-	    else
-	    {
-            HintTexture = InstanceFinder.LevelManager.CurrentLevel.DanishHintscreenTexture;
-	        TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.DanishTutorialTexture;
-	    }
-	    //get menu-hint texture:
-		
-		
-		
+
 		//get components
 		textureComponent = HintObj.GetComponent<UITexture>();
 		hintAlphaComponent = HintObj.GetComponent<TweenAlpha>();
 		tintAlphaComponent = PauseTint.GetComponent<TweenAlpha>();
+		whiteTintAlphaComponent = WhiteTint.GetComponent<TweenAlpha>();
 		
 		if(!InstanceFinder.GameManager.debugMode)
 		{
-			/*//get start-tutorial texture:
-			if(InstanceFinder.LevelManager.CurrentLevel != null)
-				TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
-			//get menu-hint texture:
-			if(InstanceFinder.LevelManager.CurrentLevel != null)
-				HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
-			*/
-			
-			//get components
-			textureComponent = HintObj.GetComponent<UITexture>();
-			hintAlphaComponent = HintObj.GetComponent<TweenAlpha>();
+			//get start-tutorial texture:
+	    	if (Localization.instance.currentLanguage == "English")
+	    	{
+            	HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
+	        	TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+	    	}
+	    	else
+	    	{
+            	HintTexture = InstanceFinder.LevelManager.CurrentLevel.DanishHintscreenTexture;
+	        	TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.DanishTutorialTexture;
+	    	}
 			
 			//set start-tutorial texture to component
 			textureComponent.mainTexture = TutorialTexture;
@@ -71,7 +62,6 @@ public class PauseMenuManager : MonoBehaviour {
 				textureComponent.height = TutorialTexture.height;
 			
 	
-				//display start-tutorial texture (if it has one..)
 				skippedTutorial = false;
 			
 				StartCoroutine(showTutorial());
@@ -108,10 +98,13 @@ public class PauseMenuManager : MonoBehaviour {
 			textureComponent.height = HintTexture.height;
 			HintScreen.SetActive(true);
 	    	PauseMenu.SetActive(false);
+			tintAlphaComponent.Reset();
+			PauseTint.SetActive(false);
+			WhiteTint.SetActive(true);
 		
 		
 			hintAlphaComponent.PlayForward();
-			tintAlphaComponent.PlayForward();
+			whiteTintAlphaComponent.PlayForward();
 		}
 		else
 		{
@@ -125,10 +118,10 @@ public class PauseMenuManager : MonoBehaviour {
 		skippedTutorial = true;
 		
 		hintAlphaComponent.Reset();
-		tintAlphaComponent.Reset();
+		whiteTintAlphaComponent.Reset ();
 	
 		HintScreen.SetActive(false);
-		PauseTint.SetActive(false);
+		WhiteTint.SetActive(false);
 		PauseAndReset.SetActive (true);
 
 	}
@@ -159,15 +152,23 @@ public class PauseMenuManager : MonoBehaviour {
 	//for showhing tutorial screen/animation at levelstart
 	IEnumerator showTutorial()
 	{
-		
+		// wait one update for data initialization
+		yield return null;
 		
 		pausegame.StopTime();
 		PauseAndReset.SetActive (false);
-		PauseTint.SetActive(true);
+	
+		//short start delay
+		float startDelay = Time.realtimeSinceStartup + 0.5f;
+    	while (Time.realtimeSinceStartup < startDelay)
+    	{
+        	yield return 0;
+    	}
+		WhiteTint.SetActive(true);
 		HintScreen.SetActive(true);
 		
 		hintAlphaComponent.Play();
-		tintAlphaComponent.Play();
+		whiteTintAlphaComponent.Play();
 
 		float pauseEndTime = Time.realtimeSinceStartup + 3;
     	while (Time.realtimeSinceStartup < pauseEndTime)
@@ -175,22 +176,23 @@ public class PauseMenuManager : MonoBehaviour {
         	yield return 0;
     	}
 
-		
-		if(skippedTutorial == false)
-		{
-			hintAlphaComponent.PlayReverse();
-			tintAlphaComponent.PlayReverse();
-			float fadeOutTime = Time.realtimeSinceStartup + 1;
-    		while (Time.realtimeSinceStartup < fadeOutTime)
-    		{
-        		yield return 0;
-    		}
-		
-			pausegame.ResumeGame();
-			PauseAndReset.SetActive (true);
-			PauseTint.SetActive(false);
-			HintScreen.SetActive(false);
-		}
+		//TIMED FADEOUT:
+//		if(skippedTutorial == false)
+//		{
+//			hintAlphaComponent.PlayReverse();
+//			whiteTintAlphaComponent.PlayReverse ();
+//			
+//			float fadeOutTime = Time.realtimeSinceStartup + 2;
+//    		while (Time.realtimeSinceStartup < fadeOutTime)
+//    		{
+//        		yield return 0;
+//    		}
+//		
+//			pausegame.ResumeGame();
+//			PauseAndReset.SetActive (true);
+//			WhiteTint.SetActive(false);
+//			HintScreen.SetActive(false);
+//		}
 
 	}
 }

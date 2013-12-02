@@ -6,11 +6,13 @@ public class SawTrap : TrapBase {
     [SerializeField] protected float acceleration = 0.5f;
     [SerializeField] protected float killThreshold = 0.3f; // Determine min speed for killing
     [SerializeField] protected float maxTurnSpeed = 5f;
+	[SerializeField] protected BladeDirection bladeDirection = BladeDirection.Clockwise;
 
     protected float turnSpeed = 0f;
     protected float baseAcc = 0.2f;
     protected bool isActive = false;
-
+	
+	[SerializeField] protected ParticleSystem bloodParticles;
     # region Public Methods
 
     override public TrapType GetTrapType ()
@@ -32,6 +34,11 @@ public class SawTrap : TrapBase {
     {
         isActive = false;
     }
+	
+	public override BladeDirection GetSpinDirection ()
+	{
+		return bladeDirection;
+	}
 
     # endregion
 
@@ -70,6 +77,9 @@ public class SawTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+		bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAI.GetPandaFacingDirection().x, 0f, 0f));
+		bloodParticles.transform.position = pandaAI.transform.position;
+		bloodParticles.Play();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 

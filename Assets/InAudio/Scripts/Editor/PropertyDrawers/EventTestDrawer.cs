@@ -14,65 +14,55 @@ public class EventTestDrawer : Editor
         get { return target as EventTester; }
     }
 
-    private float LineHeight = 22;
-    private float DragHeight = 20;
-    private GUIStyle eventTypeStyle;
+    private int LineHeight = 22;
+    private int DragHeight = 20;
+    private GUIStyle labelStyle;
 
-    
-
+    public int GetPropertyHeight()
+    {
+        return eventTester.EventList.Events.Count * LineHeight + DragHeight + 20;
+    }
     public override void OnInspectorGUI()
     {
-        Rect pos = EditorGUILayout.BeginVertical();
+        Rect pos = EditorGUILayout.BeginVertical(GUILayout.Height(GetPropertyHeight()));
 
-        //Yeah... the only way I could find to make Unity expand the area
-        EditorGUILayout.Separator();
-        EditorGUILayout.Separator();
-        EditorGUILayout.Separator();
-        EditorGUILayout.Separator();
- 
+    
         var labelPos = pos;
         Color backgroundColor = GUI.color;
 
         GUI.skin.label.alignment = TextAnchor.UpperLeft;
-        var labelStyle = GUI.skin.GetStyle("label");
-        //int fontSize = labelStyle.fontSize;
-        if (eventTypeStyle == null)
-            eventTypeStyle = new GUIStyle(GUI.skin.GetStyle("label"));
-        //eventTypeStyle.fontSize = fontSize + 1;
+        if(labelStyle != null)
+            labelStyle = GUI.skin.GetStyle("label");
 
-        //labelStyle.fontSize = fontSize;
-        //eventTypeStyle.fontSize = 12;
         labelPos.height = 14;
-        eventTypeStyle.fontStyle = FontStyle.Bold;
-        labelPos.x += 13;
-        GUI.Label(labelPos, "Postable Events", eventTypeStyle);
-
+        var events = eventTester.EventList.Events;
         GUI.skin.label.alignment = TextAnchor.MiddleLeft;
-        for (int i = 0; i < eventTester.Events.Count; ++i)
+        labelPos.y += 5;
+        for (int i = 0; i < events.Count; ++i)
         {
-            EditorGUILayout.Separator();   
-            labelPos.y += LineHeight;
             labelPos.height = 20;
-            AudioEvent audioEvent = eventTester.Events[i];
+            //EditorGUILayout.Separator();   
+
+            AudioEvent audioEvent = eventTester.EventList.Events[i];
             if (audioEvent != null)
                 GUI.Label(labelPos, audioEvent.GetName, labelStyle);
             else
                 GUI.Label(labelPos, "Missing event", labelStyle);
 
-            EditorGUILayout.TextField("");
+ 
             Rect buttonPos = labelPos;
             buttonPos.x = pos.width - 200; //Align to right side
             buttonPos.width = 50;
             if (audioEvent == null)
                 GUI.enabled = false;
 
-            buttonPos.width += 30;
+            buttonPos.width += 40;
             if (GUI.Button(buttonPos, "Post Event"))
             {
                 HDRSystem.PostEvent(eventTester.gameObject, audioEvent);
             }
-            buttonPos.width -= 30;
-            buttonPos.x += 90;
+            buttonPos.width -= 40;
+            buttonPos.x += 100;
             if (GUI.Button(buttonPos, "Find"))
             {
                 EditorWindow.GetWindow<EventWindow>().Find(audioEvent);
@@ -80,30 +70,33 @@ public class EventTestDrawer : Editor
             GUI.enabled = true;
             buttonPos.x = pos.width - 44;
             buttonPos.width = 35;
-            if (GUI.Button(buttonPos, "X"))
+            if (GUI.Button(buttonPos, "X")) 
             {
-                eventTester.Events.RemoveAt(i);
+                events.RemoveAt(i);
             }
+            labelPos.y += LineHeight;
+            
         }
+        labelPos.y += 10;
         EditorGUILayout.Separator();
-          
-
-        labelPos.y += DragHeight + 15;
         labelPos.height = DragHeight;
+        
         GUI.skin.label.alignment = TextAnchor.MiddleCenter;
         GUI.color = backgroundColor;
         GUI.Button(labelPos, "Drag event here to add event");
-        OnDragging.OnDraggingObject(DragAndDrop.objectReferences, labelPos, canDrop,
-            objects => objects.ForEach(obj => eventTester.Events.Add(obj as AudioEvent)));
+        OnDragging.OnDraggingObject(DragAndDrop.objectReferences, labelPos, CanDrop,
+            objects => objects.ForEach(obj => events.Add(obj as AudioEvent)));
 
         GUI.color = backgroundColor;
 
         labelPos.height += 1;
-
+        
+        EditorGUILayout.Separator();
         EditorGUILayout.EndVertical();
+
     }
 
-    private bool canDrop(Object[] objects)
+    private bool CanDrop(Object[] objects)
     {
         return
             objects.All(obj => (obj as AudioEvent) != null) &&
