@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StaticSpikeTrap : TrapBase {
 
-
+	[SerializeField] protected ParticleSystem bloodParticles;
     protected string animationInName  = "StaticSpikeIn Animation";
     protected string animationOutName = "StaticSpikeOut Animation";
     protected float inactivePositionY = -2.377f;
@@ -33,6 +33,7 @@ public class StaticSpikeTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+		bloodParticles.Play();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 
