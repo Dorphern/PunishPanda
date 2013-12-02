@@ -106,11 +106,6 @@ public class Animations : MonoBehaviour {
 
     IEnumerator ResetSlap ()
     {
-        Debug.Log("Slapped " + anim.GetBool("Slapped"));
-        Debug.Log("Direction " + anim.GetInteger("Direction"));
-        Debug.Log("Front " + anim.GetBool("Front"));
-        Debug.Log("Grounded " + anim.GetBool("Grounded"));
-
         yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
         anim.SetBool("Face", false);
