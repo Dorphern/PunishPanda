@@ -7,16 +7,17 @@ public class AchievementWindow : MonoBehaviour {
 	public UILabel achievementTitleLabel;
 	public UILabel achievementTextLabel;
 	public UITexture achievementIcon;
-	
+	public GameObject camera;
 	public UIRunTween rt;
 	
 	bool forward = true;
 	Queue<Achievement> completedAchievements;
 	bool isRunning = false;
-	
+	Localization localization;
 	
 	void Start()
 	{
+		localization = Localization.instance;
 		completedAchievements = new Queue<Achievement>();
 		InstanceFinder.AchievementManager.onAchievementCompleted += OnAchievementComplete;
 	}
@@ -29,7 +30,8 @@ public class AchievementWindow : MonoBehaviour {
 		if(!isRunning)
 		{
 			isRunning = true;
-			StartCoroutine(runAchievementWindow());
+			
+			StartCoroutine("runAchievementWindow");
 		}
 	}
 	
@@ -39,14 +41,19 @@ public class AchievementWindow : MonoBehaviour {
 		{
 			Achievement ach = completedAchievements.Dequeue();
 			if(ach!=null){
+				camera.SetActive(true);
 				if(achievementTitleLabel!=null)
-					achievementTitleLabel.text = ach.name;
+				{
+					achievementTitleLabel.text = localization.Get(ach.name);
+				}
 				if(achievementTextLabel!=null)
-					achievementTextLabel.text = ach.description;
+					achievementTextLabel.text = localization.Get(ach.description);
 				// disabling this since it causes null pointer exceptions
 //				if(achievementIcon!=null && ach.achievementIcon!=null)
 //					achievementIcon.mainTexture = ach.achievementIcon;
 				// add a bit of time between setting up the achievement window and dropping it
+				
+				
 				yield return new WaitForSeconds(0.01f);
 				yield return new WaitForEndOfFrame();
 				rt.RunTween();
@@ -55,6 +62,7 @@ public class AchievementWindow : MonoBehaviour {
 				rt.RunTween();
 				yield return new WaitForSeconds(1.5f);
 				yield return new WaitForEndOfFrame();
+				camera.SetActive(false);
 			}
 		}
 		isRunning = false;
