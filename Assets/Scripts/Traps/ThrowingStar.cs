@@ -7,6 +7,7 @@ public class ThrowingStar : MonoBehaviour
 {
     [SerializeField] protected Texture cleanTexture;
     [SerializeField] protected Texture dirtyTexture;
+	[SerializeField] protected ParticleSystem bloodParticles;
 
 	[System.NonSerialized] public StarSpawner starSpawner;
     private bool isActive = true;
@@ -82,6 +83,8 @@ public class ThrowingStar : MonoBehaviour
                 HDRSystem.PostEvents(gameObject, onDeadEvents);
             if (starSpawner.TryPandaKill(pandaAi))
             {
+				bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAi.GetPandaFacingDirection().x, 0f, 0f));
+				bloodParticles.Play();
                 SetDirty();
             }
         }
