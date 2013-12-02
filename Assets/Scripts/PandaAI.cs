@@ -548,8 +548,11 @@ public class PandaAI : MonoBehaviour {
 
     void OnTriggerEnter(Collider c)
     {
+        if(c.gameObject.GetComponent<TrapBase>() != null)
+            
+
         if(c.gameObject.GetComponent<Collidable>() != null)
-        {
+        {            
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
         }
     }
