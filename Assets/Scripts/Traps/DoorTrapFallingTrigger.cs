@@ -13,6 +13,8 @@ public class DoorTrapFallingTrigger : MonoBehaviour {
 	
 	public void PandasFalling()
 	{
+		if(pandasOnTrap == null) return;
+		
 		for(int i = 0; i < pandasOnTrap.Count; i++)
 		{
 			pandasOnTrap[i].Falling();

@@ -38,8 +38,8 @@ public class WinScreen : MonoBehaviour {
 	int oneStarScore, twoStarScore, threeStarScore;
 	int score, highscore;
 	
-	LevelData levelData = InstanceFinder.LevelManager.CurrentLevel;
-	Level level = InstanceFinder.GameManager.ActiveLevel;
+	LevelData levelData;
+	Level level;
 	
 	int total = 0, intermediateTotal = 0;
 
@@ -336,7 +336,7 @@ public class WinScreen : MonoBehaviour {
 				yield return new WaitForSeconds(1f);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
-				UpdateAchievementsAndStats();
+				//UpdateAchievementsAndStats();
 			}
 			
 		}
