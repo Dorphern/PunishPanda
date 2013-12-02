@@ -541,6 +541,8 @@ public class PandaAI : MonoBehaviour {
         if(c.gameObject.GetComponent<Collidable>() != null)
         {
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
+            if (c.gameObject.GetComponent<Collidable>().type == CollidableTypes.DeathTrap)
+                return;
         }
     }
 	
