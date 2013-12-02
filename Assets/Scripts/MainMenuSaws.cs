@@ -6,6 +6,9 @@ public class MainMenuSaws : MonoBehaviour {
 	public GameObject sawObject;
 	SawTrap sawtrap;
 	
+	//TO DO:
+	//English Saw / Danish Saw
+	//change texture...
 	
 	// Use this for initialization
 	void Start () {
