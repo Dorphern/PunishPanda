@@ -73,21 +73,21 @@ public class LevelIconManager : MonoBehaviour {
 	
 	public void show1star()
 	{
-		firstSprite.spriteName = "Star_black";
+		firstSprite.spriteName = "bloodStarOutline01";
 		
 	}
 	
 	public void show2stars()
 	{
-		firstSprite.spriteName = "Star_black";
-		secondSprite.spriteName = "Star_black";
+		firstSprite.spriteName = "bloodStarOutline01";
+		secondSprite.spriteName = "bloodStarOutline02";
 	}
 	
 	public void show3stars()
 	{
-		firstSprite.spriteName = "Star_black";
-		secondSprite.spriteName = "Star_black";
-		thirdSprite.spriteName = "Star_black";
+		firstSprite.spriteName = "bloodStarOutline01";
+		secondSprite.spriteName = "bloodStarOutline02";
+		thirdSprite.spriteName = "bloodStarOutline03";
 	}
 	
 	public void LockLevel()
