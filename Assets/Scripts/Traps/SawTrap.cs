@@ -11,7 +11,8 @@ public class SawTrap : TrapBase {
     protected float turnSpeed = 0f;
     protected float baseAcc = 0.2f;
     protected bool isActive = false;
-
+	
+	[SerializeField] protected ParticleSystem bloodParticles;
     # region Public Methods
 
     override public TrapType GetTrapType ()
@@ -76,6 +77,9 @@ public class SawTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+		bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAI.GetPandaFacingDirection().x, 0f, 0f));
+		bloodParticles.transform.position = pandaAI.transform.position;
+		bloodParticles.Play();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 
