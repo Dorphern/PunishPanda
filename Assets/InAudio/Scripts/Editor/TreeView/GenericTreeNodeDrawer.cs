@@ -105,7 +105,15 @@ namespace InAudio.TreeDrawer
                     return EditorResources.Tree;
             }
             else if (node is AudioBankLink)
-                return EditorResources.Bank;
+            {
+                AudioBankLink link = node as AudioBankLink;
+                if(link.Type == AudioBankTypes.Link)
+                    return EditorResources.Bank;
+                else
+                {
+                    return EditorResources.Folder;
+                }
+            }
 
             return null;
         }

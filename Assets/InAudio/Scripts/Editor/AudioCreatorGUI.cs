@@ -316,14 +316,6 @@ public class AudioCreatorGUI : BaseCreatorGUI<AudioNode>
         }
     }
 
-    public void FindAudio(AudioNode node)
-    {
-        searchingFor = node.GUID.ToString();
-        lowercaseSearchingFor = searchingFor.ToLower().Trim();
-        treeDrawer.Filter(SearchFilter);
-        SelectedNode = node;
-    }
-
     protected override bool OnNodeDraw(AudioNode node, bool isSelected)
     {
         return GenericTreeNodeDrawer.Draw(node, isSelected);

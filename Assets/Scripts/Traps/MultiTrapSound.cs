@@ -6,7 +6,8 @@ using System.Collections;
 public class MultiTrapSound : MonoBehaviour
 {
 
-    [SerializeField] private List<TrapBase> Traps = new List<TrapBase>();
+    [SerializeField]
+    private List<TrapBase> Traps = new List<TrapBase>();
 
     [EventHookAttribute("All Single Or More Activated")]
     [SerializeField]
@@ -22,6 +23,13 @@ public class MultiTrapSound : MonoBehaviour
         {
             Traps[i].OnTrapActivate += OnTrapActivate;
             Traps[i].OnTrapDeactivate += OnTrapDeactivate;
+        }
+        for (int i = 0; i < Traps.Count; i++)
+        {
+            if (Traps[i].enabled && Traps[i].gameObject.activeInHierarchy)
+            {
+                OnTrapActivate(Traps[i]);
+            }
         }
     }
 
