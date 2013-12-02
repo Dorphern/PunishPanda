@@ -74,7 +74,8 @@ public class Animations : MonoBehaviour {
 
     public void PlayTriggerAnimations(PandaDirection pandaDirection, CollidableTypes collidableType)
     {
-        anim.SetInteger("CollidableType", (int)collidableType);
+        Debug.Log("ANIMCollidableTypes");
+        StartCoroutine(ChangeCollidableType(collidableType));
         anim.SetInteger("Direction", (int)pandaDirection);
     }
     # endregion
@@ -106,6 +107,7 @@ public class Animations : MonoBehaviour {
 
     IEnumerator ResetSlap ()
     {
+        anim.SetInteger("CollidableType", -1);
         yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
         anim.SetBool("Face", false);
@@ -130,6 +132,14 @@ public class Animations : MonoBehaviour {
             yield return new WaitForSeconds(2f);
             animation.Play(escapeDownAnimation);
         }
+    }
+
+    IEnumerator ChangeCollidableType (CollidableTypes collidableType)
+    {
+        anim.SetInteger("CollidableType", (int) collidableType);
+        anim.SetBool("NewCollidableType", true);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("NewCollidableType", false);
     }
     # endregion
 }
