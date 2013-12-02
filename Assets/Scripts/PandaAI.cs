@@ -18,6 +18,7 @@ public class PandaAI : MonoBehaviour {
 	public float boostDuration = 1f;
 
     [SerializeField] protected GameObject dismemberedPanda;
+	[SerializeField] protected GameObject electrocutedPanda;
     [SerializeField] protected GameObject slicedInHalfPanda;
     
 	
@@ -275,7 +276,8 @@ public class PandaAI : MonoBehaviour {
 
         if (trapType == TrapType.Electicity)
         {
-            pandaController.EnableColliders( false );
+            //pandaController.EnableColliders( false );
+			StartCoroutine(SpawnElectrocutedPanda(0f));
         }
         else if (trapType == TrapType.Pounder)
         {
@@ -554,6 +556,14 @@ public class PandaAI : MonoBehaviour {
 		yield return new WaitForSeconds(timeToWait);
 		if(pandaStateManager.GetState()==PandaState.Boosting)
 			pandaStateManager.ChangeState(PandaState.Walking);
+	}
+	
+	IEnumerator SpawnElectrocutedPanda(float timeToWait)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		
+		Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+		Destroy(this.gameObject);
 	}
 	# endregion		
 }
