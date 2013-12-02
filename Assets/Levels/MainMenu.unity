@@ -1714,12 +1714,12 @@ MonoBehaviour:
   boostEnabled: 1
   boostDuration: 0
   dismemberedPanda: {fileID: 100020, guid: 8abf91a663f54b34583bfdde65a2715c, type: 2}
+  electrocutedPanda: {fileID: 0}
   slicedInHalfPanda: {fileID: 0}
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
   landingHard: 0
-  pandaEscaped: 0
   isMainMenuPanda: 1
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -1767,6 +1767,18 @@ MonoBehaviour:
   falling:
     velocityThreshold: 1
     hardLandingThreshold: 10
+  escape:
+    pandaEscapedSlide: 0
+    pandaEscapeCrawl: 0
+    bambooDirection: 0
+    bambooSlideAngle: 4
+    pandaJumpToBambooDown: 0
+    pandaJumpToBambooUp: 0
+    bambooPosition: {fileID: 0}
+    slideDistance: 0
+    yVelocity: {x: 0, y: 0, z: 0}
+    smoothTime: .100000001
+    targetJumpPos: {x: 0, y: 0, z: 0}
   hangingOffSet: 30
   pushingForce: 15
   velocityDampingSpeed: .100000001
@@ -9418,6 +9430,46 @@ MonoBehaviour:
   mFillDirection: 4
   mFillAmount: 1
   mInvert: 0
+--- !u!1001 &778029605
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+  m_RootGameObject: {fileID: 2067360898}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &786394438
 GameObject:
   m_ObjectHideFlags: 0
@@ -16124,7 +16176,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100004, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1395599477}
@@ -16141,7 +16193,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400008, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 1395599475}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -16152,7 +16204,7 @@ MonoBehaviour:
   Levels:
   - LevelName: levelt1
     HighScore: 0
-    UnlockedLevel: 0
+    UnlockedLevel: 1
     UnlockedFunFact: 0
     hasPlatforms: 0
     FunFactsTexture: {fileID: 2800000, guid: 4566502cd3b1d23498efc5aac5e49072, type: 3}
@@ -16174,7 +16226,7 @@ MonoBehaviour:
     UnlockedFunFact: 0
     hasPlatforms: 0
     FunFactsTexture: {fileID: 2800000, guid: 6bd77c2474f4b7d4e92955304e38a241, type: 3}
-    FunFactsText: 
+    FunFactsText: 99% of school shootings are panda related
     DanishFunFactsText: Stop panda terrorismen
     HintscreenTexture: {fileID: 0}
     DanishHintscreenTexture: {fileID: 0}
@@ -16192,7 +16244,7 @@ MonoBehaviour:
     UnlockedFunFact: 0
     hasPlatforms: 0
     FunFactsTexture: {fileID: 2800000, guid: 52d0c11d7197126478e7983ff64e638c, type: 3}
-    FunFactsText: 
+    FunFactsText: Your mom is a panda
     DanishFunFactsText: Din mor er en panda
     HintscreenTexture: {fileID: 0}
     DanishHintscreenTexture: {fileID: 0}
@@ -16210,7 +16262,7 @@ MonoBehaviour:
     UnlockedFunFact: 0
     hasPlatforms: 0
     FunFactsTexture: {fileID: 2800000, guid: 07ee9bd6a16ab934bbe20f69300a42a5, type: 3}
-    FunFactsText: 
+    FunFactsText: A panda sank Titanic
     DanishFunFactsText: Det var ikke et isbjerg, men en panda der sank Titanic
     HintscreenTexture: {fileID: 0}
     DanishHintscreenTexture: {fileID: 0}
@@ -16228,26 +16280,8 @@ MonoBehaviour:
     UnlockedFunFact: 0
     hasPlatforms: 0
     FunFactsTexture: {fileID: 2800000, guid: 9dd63b266a962c44c9f6b39dcf378dcc, type: 3}
-    FunFactsText: 
+    FunFactsText: Most Hell Angels members are descended from pandas
     DanishFunFactsText: De fleste HA rockere nedstammer fra pandaen
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
-    Toggled: 0
-    MaxTimeScore: 60
-    LevelLength: 120000
-    OneStar: 18000
-    TwoStars: 60000
-    ThreeStars: 110500
-  - LevelName: levela1
-    HighScore: 0
-    UnlockedLevel: 0
-    UnlockedFunFact: 0
-    hasPlatforms: 0
-    FunFactsTexture: {fileID: 2800000, guid: b38b45d49f4ef37419da15bc3c7684de, type: 3}
-    FunFactsText: 
-    DanishFunFactsText: Pandaerne er skyld i de fleste teenage graviditeter
     HintscreenTexture: {fileID: 0}
     DanishHintscreenTexture: {fileID: 0}
     TutorialTexture: {fileID: 0}
@@ -16258,19 +16292,37 @@ MonoBehaviour:
     OneStar: 18000
     TwoStars: 60000
     ThreeStars: 110500
+  - LevelName: levela1
+    HighScore: 0
+    UnlockedLevel: 1
+    UnlockedFunFact: 0
+    hasPlatforms: 1
+    FunFactsTexture: {fileID: 2800000, guid: b38b45d49f4ef37419da15bc3c7684de, type: 3}
+    FunFactsText: Pandas are the no.1 reason for teenage pregnancies
+    DanishFunFactsText: Pandaerne er skyld i de fleste teenage graviditeter
+    HintscreenTexture: {fileID: 0}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
+    Toggled: 1
+    MaxTimeScore: 120000
+    LevelLength: 60
+    OneStar: 18000
+    TwoStars: 60000
+    ThreeStars: 110500
   - LevelName: levela
     HighScore: 0
-    UnlockedLevel: 0
+    UnlockedLevel: 1
     UnlockedFunFact: 0
-    hasPlatforms: 0
+    hasPlatforms: 1
     FunFactsTexture: {fileID: 2800000, guid: 1eea49af98cddb8409376d55d1166c23, type: 3}
-    FunFactsText: 
+    FunFactsText: The pandas invented zumba
     DanishFunFactsText: Pandaerne har opfundet zumba
     HintscreenTexture: {fileID: 0}
     DanishHintscreenTexture: {fileID: 0}
     TutorialTexture: {fileID: 0}
     DanishTutorialTexture: {fileID: 0}
-    Toggled: 0
+    Toggled: 1
     MaxTimeScore: 120000
     LevelLength: 105
     OneStar: 1500
@@ -16278,9 +16330,9 @@ MonoBehaviour:
     ThreeStars: 120500
   - LevelName: levela4
     HighScore: 0
-    UnlockedLevel: 1
+    UnlockedLevel: 0
     UnlockedFunFact: 0
-    hasPlatforms: 0
+    hasPlatforms: 1
     FunFactsTexture: {fileID: 2800000, guid: c5d74446fd1ea0e4c8ad7423dba338c6, type: 3}
     FunFactsText: The kkk was founded by pandas
     DanishFunFactsText: KKK blev grundlagt af pandaer
@@ -16288,17 +16340,89 @@ MonoBehaviour:
     DanishHintscreenTexture: {fileID: 0}
     TutorialTexture: {fileID: 0}
     DanishTutorialTexture: {fileID: 0}
-    Toggled: 1
+    Toggled: 0
     MaxTimeScore: 120000
     LevelLength: 240
     OneStar: 28000
     TwoStars: 65000
     ThreeStars: 120500
+  - LevelName: levela6
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+    hasPlatforms: 0
+    FunFactsTexture: {fileID: 0}
+    FunFactsText: 
+    DanishFunFactsText: 
+    HintscreenTexture: {fileID: 0}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
+    Toggled: 0
+    MaxTimeScore: 0
+    LevelLength: 20
+    OneStar: 0
+    TwoStars: 0
+    ThreeStars: 0
+  - LevelName: levela7
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+    hasPlatforms: 0
+    FunFactsTexture: {fileID: 0}
+    FunFactsText: 
+    DanishFunFactsText: 
+    HintscreenTexture: {fileID: 0}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
+    Toggled: 0
+    MaxTimeScore: 0
+    LevelLength: 20
+    OneStar: 0
+    TwoStars: 0
+    ThreeStars: 0
+  - LevelName: levela8
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+    hasPlatforms: 0
+    FunFactsTexture: {fileID: 0}
+    FunFactsText: 
+    DanishFunFactsText: 
+    HintscreenTexture: {fileID: 0}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
+    Toggled: 0
+    MaxTimeScore: 0
+    LevelLength: 20
+    OneStar: 0
+    TwoStars: 0
+    ThreeStars: 0
+  - LevelName: levela9
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+    hasPlatforms: 0
+    FunFactsTexture: {fileID: 0}
+    FunFactsText: 
+    DanishFunFactsText: 
+    HintscreenTexture: {fileID: 0}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
+    Toggled: 0
+    MaxTimeScore: 0
+    LevelLength: 20
+    OneStar: 0
+    TwoStars: 0
+    ThreeStars: 0
 --- !u!4 &1395599477
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400004, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 1395599475}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -20034,46 +20158,6 @@ MonoBehaviour:
   mFillDirection: 4
   mFillAmount: 1
   mInvert: 0
---- !u!1001 &1836843951
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_RootGameObject: {fileID: 2067360898}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &1838800046
 GameObject:
   m_ObjectHideFlags: 0
@@ -21953,7 +22037,7 @@ MonoBehaviour:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 2067360906}
@@ -21976,7 +22060,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400010, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22083,7 +22167,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22099,7 +22183,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400016, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22112,7 +22196,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400012, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22127,7 +22211,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400006, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22140,7 +22224,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22158,7 +22242,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -22170,7 +22254,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1836843951}
+  m_PrefabInternal: {fileID: 778029605}
   m_GameObject: {fileID: 2067360898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
