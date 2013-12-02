@@ -10,6 +10,11 @@ public class StarSpawner : TrapBase
 	public int maxStarCount = 5;
 	public GameObject starPrefab;
     [SerializeField] float angle;
+
+    public float Angle
+    {
+        get { return angle; }
+    }
 	
 	private Queue<ThrowingStar> starsPool;
 	

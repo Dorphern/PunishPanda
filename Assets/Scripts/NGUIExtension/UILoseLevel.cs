@@ -36,6 +36,7 @@ public class UILoseLevel : MonoBehaviour
     {
         yield return new WaitForSeconds(LoseFadeTime);
         Time.timeScale = 0;
+		if(InputHandler.instance!=null) InputHandler.instance.PausedGame();
         LoseCamera.SetActive(true);
     }
 
