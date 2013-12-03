@@ -155,7 +155,8 @@ public class PauseMenuManager : MonoBehaviour {
 		// wait one update for data initialization
 		yield return null;
 		
-		pausegame.StopTime();
+		//pausegame.StopTime();
+		pausegame.TutorialPause();
 		PauseAndReset.SetActive (false);
 	
 
