@@ -85,7 +85,7 @@ public class AuxWindow : InAudioBaseWindow
 
         if (selectedToolbar == 0)
         {
-            isDirty |= busGUI.OnGUI(LeftWidth, (int)position.height - topHeight);
+            isDirty |= busGUI.OnGUI(LeftWidth, (int)position.height);
         }
 
         if (selectedToolbar == 1)
