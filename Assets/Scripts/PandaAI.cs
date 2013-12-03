@@ -80,7 +80,6 @@ public class PandaAI : MonoBehaviour {
             if (pandaStateManager.GetState() == PandaState.Idle)
             {
                 animations.ChangePandaState(PandaState.Idle);
-                Debug.Log("halla");
             }
 			pandaStateManager.ChangeState(PandaState.Idle);
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
