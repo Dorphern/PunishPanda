@@ -9,7 +9,6 @@ public static class AudioBusVolumeHelper {
         if (duration == 0)
         {
             bus.Fader.Activated = false;
-
             bus.RuntimeSelfVolume = targetVolume;
         }
         else
@@ -30,6 +29,7 @@ public static class AudioBusVolumeHelper {
                     newVolume);
             }
         }
+        UpdateBusVolumes(bus);
     }
 
     public static void UpdateBusVolumes(AudioBus bus)
@@ -88,6 +88,7 @@ public static class AudioBusVolumeHelper {
 
         for (int i = 0; i < bus.Children.Count; ++i)
         {
+            bus.Children[i].Dirty |= bus.Dirty;
             UpdateBusVolumes(bus.Children[i]);
         }
 

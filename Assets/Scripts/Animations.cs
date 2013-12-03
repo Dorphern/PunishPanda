@@ -49,7 +49,6 @@ public class Animations : MonoBehaviour {
             //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
-        anim.SetBool(statePanda.ToString(), pandaStateBool);
         anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
@@ -126,7 +125,6 @@ public class Animations : MonoBehaviour {
         anim.SetInteger("CollidableType", -1);
         yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
     }
 
     IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
