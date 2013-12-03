@@ -104,6 +104,7 @@ public class ThrowingStar : MonoBehaviour
                 
 				this.enabled = false;
 				renderer.enabled = false;
+				SetClean();
 			}
 		}
 		else if(collidable.type == CollidableTypes.Floor)
