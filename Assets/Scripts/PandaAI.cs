@@ -332,6 +332,12 @@ public class PandaAI : MonoBehaviour {
         PandaState state = pandaStateManager.GetState();
         return state != PandaState.Died;
     }
+	
+	public bool HasEscaped ()
+    {
+        PandaState state = pandaStateManager.GetState();
+        return state == PandaState.Escape;
+    }
 
     public void Falling ()
     {
