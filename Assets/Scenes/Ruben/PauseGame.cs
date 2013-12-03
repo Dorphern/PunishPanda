@@ -32,6 +32,18 @@ public class PauseGame : MonoBehaviour {
 		}
 	}
 	
+	public void TutorialPause()
+	{
+		Time.timeScale = 0;
+    
+		
+		//PAUSE AUDIO ALSO??
+		for(int i = 0; i < pauseGameEvent.Count; ++i)
+		{
+			HDRSystem.PostEvent(gameObject, pauseGameEvent[i]);
+		}
+	}
+	
 	public void ResumeGame()
 	{
 		Time.timeScale = savedTimeScale;
