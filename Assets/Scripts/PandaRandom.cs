@@ -17,4 +17,9 @@ public static class PandaRandom {
 	{
 		return rand.NextDouble() * ( max - min ) + min;
 	}
+	
+	public static int NextInt(int minval, int maxval)
+	{
+		return rand.Next(minval, maxval);	
+	}
 }
