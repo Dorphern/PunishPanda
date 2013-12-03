@@ -11,9 +11,21 @@ public class SawTrap : TrapBase {
     protected float turnSpeed = 0f;
     protected float baseAcc = 0.2f;
     protected bool isActive = false;
-	
+
 	[SerializeField] protected ParticleSystem bloodParticles;
+	private Quaternion initialRotation;
+	
     # region Public Methods
+	void start()
+	{
+		initialRotation = transform.rotation;
+	}
+	
+	public void Reset ()
+	{
+		transform.rotation = initialRotation;
+		turnSpeed = 0f;
+	}
 
     override public TrapType GetTrapType ()
     {

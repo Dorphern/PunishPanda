@@ -372,7 +372,7 @@ public class PandaAI : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() 
 	{
-        Debug.Log(stuckOnSpikes);
+//        Debug.Log(stuckOnSpikes);
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.Walking:                
