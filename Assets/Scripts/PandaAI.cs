@@ -289,7 +289,7 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
         {
-            // pandaController.EnableColliders(false);
+            pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
