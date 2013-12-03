@@ -76,17 +76,13 @@ public class PandaAI : MonoBehaviour {
 		    pandaStateManager.GetState() == PandaState.Walking     ||
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
-			
 			if(InstanceFinder.StatsManager!=null)
 			{
 				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
 			}
-            if (pandaStateManager.GetState() == PandaState.Idle)
-            {
-                animations.ChangePandaState(PandaState.Idle);
-            }
             HDRSystem.PostEvents(gameObject, doubleTabEvents);
 			pandaStateManager.ChangeState(PandaState.Idle);
+            animations.SetDoubleTapped();
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
 		}
 	}
@@ -294,10 +290,10 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
         {
+            if (trapType == TrapType.StaticSpikes)
             pandaController.EnableColliders(false);
+
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
-            characterController.height = 0.1f;
-            characterController.radius = 0.1f;
         }
         else if (trapType == TrapType.ThrowingStars && isPerfect)
         {
@@ -479,6 +475,8 @@ public class PandaAI : MonoBehaviour {
 					BoostingMovement(pandaStateManager.GetDirection());
 				break;
 		}
+
+        animations.SetGrounded();
         
         if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
         {
@@ -539,8 +537,13 @@ public class PandaAI : MonoBehaviour {
 
     public void ChangeStuckOnSpikes()
     {
-        spikeDetract = true;
+        
         animations.SpikePullOut();
+    }
+
+    public void SpikesDetracted()
+    {
+        spikeDetract = true;
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)
@@ -610,7 +613,12 @@ public class PandaAI : MonoBehaviour {
         if(c.gameObject.GetComponent<Collidable>() != null)
         {            
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
+            if(c.gameObject.GetComponent<Collidable>().type == CollidableTypes.LedgeFall)
+            {
+                c.gameObject.GetComponent<Collider>().collider.enabled = false;
+            }
         }
+
     }
 	
 	float time;

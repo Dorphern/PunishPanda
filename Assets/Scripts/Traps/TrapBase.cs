@@ -3,14 +3,15 @@ using System.Collections;
 
 public enum TrapType
 {
-    Electicity      = 0,
-    StaticSpikes    = 1,
-    ImpalerSpikes   = 2,
-    Pounder         = 3,
-    ThrowingStars   = 4,
-	DoorTrap        = 5,
-    RoundSaw        = 6,
-    EscapeBamboo    = 7
+    Electicity       = 0,
+    StaticSpikes     = 1,
+    ImpalerSpikes    = 2,
+    Pounder          = 3,
+    ThrowingStars    = 4,
+	DoorTrap         = 5,
+    RoundSaw         = 6,
+    EscapeBamboo     = 7,
+    LedgeFallTrigger = 8
 }
 
 public enum TrapPosition
