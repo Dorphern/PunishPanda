@@ -50,4 +50,19 @@ public class LevelMenu : MonoBehaviour {
 		InstanceFinder.LevelManager.LoadLevelByWorldIndex(8);
 	}
 	
+	public void LoadLevel10()
+	{
+		InstanceFinder.LevelManager.LoadLevelByWorldIndex(9);
+	}
+	
+	public void LoadLevel11()
+	{
+		InstanceFinder.LevelManager.LoadLevelByWorldIndex(10);
+	}
+	
+	public void LoadLevel12()
+	{
+		InstanceFinder.LevelManager.LoadLevelByWorldIndex(11);
+	}
+	
 }
