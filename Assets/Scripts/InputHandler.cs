@@ -54,8 +54,23 @@ public class InputHandler : MonoBehaviour {
 		}
 	}
 	
-	public void PausedGame(){ paused = true; }
-	public void UnpausedGame(){ paused = false;}
+	public void PausedGame()
+	{
+		#if UNITY_EDITOR 
+		PerformCursorEnded(1);
+		#else
+		for(int i=0; i<touches.Length; i++)
+		{
+			PerformCursorEnded(touches[i].fingerId);	
+		}		
+		#endif
+		
+		paused = true; 
+	}
+	public void UnpausedGame()
+	{ 
+		paused = false;
+	}
 	
 	void Update () 
 	{

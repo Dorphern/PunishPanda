@@ -10,7 +10,8 @@ public enum CollidableTypes {
     Hotspot             = 4,
 	Floor               = 5,
 	ThrowingStar        = 6,
-    LedgeFall           = 7
+    LedgeFall           = 7,
+	Limbs	            = 8
 	
 }
 

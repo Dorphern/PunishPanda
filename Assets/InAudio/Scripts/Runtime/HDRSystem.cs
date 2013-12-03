@@ -221,7 +221,6 @@ public class HDRSystem : MonoBehaviour
 
     private IEnumerator PostDelayedActions(GameObject controllingObject, AudioEventAction eventData, GameObject attachedToOther)
     {
-        Debug.Log("wait");
         yield return new WaitForSeconds(eventData.Delay);
         HandleEventAction(controllingObject, eventData, attachedToOther);
     }
@@ -320,6 +319,13 @@ public class HDRSystem : MonoBehaviour
         AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);
     }
 
+    void OnLevelWasLoaded()
+    {
+        var root = InAudioInstanceFinder.DataManager.BusTree;
+        root.Dirty = true;
+        AudioBusVolumeHelper.UpdateBusVolumes(root);
+    }
+
     void OnEnable()
     {
         if (instance == null)
@@ -335,6 +341,7 @@ public class HDRSystem : MonoBehaviour
             if (InAudioInstanceFinder.DataManager != null && InAudioInstanceFinder.DataManager.BusTree != null)
             {
                 var busRoot = InAudioInstanceFinder.DataManager.BusTree;
+                TreeWalker.ForEach(busRoot, b => b.NodesInBus = new List<RuntimePlayer>());
                 busRoot.Dirty = true;
                 AudioBusVolumeHelper.InitVolumes(busRoot);
                 AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);

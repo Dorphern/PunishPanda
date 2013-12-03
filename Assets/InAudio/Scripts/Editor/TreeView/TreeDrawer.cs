@@ -58,6 +58,8 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     public Vector2 ScrollPosition;
 
+    private float maxY; 
+
     public void SelectPreviousNode()
     {
         selectedNode = TreeWalker.FindPreviousUnfoldedNode(SelectedNode, arg => !arg.IsFiltered);
@@ -89,10 +91,13 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
         bool canDropObject = false;
         Vector2 mousePos = Event.current.mousePosition;
+        
         if (mousePos.x > area.x && mousePos.x < area.x + area.width)
         {
+
             canDropObject = HandleDragging();
         }
+
 
         DrawTree(treeRoot, EditorGUI.indentLevel);
 
@@ -128,7 +133,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
             if (!node.IsFoldedOut)
                 return;
-
+            
             if(Event.current.type == EventType.Layout)
                 NodeWorker.RemoveNullChildren(node);
             for (int i = 0; i < node.GetChildren.Count; ++i)
@@ -215,6 +220,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         {
             HoverOver = child;
             HoverOverArea = lastArea;
+            maxY = lastArea.y + lastArea.height;
         }
 
         if (CheckIsSelected(lastArea)  || (child == selectedNode || child.IsFoldedOut != previousState))
@@ -276,8 +282,8 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
     }
 
     private bool HandleDragging()
-    { 
-        if (Event.current.ClickedWithin(_area) && Event.current.button == 0)
+    {
+        if (Event.current.ClickedWithin(_area) && Event.current.button == 0 && Event.current.mousePosition.y < maxY + 2)
         {
             dragStart = Event.current.mousePosition;
             wantToDrag = true;

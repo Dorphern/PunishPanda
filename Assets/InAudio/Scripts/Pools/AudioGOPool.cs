@@ -18,6 +18,8 @@ namespace InAudio
         public int ChunkSize = 20;
 
         public GameObject RuntimeAudioPrefab;
+
+        private int maxNumber = 1;
         
 
         void Awake()
@@ -28,10 +30,13 @@ namespace InAudio
 
         public void ReleaseObject(RuntimePlayer player)
         {
-            player.transform.parent = transform;
-            player.transform.position = offscreen;
-            freeObjects.Add(player);
-            player.gameObject.SetActive(false);
+            if (player != null)
+            {
+                player.transform.parent = transform;
+                player.transform.position = offscreen;
+                freeObjects.Add(player);
+                player.gameObject.SetActive(false);
+            }
         }
 
         public void ReserveExtra(int extra)
@@ -39,12 +44,13 @@ namespace InAudio
             for (int i = 0; i < extra; ++i)
             {
                 var go = Object.Instantiate(RuntimeAudioPrefab, offscreen, Quaternion.identity) as GameObject;
-                go.name = "Audio Object " + i;
+                go.name = "Audio Object " + maxNumber;
                 go.transform.parent = transform;
                 freeObjects.Add(go.GetComponent<RuntimePlayer>());
                 var runtimeAudio = freeObjects[freeObjects.Count - 1];
                 go.SetActive(false);
                 runtimeAudio.Initialize(this);
+                ++maxNumber;
             }
         }
 

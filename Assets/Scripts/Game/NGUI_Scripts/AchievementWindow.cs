@@ -7,7 +7,7 @@ public class AchievementWindow : MonoBehaviour {
 	public UILabel achievementTitleLabel;
 	public UILabel achievementTextLabel;
 	public UITexture achievementIcon;
-	public GameObject camera;
+	public GameObject GUIcamera;
 	public UIRunTween rt;
 	
 	bool forward = true;
@@ -27,11 +27,11 @@ public class AchievementWindow : MonoBehaviour {
 		
 		completedAchievements.Enqueue(achievement);
 		
-		if(!isRunning)
+		if(!isRunning) 
 		{
 			isRunning = true;
-			
-			StartCoroutine("runAchievementWindow");
+
+            StartCoroutine(runAchievementWindow());
 		}
 	}
 	
@@ -41,7 +41,7 @@ public class AchievementWindow : MonoBehaviour {
 		{
 			Achievement ach = completedAchievements.Dequeue();
 			if(ach!=null){
-				camera.SetActive(true);
+				GUIcamera.SetActive(true);
 				if(achievementTitleLabel!=null)
 				{
 					achievementTitleLabel.text = localization.Get(ach.name);
@@ -62,7 +62,7 @@ public class AchievementWindow : MonoBehaviour {
 				rt.RunTween();
 				yield return new WaitForSeconds(1.5f);
 				yield return new WaitForEndOfFrame();
-				camera.SetActive(false);
+				GUIcamera.SetActive(false);
 			}
 		}
 		isRunning = false;
