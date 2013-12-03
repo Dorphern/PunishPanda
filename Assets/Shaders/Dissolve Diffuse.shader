@@ -16,7 +16,7 @@
      	Tags { "Queue" = "Transparent" }
      	Blend SrcAlpha OneMinusSrcAlpha
      	CGPROGRAM
-     	#pragma surface surf Lambert
+     	#pragma surface surf NoLighting
      	
 		sampler2D _MainTex;
 		sampler2D _BurnMap;
@@ -30,7 +30,15 @@
      		half2 uv_MainTex;
      		half2 uv_BurnMap;
     	};
-      
+      	
+      	fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten)
+	    {
+	        fixed4 c;
+	        c.rgb = s.Albedo; 
+	        c.a = s.Alpha;
+	        return c;
+	    }
+      	
       	void surf (Input IN, inout SurfaceOutput o) 
       	{
         	o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;

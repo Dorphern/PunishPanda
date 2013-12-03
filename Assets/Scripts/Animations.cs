@@ -6,54 +6,14 @@ public class Animations : MonoBehaviour {
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
+    private PandaMovementController pandaMovementController;
+    private Collidable collidable;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
 
-    static int staticSpikes = Animator.StringToHash("Base.StaticSpikes");
-    static int SpikedDeathFAll = Animator.StringToHash("Base.SpikedDeathFAll");
-    static int deathSpikeImpact = Animator.StringToHash("Base.DeathSpikeImpact");
-    static int spikedDeathFall = Animator.StringToHash("Base.SpikedDeathFall");
-    static int jumping = Animator.StringToHash("Base.Jumping");
-    static int walking = Animator.StringToHash("Base.Walking");
-
-    # region Private Methods
-    // Use this for initialization
-    void Start ()
-    {
-        anim = GetComponentInChildren<Animator>();
-        stateManager = GetComponent<PandaStateManager>();
-        pandaAI = GetComponent<PandaAI>();
-        characterController = GetComponent<CharacterController>();
-    }
-
-    IEnumerator SetNewPandaState (PandaState state)
-    {
-        anim.SetBool("NewState", true);
-        anim.SetInteger("PandaState", (int) state);
-        yield return new WaitForEndOfFrame();
-        anim.SetBool("NewState", false);
-    }
-
-    IEnumerator ResetSlap ()
-    {
-        yield return new WaitForEndOfFrame();
-
-        anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
-    }
-
-    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
-    {
-        yield return new WaitForSeconds(animStateInfo.length);
-        pandaAI.stuckOnSpikes = false;
-        anim.SetBool("LandingHard", false);
-        if(statePanda == PandaState.Escape)
-        {
-            pandaAI.pandaEscaped = true;
-        }
-    }
-    # endregion
+    private string escapeUpAnimation = "escapeUp";
+    private string escapeDownAnimation = "escapeDown";
 
     # region Public Methods
     public void ChangePandaState (PandaState state)
@@ -68,8 +28,6 @@ public class Animations : MonoBehaviour {
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
-        anim.SetBool(pandaStateLast.ToString(), false);
-
         Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
         Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
 
@@ -91,26 +49,106 @@ public class Animations : MonoBehaviour {
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
     }
-    public void PlayDeathAnimation(TrapBase trap, bool hitTrap, PandaDirection pandaDirection, PandaState pandaStateLast)
+    public void PlayDeathAnimation(TrapBase trap, PandaDirection pandaDirection)
     {
-        anim.SetBool(pandaStateLast.ToString(), false);
         anim.SetInteger("TrapPosition", (int) trap.GetTrapPosition());
-        anim.SetInteger("TrapType", (int)trap.GetTrapType());
+        anim.SetInteger("TrapType", (int) trap.GetTrapType());
         anim.SetInteger("Direction", (int) pandaDirection);
+        if (trap.GetTrapType() == TrapType.EscapeBamboo)
+        {
+            StartCoroutine(PandaEscapeMove(trap.GetTrapPosition()));
+        }
+
+        bool front = (trap.GetTrapPosition() == TrapPosition.WallRight && pandaDirection == PandaDirection.Right)
+            || (trap.GetTrapPosition() == TrapPosition.WallLeft && pandaDirection == PandaDirection.Left);
+        anim.SetBool("Front", front);
     }
 
     public void SetSlapped(bool front)
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
-        anim.SetBool("LedgeFall", false);
 
         StartCoroutine(ResetSlap());
     }
-    public void PlayLedgeFallAnimation(PandaDirection pandaDirection)
+
+    public void PlayTriggerAnimations(PandaDirection pandaDirection, CollidableTypes collidableType)
     {
-        anim.SetBool("LedgeFall", true);
+        StartCoroutine(ChangeCollidableType(collidableType));
         anim.SetInteger("Direction", (int)pandaDirection);
+    }
+    # endregion
+
+
+    # region Private Methods
+    // Use this for initialization
+    void Start ()
+    {
+        anim = GetComponentInChildren<Animator>();
+        stateManager = GetComponent<PandaStateManager>();
+        pandaAI = GetComponent<PandaAI>();
+        characterController = GetComponent<CharacterController>();
+        pandaMovementController = GetComponent<PandaMovementController>();
+
+        anim.SetInteger("Direction", (int) stateManager.initDirection);
+
+        collidable = GetComponent<Collidable>();
+
+        StartCoroutine(RandomNumberUpdater());
+    }
+
+    IEnumerator SetNewPandaState (PandaState state)
+    {
+        anim.SetBool("NewState", true);
+        anim.SetInteger("PandaState", (int) state);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("NewState", false);
+    }
+
+    IEnumerator ResetSlap ()
+    {
+        anim.SetInteger("CollidableType", -1);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("Slapped", false);
+        anim.SetBool("Face", false);
+    }
+
+    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
+    {
+        yield return new WaitForSeconds(animStateInfo.length);
+        pandaAI.stuckOnSpikes = false;
+        anim.SetBool("LandingHard", false);
+    }
+
+    IEnumerator PandaEscapeMove (TrapPosition position)
+    {
+        if (position == TrapPosition.Ceiling)
+        {
+            yield return new WaitForSeconds(1.1f);
+            animation.Play(escapeUpAnimation);
+        }
+        else if (position == TrapPosition.Ground)
+        {
+            yield return new WaitForSeconds(2f);
+            animation.Play(escapeDownAnimation);
+        }
+    }
+
+    IEnumerator ChangeCollidableType (CollidableTypes collidableType)
+    {
+        anim.SetInteger("CollidableType", (int) collidableType);
+        anim.SetBool("NewCollidableType", true);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("NewCollidableType", false);
+    }
+
+    IEnumerator RandomNumberUpdater ()
+    {
+        while (stateManager.GetState() != PandaState.Died)
+        {
+            anim.SetInteger("Random", Random.Range(0, 100));
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
+        }
     }
     # endregion
 }

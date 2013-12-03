@@ -107,11 +107,13 @@ public class Achievement
 public class AchievementManager : MonoBehaviour {
     [EventHookAttribute("On Achievement")]
     public List<AudioEvent> OnAchievementEvents = new List<AudioEvent>();
-
-	public List<Achievement> achievementList = new List<Achievement>();
-	public bool debug = false;
 	
+	public bool debug = false;
+	public List<Achievement> achievementList = new List<Achievement>();
+	
+	[HideInInspector]
 	public delegate void AchievementGoalHandler(Achievement achievement);
+	[HideInInspector]
 	public event AchievementGoalHandler onAchievementCompleted;
 	
 	private Dictionary<string,Achievement> achievements;
@@ -143,7 +145,7 @@ public class AchievementManager : MonoBehaviour {
 		if(!achievements.ContainsKey(name))
 		{
 			if(debug)
-				Debug.LogError("Attempted to set progress to achievement that doesn't exist: " + name);
+				Debug.Log("Attempted to set progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{

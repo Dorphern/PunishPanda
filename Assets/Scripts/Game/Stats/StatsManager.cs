@@ -288,9 +288,9 @@ public class StatsManager : MonoBehaviour
 			{
 			  int val = value-pandasKilled;
 			  am.AddProgressToAchievement("First kill", val);
-			  am.AddProgressToAchievement("Getting the hand of this", val);
-			  am.AddProgressToAchievement("Fun times", val);
-			  am.AddProgressToAchievement("Serial killah", val);
+			  am.AddProgressToAchievement("Getting the hang of this", val);
+			  am.AddProgressToAchievement("Fun Times", val);
+			  am.AddProgressToAchievement("Serial Killah", val);
 			  am.AddProgressToAchievement("Massmurdah", val);
 			  am.AddProgressToAchievement("Exterminator", val);
 			} }

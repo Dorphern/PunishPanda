@@ -35,7 +35,7 @@ public class MainMenuSaws : MonoBehaviour {
 	
 	       sawtrap.ActivateTrap();
 			
-		   Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		   //Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
 			
 	    }
 	 
