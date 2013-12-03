@@ -73,8 +73,6 @@ public class Settings : MonoBehaviour {
 				if(InstanceFinder.Localization.languages[i].name=="English")
 				{
 					InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
-					InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[i].name;
-					InstanceFinder.StatsManager.Save();
 					break;	
 				}
 			}
@@ -94,8 +92,6 @@ public class Settings : MonoBehaviour {
 				{
 					
 					InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
-					InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[i].name;
-					InstanceFinder.StatsManager.Save();
 					break;	
 				}
 			}
