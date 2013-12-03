@@ -31,6 +31,10 @@ public class UIButton : UIButtonColor
 
 	public List<EventDelegate> onClick = new List<EventDelegate>();
 
+    public delegate void OnPressedButtonDelegate(UIButton button);
+
+    public OnPressedButtonDelegate OnPressedButton;
+
 	protected override void OnEnable ()
 	{
 		//Collider col = collider;
@@ -55,7 +59,16 @@ public class UIButton : UIButtonColor
 	}
 
 	public override void OnHover (bool isOver) { if (isEnabled) base.OnHover(isOver); }
-	public override void OnPress (bool isPressed) { if (isEnabled) base.OnPress(isPressed); }
+
+    public override void OnPress(bool isPressed)
+    {
+        if (isEnabled)
+        {
+            if (OnPressedButton != null)
+                OnPressedButton(this);
+            base.OnPress(isPressed);
+        }
+    }
 
 	/// <summary>
 	/// Call the listener function.
