@@ -28,7 +28,7 @@ public class PandaAI : MonoBehaviour {
 	public float pushingMagnitude;
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
-    public bool stuckOnSpikes;
+    public bool stuckOnSpikes = true;
     public bool landingHard;
 	
 	public bool isMainMenuPanda;
@@ -372,6 +372,7 @@ public class PandaAI : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() 
 	{
+        Debug.Log(stuckOnSpikes);
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.Walking:                
@@ -426,7 +427,7 @@ public class PandaAI : MonoBehaviour {
             case PandaState.Died:
                 if (ApplyGravity != null && stuckOnSpikes == false)
                 {
-                    //ApplyGravity();
+                   // ApplyGravity();
                 }
 
                 break;
@@ -516,9 +517,7 @@ public class PandaAI : MonoBehaviour {
 			if(pandaMovementController.IsNotMoving())
 			{
 				pandaMovementController.JumpOff();
-			}
-		
-			
+			}	
 		}
 		
 		else if(pandaStateManager.GetState() == PandaState.Walking )
@@ -547,9 +546,9 @@ public class PandaAI : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider c)
-    {
+    {            
         if(c.gameObject.GetComponent<Collidable>() != null)
-        {
+        {            
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
         }
     }

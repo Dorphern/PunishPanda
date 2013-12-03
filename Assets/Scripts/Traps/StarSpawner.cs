@@ -76,6 +76,7 @@ public class StarSpawner : TrapBase
             Mathf.Sin(angle * Mathf.Deg2Rad), 
             0
         );
+        star.Activated();
         star.ShootStar(dir, force, torque);
 	}
 }

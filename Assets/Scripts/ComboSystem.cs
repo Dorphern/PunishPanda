@@ -56,9 +56,6 @@ public class ComboSystem : MonoBehaviour
     [EventHookAttribute("Combo Kill")]
     private List<AudioEvent> comboKillEvents;
 
-    [SerializeField]
-    private UITweener[] tweens;
-
     private float lastPandaKillTime;
     private int pandaComboKills;
     private bool isDoingCombo = false;
@@ -207,12 +204,10 @@ public class ComboSystem : MonoBehaviour
 
             comboObject.SetActive(true);
         }
+
+        killObject.GetComponent<UIPlayTween>().Play(true);
+        comboObject.GetComponent<UIPlayTween>().Play(true);
         
-        for (int i = 0; i < tweens.Length; i++)
-        {
-            tweens[i].Reset();
-            tweens[i].PlayForward();
-        }
         yield return new WaitForSeconds(maxTimeBetweenKills + 0.2f);
         if(levelDeaths.ComboKills == null)
             levelDeaths.ComboKills = new List<ComboKill>(2);
