@@ -28,6 +28,11 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     {
         pandaAIThis.ChangeStuckOnSpikes();
     }
+
+    public void SpikesDetracted()
+    {
+        pandaAIThis.SpikesDetracted();
+    }
     # endregion
 
     # region Private Methods
