@@ -351,7 +351,7 @@ public class WinScreen : MonoBehaviour {
 				yield return new WaitForSeconds(1f);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
-				//UpdateAchievementsAndStats();
+				UpdateAchievementsAndStats();
 			}
 			
 		}

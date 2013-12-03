@@ -30,6 +30,7 @@ public class PandaAI : MonoBehaviour {
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes = true;
     public bool landingHard;
+    public bool spikeDetract;
 	
 	public bool isMainMenuPanda;
 
@@ -202,7 +203,7 @@ public class PandaAI : MonoBehaviour {
 
 
          
-		if(InstanceFinder.StatsManager != null)
+		if(InstanceFinder.StatsManager != null && isMainMenuPanda == false)
 		{
 			InstanceFinder.StatsManager.PandaSlaps++;
 			InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.15f);
@@ -382,7 +383,6 @@ public class PandaAI : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() 
 	{
-//        Debug.Log(stuckOnSpikes);
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.Walking:                
@@ -435,11 +435,10 @@ public class PandaAI : MonoBehaviour {
                     ApplyGravity();
                 break;
             case PandaState.Died:
-                if (ApplyGravity != null && stuckOnSpikes == false)
+                if (ApplyGravity != null && spikeDetract == true)
                 {
-                   // ApplyGravity();
+                   ApplyGravity();
                 }
-
                 break;
 			case PandaState.Boosting:
 				if (BoostingMovement!=null)
@@ -503,6 +502,12 @@ public class PandaAI : MonoBehaviour {
 			}
         }
 	}
+
+    public void ChangeStuckOnSpikes()
+    {
+        spikeDetract = true;
+        animations.SpikePullOut();
+    }
 	
 	public void ChangeDirection(ControllerColliderHit hit)
 	{

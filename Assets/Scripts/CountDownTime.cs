@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SideWallButtonSound : MonoBehaviour
+public class CountDownTime : MonoBehaviour
 {
     private ExternalAudioSource external;
 
