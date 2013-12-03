@@ -352,7 +352,7 @@ public class WinScreen : MonoBehaviour {
 				HDRSystem.PostEvents(gameObject, OnThreeStartsEvents);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
-				//UpdateAchievementsAndStats();
+				UpdateAchievementsAndStats();
 			}
 			
 		}

@@ -17,6 +17,9 @@ public class Animations : MonoBehaviour {
 
     private string escapeUpAnimation = "escapeUp";
     private string escapeDownAnimation = "escapeDown";
+	
+	private int rightPeeHash;
+	private int leftPeeHash;
 
     # region Public Methods
     public void ChangePandaState (PandaState state)
@@ -101,6 +104,9 @@ public class Animations : MonoBehaviour {
         pandaMovementController = GetComponent<PandaMovementController>();
 
         anim.SetInteger("Direction", (int) stateManager.initDirection);
+		
+		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
+        leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
 
         collidable = GetComponent<Collidable>();
 
@@ -157,10 +163,20 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0, 100));
+            anim.SetInteger("Random", PandaRandom.NextInt(0, 101));
             anim.SetBool("NewRandom", true);
-            yield return new WaitForEndOfFrame();
+			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
+			
+			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
+			if( currHash == leftPeeHash)
+			{
+				//Debug.Log("Lets get peeing yo left!");	
+			}
+			else if(currHash == rightPeeHash)
+			{
+				//Debug.Log("Lets get peeing yo right!");	
+			}
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
     }
