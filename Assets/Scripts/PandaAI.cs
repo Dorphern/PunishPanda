@@ -203,7 +203,7 @@ public class PandaAI : MonoBehaviour {
 
 
          
-		if(InstanceFinder.StatsManager != null)
+		if(InstanceFinder.StatsManager != null && isMainMenuPanda == false)
 		{
 			InstanceFinder.StatsManager.PandaSlaps++;
 			InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.15f);
