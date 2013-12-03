@@ -24470,6 +24470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomMinWait: 2
+  randomMaxWait: 6
 --- !u!114 &544036958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24528,6 +24530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 1
   boostDuration: .300000012
+  pushingLimbsForce: 6
   dismemberedPanda: {fileID: 100020, guid: 8abf91a663f54b34583bfdde65a2715c, type: 2}
   electrocutedPanda: {fileID: 100000, guid: 19b9859a028559a43a0704876e558f48, type: 2}
   slicedInHalfPanda: {fileID: 100000, guid: cb0ce3de56e08a344a1bd28fdab60b1a, type: 2}
@@ -24535,6 +24538,7 @@ MonoBehaviour:
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
   landingHard: 0
+  spikeDetract: 0
   isMainMenuPanda: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -25105,6 +25109,7 @@ MonoBehaviour:
   swipeThreshold: .0199999996
   pushingMaxMagnitude: .00200000009
   hotspotThreshold: .5
+  pushingMinDistanceThreshold: .300000012
   controls:
     slapping: 1
     bouncing: 0
@@ -34735,13 +34740,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smallToggle: {fileID: 534910960}
-  smallFingerSize: 1
+  smallFingerSize: 1.29999995
   mediumToggle: {fileID: 1247343680}
-  mediumFingerSize: 2
+  mediumFingerSize: 1.5
   largeToggle: {fileID: 1815654186}
-  largeFingerSize: 3
+  largeFingerSize: 1.89999998
   xlToggle: {fileID: 1110515966}
-  XL_Finger_Size: 4
+  XL_Finger_Size: 2.20000005
 --- !u!1 &838552632
 GameObject:
   m_ObjectHideFlags: 0
@@ -44842,6 +44847,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: f5e12c768160b0e48a7e509f9fc93bc1, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f5e12c768160b0e48a7e509f9fc93bc1, type: 2}
   m_RootGameObject: {fileID: 772478767}
@@ -48345,7 +48354,7 @@ MonoBehaviour:
   achievementTitleLabel: {fileID: 2076447020}
   achievementTextLabel: {fileID: 543718344}
   achievementIcon: {fileID: 1691756910}
-  camera: {fileID: 581577559}
+  GUIcamera: {fileID: 0}
   rt: {fileID: 1219671939}
 --- !u!1 &1309479694
 GameObject:
@@ -53428,6 +53437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomMinWait: 2
+  randomMaxWait: 6
 --- !u!114 &1437619841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53486,6 +53497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 1
   boostDuration: 0
+  pushingLimbsForce: 6
   dismemberedPanda: {fileID: 100020, guid: 8abf91a663f54b34583bfdde65a2715c, type: 2}
   electrocutedPanda: {fileID: 100000, guid: 19b9859a028559a43a0704876e558f48, type: 2}
   slicedInHalfPanda: {fileID: 100000, guid: cb0ce3de56e08a344a1bd28fdab60b1a, type: 2}
@@ -53493,6 +53505,7 @@ MonoBehaviour:
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
   landingHard: 0
+  spikeDetract: 0
   isMainMenuPanda: 1
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -62922,8 +62935,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1708500106}
-  - 33: {fileID: 1708500105}
-  - 23: {fileID: 1708500104}
   - 114: {fileID: 1708500103}
   - 135: {fileID: 1708500102}
   - 54: {fileID: 1708500107}
@@ -62960,33 +62971,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushingPandas: []
---- !u!23 &1708500104
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300000, guid: d1178479dd14a3a47a7c080ec08ffe6e,
-    type: 2}
-  m_PrefabInternal: {fileID: 795348116}
-  m_GameObject: {fileID: 1708500101}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
---- !u!33 &1708500105
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300000, guid: d1178479dd14a3a47a7c080ec08ffe6e,
-    type: 2}
-  m_PrefabInternal: {fileID: 795348116}
-  m_GameObject: {fileID: 1708500101}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1708500106
 Transform:
   m_ObjectHideFlags: 0
@@ -70208,7 +70192,7 @@ MonoBehaviour:
   achievementTitleLabel: {fileID: 1956200671}
   achievementTextLabel: {fileID: 2136715353}
   achievementIcon: {fileID: 348207744}
-  camera: {fileID: 0}
+  GUIcamera: {fileID: 0}
   rt: {fileID: 20432014}
 --- !u!1 &1854657874
 GameObject:
