@@ -2301,18 +2301,14 @@ Transition:
   m_Name: 
   m_SrcState: {fileID: 110232427}
   m_DstState: {fileID: 110298851}
-  m_TransitionDuration: .75
+  m_TransitionDuration: .103739515
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 6
     m_ConditionEvent: TrapType
     m_EventTreshold: 1
     m_ExitTime: .25
-  - m_ConditionMode: 7
-    m_ConditionEvent: TrapPosition
-    m_EventTreshold: 0
-    m_ExitTime: .25
-  - m_ConditionMode: 5
+  - m_ConditionMode: 6
     m_ConditionEvent: TrapPosition
     m_EventTreshold: 0
     m_ExitTime: .25
@@ -2335,6 +2331,44 @@ Transition:
     m_EventTreshold: 1
     m_ExitTime: .899999976
   m_Atomic: 0
+  m_Solo: 0
+  m_Mute: 0
+--- !u!1101 &110168224
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 0}
+  m_DstState: {fileID: 110252604}
+  m_TransitionDuration: .100000001
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: PandaState
+    m_EventTreshold: 3
+    m_ExitTime: .899999976
+  - m_ConditionMode: 1
+    m_ConditionEvent: NewState
+    m_EventTreshold: 3
+    m_ExitTime: .899999976
+  - m_ConditionMode: 3
+    m_ConditionEvent: TrapType
+    m_EventTreshold: 0
+    m_ExitTime: .899999976
+  - m_ConditionMode: 4
+    m_ConditionEvent: TrapType
+    m_EventTreshold: 3
+    m_ExitTime: .899999976
+  - m_ConditionMode: 6
+    m_ConditionEvent: TrapPosition
+    m_EventTreshold: 270
+    m_ExitTime: .899999976
+  - m_ConditionMode: 2
+    m_ConditionEvent: Grounded
+    m_EventTreshold: 270
+    m_ExitTime: .899999976
+  m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
 --- !u!1101 &110169767
@@ -2970,21 +3004,21 @@ Transition:
     m_ConditionEvent: NewState
     m_EventTreshold: 90
     m_ExitTime: .899999976
-  - m_ConditionMode: 6
-    m_ConditionEvent: Direction
-    m_EventTreshold: 1
-    m_ExitTime: .899999976
-  - m_ConditionMode: 6
-    m_ConditionEvent: TrapPosition
-    m_EventTreshold: 90
+  - m_ConditionMode: 3
+    m_ConditionEvent: TrapType
+    m_EventTreshold: 0
     m_ExitTime: .899999976
   - m_ConditionMode: 4
     m_ConditionEvent: TrapType
     m_EventTreshold: 3
     m_ExitTime: .899999976
-  - m_ConditionMode: 3
-    m_ConditionEvent: TrapType
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: TrapPosition
+    m_EventTreshold: 90
+    m_ExitTime: .899999976
+  - m_ConditionMode: 2
+    m_ConditionEvent: Grounded
+    m_EventTreshold: 90
     m_ExitTime: .899999976
   m_Atomic: 1
   m_Solo: 0
@@ -4167,7 +4201,7 @@ State:
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400000, guid: 1e62248c74b40644a881950dfe1c77a4, type: 3}
+  - {fileID: 7400000, guid: 798f5c40c4438d14f9d8018733a02af2, type: 3}
   m_ParentStateMachine: {fileID: 110700000}
   m_Position: {x: -408, y: 576, z: 0}
   m_IKOnFeet: 0
@@ -4231,6 +4265,7 @@ StateMachine:
       - {fileID: 110153040}
       - {fileID: 110107229}
       - {fileID: 110199249}
+      - {fileID: 110168224}
     data:
       first: {fileID: 110278137}
       second:

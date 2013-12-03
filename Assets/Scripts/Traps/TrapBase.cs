@@ -99,12 +99,16 @@ public abstract class TrapBase : MonoBehaviour {
 	public bool TryPandaKill(PandaAI pandaAI)
 	{
 		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-        bool successful = pandaAI.IsAlive() && !pandaAI.HasEscaped() && PandaAttemptKill(pandaAI, isPerfect);
+        bool successful = pandaAI.HasEscaped() == false && PandaAttemptKill(pandaAI, isPerfect);
         if (successful) 
         {
-            SetDirty();
             pandaKillCount++;
 			AddStatistics();
+        }
+
+        if (pandaAI.IsAlive() == false)
+        {
+            SetDirty();
         }
         return successful;
 	}
