@@ -37,7 +37,6 @@ public class RuntimePlayer : MonoBehaviour
 
     public void Stop()
     {
-        
         StopForReuse();
 
         spawnedFrom.ReleaseObject(this);
@@ -58,6 +57,8 @@ public class RuntimePlayer : MonoBehaviour
     {
         for (int i = 0; i < audioSources.Length; ++i)
         {
+            if(audioSources[i] == null)
+                continue;
             audioSources[i].clip = null;
             audioSources[i].Stop();
             endTimes[i] = 0;
@@ -165,12 +166,6 @@ public class RuntimePlayer : MonoBehaviour
         }
         for (int i = 0; i < 1 + loops || loopInfinite; ++i) //For at least once
         {
-            if (breakLoop)
-            {
-                loops = 0;
-                loopInfinite = false;
-            }
-
             if (current.Type == AudioNodeType.Audio)
             {
                 NextFreeAudioSource();
@@ -221,6 +216,18 @@ public class RuntimePlayer : MonoBehaviour
                     else
                         dspPool.ReleaseObject(dspTime);
                 }
+            }
+
+            if (breakLoop && current.Type == AudioNodeType.Sequence)
+            {
+                breakLoop = false;
+                int currentLoops = loops;
+                bool currentInfinite = loopInfinite;
+
+                loops = 0;
+                loopInfinite = false;
+                if (currentLoops > 0 || currentInfinite)
+                    continue;
             }
         }
     }
@@ -281,6 +288,22 @@ public class RuntimePlayer : MonoBehaviour
     private void StopAndCleanup()
     {
         Stop();
+    }
+
+    void OnDestroy()
+    {
+        if (PlayingNode != null)
+        {
+            var instances = PlayingNode.CurrentInstances;
+            for (int i = 0; i < instances.Count; i++)
+            {
+                if (instances[i].Player == this)
+                {
+                    instances.SwapRemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }
 

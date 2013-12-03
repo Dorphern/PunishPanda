@@ -108,10 +108,12 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
 
     public virtual void Find(T node)
     {
-        searchingFor = node.ID.ToString(); 
-        lowercaseSearchingFor = searchingFor;
+        searchingFor = node.ID.ToString();
+        lowercaseSearchingFor = searchingFor.ToLower().Trim();
         treeDrawer.Filter(SearchFilter);
-
+        TreeWalker.ForEachParent(node, n => n.IsFoldedOut = true);
+        SelectedNode = node;
+        treeDrawer.SelectedNode = node;
     }
 
     protected virtual bool SearchFilter(T node)

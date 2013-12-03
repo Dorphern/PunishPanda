@@ -4,13 +4,13 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-[AddComponentMenu(FolderSettings.ComponentPathPrefabsManager + "Instance Finder")]
+[AddComponentMenu(FolderSettings.ComponentPathPrefabsManager + "InAudio Instance Finder")]
 public class InAudioInstanceFinder : MonoBehaviour
 {
     private static InAudioInstanceFinder instance;
     void OnEnable()
     {
-        if(instance == null)
+        if (instance == null)
             instance = this;
     }
 
@@ -22,11 +22,11 @@ public class InAudioInstanceFinder : MonoBehaviour
             if (_dataManager == null)
             {
                 _dataManager = FindObjectOfType(typeof(CommonDataManager)) as CommonDataManager;
-                if(_dataManager != null)
+                if (_dataManager != null)
                     _dataManager.Load();
             }
             return _dataManager;
-        }        
+        }
     }
 
     private static RuntimeAudioData _runtimeAudioData;
@@ -71,7 +71,7 @@ public class InAudioInstanceFinder : MonoBehaviour
     private static DSPTimePool _dspTimePool;
     public static DSPTimePool DSPTimePool
     {
-        get 
+        get
         {
             if (_dspTimePool == null)
             {
@@ -82,6 +82,29 @@ public class InAudioInstanceFinder : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    private static AudioSource _editorAudioSource;
+    public static AudioSource EditorAudioSource
+    {
+        get
+        {
+            if (_editorAudioSource == null)
+            {
+                var guide = Object.FindObjectOfType(typeof(InAudioGuide)) as InAudioGuide;
+                if (guide != null)
+                {
+                    var source = guide.GetComponentInChildren<AudioSource>();
+
+                    if (source != null)
+                        _editorAudioSource = source;
+                    else
+                        _editorAudioSource = guide.transform.GetChild(0).gameObject.AddComponent<AudioSource>();
+                }
+
+            }
+            return _editorAudioSource;
+        }
+    }
+
     private static InAudioGUIUserPrefs _inAudioGuiUserPref;
     public static InAudioGUIUserPrefs InAudioGuiUserPrefs
     {

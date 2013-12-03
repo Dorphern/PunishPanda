@@ -16,12 +16,20 @@ public class EventHookDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
     {
+        if (Selection.gameObjects.Length > 1)
+            return 20;
         float extraHeight = prop.arraySize*LineHeight + DragHeight + 25; 
         return base.GetPropertyHeight(prop, label) + extraHeight;
     }
 
     public override void OnGUI (Rect pos, SerializedProperty prop, GUIContent label)
     {
+        if (Selection.gameObjects.Length > 1)
+        {
+            EditorGUI.HelpBox(pos, "Multi-object editing is not supported", MessageType.None);
+            return;
+        }
+
         var labelPos = pos;
         Color backgroundColor = GUI.color;
  
@@ -42,7 +50,7 @@ public class EventHookDrawer : PropertyDrawer
         //if (EventAttribute.FoldedOut)
         {
             GUI.skin.label.alignment = TextAnchor.MiddleLeft;
-            for (int i = prop.arraySize - 1; i >= 0; --i)
+            for (int i = 0; i < prop.arraySize; i++)
             {
                 labelPos.y += LineHeight;
                 labelPos.height = 20;
@@ -97,7 +105,7 @@ using UnityEngine;
 
 
 [CustomPropertyDrawer(typeof(EventHookAttribute))]
-public class EventHookDrawer : PropertyDrawer
+public class NewAudioEventHook : PropertyDrawer
 {
     EventHookAttribute EventAttribute { get { return ((EventHookAttribute)attribute); } }
 
@@ -134,7 +142,7 @@ public class EventHookDrawer : PropertyDrawer
             labelPos.y -= 5; 
             GUI.skin.label.alignment = TextAnchor.MiddleLeft;
             for (int i = 0; i < array.arraySize; ++i)
-            {
+            { 
                 labelPos.y += LineHeight;
                 labelPos.height = 20;
                 AudioEvent audioEvent = array.GetArrayElementAtIndex(i).objectReferenceValue as AudioEvent;
