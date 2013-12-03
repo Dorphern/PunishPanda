@@ -21,7 +21,7 @@ public enum PandaState
     Slapped         = 7,
 	FallTransition  = 8,
 	Boosting        = 9,
-    Escape          = 10
+    Escape          = 10,
 }
 
 

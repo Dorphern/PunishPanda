@@ -16,6 +16,7 @@ public class PandaAI : MonoBehaviour {
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
 	public float boostDuration = 1f;
+	public float pushingLimbsForce = 6f;
 
     [SerializeField] protected GameObject dismemberedPanda;
 	[SerializeField] protected GameObject electrocutedPanda;
@@ -30,6 +31,7 @@ public class PandaAI : MonoBehaviour {
 	public float pandaCollisionDelay = 0.02f;
     public bool stuckOnSpikes = true;
     public bool landingHard;
+    public bool spikeDetract;
 	
 	public bool isMainMenuPanda;
 
@@ -202,7 +204,7 @@ public class PandaAI : MonoBehaviour {
 
 
          
-		if(InstanceFinder.StatsManager != null)
+		if(InstanceFinder.StatsManager != null && isMainMenuPanda == false)
 		{
 			InstanceFinder.StatsManager.PandaSlaps++;
 			InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.15f);
@@ -287,7 +289,7 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
         {
-            // pandaController.EnableColliders(false);
+            pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
             characterController.height = 0.1f;
             characterController.radius = 0.1f;
@@ -372,6 +374,7 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
+		collisionController.OnLimbHit += LimbCollision;
 
         pandaStateManager.onStateEnter += StateChange;
         pandaStateManager.onDirectionEnter += DirectionChange;
@@ -382,7 +385,6 @@ public class PandaAI : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate() 
 	{
-//        Debug.Log(stuckOnSpikes);
 		switch(pandaStateManager.GetState())
 		{	
 			case PandaState.Walking:                
@@ -435,11 +437,10 @@ public class PandaAI : MonoBehaviour {
                     ApplyGravity();
                 break;
             case PandaState.Died:
-                if (ApplyGravity != null && stuckOnSpikes == false)
+                if (ApplyGravity != null && spikeDetract == true)
                 {
-                   // ApplyGravity();
+                   ApplyGravity();
                 }
-
                 break;
 			case PandaState.Boosting:
 				if (BoostingMovement!=null)
@@ -503,6 +504,12 @@ public class PandaAI : MonoBehaviour {
 			}
         }
 	}
+
+    public void ChangeStuckOnSpikes()
+    {
+        spikeDetract = true;
+        animations.SpikePullOut();
+    }
 	
 	public void ChangeDirection(ControllerColliderHit hit)
 	{
@@ -554,6 +561,11 @@ public class PandaAI : MonoBehaviour {
 				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 			}
 		}
+	}
+	
+	void LimbCollision(ControllerColliderHit hit)
+	{
+		hit.rigidbody.AddForce((hit.transform.position - transform.position) * pushingLimbsForce, ForceMode.Impulse);
 	}
 
     void PlaySlap (Vector2 slapDirection, float slapForce)

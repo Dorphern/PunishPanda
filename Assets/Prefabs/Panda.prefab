@@ -8,7 +8,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 33: {fileID: 3300000}
   - 143: {fileID: 14300000}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400006}
@@ -1287,7 +1286,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.06792188, y: .791123211, z: 0}
+  m_LocalPosition: {x: -1.16615152, y: -.463545918, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400166}
@@ -2323,13 +2322,6 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
---- !u!33 &3300000
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &3300002
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -2466,6 +2458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostEnabled: 1
   boostDuration: .300000012
+  pushingLimbsForce: 6
   dismemberedPanda: {fileID: 100020, guid: 8abf91a663f54b34583bfdde65a2715c, type: 2}
   electrocutedPanda: {fileID: 100000, guid: 19b9859a028559a43a0704876e558f48, type: 2}
   slicedInHalfPanda: {fileID: 100000, guid: cb0ce3de56e08a344a1bd28fdab60b1a, type: 2}
@@ -2473,6 +2466,7 @@ MonoBehaviour:
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
   landingHard: 0
+  spikeDetract: 0
   isMainMenuPanda: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -2506,6 +2500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomMinWait: 2
+  randomMaxWait: 6
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1

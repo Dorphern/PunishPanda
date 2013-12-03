@@ -12,6 +12,7 @@ public class InputHandler : MonoBehaviour {
 	public float swipeThreshold = 10f;
 	public float pushingMaxMagnitude = 0f;
 	public float hotspotThreshold = 0.5f;
+	public float pushingMinDistanceThreshold = 0.3f;
 	public Controls controls;
 	
 	private Ray ray;
@@ -240,7 +241,7 @@ public class InputHandler : MonoBehaviour {
 						if(panda.IsFacingFinger(tempBlockade.transform.position))
 						{
 							float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, panda.transform.position);
-							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + 0.1f)
+							if(distanceToFinger < fingerSize / 2f + 0.5f && distanceToFinger > fingerSize / 2f + pushingMinDistanceThreshold)
 							{
 								bool canBePushed = panda.PandaPushingFinger();
 								if(canBePushed)
@@ -291,11 +292,21 @@ public class InputHandler : MonoBehaviour {
 	
 	#endregion
 	
-	void OnGUI()
-	{
-		GUI.color = Color.black;
-		GUI.Label(new Rect(100, 10, 200, 800), debugLine);
-	}
+//	void OnGUI()
+//	{
+//		GUI.color = Color.black;
+//		GUI.Label(new Rect(100, 100, 200, 800), debugLine);
+//		GUI.Label(new Rect(200, 100, 200, 800), "finger size: " + fingerSize.ToString("0.0"));
+//		if(GUI.Button(new Rect(100, 150, 200, 50), "up"))
+//		{
+//			fingerSize += 0.1f;	
+//		}
+//		
+//		if(GUI.Button(new Rect(100, 200, 200, 50), "down"))
+//		{
+//			fingerSize -= 0.1f;	
+//		}	
+//	}
 
 	// for each panda in the list 
 	// if magnitude > break threshold 
@@ -307,39 +318,10 @@ public class InputHandler : MonoBehaviour {
 	
 	void UpdatePandasAroundBlockade(PandaAI pushedPanda ,Vector2 direction)
 	{
-		Vector2 facingDirection = pushedPanda.GetPandaFacingDirection();
-		
-		float dot = Vector2.Dot(direction.normalized, facingDirection);
-		
-//		// if we move up or down we don't move the panda
-//		if(dot == 0)
-//		{
-//			pushedPanda.pushingMagnitude = 0f;
-//			return;
-//		}
-		
-		float projectedDirectionLength;
-		if(dot > 0)
-		{
-			projectedDirectionLength = Vector2.Dot(direction, facingDirection);
-		}
-		else
-		{
-			projectedDirectionLength = - Vector2.Dot(direction, - facingDirection);	
-		}
-		
-		
-		//debugLine += "\n" + Mathf.Abs(projectedDirectionLength).ToString("0.00000");
-		//Debug.Log("Dot : " + dot + " projection : " + projectedDirectionLength);
-		if( Mathf.Abs(projectedDirectionLength) > pushingMaxMagnitude)
-		{	
-			EnablePandasOnBlockadeRelease();
-		}
-		else
-		{
 			float distanceToFinger = Vector2.Distance(tempBlockade.transform.position, pushedPanda.transform.position);
-			//debugLine = distanceToFinger.ToString("0.0000");
-			if(distanceToFinger > fingerSize / 2f + 0.8f || distanceToFinger < fingerSize / 2f)
+			//debugLine = "\n" + distanceToFinger.ToString("0.0000");
+			
+			if(distanceToFinger > fingerSize / 2f + 0.8f || distanceToFinger < fingerSize / 2f + pushingMinDistanceThreshold)
 			{
 				EnablePandasOnBlockadeRelease();
 				//debugLine += "\n 	distanceToFinger >>";
@@ -351,9 +333,6 @@ public class InputHandler : MonoBehaviour {
 				pushedPanda.lastPushingMagnitude = pushedPanda.pushingMagnitude;
 			}
 			pushedPanda.pushingMagnitude = mag;
-			
-			//debugLine = distanceToFinger.ToString("0.0000");
-		}
 	}
 	
 	void EnablePandasOnBlockadeRelease()

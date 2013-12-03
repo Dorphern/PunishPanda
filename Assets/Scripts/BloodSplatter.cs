@@ -109,8 +109,7 @@ public class BloodSplatter : MonoBehaviour {
 	
 	private void Start () 
 	{
-		Debug.Log("StartOnBlood");
-		if(InstanceFinder.LevelManager.CurrentLevelIndex != -1)
+		if(InstanceFinder.LevelManager.IsInMainMenu == false)
 			levelHasPlatforms = InstanceFinder.LevelManager.CurrentLevel.hasPlatforms;
 		else
 			levelHasPlatforms= true;
