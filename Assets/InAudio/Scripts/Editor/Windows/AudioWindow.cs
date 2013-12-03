@@ -26,7 +26,7 @@ public class AudioWindow : InAudioBaseWindow
 
     public void Find(AudioNode toFind)
     {
-        audioCreatorGUI.FindAudio(toFind);
+        audioCreatorGUI.Find(toFind);
     }
 
     public static void Launch()

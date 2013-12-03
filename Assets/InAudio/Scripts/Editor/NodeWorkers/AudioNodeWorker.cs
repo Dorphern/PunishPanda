@@ -194,8 +194,8 @@ public static class AudioNodeWorker  {
         AudioBankWorker.RemoveNodeFromBank(node);
 
         node.Parent.Children.Remove(node);
-        UndoHelper.Destroy(node);
         UndoHelper.Destroy(node.NodeData);
+        UndoHelper.Destroy(node);
     }
 }
 }

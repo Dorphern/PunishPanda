@@ -43,6 +43,7 @@ public class PandaAI : MonoBehaviour {
     private Vector3 fallDir;
 	private Coroutine boostco;
 	private PandaState preFallingState;
+	private bool changeDirectionOnLanding = false;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -110,6 +111,7 @@ public class PandaAI : MonoBehaviour {
         {
             direction = 180f - direction;
         }
+		
         if (ApplyJump != null)
         {
             pandaStateManager.ChangeState(PandaState.Jumping);
@@ -156,9 +158,7 @@ public class PandaAI : MonoBehaviour {
             else
             {
                 animations.SetSlapped(true);
-                ChangeDirection(null);
-
-                animations.SetSlapped(true);
+                ChangeDirection(null);	
 				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
             }
         }
@@ -188,11 +188,15 @@ public class PandaAI : MonoBehaviour {
 	        else
 	        {
 	            // Panda is slapped in the front
-	            // swap back to 
-				//if ( pandaStateManager.GetState() == PandaState.Boosting)
-	            //	pandaStateManager.ChangeState(PandaState.Walking);
-                ChangeDirection(null);
-                animations.SetSlapped(true);
+				if(pandaStateManager.GetState() != PandaState.Jumping && pandaStateManager.GetState() != PandaState.Falling)
+				{
+                	ChangeDirection(null);
+				}
+				else
+				{
+					changeDirectionOnLanding = true;	
+				}
+            	animations.SetSlapped(true);
 				bloodOnSlap.EmmitSlapBloodOnTurn(slapDirection);
 	        }
 		}
@@ -332,6 +336,12 @@ public class PandaAI : MonoBehaviour {
     {
         PandaState state = pandaStateManager.GetState();
         return state != PandaState.Died;
+    }
+	
+	public bool HasEscaped ()
+    {
+        PandaState state = pandaStateManager.GetState();
+        return state == PandaState.Escape;
     }
 
     public void Falling ()
@@ -483,6 +493,12 @@ public class PandaAI : MonoBehaviour {
 			else
 			{
 				pandaStateManager.ChangeState(PandaState.Walking);
+			}
+			
+			if(changeDirectionOnLanding)
+			{
+				ChangeDirection(null);	
+				changeDirectionOnLanding = false;
 			}
         }
 	}

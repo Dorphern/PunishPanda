@@ -19,7 +19,7 @@ public static class TreeWalker
 
         for (int i = 0; i < node.GetChildren.Count; i++)
         {
-            ForEach<T>(node.GetChildren[i], action);
+            ForEach(node.GetChildren[i], action);
         }
     }
 
@@ -72,6 +72,27 @@ public static class TreeWalker
             result += Count(node.GetChildren[i], predicate);
         }
         return result;
+    }
+
+    public static List<T> Where<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        return Where(node, predicate, new List<T>());
+    }
+
+    private static List<T> Where<T>(T node, Func<T, bool> predicate, List<T> nodes) where T : Object, ITreeNode<T>
+    {
+        if (node == null)
+            return nodes;
+
+        if(predicate(node))
+            nodes.Add(node);
+
+        for (int i = 0; i < nodes.Count; ++i)
+        {
+            Where(nodes[i], predicate, nodes);
+        }
+
+        return nodes;
     }
 
     public static int FindIndexInParent<T>(T node) where T : Object, ITreeNode<T>
@@ -277,6 +298,23 @@ public static class TreeWalker
             return calledFrom;
         }
     }
+
+    public static bool Any<T>(T node, Func<T, bool> predicate) where T : Object, ITreeNode<T>
+    {
+        if (predicate(node))
+            return true;
+
+        for (int i = 0; i < node.GetChildren.Count; ++i)
+        {
+            if (Any(node.GetChildren[i], predicate))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 #endif
     public static bool IsParentOf<T>(T node, T potentialParent) where T : Object, ITreeNode<T>
     {
@@ -289,4 +327,12 @@ public static class TreeWalker
         return false;
     }
 
+
+    public static void ForEachParent<T>(T node, Action<T> action) where T : Object, ITreeNode<T>
+    {
+        action(node);
+        if (node.IsRoot)
+            return;
+        ForEachParent<T>(node.GetParent, action);
+    }
 }

@@ -154,7 +154,8 @@ public class RuntimeEventWorker : MonoBehaviour
             foundInfo = currentInstances[index];
             player = foundInfo.Player;
             currentInstances.SwapRemoveAt(index);
-            player.Stop();
+            if(player != null)
+                player.Stop();
         }
         return true;
     }

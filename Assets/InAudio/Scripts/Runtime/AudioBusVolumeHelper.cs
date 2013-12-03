@@ -80,6 +80,10 @@ public static class AudioBusVolumeHelper {
                     players.SwapRemoveAt(i);
                 }
             }
+            for (int i = 0; i < bus.ExternalSources.Count; i++)
+            {
+                bus.ExternalSources[i].UpdateBusVolume(bus.RuntimeVolume);
+            }
         }
 
         for (int i = 0; i < bus.Children.Count; ++i)
