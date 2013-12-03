@@ -42,14 +42,6 @@ public class LevelManager : MonoBehaviour
         get; private set;
     }
 
-    public bool IsMainMenu
-    {
-        get
-        {
-            return currentLevelIndex == -1;
-        }
-    }
-
     public void LoadMainMenu()
     {
         System.GC.Collect();
