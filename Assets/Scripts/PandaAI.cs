@@ -72,16 +72,13 @@ public class PandaAI : MonoBehaviour {
 		    pandaStateManager.GetState() == PandaState.Walking     ||
 			pandaStateManager.GetState() == PandaState.Boosting)
 		{	
-			
 			if(InstanceFinder.StatsManager!=null)
 			{
 				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
 			}
-            if (pandaStateManager.GetState() == PandaState.Idle)
-            {
-                animations.ChangePandaState(PandaState.Idle);
-            }
+
 			pandaStateManager.ChangeState(PandaState.Idle);
+            animations.SetDoubleTapped();
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
 		}
 	}

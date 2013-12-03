@@ -93,6 +93,12 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Grounded", characterController.isGrounded);
     }
 
+    public void SetDoubleTapped ()
+    {
+        anim.SetBool("DoubleTapped", true);
+        StartCoroutine(ResetDoubleTapped());
+    }
+
     # endregion
 
     # region Private Methods
@@ -186,6 +192,12 @@ public class Animations : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.05f);
         anim.SetBool("PullOutSpikes", false);
+    }
+
+    IEnumerator ResetDoubleTapped ()
+    {
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("DoubleTapped", false);
     }
     # endregion
 }
