@@ -43,17 +43,21 @@ public class LevelIconManager : MonoBehaviour {
 			//STAR CALCULATION:
 			stars = PunishPanda.Game.ScoreCalculator.Stars(levels[LevelNumber - 1], levels[LevelNumber-1].HighScore);
 			//Debug.Log ("Level:"+LevelNumber+" has "+stars+" stars");
-			if(stars == 1)
+			
+			if(isUnlocked == true)
 			{
-				show1star();
-			}
-			else if(stars == 2)
-			{
-				show2stars();
-			}
-			else if(stars == 3)
-			{
-				show3stars ();
+				if(stars == 1)
+				{
+					show1star();
+				}
+				else if(stars == 2)
+				{
+					show2stars();
+				}
+				else if(stars == 3)
+				{
+					show3stars ();
+				}
 			}
 		}
 		else {
