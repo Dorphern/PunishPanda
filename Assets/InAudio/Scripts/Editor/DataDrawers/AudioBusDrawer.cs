@@ -50,6 +50,8 @@ namespace InAudio.InAudioEditorGUI
                 EditorGUILayout.Slider("Combined Volume", node.CombinedVolume, 0, 1.0f);
             }
             GUI.enabled = true;
+
+            /*
             EditorGUILayout.Separator();
 
             UndoHelper.GUIUndo(node, "Duck Amount Change", () => 
@@ -98,7 +100,7 @@ namespace InAudio.InAudioEditorGUI
             }
 
             lastArea.y += 15;
-            lastArea.x -= 20;
+            lastArea.x -= 20;*/
          /*   GUILayout.Label("Nodes Playing In This Specific Bus");
 
                 lastArea.x += 20;

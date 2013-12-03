@@ -36,7 +36,7 @@ public class IntegrityGUI
         if (!UndoHelper.IsNewUndo)
         {
             EditorGUILayout.HelpBox("As you are not using Unity 4.3 or later, there is likely unused audio data stored." +
-                                    "\nThis is because objects are not actually deleted since the Undo system doesn't support undo of deletion." +
+                                    "\nThis is because data is not always deleted since the Undo system does not support undo of deletion." +
                                     "\nCleanup will remove all unused data.", MessageType.Info);
         }
         else
@@ -44,7 +44,7 @@ public class IntegrityGUI
             EditorGUILayout.HelpBox("No nodes should be unused, but in the case there is this will remove all unused data.\nNo performance is lost if unused nodes remains, but will waste a bit of memory. This will clean up any unused data", MessageType.Info);
         }
         
-        if (GUILayout.Button("Clean Up Unused Nodes"))
+        if (GUILayout.Button("Clean Up Unused Data"))
         {
             int deletedTotal = 0;
 
@@ -134,7 +134,7 @@ public class IntegrityGUI
 
         int deleted = 0;
         //Delete all objects not in use
-        foreach (T node in objects) 
+        foreach (MonoBehaviour node in objects) 
         {
             if (!inUse.Contains(node))
             {

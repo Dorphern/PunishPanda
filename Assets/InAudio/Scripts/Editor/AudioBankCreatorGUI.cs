@@ -1,13 +1,17 @@
+using System;
 using InAudio;
 using InAudio.InAudioEditorGUI;
 using InAudio.TreeDrawer;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 {
     public AudioBankCreatorGUI(AuxWindow window) : base(window)
-    {}
+    {
+        this.window = window;
+    }
 
     private int leftWidth;
     private int height;
@@ -36,10 +40,11 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
     private void DrawLeftSide(Rect area)
     {
-        Rect treeArea = EditorGUILayout.BeginVertical(GUILayout.Width(leftWidth), GUILayout.Height(height - 5));
+        Rect treeArea = EditorGUILayout.BeginVertical(GUILayout.Width(leftWidth), GUILayout.Height(height));
         DrawSearchBar();
 
         EditorGUILayout.BeginVertical();
+        treeArea.y -= 25;
 
         isDirty |= treeDrawer.DrawTree(InAudioInstanceFinder.DataManager.BankLinkTree, treeArea);
 
@@ -88,7 +93,7 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
         if (node == null)
             return;
         var menu = new GenericMenu();
-
+        
         if(node.Type == AudioBankTypes.Folder)
         {
             menu.AddItem(new GUIContent(@"Create Child/Folder"), false, data => CreateBank(node, AudioBankTypes.Folder), node);
@@ -102,22 +107,66 @@ public class AudioBankCreatorGUI : BaseCreatorGUI<AudioBankLink>
 
         menu.AddSeparator("");
 
-        /*if (!node.IsRoot)
+        /*if (!toDelete.IsRoot)
         {
-            menu.AddItem(new GUIContent(@"Delete"), false, data => DeleteNode(InAudioInstanceFinder.DataManager.BankLinkTree, data as AudioBankLink), node);
+            menu.AddItem(new GUIContent(@"Delete"), false, data => DeleteNode(InAudioInstanceFinder.DataManager.BankLinkTree, data as AudioBankLink), toDelete);
         }
         else*/
-            menu.AddDisabledItem(new GUIContent(@"Delete"));
+        if (node.IsRoot)
+            menu.AddDisabledItem(new GUIContent(@"Cannot Delete Root"));
+        else
+        {
+            menu.AddItem(new GUIContent(@"Delete If Empty"), false, data => DeleteNode(InAudioInstanceFinder.DataManager.BankLinkTree, data as AudioBankLink), node);
+        }
         menu.ShowAsContext();
     }
 
-    private void DeleteNode(AudioBankLink root, AudioBankLink node)
+    private void DeleteNode(AudioBankLink root, AudioBankLink toDelete)
     {
-        int nonFolderCount = TreeWalker.Count(root, link => link.Type == AudioBankTypes.Link);
-        if (nonFolderCount == 1)
+        if (toDelete.GetChildren.Count > 0)
         {
-            EditorUtility.DisplayDialog("Cannot delete the last bank", "Cannot delete the last bank", "ok");
+            EditorUtility.DisplayDialog("Cannot delete bank", "Cannot delete folder with bank children", "ok");
+            return;
         }
+
+
+        Func<AudioNode, bool> usedBankRoot = node =>
+        {
+            if (node.Type == AudioNodeType.Folder)
+            {
+                if (node.IsRoot && node.BankLink == toDelete)
+                {
+                    return true;
+                } 
+                else if (node.Type == AudioNodeType.Folder && node.BankLink == toDelete )
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+        
+        if(TreeWalker.Any(InAudioInstanceFinder.DataManager.AudioTree, usedBankRoot))
+        {
+            EditorUtility.DisplayDialog("Cannot delete bank", "Cannot delete bank that is in use", "ok");
+            return;
+        }
+
+        int nonFolderCount = TreeWalker.Count(root, link => link.Type == AudioBankTypes.Link);
+        if (nonFolderCount == 1 && toDelete.Type == AudioBankTypes.Link)
+        {
+            EditorUtility.DisplayDialog("Cannot delete the bank", "Cannot delete the last bank", "ok");
+            return;
+        }
+
+        if (toDelete.Type == AudioBankTypes.Link && !EditorUtility.DisplayDialog("Delete bank?", "This cannot be undone.", "Delete", "Do nothing"))
+            return;
+
+        if (toDelete.Type == AudioBankTypes.Link)
+            AudioBankWorker.DeleteBank(toDelete);
+        else if (toDelete.Type == AudioBankTypes.Folder)
+            AudioBankWorker.DeleteFolder(toDelete);
     }
 
     private void CreateBank(AudioBankLink parent, AudioBankTypes type)

@@ -34,6 +34,18 @@ public class WinScreen : MonoBehaviour {
 	public float timesteps = 2f;
 	
 	public bool achStatsUpdated = false;
+
+    [EventHookAttribute("One Star")]
+    public List<AudioEvent> OnOneStarEvents = new List<AudioEvent>();
+
+    [EventHookAttribute("Two Stars")]
+    public List<AudioEvent> OnTwoStarsEvents = new List<AudioEvent>();
+
+    [EventHookAttribute("Three Stars")]
+    public List<AudioEvent> OnThreeStartsEvents = new List<AudioEvent>();
+
+    [EventHookAttribute("Highscore Enable")]
+    public List<AudioEvent> OnHighscoreEvents = new List<AudioEvent>();
 	
 	int oneStarScore, twoStarScore, threeStarScore;
 	int score, highscore;
@@ -318,6 +330,7 @@ public class WinScreen : MonoBehaviour {
 		{
 			if(score>=oneStarScore)
 			{
+                HDRSystem.PostEvents(gameObject, OnOneStarEvents);
 				oneStarTexture.SetActive(true);
 				tweenAlphaOneStarBackground.enabled = true;
 				
@@ -325,6 +338,7 @@ public class WinScreen : MonoBehaviour {
 			
 			if(score>=twoStarScore)
 			{
+                HDRSystem.PostEvents(gameObject, OnTwoStarsEvents);
 				yield return new WaitForSeconds(0.8f);
 				tweenAlphaTwoStarBackground.enabled = true;
 				twoStarTexture.SetActive(true);
@@ -333,6 +347,7 @@ public class WinScreen : MonoBehaviour {
 			
 			if(score>=threeStarScore)
 			{
+                HDRSystem.PostEvents(gameObject, OnThreeStartsEvents);
 				yield return new WaitForSeconds(1f);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
@@ -345,7 +360,8 @@ public class WinScreen : MonoBehaviour {
 		
 		// if new highscore reached
 		if(highscore < score)
-		{			
+		{
+            HDRSystem.PostEvents(gameObject, OnHighscoreEvents);
 			//localization of stamps
 			if(Localization.instance.currentLanguage == "Danish")
 				NewHighScoreTextureDanish.SetActive(true);
