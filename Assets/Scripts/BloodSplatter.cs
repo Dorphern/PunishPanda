@@ -23,7 +23,6 @@ public class BloodSplatter : MonoBehaviour {
 		// uv rectangles.
 	public GameObject decalsPrefab;
 	public HierarchyTransform combinedMeshTransform = HierarchyTransform.Root;
-	public bool mainMenuSlap = false;
 	public float platformsLevelScale = 1f;
 	
 	public int maxSpaltCount = 100;
@@ -110,6 +109,7 @@ public class BloodSplatter : MonoBehaviour {
 	
 	private void Start () 
 	{
+		Debug.Log("StartOnBlood");
 		if(InstanceFinder.LevelManager.CurrentLevelIndex != -1)
 			levelHasPlatforms = InstanceFinder.LevelManager.CurrentLevel.hasPlatforms;
 		else
@@ -208,29 +208,18 @@ public class BloodSplatter : MonoBehaviour {
 	
 	void ProjectWithDelay(Vector3 rayStart ,Vector2 slapDirection, float slapForce, bool floorHit)
 	{
-		if(mainMenuSlap)
-		{
-			if(slapDirection.x > 0f)
-				rayStart.x = rayStart.x - 0.5f + slapForce * 3f;
-		}
-		
 		Vector3 rotatedDirection;
 		rotatedDirection = Quaternion.AngleAxis( Random.Range(- decalOffsetAngle, decalOffsetAngle), Vector3.forward) * new Vector3(slapDirection.x, slapDirection.y) ;
 		
 		// set the angle of the splat to be the same in both XY and XZ planes
 		projectionDirection.x = rotatedDirection.x;
 		projectionDirection.y = rotatedDirection.y;
-		if(mainMenuSlap)
-		{
-			projectionDirection.z = 1f;
-		}
+
+		if(projectionDirection.y < 0f)
+			projectionDirection.z = Mathf.Abs(projectionDirection.x);
 		else
-		{
-			if(projectionDirection.y < 0f)
-				projectionDirection.z = Mathf.Abs(projectionDirection.x);
-			else
-				projectionDirection.z = 1f;
-		}
+			projectionDirection.z = 1f;
+		
 		
 		float angle = GetProjectionAngle();
 		
