@@ -257,20 +257,11 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
     {
-        // Disable death if the panda is already dead
-        //if (pandaStateManager.GetState() == PandaState.Died)
-        //{
-        //    return false;
-        //}
-
         Debug.Log("Hit death object: " + trap.GetTrapType());		
-		
-        pandaStateManager.ChangeState(PandaState.Died);
 
         // change state from playAnimation PlayDeathAnimation
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, pandaStateManager.GetDirection());
         
-        pandaController.PandaKilled(true, isPerfect);
         TrapType trapType = trap.GetTrapType();
 
         if (trapType == TrapType.Electicity)
@@ -302,7 +293,18 @@ public class PandaAI : MonoBehaviour {
             Destroy(this.gameObject);
         }
 
-        return true;
+        // Return false if the panda has already died
+        // We do this so the panda still interacts with the traps after death
+        if (pandaStateManager.GetState() == PandaState.Died)
+        {
+            return false;
+        }
+        else
+        {
+            pandaStateManager.ChangeState(PandaState.Died);
+            pandaController.PandaKilled(true, isPerfect);
+            return true;
+        }
     }
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
