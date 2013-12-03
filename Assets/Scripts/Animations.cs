@@ -157,7 +157,7 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0, 100));
+            anim.SetInteger("Random", PandaRandom.NextInt(0, 101));
             anim.SetBool("NewRandom", true);
             yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
