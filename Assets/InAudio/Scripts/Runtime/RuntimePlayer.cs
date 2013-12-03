@@ -140,7 +140,9 @@ public class RuntimePlayer : MonoBehaviour
     private IEnumerator StartPlay(AudioNode root, AudioNode current, DSPTime endTime)
     {
         breakLoop = false;
-        current.GetBus().RuntimePlayers.Add(this);
+
+        var players = current.GetBus().RuntimePlayers;
+        players.Add(this);
 
         yield return StartCoroutine(NextNode(root, current, endTime));
         dspPool.ReleaseObject(endTime);

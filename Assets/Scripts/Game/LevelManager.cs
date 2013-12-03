@@ -104,7 +104,7 @@ public class LevelManager : MonoBehaviour
             NextWorld();
             isInMainMenu = true;
 			SaveData();
-            LoadLevel("MainMenu");
+            LoadLevel(mainMenuName);
         }
     }
 

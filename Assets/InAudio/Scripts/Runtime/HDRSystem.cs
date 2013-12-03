@@ -320,6 +320,12 @@ public class HDRSystem : MonoBehaviour
         AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);
     }
 
+    void OnLevelWasLoaded()
+    {
+        if (InAudioInstanceFinder.DataManager.BusTree != null)
+            InAudioInstanceFinder.DataManager.BusTree.Dirty = true;
+    }
+
     void OnEnable()
     {
         if (instance == null)
@@ -331,9 +337,12 @@ public class HDRSystem : MonoBehaviour
             runtimeData.UpdateEvents(InAudioInstanceFinder.DataManager.EventTree);
             //AudioBusVolumeHelper.UpdateCombinedVolume(InAudioInstanceFinder.DataManager.BusTree);
             DontDestroyOnLoad(transform.parent.gameObject);
-
+            
+            Debug.Log("Initialized");
             if (InAudioInstanceFinder.DataManager != null && InAudioInstanceFinder.DataManager.BusTree != null)
             {
+                TreeWalker.ForEach(InAudioInstanceFinder.DataManager.BusTree, b => b.NodesInBus = new List<RuntimePlayer>());
+
                 var busRoot = InAudioInstanceFinder.DataManager.BusTree;
                 busRoot.Dirty = true;
                 AudioBusVolumeHelper.InitVolumes(busRoot);

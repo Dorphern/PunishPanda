@@ -35,17 +35,13 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     //How long after the last duck that it returns to normal volume
     public float ReleaseTime = 1.0f;
 
-    //The last time this bus was affected by ducking, in double as time used is AudioSettings.dspTime
-    [System.NonSerialized]
-    public double LastTimeAffected;
-
     //Do we need to update the attach audio players?
     [System.NonSerialized]
     public bool Dirty = true;
 
     //The nodes during runtime that is in this bus
     [System.NonSerialized]
-    public List<RuntimePlayer> NodesInBus = new List<RuntimePlayer>();
+    public List<RuntimePlayer> NodesInBus;
 
     //The volume to set it's children to
     [System.NonSerialized]
@@ -58,9 +54,9 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     [System.NonSerialized]
     public Fader Fader = new Fader();
 
-
     //External audio sources in the game
-    [System.NonSerialized] public List<ExternalAudioSource> ExternalSources = new List<ExternalAudioSource>();
+    [System.NonSerialized] 
+    public List<ExternalAudioSource> ExternalSources = new List<ExternalAudioSource>();
 
 
 
@@ -73,8 +69,9 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     public List<RuntimePlayer> RuntimePlayers
     {
         get {
-            if (NodesInBus == null)
-                NodesInBus = new List<RuntimePlayer>();
+            /*if (NodesInBus == null)
+                NodesInBus = new List<RuntimePlayer>();*/
+            //Debug.Log(NodesInBus.Count);
             return NodesInBus;
         }
     }

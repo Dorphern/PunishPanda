@@ -91,7 +91,8 @@ public class WinScreen : MonoBehaviour {
 		yield return new WaitForSeconds(timeBeforeWinScreen);
 
 		SetWinScreenData();
-		if(InputHandler.instance!=null) InputHandler.instance.PausedGame();
+		if(InputHandler.instance!=null) 
+            InputHandler.instance.PausedGame();
 		winScreen.SetActive(true);
 
         InstanceFinder.StatsManager.Save();
@@ -221,8 +222,10 @@ public class WinScreen : MonoBehaviour {
 		}
 		
 		// perfect kills
-		ScoreTypeLabel.text = Localization.instance.Get("PerfectKill");
-		intermediateTotal = pointSystem.PerfectKill;
+	    
+	    ScoreTypeLabel.text = Localization.instance.Get("PerfectKill"); 
+	    
+	    intermediateTotal = pointSystem.PerfectKill;
 		for(int i=0; i< perfectKills; i++)
 		{
 			//score increment loop

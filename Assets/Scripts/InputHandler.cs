@@ -25,7 +25,7 @@ public class InputHandler : MonoBehaviour {
 	private Collider[] overlappingObjects;
 //	private PandaAI pushedPanda;
 	private float fingerSize;
-	private string debugLine;
+	//private string debugLine;
 	private bool paused; 
 	
 	[System.Serializable]
@@ -279,7 +279,7 @@ public class InputHandler : MonoBehaviour {
 	void OnGUI()
 	{
 		GUI.color = Color.black;
-		GUI.Label(new Rect(100, 10, 200, 800), debugLine);
+		//GUI.Label(new Rect(100, 10, 200, 800), debugLine);
 	}
 
 	// for each panda in the list 
