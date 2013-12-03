@@ -16,6 +16,7 @@ public class PandaAI : MonoBehaviour {
 	public event System.Action<PandaDirection> ApplyFallTransitionMovement;
 	public bool boostEnabled = false;
 	public float boostDuration = 1f;
+	public float pushingLimbsForce = 6f;
 
     [SerializeField] protected GameObject dismemberedPanda;
 	[SerializeField] protected GameObject electrocutedPanda;
@@ -76,6 +77,10 @@ public class PandaAI : MonoBehaviour {
 			{
 				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
 			}
+            if (pandaStateManager.GetState() == PandaState.Idle)
+            {
+                animations.ChangePandaState(PandaState.Idle);
+            }
 			pandaStateManager.ChangeState(PandaState.Idle);
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
 		}
@@ -288,7 +293,7 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
         {
-            // pandaController.EnableColliders(false);
+            pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
         }
         else if (trapType == TrapType.ThrowingStars && isPerfect)
@@ -371,6 +376,7 @@ public class PandaAI : MonoBehaviour {
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
 		collisionController.OnWallHit += ChangeDirection;
+		collisionController.OnLimbHit += LimbCollision;
 
         pandaStateManager.onStateEnter += StateChange;
         pandaStateManager.onDirectionEnter += DirectionChange;
@@ -559,6 +565,11 @@ public class PandaAI : MonoBehaviour {
 				pandaStateManager.SwapDirection(pandaStateManager.GetDirection());
 			}
 		}
+	}
+	
+	void LimbCollision(ControllerColliderHit hit)
+	{
+		hit.rigidbody.AddForce((hit.transform.position - transform.position) * pushingLimbsForce, ForceMode.Impulse);
 	}
 
     void PlaySlap (Vector2 slapDirection, float slapForce)

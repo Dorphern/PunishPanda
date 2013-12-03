@@ -48,6 +48,11 @@ public class AudioBankLink : MonoBehaviour, ITreeNode<AudioBankLink>
         }
     }
 
+    public bool IsLoaded
+    {
+        get; set;
+    }
+
     public AudioBankLink GetParent
     {
         get

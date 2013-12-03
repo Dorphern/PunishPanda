@@ -68,10 +68,15 @@ public class Level : MonoBehaviour
 
     public void OnLevelReset()
     {
-        HDRSystem.PostEvents(gameObject, onReset);
+        
     }
 
     public void OnNextLevel()
+    {
+        //HDRSystem.PostEvents(gameObject, onReset);
+    }
+
+    void OnLevelWasLoaded(int level)
     {
         HDRSystem.PostEvents(gameObject, onReset);
     }
