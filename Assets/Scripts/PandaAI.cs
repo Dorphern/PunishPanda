@@ -64,6 +64,10 @@ public class PandaAI : MonoBehaviour {
     private List<AudioEvent> jumpEvents;
     Animations animations;
 
+    [SerializeField]
+    [EventHookAttribute("Double Tab")]
+    List<AudioEvent> doubleTabEvents = new List<AudioEvent>();
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -76,7 +80,7 @@ public class PandaAI : MonoBehaviour {
 			{
 				InstanceFinder.StatsManager.LiterBlood += PandaRandom.RandomBlood(0.05f);	
 			}
-
+            HDRSystem.PostEvents(gameObject, doubleTabEvents);
 			pandaStateManager.ChangeState(PandaState.Idle);
             animations.SetDoubleTapped();
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
