@@ -18,6 +18,8 @@ public class RuntimePlayer : MonoBehaviour
         dspPool = InAudioInstanceFinder.DSPTimePool;
         attachedToBus = node.GetBus();
         busVolume = attachedToBus.RuntimeVolume;
+        breakLoop = false;
+        attachedToBus.RuntimePlayers.Add(this);
 
         //This is to queue the next playing node, as the first clip will not yield a waitforseconds
         firstClip = true;
@@ -138,12 +140,7 @@ public class RuntimePlayer : MonoBehaviour
     }
 
     private IEnumerator StartPlay(AudioNode root, AudioNode current, DSPTime endTime)
-    {
-        breakLoop = false;
-
-        var players = current.GetBus().RuntimePlayers;
-        players.Add(this);
-
+    {        
         yield return StartCoroutine(NextNode(root, current, endTime));
         dspPool.ReleaseObject(endTime);
         yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime));

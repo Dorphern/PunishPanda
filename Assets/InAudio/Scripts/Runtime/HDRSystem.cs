@@ -221,7 +221,6 @@ public class HDRSystem : MonoBehaviour
 
     private IEnumerator PostDelayedActions(GameObject controllingObject, AudioEventAction eventData, GameObject attachedToOther)
     {
-        Debug.Log("wait");
         yield return new WaitForSeconds(eventData.Delay);
         HandleEventAction(controllingObject, eventData, attachedToOther);
     }
@@ -322,8 +321,9 @@ public class HDRSystem : MonoBehaviour
 
     void OnLevelWasLoaded()
     {
-        if (InAudioInstanceFinder.DataManager.BusTree != null)
-            InAudioInstanceFinder.DataManager.BusTree.Dirty = true;
+        var root = InAudioInstanceFinder.DataManager.BusTree;
+        root.Dirty = true;
+        AudioBusVolumeHelper.UpdateBusVolumes(root);
     }
 
     void OnEnable()
@@ -337,13 +337,11 @@ public class HDRSystem : MonoBehaviour
             runtimeData.UpdateEvents(InAudioInstanceFinder.DataManager.EventTree);
             //AudioBusVolumeHelper.UpdateCombinedVolume(InAudioInstanceFinder.DataManager.BusTree);
             DontDestroyOnLoad(transform.parent.gameObject);
-            
-            Debug.Log("Initialized");
+
             if (InAudioInstanceFinder.DataManager != null && InAudioInstanceFinder.DataManager.BusTree != null)
             {
-                TreeWalker.ForEach(InAudioInstanceFinder.DataManager.BusTree, b => b.NodesInBus = new List<RuntimePlayer>());
-
                 var busRoot = InAudioInstanceFinder.DataManager.BusTree;
+                TreeWalker.ForEach(busRoot, b => b.NodesInBus = new List<RuntimePlayer>());
                 busRoot.Dirty = true;
                 AudioBusVolumeHelper.InitVolumes(busRoot);
                 AudioBusVolumeHelper.UpdateBusVolumes(InAudioInstanceFinder.DataManager.BusTree);

@@ -16,7 +16,9 @@ public static class BankLoader{
             {
                 (bank.Clips[i].Node.NodeData as AudioData).Clip = bank.Clips[i].Clip;
             }
+            bankLink.IsLoaded = true;
         }
+        
         return bank;
     }
 
@@ -30,7 +32,9 @@ public static class BankLoader{
                 (bank.Clips[i].Node.NodeData as AudioData).Clip = null;
             }
             Resources.UnloadUnusedAssets();
+            bankLink.IsLoaded = false;
         }
+        
     }
 
     public static void LoadAutoLoadedBanks()

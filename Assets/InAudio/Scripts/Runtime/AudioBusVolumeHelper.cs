@@ -9,8 +9,7 @@ public static class AudioBusVolumeHelper {
         if (duration == 0)
         {
             bus.Fader.Activated = false;
-            
-            bus.RuntimeSelfVolume = targetVolume;            
+            bus.RuntimeSelfVolume = targetVolume;
         }
         else
         {
@@ -35,6 +34,7 @@ public static class AudioBusVolumeHelper {
 
     public static void UpdateBusVolumes(AudioBus bus)
     {   
+        
         Fader fader = bus.Fader;
         if (fader.Activated)
         {
@@ -58,14 +58,14 @@ public static class AudioBusVolumeHelper {
             parentVolume = 1.0f;
         }
 
-        //Update actual volume used
+        if (bus.Parent != null)
+            bus.Dirty |= bus.Parent.Dirty;
+
         float oldVolume = bus.RuntimeVolume;
         bus.RuntimeVolume = bus.Volume * bus.RuntimeSelfVolume * parentVolume;
-
         if (bus.RuntimeVolume != oldVolume)
             bus.Dirty = true;
         
-        //If dirty, update the volume of all nodes in this bus
         if (bus.Dirty)
         {
             var players = bus.RuntimePlayers;

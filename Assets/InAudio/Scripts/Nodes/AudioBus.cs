@@ -48,15 +48,15 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     public float RuntimeVolume = 1.0f;
 
     //What the volume for itself is, set by SelfVolume when the game starts
-    [System.NonSerialized]
+    [System.NonSerialized] 
     public float RuntimeSelfVolume = 1.0f;
 
     [System.NonSerialized]
     public Fader Fader = new Fader();
 
+
     //External audio sources in the game
-    [System.NonSerialized] 
-    public List<ExternalAudioSource> ExternalSources = new List<ExternalAudioSource>();
+    [System.NonSerialized] public List<ExternalAudioSource> ExternalSources = new List<ExternalAudioSource>();
 
 
 
@@ -69,9 +69,6 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     public List<RuntimePlayer> RuntimePlayers
     {
         get {
-            /*if (NodesInBus == null)
-                NodesInBus = new List<RuntimePlayer>();*/
-            //Debug.Log(NodesInBus.Count);
             return NodesInBus;
         }
     }

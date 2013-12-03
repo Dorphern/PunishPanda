@@ -138,6 +138,7 @@ public abstract class BaseCreatorGUI<T> where T : Object, ITreeNode<T>
         if (treeDrawer.SelectedNode == null)
         {
             var found =  TreeWalker.FindById(root, id);
+            //Debug.Log("found node", found);
             if (found != null)
             {
                 treeDrawer.SelectedNode = found;

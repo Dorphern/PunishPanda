@@ -20,15 +20,17 @@ public class RuntimeEventWorker : MonoBehaviour
         Play(controllingObject, audioNode, runtimePlayer);
     }
 
+   
+
     public void PlayAtPosition(GameObject controllingObject, AudioNode audioNode, Vector3 position)
     {
         List<InstanceInfo> currentInstances = audioNode.CurrentInstances;
         if (!AllowedStealing(audioNode, currentInstances))
             return;
 
-        var runtimePlayer = audioGOPool.GetObject();
-        runtimePlayer.transform.position = position; 
-        Play(controllingObject, audioNode, runtimePlayer);
+        var poolObject = audioGOPool.GetObject();
+        poolObject.transform.position = position; 
+        Play(controllingObject, audioNode, poolObject);
     }
 
     public void StopAll(GameObject controllingObject)
@@ -85,12 +87,10 @@ public class RuntimeEventWorker : MonoBehaviour
         var runtimeInfo = runtimeInfoPool.GetObject();
         runtimeInfo.Node = audioNode;
         runtimeInfo.Player = player;
-
         List<RuntimeInfo> tupleList = GetValue(GOAudioNodes, controllingObject);
         tupleList.Add(runtimeInfo);
         runtimeInfo.ListIndex = tupleList.Count - 1;
         runtimeInfo.PlacedIn = tupleList;
-
         player.Play(audioNode, runtimeInfo);
     }
 
@@ -113,11 +113,11 @@ public class RuntimeEventWorker : MonoBehaviour
 
     private static bool AllowedStealing(AudioNode audioNode, List<InstanceInfo> currentInstances)
     {
+
         if (audioNode.LimitInstances && currentInstances.Count >= audioNode.MaxInstances)
         {
             RuntimePlayer player = null;
             var stealType = audioNode.InstanceStealingTypes;
-
             if (stealType == InstanceStealingTypes.NoStealing)
                 return false;
 
