@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour {
 	public float fingerRadius = 1f;
 	public float swipeThreshold = 10f;
 	public float pushingMaxMagnitude = 0f;
+	public float hotspotThreshold = 0.5f;
 	public Controls controls;
 	
 	private Ray ray;
@@ -167,6 +168,18 @@ public class InputHandler : MonoBehaviour {
 
     void PerformCursorUpdate (Vector3 position, int fingerID)
 	{
+		if(selectedHotSpots.ContainsKey(fingerID))
+		{
+			Vector3 fingerWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, - Camera.main.transform.position.z));
+			
+			selectedHotSpots.TryGetValue(fingerID, out tempHotSpot);
+			if(SqrMagnitude(fingerWorldPos, tempHotSpot.transform.position) > hotspotThreshold)
+			{
+				tempHotSpot.DeactivateHotspot();
+				selectedHotSpots.Remove(fingerID);
+			}
+		}
+		
 		// if we have a blockade selected we can perform actions involving blocking and slaping
         if (selectedBlockades.ContainsKey(fingerID))
 		{
@@ -342,5 +355,10 @@ public class InputHandler : MonoBehaviour {
 			tempBlockade.pushingPandas[i].PandaPushingToWalking();
 		}
 		tempBlockade.pushingPandas.Clear();
+	}
+	
+	float SqrMagnitude(Vector2 a, Vector2 b)
+	{ 
+		return (a - b).sqrMagnitude; 	
 	}
 }
