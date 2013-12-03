@@ -506,6 +506,7 @@ public class PandaAI : MonoBehaviour {
     public void ChangeStuckOnSpikes()
     {
         spikeDetract = true;
+        animations.SpikePullOut();
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)

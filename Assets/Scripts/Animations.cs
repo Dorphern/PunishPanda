@@ -80,6 +80,14 @@ public class Animations : MonoBehaviour {
         StartCoroutine(ChangeCollidableType(collidableType));
         anim.SetInteger("Direction", (int)pandaDirection);
     }
+
+    public void SpikePullOut()
+    {
+        Debug.Log("PullOut");
+        anim.SetBool("PullOutSpikes", true);
+        StartCoroutine(ChangeSpikesPullOut());
+    }
+
     # endregion
 
     # region Private Methods
@@ -155,6 +163,12 @@ public class Animations : MonoBehaviour {
             anim.SetBool("NewRandom", false);
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
+    }
+
+    IEnumerator ChangeSpikesPullOut ()
+    {
+        yield return new WaitForSeconds(0.05f);
+        anim.SetBool("PullOutSpikes", false);
     }
     # endregion
 }
