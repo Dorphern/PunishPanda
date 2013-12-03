@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
         Screen.autorotateToLandscapeRight = true;
 
         InstanceFinder.GameManager = this;
+
+        //Localization.instance.currentLanguage = "English";
 		
         DontDestroyOnLoad(transform.gameObject);
         levelManager = GetComponent<LevelManager>();
