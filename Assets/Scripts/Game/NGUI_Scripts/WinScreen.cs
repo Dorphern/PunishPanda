@@ -338,8 +338,8 @@ public class WinScreen : MonoBehaviour {
 			
 			if(score>=twoStarScore)
 			{
-                HDRSystem.PostEvents(gameObject, OnTwoStarsEvents);
-				yield return new WaitForSeconds(0.8f);
+                yield return new WaitForSeconds(0.8f);
+				HDRSystem.PostEvents(gameObject, OnTwoStarsEvents);
 				tweenAlphaTwoStarBackground.enabled = true;
 				twoStarTexture.SetActive(true);
 				
@@ -347,8 +347,9 @@ public class WinScreen : MonoBehaviour {
 			
 			if(score>=threeStarScore)
 			{
-                HDRSystem.PostEvents(gameObject, OnThreeStartsEvents);
+                
 				yield return new WaitForSeconds(1f);
+				HDRSystem.PostEvents(gameObject, OnThreeStartsEvents);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
 				//UpdateAchievementsAndStats();
