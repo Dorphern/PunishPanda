@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Animations : MonoBehaviour {
 
+    [SerializeField] float randomMinWait = 2f;
+    [SerializeField] float randomMaxWait = 6f;
+
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
@@ -146,7 +149,10 @@ public class Animations : MonoBehaviour {
         while (stateManager.GetState() != PandaState.Died)
         {
             anim.SetInteger("Random", Random.Range(0, 100));
-            yield return new WaitForSeconds(Random.Range(1f, 3f));
+            anim.SetBool("NewRandom", true);
+            yield return new WaitForEndOfFrame();
+            anim.SetBool("NewRandom", false);
+            yield return new WaitForSeconds(Random.Range(randomMinWait, randomMaxWait));
         }
     }
     # endregion
