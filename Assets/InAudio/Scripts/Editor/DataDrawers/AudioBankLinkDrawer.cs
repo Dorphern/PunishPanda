@@ -8,13 +8,11 @@ namespace InAudio.InAudioEditorGUI
 public static class AudioBankLinkDrawer
 {
     public static void Draw(AudioBankLink node)
-    {
+    { 
         EditorGUILayout.BeginVertical();
 
-        UndoHelper.GUIUndo(node, "Name Change", () =>
-        {
-            return EditorGUILayout.TextField("Name", node.Name);
-        }, s => node.Name = s);
+        UndoHelper.GUIUndo(node, "Name Change", ref node.Name, () => 
+            EditorGUILayout.TextField("Name", node.Name));
 
 
         if (node.Type != AudioBankTypes.Folder)
@@ -29,13 +27,29 @@ public static class AudioBankLinkDrawer
                 node.AutoLoad = autoLoad;
             }
         }
+
+        if (node.Type == AudioBankTypes.Link)
+        { 
+
+            Rect lastArea = GUILayoutUtility.GetLastRect();
+            lastArea.y += 28;
+            lastArea.width = 200;
+            if(GUI.Button(lastArea, "Find Folders using this bank"))
+            {
+                EditorWindow.GetWindow<AudioWindow>().Find(audioNode => audioNode.GetBank() != node);
+            }
+             
         
-        Rect lastArea = GUILayoutUtility.GetLastRect();
-        lastArea.y += 28;
-        lastArea.width = 200;
-        if(GUI.Button(lastArea, "Find Folders using this bank"))
-        {
-            EditorWindow.GetWindow<AudioWindow>().Find(audioNode => audioNode.GetBank() != node);
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+
+            if (Application.isPlaying)
+            {
+                EditorGUILayout.Toggle("Is Loaded", node.IsLoaded);
+            }
         }
 
         EditorGUILayout.EndVertical();

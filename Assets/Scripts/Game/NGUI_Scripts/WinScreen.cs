@@ -44,8 +44,11 @@ public class WinScreen : MonoBehaviour {
     [EventHookAttribute("Three Stars")]
     public List<AudioEvent> OnThreeStartsEvents = new List<AudioEvent>();
 
-    [EventHookAttribute("Highscore Enable")]
+    [EventHookAttribute("New Highscore")]
     public List<AudioEvent> OnHighscoreEvents = new List<AudioEvent>();
+
+    [EventHookAttribute("Score Event")]
+    public List<AudioEvent> OnScoreEvents = new List<AudioEvent>();
 	
 	int oneStarScore, twoStarScore, threeStarScore;
 	int score, highscore;
@@ -91,7 +94,8 @@ public class WinScreen : MonoBehaviour {
 		yield return new WaitForSeconds(timeBeforeWinScreen);
 
 		SetWinScreenData();
-		if(InputHandler.instance!=null) InputHandler.instance.PausedGame();
+		if(InputHandler.instance!=null) 
+            InputHandler.instance.PausedGame();
 		winScreen.SetActive(true);
 
         InstanceFinder.StatsManager.Save();
@@ -190,7 +194,7 @@ public class WinScreen : MonoBehaviour {
 		yield return new WaitForSeconds(timeBeforeScoreAnimation);
 		for(int i=0; i< normalKills; i++)
 		{
-			
+            HDRSystem.PostEvents(gameObject, OnScoreEvents);
 			//score increment loop
 			ZoomInScoreTypeTween.RunTween();
 			ZoomInScoreTween.RunTween();
@@ -221,10 +225,13 @@ public class WinScreen : MonoBehaviour {
 		}
 		
 		// perfect kills
-		ScoreTypeLabel.text = Localization.instance.Get("PerfectKill");
-		intermediateTotal = pointSystem.PerfectKill;
+	    
+	    ScoreTypeLabel.text = Localization.instance.Get("PerfectKill"); 
+	    
+	    intermediateTotal = pointSystem.PerfectKill;
 		for(int i=0; i< perfectKills; i++)
 		{
+            HDRSystem.PostEvents(gameObject, OnScoreEvents);
 			//score increment loop
 			ZoomInScoreTypeTween.RunTween();
 			ZoomInScoreTween.RunTween();
@@ -257,6 +264,7 @@ public class WinScreen : MonoBehaviour {
 			
 			if(ck.ComboCount > 1)
 			{
+                HDRSystem.PostEvents(gameObject, OnScoreEvents);
 				ScoreTypeLabel.text = ck.ComboCount + Localization.Localize("Combo");
 				intermediateTotal = pointSystem.Combo * ck.ComboCount;
 				
@@ -297,6 +305,7 @@ public class WinScreen : MonoBehaviour {
 		//yield return new WaitForSeconds(timesteps);
 		if(timeScore!=0)
 		{
+            HDRSystem.PostEvents(gameObject, OnScoreEvents);
 			ZoomInScoreTypeTween.RunTween();
 			ZoomInScoreTween.RunTween();
 			scoreLabel.text = (intermediateTotal).ToString("N0");
