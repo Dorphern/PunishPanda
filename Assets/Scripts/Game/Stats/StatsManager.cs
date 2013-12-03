@@ -39,7 +39,6 @@ public class StatsManager : MonoBehaviour
     private const string levelScore = "Score";
     private const string levelUnlocked = "Unlocked";
     private const string funfactUnlocked = "UnlockedFunfact";
-	private const string languageKey = "Language";
 	
 	private float defaultFingerSize =-12f;
 
@@ -66,8 +65,6 @@ public class StatsManager : MonoBehaviour
 	private bool fingerCalibrated;
     private bool musicEnabled;
     private bool soundEffectsEnabled;
-	
-	public string language;
 	
 	AchievementManager am;
 	
@@ -108,8 +105,6 @@ public class StatsManager : MonoBehaviour
 		fingerCalibrated = PlayerPrefs.GetInt(fingerCalibrationKey, 0) == 1;
         musicEnabled = PlayerPrefs.GetInt(musicEnabledKey, 1) == 1;
         soundEffectsEnabled = PlayerPrefs.GetInt(soundEffectsEnabledKey, 1) == 1;
-		
-		language = PlayerPrefs.GetString(languageKey);
 		
         var levels = InstanceFinder.LevelManager.GetWorld(0).Levels;
 
