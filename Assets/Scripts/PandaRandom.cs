@@ -22,4 +22,9 @@ public static class PandaRandom {
 	{
 		return rand.Next(minval, maxval);	
 	}
+
+    public static float NextFloat (float minval, float maxval)
+    {
+        return (float) RandomDoubleBetween(minval, maxval);
+    }
 }

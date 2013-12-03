@@ -148,11 +148,11 @@ public class Animations : MonoBehaviour {
     {
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", Random.Range(0, 100));
+            anim.SetInteger("Random", PandaRandom.NextInt(0, 100));
             anim.SetBool("NewRandom", true);
             yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
-            yield return new WaitForSeconds(Random.Range(randomMinWait, randomMaxWait));
+            yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
     }
     # endregion
