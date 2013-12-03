@@ -20,6 +20,7 @@ public class PandaDismemberment : MonoBehaviour
 	
 	public BladeDirection SpinDirection;
 	public int splatCount = 3;
+	public bool inMainMenu = false;
 	
 	private Vector3 explosionForce = Vector3.zero;
 	private Vector2 splatDirection = Vector2.right;
@@ -33,9 +34,15 @@ public class PandaDismemberment : MonoBehaviour
 		for(int i = 0; i < transform.childCount; i++)
 		{
 			explosionForce.x = Random.Range(minHorizontalForce, maxHorizontalForce);
+			if(inMainMenu == true)
+			{
+				//change direction to explode leftwards 
+				explosionForce.x *= - 1f;
+			}
 			
 			explosionForce.y = Random.Range(minVerticalForce, maxVerticalForce);
 			explosionForce.z = - Random.Range(minVerticalForce, maxVerticalForce);
+			
 			
         	transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddForce(explosionForce, ForceMode.Impulse);
 			
@@ -45,13 +52,17 @@ public class PandaDismemberment : MonoBehaviour
 			transform.GetChild(i).GetComponentInChildren<Rigidbody>().AddTorque(explosionForce, ForceMode.Impulse);	
 		}
 		
-		for(int i = 0; i < splatCount; i++)
+		//dont splat blood in main menu
+		if(inMainMenu == false)
 		{
-			float angle =  Random.Range(-150f, 150f);
-			angle += (angle < 0) ? -15f : 15f;
-			splatDirection =  new Vector2(Mathf.Sin(Mathf.Deg2Rad * angle), Mathf.Cos(Mathf.Deg2Rad * angle));
-		
-			BloodSplatter.Instance.ProjectHit(transform.position, splatDirection.normalized);
+			for(int i = 0; i < splatCount; i++)
+			{
+				float angle =  Random.Range(-150f, 150f);
+				angle += (angle < 0) ? -15f : 15f;
+				splatDirection =  new Vector2(Mathf.Sin(Mathf.Deg2Rad * angle), Mathf.Cos(Mathf.Deg2Rad * angle));
+			
+				BloodSplatter.Instance.ProjectHit(transform.position, splatDirection.normalized);
+			}
 		}
 	}
 }

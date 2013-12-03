@@ -26,7 +26,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 
     public void DetractSpikes()
     {
-        pandaAIThis.stuckOnSpikes = false;
+        pandaAIThis.ChangeStuckOnSpikes();
     }
     # endregion
 

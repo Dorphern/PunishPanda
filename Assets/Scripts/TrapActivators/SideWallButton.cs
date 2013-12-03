@@ -13,9 +13,9 @@ public class SideWallButton : TrapActivator
     {
         base.ActivateTraps();
         StartCoroutine(PlayActivateAnimation());
-        var buttonSound = GetComponentInChildren<SideWallButtonSound>();
-
-        buttonSound.Activate(activationTimeLength);
+        var buttonSound = GetComponentInChildren<CountDownTime>();
+        if(buttonSound != null)
+            buttonSound.Activate(activationTimeLength);
     }
 
     protected override void DeactivateTraps()
