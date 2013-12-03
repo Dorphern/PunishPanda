@@ -290,8 +290,6 @@ public class PandaAI : MonoBehaviour {
         {
             // pandaController.EnableColliders(false);
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
-            characterController.height = 0.1f;
-            characterController.radius = 0.1f;
         }
         else if (trapType == TrapType.ThrowingStars && isPerfect)
         {
@@ -445,6 +443,8 @@ public class PandaAI : MonoBehaviour {
 					BoostingMovement(pandaStateManager.GetDirection());
 				break;
 		}
+
+        animations.SetGrounded();
         
         if (lastPandaState != pandaStateManager.GetState() &&  pandaStateManager.GetState() != PandaState.Died)
         {

@@ -47,7 +47,6 @@ public class Animations : MonoBehaviour {
         }
 
         anim.SetBool(statePanda.ToString(), pandaStateBool);
-        anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
@@ -83,9 +82,13 @@ public class Animations : MonoBehaviour {
 
     public void SpikePullOut()
     {
-        Debug.Log("PullOut");
         anim.SetBool("PullOutSpikes", true);
         StartCoroutine(ChangeSpikesPullOut());
+    }
+
+    public void SetGrounded()
+    {
+        anim.SetBool("Grounded", characterController.isGrounded);
     }
 
     # endregion

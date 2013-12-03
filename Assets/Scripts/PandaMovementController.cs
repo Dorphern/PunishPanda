@@ -287,6 +287,10 @@ public class PandaMovementController : MonoBehaviour {
 	    movement.offset.y -= movement.gravity * Time.fixedDeltaTime;
 		//USING "OFFSET" FOR APPLYING GRAVITY
 		controller.Move(movement.offset * Time.fixedDeltaTime);
+        if(IsGrounded())
+        {
+            Debug.Log("GroundHit");
+        }
 	}
 
 	void BoostedMovement(PandaDirection dir)
