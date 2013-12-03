@@ -12410,8 +12410,7 @@ MonoBehaviour:
   - {fileID: 11400122, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   onDeadEvents:
   - {fileID: 11400216, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  onSpawnCollision:
-  - {fileID: 11400220, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  onSpawn: []
   onFingerEvents:
   - {fileID: 11400224, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   onWallCollision:
@@ -14450,6 +14449,10 @@ MonoBehaviour:
   timeBeforeScoreAnimation: 1
   timesteps: .0199999996
   achStatsUpdated: 0
+  OnOneStarEvents: []
+  OnTwoStarsEvents: []
+  OnThreeStartsEvents: []
+  OnHighscoreEvents: []
 --- !u!1001 &333586408
 Prefab:
   m_ObjectHideFlags: 0
@@ -24467,6 +24470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomMinWait: 2
+  randomMaxWait: 6
 --- !u!114 &544036958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24532,6 +24537,7 @@ MonoBehaviour:
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
   landingHard: 0
+  spikeDetract: 0
   isMainMenuPanda: 0
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -25101,6 +25107,7 @@ MonoBehaviour:
   fingerRadius: .400000006
   swipeThreshold: .0199999996
   pushingMaxMagnitude: .00200000009
+  hotspotThreshold: .5
   controls:
     slapping: 1
     bouncing: 0
@@ -27365,8 +27372,7 @@ MonoBehaviour:
   - {fileID: 11400122, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   onDeadEvents:
   - {fileID: 11400216, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  onSpawnCollision:
-  - {fileID: 11400220, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  onSpawn: []
   onFingerEvents:
   - {fileID: 11400224, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   onWallCollision:
@@ -45180,6 +45186,46 @@ MonoBehaviour:
   relativeOffset: {x: 0, y: -.0500000007}
   pixelOffset: {x: 0, y: 0}
   widgetContainer: {fileID: 0}
+--- !u!1001 &1184931909
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+  m_RootGameObject: {fileID: 2067360898}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!65 &1185325427
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47628,46 +47674,6 @@ Transform:
   - {fileID: 1339428554}
   - {fileID: 443651513}
   m_Father: {fileID: 53343751}
---- !u!1001 &1259689517
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_RootGameObject: {fileID: 2067360898}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &1263959449
 GameObject:
   m_ObjectHideFlags: 0
@@ -51570,7 +51576,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100004, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1395599477}
@@ -51587,7 +51593,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400008, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 1395599475}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -51596,7 +51602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WorldName: World 1
   Levels:
-  - LevelName: levelt1
+  - LevelName: level1
     HighScore: 0
     UnlockedLevel: 1
     UnlockedFunFact: 0
@@ -51614,7 +51620,7 @@ MonoBehaviour:
     OneStar: 9000
     TwoStars: 50100
     ThreeStars: 100500
-  - LevelName: levelt2
+  - LevelName: level2
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
@@ -51622,9 +51628,9 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 6bd77c2474f4b7d4e92955304e38a241, type: 3}
     FunFactsText: 99% of school shootings are panda related
     DanishFunFactsText: Stop panda terrorismen
-    HintscreenTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: dceacc51c25a2c141873277e113780fe, type: 3}
     DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
+    TutorialTexture: {fileID: 2800000, guid: 5882c5112b787e047bbac4999cad69e4, type: 3}
     DanishTutorialTexture: {fileID: 0}
     Toggled: 0
     MaxTimeScore: 120000
@@ -51632,7 +51638,7 @@ MonoBehaviour:
     OneStar: 9000
     TwoStars: 53000
     ThreeStars: 100300
-  - LevelName: levelt3
+  - LevelName: level3
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
@@ -51640,9 +51646,9 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 52d0c11d7197126478e7983ff64e638c, type: 3}
     FunFactsText: Your mom is a panda
     DanishFunFactsText: Din mor er en panda
-    HintscreenTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 3f1c2a95851d836488bff3984a2ceb55, type: 3}
     DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
+    TutorialTexture: {fileID: 2800000, guid: 823c83205ff20694b9b20f7394eee8bc, type: 3}
     DanishTutorialTexture: {fileID: 0}
     Toggled: 0
     MaxTimeScore: 120000
@@ -51650,7 +51656,7 @@ MonoBehaviour:
     OneStar: 18000
     TwoStars: 60000
     ThreeStars: 110500
-  - LevelName: levelt4
+  - LevelName: level4
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
@@ -51658,9 +51664,9 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 07ee9bd6a16ab934bbe20f69300a42a5, type: 3}
     FunFactsText: A panda sank Titanic
     DanishFunFactsText: Det var ikke et isbjerg, men en panda der sank Titanic
-    HintscreenTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: c65767b946a89a643a099bab5d120896, type: 3}
     DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
+    TutorialTexture: {fileID: 2800000, guid: 8b4d5b20f97323b429e7a1217fdee6b5, type: 3}
     DanishTutorialTexture: {fileID: 0}
     Toggled: 0
     MaxTimeScore: 120000
@@ -51668,7 +51674,7 @@ MonoBehaviour:
     OneStar: 900
     TwoStars: 60000
     ThreeStars: 110500
-  - LevelName: levela2
+  - LevelName: level5
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
@@ -51676,9 +51682,9 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 9dd63b266a962c44c9f6b39dcf378dcc, type: 3}
     FunFactsText: Most Hell Angels members are descended from pandas
     DanishFunFactsText: De fleste HA rockere nedstammer fra pandaen
-    HintscreenTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: f26b32ef8c54d534180de46c433ae90f, type: 3}
     DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
+    TutorialTexture: {fileID: 2800000, guid: c8137aadb6dda5346af32396a3688a00, type: 3}
     DanishTutorialTexture: {fileID: 0}
     Toggled: 0
     MaxTimeScore: 120000
@@ -51686,17 +51692,17 @@ MonoBehaviour:
     OneStar: 18000
     TwoStars: 60000
     ThreeStars: 110500
-  - LevelName: levela1
+  - LevelName: level6
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
-    hasPlatforms: 0
+    hasPlatforms: 1
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
-    HintscreenTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 7c6789b30ba5b1f4a9152613e43d642f, type: 3}
     DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
+    TutorialTexture: {fileID: 2800000, guid: 4db30f786d7e2ca4bb9952d5be952c59, type: 3}
     DanishTutorialTexture: {fileID: 0}
     Toggled: 0
     MaxTimeScore: 120000
@@ -51704,9 +51710,9 @@ MonoBehaviour:
     OneStar: 18000
     TwoStars: 60000
     ThreeStars: 110500
-  - LevelName: levela
+  - LevelName: level7
     HighScore: 0
-    UnlockedLevel: 1
+    UnlockedLevel: 0
     UnlockedFunFact: 0
     hasPlatforms: 1
     FunFactsTexture: {fileID: 2800000, guid: 1eea49af98cddb8409376d55d1166c23, type: 3}
@@ -51722,7 +51728,7 @@ MonoBehaviour:
     OneStar: 1500
     TwoStars: 65000
     ThreeStars: 120500
-  - LevelName: levela4
+  - LevelName: level8
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
@@ -51740,7 +51746,25 @@ MonoBehaviour:
     OneStar: 28000
     TwoStars: 65000
     ThreeStars: 120500
-  - LevelName: levela6
+  - LevelName: level9
+    HighScore: 0
+    UnlockedLevel: 0
+    UnlockedFunFact: 0
+    hasPlatforms: 1
+    FunFactsTexture: {fileID: 0}
+    FunFactsText: 
+    DanishFunFactsText: 
+    HintscreenTexture: {fileID: 0}
+    DanishHintscreenTexture: {fileID: 0}
+    TutorialTexture: {fileID: 0}
+    DanishTutorialTexture: {fileID: 0}
+    Toggled: 0
+    MaxTimeScore: 0
+    LevelLength: 20
+    OneStar: 0
+    TwoStars: 0
+    ThreeStars: 0
+  - LevelName: level10
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
@@ -51758,11 +51782,11 @@ MonoBehaviour:
     OneStar: 0
     TwoStars: 0
     ThreeStars: 0
-  - LevelName: levela7
+  - LevelName: level11
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
-    hasPlatforms: 0
+    hasPlatforms: 1
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
@@ -51776,11 +51800,11 @@ MonoBehaviour:
     OneStar: 0
     TwoStars: 0
     ThreeStars: 0
-  - LevelName: levela8
+  - LevelName: level12
     HighScore: 0
     UnlockedLevel: 0
     UnlockedFunFact: 0
-    hasPlatforms: 0
+    hasPlatforms: 1
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
@@ -51788,25 +51812,7 @@ MonoBehaviour:
     DanishHintscreenTexture: {fileID: 0}
     TutorialTexture: {fileID: 0}
     DanishTutorialTexture: {fileID: 0}
-    Toggled: 0
-    MaxTimeScore: 0
-    LevelLength: 20
-    OneStar: 0
-    TwoStars: 0
-    ThreeStars: 0
-  - LevelName: levela9
-    HighScore: 0
-    UnlockedLevel: 0
-    UnlockedFunFact: 0
-    hasPlatforms: 0
-    FunFactsTexture: {fileID: 0}
-    FunFactsText: 
-    DanishFunFactsText: 
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
-    Toggled: 0
+    Toggled: 1
     MaxTimeScore: 0
     LevelLength: 20
     OneStar: 0
@@ -51816,7 +51822,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400004, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 1395599475}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -52014,6 +52020,7 @@ MonoBehaviour:
   showDelayTime: 0
   comboObject: {fileID: 276319169}
   comboLabel: {fileID: 1174053464}
+  comboLabelChild: {fileID: 0}
   killObject: {fileID: 1360653881}
   perfectKillLabel: {fileID: 1346688239}
   normalKillLabel: {fileID: 1391943211}
@@ -52021,12 +52028,6 @@ MonoBehaviour:
   slobbyKillEvents: []
   perfectKillEvents: []
   comboKillEvents: []
-  tweens:
-  - {fileID: 755274195}
-  - {fileID: 1391943210}
-  - {fileID: 1174053463}
-  - {fileID: 713782807}
-  - {fileID: 1144600338}
 --- !u!114 &1401163185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53468,6 +53469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f702f22640813a04ca0bd2d301729075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomMinWait: 2
+  randomMaxWait: 6
 --- !u!114 &1437619841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53533,6 +53536,7 @@ MonoBehaviour:
   pandaCollisionDelay: .0199999996
   stuckOnSpikes: 0
   landingHard: 0
+  spikeDetract: 0
   isMainMenuPanda: 1
   slapAudioEvents:
   - {fileID: 11400030, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
@@ -78094,7 +78098,7 @@ MonoBehaviour:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 2067360906}
@@ -78117,7 +78121,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400010, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -78224,7 +78228,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -78240,20 +78244,19 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400016, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 472340489cca905478b0c996f95a75b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  language: English
 --- !u!114 &2067360902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400012, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -78268,7 +78271,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400006, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -78281,7 +78284,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -78299,7 +78302,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -78311,7 +78314,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1259689517}
+  m_PrefabInternal: {fileID: 1184931909}
   m_GameObject: {fileID: 2067360898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
