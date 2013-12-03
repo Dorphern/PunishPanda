@@ -25,7 +25,30 @@ public class MainMenuSaws : MonoBehaviour {
 		
 		OnEnable ();
 		
+		//save orginial rotational-position
+		originalPosition = sawObject.transform.rotation;
+		//add deggress:
+		originalPosition = Quaternion.Euler(0, 0, -45);
 		
+		//adjusting orginal position so it spins perfectly back in place
+		//NOTE: this works with acceleration = 20
+		if (Localization.instance.currentLanguage == "English")
+	    {
+			if(this.gameObject.name == "Achievements Button")
+			{
+			 	//45 to 19
+				originalPosition = Quaternion.Euler(0, 0, -26);
+			}
+		}
+		else
+		{
+			if(this.gameObject.name == "Achievements Button")
+			{
+				//45 to 7.47
+				originalPosition = Quaternion.Euler(0, 0, -37.53f);
+			}
+		}
+			
 	}
 	
 	public void OnPress(bool isDown)
@@ -35,14 +58,14 @@ public class MainMenuSaws : MonoBehaviour {
 	
 	       sawtrap.ActivateTrap();
 			
-		   //Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		   Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
 			
 	    }
 	 
 	    if(!isDown)
 	    {
 	       	sawtrap.DeactivateTrap();
-			//sawObject.transform.rotation = originalPosition;
+			sawObject.transform.rotation = originalPosition;
 
 	    }
 	} 
@@ -64,7 +87,7 @@ public class MainMenuSaws : MonoBehaviour {
 			else if(this.gameObject.name == "Achievements Button")
 			{
 				textureComponent.mainTexture = e_achieveImage;
-				sawObject.transform.rotation = Quaternion.Euler(0, 0, 10);
+				sawObject.transform.rotation = Quaternion.Euler(0, 0, 19);
 			}
 			else if(this.gameObject.name == "Unlocks Button")
 			{
@@ -82,11 +105,12 @@ public class MainMenuSaws : MonoBehaviour {
 			else if(this.gameObject.name == "Achievements Button")
 			{
 				textureComponent.mainTexture = d_achieveImage;
-				sawObject.transform.rotation = Quaternion.Euler(0, 0, -10);
+				sawObject.transform.rotation = Quaternion.Euler(0, 0, 7.47f);
 			}
 			else if(this.gameObject.name == "Unlocks Button")
 			{
 				textureComponent.mainTexture = d_unlocksImage;
+				sawObject.transform.rotation = Quaternion.Euler(0, 0, 357);
 			}
 			
 	    }
