@@ -8,6 +8,8 @@ public class SawTrap : TrapBase {
     [SerializeField] protected float maxTurnSpeed = 5f;
 	[SerializeField] protected BladeDirection bladeDirection = BladeDirection.Clockwise;
 
+    public bool DismemberInstead = false;
+
     protected float turnSpeed = 0f;
     protected float baseAcc = 0.2f;
     protected bool isActive = false;
@@ -92,7 +94,10 @@ public class SawTrap : TrapBase {
 		bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAI.GetPandaFacingDirection().x, 0f, 0f));
 		bloodParticles.transform.position = pandaAI.transform.position;
 		bloodParticles.Play();
-        return pandaAI.AttemptDeathTrapKill(this, isPerfect);
+        bool kill = pandaAI.AttemptDeathTrapKill(this, isPerfect);
+        if (DismemberInstead)
+            pandaAI.Dismember();
+        return kill;
     }
 
     # endregion

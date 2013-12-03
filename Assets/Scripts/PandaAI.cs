@@ -280,16 +280,12 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trapType == TrapType.Pounder)
         {
-            (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
-            Destroy(this.gameObject); 
+            Dismember();
         }
         else if (trapType == TrapType.RoundSaw)
         {
             BladeDirection bladeDirection = trap.GetSpinDirection();
-            
-            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
-                .GetComponent<PandaHalfForce>().SawSplit(this, trap.transform.position, bladeDirection);
-            Destroy(this.gameObject);
+            SliceInHalf(trap.transform.position, bladeDirection);
         }
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
@@ -360,6 +356,33 @@ public class PandaAI : MonoBehaviour {
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
+
+    public void SliceInHalf()
+    {
+        (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position, BladeDirection.None);
+        Destroy(this.gameObject);
+    }
+
+    public void SliceInHalf(Vector3 position, BladeDirection bladeDirection)
+    {
+        (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+                .GetComponent<PandaHalfForce>().SawSplit(this, position, bladeDirection);
+        Destroy(this.gameObject);
+    }
+
+    public void Dismember()
+    {
+        (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
+        Destroy(this.gameObject); 
+    }
+
+    public void Electrocute()
+    {
+        Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+        Destroy(this.gameObject);
+    }
+
 	#endregion
 	
 	# region Private Methods
@@ -616,8 +639,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(timeToWait);
 		
-		Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
-		Destroy(this.gameObject);
+		Electrocute();
 	}
 	# endregion		
 }
