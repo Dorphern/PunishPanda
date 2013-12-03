@@ -290,7 +290,9 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
         {
+            if (trapType == TrapType.StaticSpikes)
             pandaController.EnableColliders(false);
+
             BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
         }
         else if (trapType == TrapType.ThrowingStars && isPerfect)
@@ -508,8 +510,13 @@ public class PandaAI : MonoBehaviour {
 
     public void ChangeStuckOnSpikes()
     {
-        spikeDetract = true;
+        
         animations.SpikePullOut();
+    }
+
+    public void SpikesDetracted()
+    {
+        spikeDetract = true;
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)
