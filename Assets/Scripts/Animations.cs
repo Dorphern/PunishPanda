@@ -77,7 +77,10 @@ public class Animations : MonoBehaviour {
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
-
+		
+		pissScript.InterruptPiss();
+		pissMachine.SetActive( false);
+		
         StartCoroutine(ResetSlap());
     }
 
@@ -174,27 +177,29 @@ public class Animations : MonoBehaviour {
 			
 			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
 			if( currHash == leftPeeHash)
-			{
-				//Debug.Log("Lets get peeing yo left!");
-				Debug.Log ("started PeeingLEFT");
-				
+			{	
 				pissMachine.SetActive(true);
-				pissScript.PissFor(3.5f); 
-				
+				StartCoroutine("Peeing");
 			}
 			else if(currHash == rightPeeHash)
-			{
-				//Debug.Log("Lets get peeing yo right!");	
-				Debug.Log ("started PeeingRIGHT");
-				
+			{	
 				pissMachine.SetActive(true);
-				//four seconds is good timing
-				pissScript.PissFor(3.5f);
+				StartCoroutine("Peeing");
 			}
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
     }
-
+	
+	IEnumerator Peeing()
+	{
+		yield return new WaitForSeconds(1f);
+		pissScript.PissFor(2.5f); 
+		yield return new WaitForSeconds(5f);
+		pissMachine.SetActive(false);
+	}
+	
+	
+	
     IEnumerator ChangeSpikesPullOut ()
     {
         yield return new WaitForSeconds(0.05f);

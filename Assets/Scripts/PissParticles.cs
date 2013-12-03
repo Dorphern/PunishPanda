@@ -41,14 +41,6 @@ public class PissParticles : MonoBehaviour {
 			peeing = true;
 			StartCoroutine("Pee", duration);
 			
-			while(peeing == true)
-			{
-				if(pandaStateScript.GetState() != PandaState.Idle)
-				{
-					Debug.Log ("INTERRUPTED PISSinWhile");
-					InterruptPiss();
-				}
-			}
 		}
 	}
 	
