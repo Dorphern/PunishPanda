@@ -12,7 +12,6 @@ public class StarSpawner : TrapBase
     [SerializeField] float angle;
 
     public bool SlicePandaInHalf;
-    public GameObject PandaSlicedInHalf;
 
     public float Angle
     {
