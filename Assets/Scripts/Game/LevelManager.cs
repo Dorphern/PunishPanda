@@ -46,6 +46,7 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = true;
+        currentLevelIndex = -1;
 		SaveData();
         LoadLevel(mainMenuName);
     }
