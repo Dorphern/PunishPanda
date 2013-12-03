@@ -20,6 +20,9 @@ public class Animations : MonoBehaviour {
 	
 	private int rightPeeHash;
 	private int leftPeeHash;
+	public GameObject pissMachine;
+	private PissParticles pissScript;
+	
 
     # region Public Methods
     public void ChangePandaState (PandaState state)
@@ -49,6 +52,7 @@ public class Animations : MonoBehaviour {
             //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
+        anim.SetBool(statePanda.ToString(), pandaStateBool);
         anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
@@ -106,6 +110,7 @@ public class Animations : MonoBehaviour {
 		
 		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
+		pissScript = pissMachine.GetComponent<PissParticles>();
 
         collidable = GetComponent<Collidable>();
 
@@ -125,6 +130,7 @@ public class Animations : MonoBehaviour {
         anim.SetInteger("CollidableType", -1);
         yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
+        anim.SetBool("Face", false);
     }
 
     IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
@@ -161,7 +167,7 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0, 101));
+            anim.SetInteger("Random", 99);
             anim.SetBool("NewRandom", true);
 			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
@@ -169,11 +175,21 @@ public class Animations : MonoBehaviour {
 			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
 			if( currHash == leftPeeHash)
 			{
-				//Debug.Log("Lets get peeing yo left!");	
+				//Debug.Log("Lets get peeing yo left!");
+				Debug.Log ("started PeeingLEFT");
+				
+				pissMachine.SetActive(true);
+				pissScript.PissFor(3.5f); 
+				
 			}
 			else if(currHash == rightPeeHash)
 			{
 				//Debug.Log("Lets get peeing yo right!");	
+				Debug.Log ("started PeeingRIGHT");
+				
+				pissMachine.SetActive(true);
+				//four seconds is good timing
+				pissScript.PissFor(3.5f);
 			}
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
