@@ -156,11 +156,11 @@ public class PandaMovementController : MonoBehaviour {
 	void FixedUpdate ()
 	{
 	    // Make sure the character stays in the 2D plane
-        //if (pandaStateManager.GetState() != PandaState.Escape)
-        //{
-        //    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-        //}
-        //else
+        if (pandaStateManager.GetState() != PandaState.Escape)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
+        }
+
         dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
         pandaAI.landingHard = dampedVelocity.y < -falling.hardLandingThreshold;
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
@@ -192,14 +192,14 @@ public class PandaMovementController : MonoBehaviour {
 		if(direction == PandaDirection.Right)
 		{	
 			movement.offset.x = movement.currentSpeed * currentPushingMagnitude * pushingForce;
-			transform.rotation = Quaternion.LookRotation(Vector3.forward);
 		}
 		
 		if(direction == PandaDirection.Left)
 		{
 			movement.offset.x = - movement.currentSpeed * currentPushingMagnitude * pushingForce;
-			transform.rotation = Quaternion.LookRotation(Vector3.back);
 		}
+
+        UpdateDirection(PandaDirection.Left);
 		
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
