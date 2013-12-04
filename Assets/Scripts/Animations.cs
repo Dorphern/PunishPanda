@@ -142,12 +142,12 @@ public class Animations : MonoBehaviour {
     {
         if (position == TrapPosition.Ceiling)
         {
-            yield return new WaitForSeconds(1.1f);
+            yield return new WaitForSeconds(characterController.isGrounded ? 1.1f : 0.3f);
             animation.Play(escapeUpAnimation);
         }
         else if (position == TrapPosition.Ground)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(characterController.isGrounded ? 2f : 1.5f);
             animation.Play(escapeDownAnimation);
         }
     }
