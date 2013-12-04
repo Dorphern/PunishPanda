@@ -191,6 +191,8 @@ GameObject:
   - 114: {fileID: 11400360}
   - 114: {fileID: 11400362}
   - 114: {fileID: 11400364}
+  - 114: {fileID: 11400366}
+  - 114: {fileID: 11400368}
   m_Layer: 0
   m_Name: EventSave
   m_TagString: Untagged
@@ -242,7 +244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 568918722
   Type: 1
-  FoldedOut: 1
+  FoldedOut: 0
   Name: Panda events
   Parent: {fileID: 11400006}
   Delay: 0
@@ -299,16 +301,16 @@ MonoBehaviour:
   - {fileID: 11400004}
   - {fileID: 11400002}
   - {fileID: 11400020}
+  - {fileID: 11400286}
+  - {fileID: 11400340}
   - {fileID: 11400318}
   - {fileID: 11400038}
   - {fileID: 11400136}
-  - {fileID: 11400340}
   - {fileID: 11400058}
+  - {fileID: 11400174}
   - {fileID: 11400092}
   - {fileID: 11400048}
-  - {fileID: 11400174}
   - {fileID: 11400070}
-  - {fileID: 11400286}
   - {fileID: 11400126}
   - {fileID: 11400262}
   - {fileID: 11400192}
@@ -1833,7 +1835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 1675128547
   Type: 1
-  FoldedOut: 0
+  FoldedOut: 1
   Name: Settings
   Parent: {fileID: 11400006}
   Delay: 0
@@ -1842,7 +1844,6 @@ MonoBehaviour:
   - {fileID: 11400176}
   - {fileID: 11400178}
   - {fileID: 11400180}
-  - {fileID: 11400182}
   - {fileID: 11400244}
   ActionList: []
 --- !u!114 &11400176
@@ -1909,6 +1910,7 @@ MonoBehaviour:
   ActionList:
   - {fileID: 11400188}
   - {fileID: 11400254}
+  - {fileID: 11400366}
 --- !u!114 &11400182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1924,13 +1926,14 @@ MonoBehaviour:
   Type: 3
   FoldedOut: 1
   Name: Mute SFX
-  Parent: {fileID: 11400174}
+  Parent: {fileID: 11400192}
   Delay: 0
   Filtered: 0
   Children: []
   ActionList:
   - {fileID: 11400190}
   - {fileID: 11400256}
+  - {fileID: 11400368}
 --- !u!114 &11400184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2016,7 +2019,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 539449412
   Type: 1
-  FoldedOut: 0
+  FoldedOut: 1
   Name: Stinger
   Parent: {fileID: 11400006}
   Delay: 0
@@ -2025,6 +2028,7 @@ MonoBehaviour:
   - {fileID: 11400194}
   - {fileID: 11400236}
   - {fileID: 11400196}
+  - {fileID: 11400182}
   ActionList: []
 --- !u!114 &11400194
 MonoBehaviour:
@@ -3351,7 +3355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 1929151196
   Type: 1
-  FoldedOut: 0
+  FoldedOut: 1
   Name: Menu sounds
   Parent: {fileID: 11400006}
   Delay: 0
@@ -3573,6 +3577,42 @@ MonoBehaviour:
   Delay: 0
   EventActionType: 1
   Node: {fileID: 11400422, guid: ddaf7f3484a7b0a4b8af27084d85b6cf, type: 2}
+--- !u!114 &11400366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa602f909486304a8bacf94ffd1ad2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  EventActionType: 7
+  Bus: {fileID: 11400016, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
+  Volume: 1
+  VolumeMode: 0
+  FadeCurve: 1
+  Duration: 0
+--- !u!114 &11400368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa602f909486304a8bacf94ffd1ad2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  EventActionType: 7
+  Bus: {fileID: 11400016, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
+  Volume: 0
+  VolumeMode: 0
+  FadeCurve: 1
+  Duration: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
