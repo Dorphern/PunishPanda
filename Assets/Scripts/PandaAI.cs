@@ -330,8 +330,12 @@ public class PandaAI : MonoBehaviour {
         }
     }
 	
-	public void PlayDeathParticles()
+	public void PlayDeathParticles(bool unParent = true)
 	{
+		if(unParent == true)
+		{
+			deathBloodParticles.transform.parent = null;	
+		}
 		deathBloodParticles.Play();
 	}
 
@@ -591,7 +595,7 @@ public class PandaAI : MonoBehaviour {
     public void SpikesDetracted()
     {
         spikeDetract = true;
-		PlayDeathParticles();
+		PlayDeathParticles(false);
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)

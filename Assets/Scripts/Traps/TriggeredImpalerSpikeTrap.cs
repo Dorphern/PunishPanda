@@ -47,7 +47,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     {
 		if(this.startedDetraction == false)
 		{
-			pandaAI.PlayDeathParticles();
+			pandaAI.PlayDeathParticles(false);
 		}
         pandaAIThis = pandaAI;
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
