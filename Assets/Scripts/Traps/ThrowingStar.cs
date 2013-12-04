@@ -51,6 +51,9 @@ public class ThrowingStar : MonoBehaviour
     {
         if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
     }
+
+    [HideInInspector]
+    public bool SlicePandaInHalf;
 	
 	public void ShootStar(Vector3 direction, float force, float torque) 
 	{
@@ -83,7 +86,12 @@ public class ThrowingStar : MonoBehaviour
                 HDRSystem.PostEvents(gameObject, onDeadEvents);
             if (starSpawner.TryPandaKill(pandaAi))
             {
-				bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAi.GetPandaFacingDirection().x, 0f, 0f));
+                if (SlicePandaInHalf)
+                {
+                    pandaAi.SliceInHalf();
+                }
+
+                bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAi.GetPandaFacingDirection().x, 0f, 0f));
 				bloodParticles.Play();
                 SetDirty();
             }

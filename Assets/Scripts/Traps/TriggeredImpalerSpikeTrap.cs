@@ -19,7 +19,6 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     {
         if (IsActive())
         {
-			bloodParticles.Play();
             animation.Play();
         }
     }
@@ -27,6 +26,11 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     public void DetractSpikes()
     {
         pandaAIThis.ChangeStuckOnSpikes();
+    }
+
+    public void SpikesDetracted()
+    {
+        pandaAIThis.SpikesDetracted();
     }
     # endregion
 
@@ -38,6 +42,8 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+		bloodParticles.transform.position = pandaAI.transform.position;
+		bloodParticles.Play();
         pandaAIThis = pandaAI;
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }

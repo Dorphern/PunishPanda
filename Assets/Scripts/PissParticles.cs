@@ -10,56 +10,25 @@ public class PissParticles : MonoBehaviour {
 	
 	bool peeing = false;
 	
-	public PandaStateManager pandaStateScript;
-	private Quaternion rightEmission;
-	private Quaternion leftEmission;
-	
-	
-	//TO DO: 
-	//Get pandastate so we adjust rotation of pissMachine
-	// when panda is idle facing LEFT.
-	
 	//assuming no puddle is the first state;
 	int pissPudleTransitions = 4; 
 	
 	public void PissFor(float duration)
 	{
-		//adjust direction based on state:
-		if(pandaStateScript.GetDirection() == PandaDirection.Left)
-		{
-			Debug.Log ("facingleft");
-			transform.rotation = leftEmission;
-		}
-		else
-		{
-			transform.rotation = rightEmission;
-		}
-
-		
 		if(!peeing)
 		{
 			peeing = true;
 			StartCoroutine("Pee", duration);
-			
 		}
 	}
 	
 	public void InterruptPiss()
 	{
-		StopCoroutine("Pee");
-		piss.Stop ();
-		//puddleMesh.enabled = false;
-		peeing = false;
-		//gameObject.SetActive(false);
-			
-		
-		
-//		if(peeing)
-//		{
-//			Debug.Log ("stoppingCourutine?");
-//			StopCoroutine("Pee");
-//			puddleMesh.enabled = false;
-//		}
+		if(peeing)
+		{
+			StopCoroutine("Pee");
+			puddleMesh.enabled = false;
+		}
 	}
 	
 	IEnumerator Pee(float duration)
@@ -69,20 +38,16 @@ public class PissParticles : MonoBehaviour {
 		if(piss!=null)
 			piss.Play();
 		
-
+		
 		
 		for(int i=0; i<pissPudleTransitions; i++)
 		{
-
-			
 			yield return new WaitForSeconds(duration/pissPudleTransitions);
-			//pissPudle.SetSpriteCell(i);
-			//puddleMesh.enabled = true;
+			pissPudle.SetSpriteCell(i);
+			puddleMesh.enabled = true;
 		}
 		
 		yield return new WaitForSeconds(duration/pissPudleTransitions);
-		
-		
 		
 		if(piss!=null)
 			piss.Stop();
@@ -90,15 +55,13 @@ public class PissParticles : MonoBehaviour {
 		yield return new WaitForSeconds(1f);
 		
 		//add extra delay for puddle
-		//puddleMesh.enabled = false;
+		puddleMesh.enabled = false;
 		peeing = false;
 	}
 	
 	void Start()
 	{
-		rightEmission = transform.rotation;
-		leftEmission = Quaternion.Euler(0, 135, 0);	
-
-		
+			
+		PissFor(5f);
 	}
 }

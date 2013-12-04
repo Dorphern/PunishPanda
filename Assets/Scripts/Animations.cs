@@ -20,9 +20,6 @@ public class Animations : MonoBehaviour {
 	
 	private int rightPeeHash;
 	private int leftPeeHash;
-	public GameObject pissMachine;
-	private PissParticles pissScript;
-	
 
     # region Public Methods
     public void ChangePandaState (PandaState state)
@@ -37,23 +34,6 @@ public class Animations : MonoBehaviour {
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
-        Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-        Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
-
-        if (statePanda == PandaState.PushingFinger)
-        {
-            //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
-            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
-        }
-        else if (pandaStateLast == PandaState.PushingFinger)
-        {
-            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
-        }
-
-        anim.SetBool(statePanda.ToString(), pandaStateBool);
-        anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
@@ -77,10 +57,7 @@ public class Animations : MonoBehaviour {
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
-		
-		pissScript.InterruptPiss();
-		pissMachine.SetActive( false);
-		
+
         StartCoroutine(ResetSlap());
     }
 
@@ -92,9 +69,22 @@ public class Animations : MonoBehaviour {
 
     public void SpikePullOut()
     {
-        Debug.Log("PullOut");
         anim.SetBool("PullOutSpikes", true);
         StartCoroutine(ChangeSpikesPullOut());
+    }
+
+    public void SetGrounded()
+    {
+        if (characterController != null)
+        {
+            anim.SetBool("Grounded", characterController.isGrounded);
+        }
+    }
+
+    public void SetDoubleTapped ()
+    {
+        anim.SetBool("DoubleTapped", true);
+        StartCoroutine(ResetDoubleTapped());
     }
 
     # endregion
@@ -113,7 +103,6 @@ public class Animations : MonoBehaviour {
 		
 		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
-		//pissScript = pissMachine.GetComponent<PissParticles>();
 
         collidable = GetComponent<Collidable>();
 
@@ -133,13 +122,11 @@ public class Animations : MonoBehaviour {
         anim.SetInteger("CollidableType", -1);
         yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
     }
 
     IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
     {
         yield return new WaitForSeconds(animStateInfo.length);
-        pandaAI.stuckOnSpikes = false;
         anim.SetBool("LandingHard", false);
     }
 
@@ -170,40 +157,34 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", 99);
+            anim.SetInteger("Random", PandaRandom.NextInt(0, 101));
             anim.SetBool("NewRandom", true);
 			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
 			
 			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
 			if( currHash == leftPeeHash)
-			{	
-				//pissMachine.SetActive(true);
-				StartCoroutine("Peeing");
+			{
+				//Debug.Log("Lets get peeing yo left!");	
 			}
 			else if(currHash == rightPeeHash)
-			{	
-				//pissMachine.SetActive(true);
-				StartCoroutine("Peeing");
+			{
+				//Debug.Log("Lets get peeing yo right!");	
 			}
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
     }
-	
-	IEnumerator Peeing()
-	{
-		yield return new WaitForSeconds(1f);
-		//pissScript.PissFor(2.5f); 
-		yield return new WaitForSeconds(5f);
-		//pissMachine.SetActive(false);
-	}
-	
-	
-	
+
     IEnumerator ChangeSpikesPullOut ()
     {
         yield return new WaitForSeconds(0.05f);
         anim.SetBool("PullOutSpikes", false);
+    }
+
+    IEnumerator ResetDoubleTapped ()
+    {
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("DoubleTapped", false);
     }
     # endregion
 }

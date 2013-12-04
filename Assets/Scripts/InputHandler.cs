@@ -28,6 +28,7 @@ public class InputHandler : MonoBehaviour {
 	private float fingerSize;
 	private string debugLine;
 	private bool paused; 
+	private Touch [] touches; 
 	
 	[System.Serializable]
 	public class Controls 
@@ -52,6 +53,7 @@ public class InputHandler : MonoBehaviour {
 		{
 			blockades[i].transform.localScale = new Vector3(fingerSize, fingerSize, fingerSize);	
 		}
+		
 	}
 	
 	public void PausedGame()
@@ -99,7 +101,7 @@ public class InputHandler : MonoBehaviour {
 			return;
 		}
 		
-		Touch [] touches = Input.touches;
+		touches = Input.touches;
 		Touch touch;
 		for(int i=0; i<touches.Length; i++)
 		{
