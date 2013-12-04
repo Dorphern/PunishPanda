@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class MainMenuSaws : MonoBehaviour {
@@ -18,6 +19,13 @@ public class MainMenuSaws : MonoBehaviour {
 	public GameObject projectionPoint;
 	
 	[SerializeField] protected GameObject dismemberedPanda;
+
+    [SerializeField] [EventHookAttribute("On Start Spin")]
+    private List<AudioEvent> startSpinEvents = new List<AudioEvent>(1);
+
+    [SerializeField]
+    [EventHookAttribute("On End Spin")]
+    private List<AudioEvent> endSpinEvents = new List<AudioEvent>(1); 
 	
 	
 	void Start () {
@@ -56,12 +64,14 @@ public class MainMenuSaws : MonoBehaviour {
 	    if(isDown)
 	    {
 	       	sawtrap.ActivateTrap();
+            HDRSystem.PostEvents(gameObject, startSpinEvents);
 			StartCoroutine("emmitDismembered");				
 	    }
 	 
 	    if(!isDown)
 	    {
 			StopCoroutine("emmitDismembered");
+            HDRSystem.PostEvents(gameObject, endSpinEvents);
 	       	sawtrap.DeactivateTrap();
 			sawObject.transform.rotation = originalPosition;
 

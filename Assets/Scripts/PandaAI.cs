@@ -63,6 +63,18 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Double Tab")]
     List<AudioEvent> doubleTabEvents = new List<AudioEvent>();
 
+    [SerializeField]
+    [EventHookAttribute("Falling")]
+    List<AudioEvent> fallingEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Pushing")]
+    List<AudioEvent> pushingEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Pushing End")]
+    List<AudioEvent> pushingEndEvents = new List<AudioEvent>();
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -86,6 +98,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
+            HDRSystem.PostEvents(gameObject, pushingEvents);
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
 			return true;
 		}
@@ -96,6 +109,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.PushingFinger)
 		{
+            HDRSystem.PostEvents(gameObject, pushingEndEvents);
 			pandaStateManager.ChangeState(PandaState.Walking);	
 		}
 	}
@@ -252,6 +266,9 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
     {
+        if (!IsAlive())
+            return false;
+
         Debug.Log("Hit death object: " + trap.GetTrapType());		
 		
 		if(this.isBeingDestroyed == true) return false;
@@ -353,6 +370,7 @@ public class PandaAI : MonoBehaviour {
             && pandaStateManager.GetState() != PandaState.Died)
         {
 			preFallingState = pandaStateManager.GetState();
+            HDRSystem.PostEvents(gameObject, fallingEvents);
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
@@ -360,7 +378,7 @@ public class PandaAI : MonoBehaviour {
     public void SliceInHalf()
     {
         (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
-                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position, BladeDirection.None);
+                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
     }
@@ -618,7 +636,7 @@ public class PandaAI : MonoBehaviour {
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
             if(c.gameObject.GetComponent<Collidable>().type == CollidableTypes.LedgeFall)
             {
-                c.gameObject.GetComponent<Collider>().collider.enabled = false;
+                Destroy(c.gameObject);
             }
         }
 

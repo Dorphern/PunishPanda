@@ -41,7 +41,7 @@ public class AchievementWindow : MonoBehaviour {
 		{
 			Achievement ach = completedAchievements.Dequeue();
 			if(ach!=null){
-				GUIcamera.SetActive(true);
+				//GUIcamera.SetActive(true);
 				if(achievementTitleLabel!=null)
 				{
 					achievementTitleLabel.text = localization.Get(ach.name);
@@ -62,7 +62,7 @@ public class AchievementWindow : MonoBehaviour {
 				rt.RunTween();
 				yield return new WaitForSeconds(1.5f);
 				yield return new WaitForEndOfFrame();
-				GUIcamera.SetActive(false);
+				//GUIcamera.SetActive(false);
 			}
 		}
 		isRunning = false;
