@@ -10,7 +10,9 @@ public class RemoveAfterTime : MonoBehaviour {
 	{
 		if(this.gameObject.name == "particle_slap_v1(Clone)"  || 
 			this.gameObject.name == "particle_slap_v2(Clone)" ||
-			this.gameObject.name == "Menu_DismemberedRigidBody(Clone)")
+			this.gameObject.name == "Menu_DismemberedRigidBody(Clone)" ||
+			this.gameObject.name == "Menu_Dismembered(Clone)" ||
+			this.gameObject.name == "blood_spray" )
 		{
 			Destroy(gameObject, EventLength);
 		}
