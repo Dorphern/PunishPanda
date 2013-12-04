@@ -51,16 +51,17 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &100006
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400006}
   - 114: {fileID: 11400000}
+  - 111: {fileID: 11100002}
   m_Layer: 0
   m_Name: PissMachineMK2
   m_TagString: Untagged
@@ -1374,7 +1375,7 @@ Transform:
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -.903910339, y: -.0312325358, z: 1.01767445}
-  m_LocalScale: {x: .14810966, y: .14810966, z: .14810966}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 400006}
 --- !u!4 &400006
@@ -1383,13 +1384,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_LocalRotation: {x: -.0438553207, y: .874467194, z: -.0652381256, w: .478673011}
-  m_LocalPosition: {x: -1.21463633, y: -.43521297, z: -.497792184}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: .17814301, y: .0593664609, z: .00358980754, w: .982205629}
+  m_LocalPosition: {x: .39651984, y: .1860594, z: -.449794114}
+  m_LocalScale: {x: .5, y: .5, z: .50000006}
   m_Children:
   - {fileID: 400004}
   - {fileID: 400002}
-  m_Father: {fileID: 400158}
+  m_Father: {fileID: 400082}
 --- !u!4 &400008
 Transform:
   m_ObjectHideFlags: 1
@@ -1852,6 +1853,7 @@ Transform:
   - {fileID: 400132}
   - {fileID: 400022}
   - {fileID: 400150}
+  - {fileID: 400006}
   m_Father: {fileID: 400144}
 --- !u!4 &400084
 Transform:
@@ -2304,7 +2306,6 @@ Transform:
   - {fileID: 400154}
   - {fileID: 400114}
   - {fileID: 400092}
-  - {fileID: 400006}
   m_Father: {fileID: 0}
 --- !u!4 &400160
 Transform:
@@ -2466,6 +2467,24 @@ Animation:
   m_UserAABB:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+--- !u!111 &11100002
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: a0f4a762d0f8cec4d9fb33f8e2be36c6, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: a0f4a762d0f8cec4d9fb33f8e2be36c6, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+  m_UserAABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2479,9 +2498,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piss: {fileID: 19800002}
   subPiss: {fileID: 19800000}
-  pissPudle: {fileID: 0}
-  puddleMesh: {fileID: 0}
-  pandaStateScript: {fileID: 11400002}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2579,7 +2595,6 @@ MonoBehaviour:
   slicedInHalfPanda: {fileID: 100000, guid: cb0ce3de56e08a344a1bd28fdab60b1a, type: 2}
   lastPushingMagnitude: 0
   pandaCollisionDelay: .0199999996
-  stuckOnSpikes: 0
   landingHard: 0
   spikeDetract: 0
   isMainMenuPanda: 0
@@ -2588,6 +2603,10 @@ MonoBehaviour:
   turnSpeed: .300000012
   jumpEvents:
   - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  doubleTabEvents: []
+  fallingEvents: []
+  pushingEvents: []
+  pushingEndEvents: []
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2617,8 +2636,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomMinWait: 2
   randomMaxWait: 6
-  penis: {fileID: 100004}
+  penis: {fileID: 2300000}
   pissScript: {fileID: 11400000}
+  pGO: {fileID: 100004}
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4412,7 +4432,7 @@ ParticleSystem:
   VelocityModule:
     enabled: 0
     x:
-      scalar: 0
+      scalar: .319999993
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4689,7 +4709,7 @@ ParticleSystem:
         m_PostInfinity: 2
       minMaxState: 0
     magnitude:
-      scalar: 1
+      scalar: 14.6899996
       maxCurve:
         serializedVersion: 2
         m_Curve:
