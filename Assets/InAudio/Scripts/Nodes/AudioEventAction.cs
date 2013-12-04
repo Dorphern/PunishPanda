@@ -14,7 +14,8 @@ namespace InAudio
         SetBusVolume    = 7,
         LoadBank        = 8,
         UnloadBank      = 9,
-        StopAllInBus    = 10
+        StopAllInBus    = 10,
+        SetBusMute         = 11,
     };
 }
 

@@ -154,6 +154,8 @@ public static class AudioEventWorker  {
                 return typeof( EventAudioAction);
             case EventActionTypes.StopAllInBus:
                 return typeof( EventBusAction);
+            case EventActionTypes.SetBusMute:
+                return typeof(EventBusMuteAction);
         }
         return null;
     }
