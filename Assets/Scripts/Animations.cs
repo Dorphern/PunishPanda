@@ -20,8 +20,8 @@ public class Animations : MonoBehaviour {
 	
 	private int rightPeeHash;
 	private int leftPeeHash;
-	public GameObject pissMachine;
-	private PissParticles pissScript;
+	public GameObject penis;
+	public PissParticles pissScript;
 	
 
     # region Public Methods
@@ -79,7 +79,7 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Slapped", true);
 		
 		pissScript.InterruptPiss();
-		pissMachine.SetActive( false);
+		penis.SetActive( false);
 		
         StartCoroutine(ResetSlap());
     }
@@ -113,7 +113,6 @@ public class Animations : MonoBehaviour {
 		
 		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
-		pissScript = pissMachine.GetComponent<PissParticles>();
 
         collidable = GetComponent<Collidable>();
 
@@ -178,12 +177,12 @@ public class Animations : MonoBehaviour {
 			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
 			if( currHash == leftPeeHash)
 			{	
-				pissMachine.SetActive(true);
+				penis.SetActive(true);
 				StartCoroutine("Peeing");
 			}
 			else if(currHash == rightPeeHash)
 			{	
-				pissMachine.SetActive(true);
+				penis.SetActive(true);
 				StartCoroutine("Peeing");
 			}
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
@@ -195,7 +194,7 @@ public class Animations : MonoBehaviour {
 		yield return new WaitForSeconds(1f);
 		pissScript.PissFor(2.5f); 
 		yield return new WaitForSeconds(5f);
-		pissMachine.SetActive(false);
+		penis.SetActive(false);
 	}
 	
 	

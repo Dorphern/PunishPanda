@@ -48,9 +48,9 @@ public class PissParticles : MonoBehaviour {
 	{
 		StopCoroutine("Pee");
 		piss.Stop ();
-		puddleMesh.enabled = false;
+		//puddleMesh.enabled = false;
 		peeing = false;
-		gameObject.SetActive(false);
+		//gameObject.SetActive(false);
 			
 		
 		
@@ -76,8 +76,8 @@ public class PissParticles : MonoBehaviour {
 
 			
 			yield return new WaitForSeconds(duration/pissPudleTransitions);
-			pissPudle.SetSpriteCell(i);
-			puddleMesh.enabled = true;
+			//pissPudle.SetSpriteCell(i);
+			//puddleMesh.enabled = true;
 		}
 		
 		yield return new WaitForSeconds(duration/pissPudleTransitions);
@@ -90,7 +90,7 @@ public class PissParticles : MonoBehaviour {
 		yield return new WaitForSeconds(1f);
 		
 		//add extra delay for puddle
-		puddleMesh.enabled = false;
+		//puddleMesh.enabled = false;
 		peeing = false;
 	}
 	
