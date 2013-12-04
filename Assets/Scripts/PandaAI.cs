@@ -324,8 +324,21 @@ public class PandaAI : MonoBehaviour {
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
     {
+        if (pandaStateManager.GetState() == PandaState.PushingFinger && transform.position.x < escape.transform.position.x)
+        {
+            pandaStateManager.ChangeDirection(global::PandaDirection.Right);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0f, transform.eulerAngles.z);
+        }
+
+        else if (pandaStateManager.GetState() == PandaState.PushingFinger && transform.position.x > escape.transform.position.x)
+        {
+            pandaStateManager.ChangeDirection(global::PandaDirection.Left);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180f, transform.eulerAngles.z);
+        }
+            
         pandaStateManager.ChangeState(PandaState.Escape);
-        animations.PlayDeathAnimation(escape, pandaStateManager.GetDirection()); 
+        animations.PlayDeathAnimation(escape, pandaStateManager.GetDirection());
+        Debug.Log(pandaStateManager.GetDirection());
         pandaMovementController.SetVelocity(0, 0);
 
         // Fairy dust! MAGIC beyond this line
@@ -641,7 +654,6 @@ public class PandaAI : MonoBehaviour {
         }
 
     }
-	
 	float time;
 	IEnumerator BoostingToWalking(float timeToWait)
 	{
