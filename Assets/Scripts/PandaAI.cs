@@ -263,7 +263,7 @@ public class PandaAI : MonoBehaviour {
      * Attempt a kill on the panda from a death trap
      * return true if the panda was successfully killed
      **/
-    public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
+    public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect, KillType killType = KillType.Default)
     {
         if (!IsAlive())
             return false;
@@ -654,5 +654,13 @@ public class PandaAI : MonoBehaviour {
 		
 		Electrocute();
 	}
-	# endregion		
+	# endregion
+
+    public enum KillType
+    {
+        Default,
+        Dismember,
+        SliceInHalf,
+        Electrocute
+    }
 }
