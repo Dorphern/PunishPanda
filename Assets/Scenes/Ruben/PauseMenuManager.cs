@@ -21,15 +21,17 @@ public class PauseMenuManager : MonoBehaviour {
 	private TweenAlpha tintAlphaComponent;
 	private TweenAlpha whiteTintAlphaComponent;
 	
-		
-	private bool MenuIsActive;
 	private Texture2D HintTexture;
 	private Texture2D TutorialTexture;
+		
+	private bool MenuIsActive;
+	private TweenPosition MenuPosition;
 	
 	
 	
 	void Start()
 	{
+		MenuPosition = PauseMenu.GetComponent<TweenPosition>();
 		pausegame = GetComponent<PauseGame>();
 		
 		//get Level # for label
@@ -93,7 +95,9 @@ public class PauseMenuManager : MonoBehaviour {
 	
 	public void OnHintClick()
 	{
-
+		//reset PauseMenu Position
+		MenuPosition.Reset();
+		
 		//set menu-hint texture
 		textureComponent.mainTexture = HintTexture;
 		if(textureComponent.mainTexture != null)

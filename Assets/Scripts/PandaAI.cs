@@ -29,18 +29,12 @@ public class PandaAI : MonoBehaviour {
 	public float pushingMagnitude;
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
-    public bool stuckOnSpikes = true;
     public bool landingHard;
-    public bool spikeDetract;
-	
+    public bool spikeDetract;	
 	public bool isMainMenuPanda;
 
     private Animator anim;
     private PandaState lastPandaState;
-    private bool isSplatFall = false;
-    private float speed;
-    private float fallDist;
-    private Vector3 oldPosition;
     private Vector3 fallDir;
 	private Coroutine boostco;
 	private PandaState preFallingState;
@@ -399,7 +393,6 @@ public class PandaAI : MonoBehaviour {
 		bloodOnSlap = GetComponent<BloodOnSlap>();
         animations = GetComponent<Animations>();
         lastPandaState = pandaStateManager.GetState();
-        oldPosition = transform.position;
 		
 		collisionController.OnFloorHit += FloorCollision;
 		collisionController.OnPandaHit += PandaChangeDirection;
@@ -617,7 +610,7 @@ public class PandaAI : MonoBehaviour {
             animations.PlayTriggerAnimations(pandaStateManager.GetDirection(), c.gameObject.GetComponent<Collidable>().type);
             if(c.gameObject.GetComponent<Collidable>().type == CollidableTypes.LedgeFall)
             {
-                c.gameObject.GetComponent<Collider>().collider.enabled = false;
+                Destroy(c.gameObject);
             }
         }
 

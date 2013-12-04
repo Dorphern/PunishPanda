@@ -55,20 +55,33 @@ public class MainMenuSaws : MonoBehaviour {
 	{
 	    if(isDown)
 	    {
-	
-	       sawtrap.ActivateTrap();
-			
-		   Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
-			
+	       	sawtrap.ActivateTrap();
+			StartCoroutine("emmitDismembered");				
 	    }
 	 
 	    if(!isDown)
 	    {
+			StopCoroutine("emmitDismembered");
 	       	sawtrap.DeactivateTrap();
 			sawObject.transform.rotation = originalPosition;
 
 	    }
 	} 
+	
+	
+	IEnumerator emmitDismembered()
+	{
+		//delay before Instantiate
+		yield return new WaitForSeconds(0.7f);
+		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		yield return new WaitForSeconds(Random.Range(0.2F, 0.5F));
+		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		yield return new WaitForSeconds(Random.Range(0.3F, 0.7F));
+		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		StartCoroutine("emmitDismembered");
+	}
+	
+	
 	
 	void OnEnable()
 	{
@@ -115,12 +128,6 @@ public class MainMenuSaws : MonoBehaviour {
 			
 	    }
 		
-		//save orginial rotational-position
-		//originalPosition = sawObject.transform.rotation;
-		//add deggress:
-		//originalPosition = Quaternion.Euler(0, 0, -45);
-		
-
 	}
 	
 }

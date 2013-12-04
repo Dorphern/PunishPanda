@@ -94,7 +94,6 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         
         if (mousePos.x > area.x && mousePos.x < area.x + area.width)
         {
-
             canDropObject = HandleDragging();
         }
 
@@ -209,7 +208,6 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
     {
         
         bool previousState = child.IsFoldedOut;
-
         
         child.IsFoldedOut = OnNodeDraw(child, child == selectedNode);
 
@@ -220,7 +218,6 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
         {
             HoverOver = child;
             HoverOverArea = lastArea;
-            maxY = lastArea.y + lastArea.height;
         }
 
         if (CheckIsSelected(lastArea)  || (child == selectedNode || child.IsFoldedOut != previousState))
@@ -230,6 +227,9 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
             selectedNode = child;
             AssignSelectedArea(lastArea);
         }
+
+        if(Event.current.type == EventType.repaint)
+            maxY = lastArea.y + lastArea.height;
     }
 
     private void DrawBackground(Rect area)
@@ -283,7 +283,9 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     private bool HandleDragging()
     {
-        if (Event.current.ClickedWithin(_area) && Event.current.button == 0 && Event.current.mousePosition.y < maxY + 2)
+        Rect scrolledArea = _area;
+        scrolledArea.y += ScrollPosition.y;
+        if (Event.current.ClickedWithin(scrolledArea) && Event.current.button == 0 && Event.current.mousePosition.y < maxY + 2)
         {
             dragStart = Event.current.mousePosition;
             wantToDrag = true;
