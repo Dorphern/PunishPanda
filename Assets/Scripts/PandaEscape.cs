@@ -13,16 +13,22 @@ public class PandaEscape : TrapBase
         return TrapType.EscapeBamboo;
     }
 
-    public override void ActivateTrap ()
+    public override void ActivateTrap (bool playAnimation = true)
     {
         base.ActivateTrap();
-        transform.parent.animation.Play(animationInName);
+		if(playAnimation)
+		{
+        	transform.parent.animation.Play(animationInName);
+		}
     }
 
-    public override void DeactivateTrap ()
+    public override void DeactivateTrap (bool playAnimation = true)
     {
         base.DeactivateTrap();
-        transform.parent.animation.Play(animationOutName);
+		if(playAnimation)
+		{
+        	transform.parent.animation.Play(animationOutName);
+		}
     }
     # endregion
 
