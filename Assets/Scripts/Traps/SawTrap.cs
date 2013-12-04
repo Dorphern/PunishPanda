@@ -94,9 +94,11 @@ public class SawTrap : TrapBase {
 		bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAI.GetPandaFacingDirection().x, 0f, 0f));
 		bloodParticles.transform.position = pandaAI.transform.position;
 		bloodParticles.Play();
-        bool kill = pandaAI.AttemptDeathTrapKill(this, isPerfect);
-        if (DismemberInstead)
-            pandaAI.Dismember();
+		bool kill;
+		if (DismemberInstead)
+			kill = pandaAI.AttemptDeathTrapKill(this, isPerfect, PandaAI.KillType.Dismember);
+        else
+			kill = pandaAI.AttemptDeathTrapKill(this, isPerfect);
         return kill;
     }
 
