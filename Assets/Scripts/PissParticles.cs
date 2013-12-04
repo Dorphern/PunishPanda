@@ -12,12 +12,14 @@ public class PissParticles : MonoBehaviour {
 	private Quaternion rightEmission;
 	private Quaternion leftEmission;
 	float initGravity;
+    float initLife;
 	
 	int pissTransitions = 4; 
 	
 	void Start()
 	{
-		initGravity = piss.gravityModifier;	
+		initGravity = piss.gravityModifier;
+        initLife = piss.startLifetime;
 	}
 	
 	public void PissFor(float duration)
@@ -53,15 +55,15 @@ public class PissParticles : MonoBehaviour {
 		yield return new WaitForSeconds(2.8f);
 		
 		float d = 1f;
-		float step = 0.02f;
-		float stepAmount = 0.1f;
-		int steps = (int) (d/step);
-		
-		for(int i=0; i<steps; i++)
-		{
+        int steps = 10;
+        float gravTarget = 0.8f / steps;
+        float lifeTarget = 0.5f / steps;
 
-			piss.gravityModifier +=stepAmount;
-			yield return new WaitForSeconds( step);
+        for (int i = 0; i < steps; i++)
+		{
+            piss.gravityModifier += gravTarget;
+            piss.startLifetime -= lifeTarget;
+            yield return new WaitForSeconds(d / steps);
 		}
 		
 		piss.gravityModifier = -1.5f;
@@ -71,6 +73,7 @@ public class PissParticles : MonoBehaviour {
 		{
 			piss.Stop();
 			piss.gravityModifier = initGravity;
+            piss.startLifetime = initLife;
 		}
 		peeing = false;
 	}
