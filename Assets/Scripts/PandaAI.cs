@@ -62,6 +62,18 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Double Tab")]
     List<AudioEvent> doubleTabEvents = new List<AudioEvent>();
 
+    [SerializeField]
+    [EventHookAttribute("Falling")]
+    List<AudioEvent> fallingEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Pushing")]
+    List<AudioEvent> pushingEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Pushing End")]
+    List<AudioEvent> pushingEndEvents = new List<AudioEvent>();
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -85,6 +97,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
+            HDRSystem.PostEvents(gameObject, pushingEvents);
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
 			return true;
 		}
@@ -95,6 +108,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.PushingFinger)
 		{
+            HDRSystem.PostEvents(gameObject, pushingEndEvents);
 			pandaStateManager.ChangeState(PandaState.Walking);	
 		}
 	}
@@ -352,6 +366,7 @@ public class PandaAI : MonoBehaviour {
             && pandaStateManager.GetState() != PandaState.Died)
         {
 			preFallingState = pandaStateManager.GetState();
+            HDRSystem.PostEvents(gameObject, fallingEvents);
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
@@ -359,7 +374,7 @@ public class PandaAI : MonoBehaviour {
     public void SliceInHalf()
     {
         (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
-                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position, BladeDirection.None);
+                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position);
         Destroy(this.gameObject);
     }
 
