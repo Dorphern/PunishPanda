@@ -8,6 +8,7 @@ public class TriggeredImpalerSpikeTrap : TrapBase
     protected string animationName = "Triggered Spike Animation";
 	[SerializeField] private ParticleSystem bloodParticles;
     protected PandaAI pandaAIThis;
+	private bool startedDetraction = false;
     # region Public Methods
 
     override public TrapType GetTrapType ()
@@ -25,11 +26,13 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 
     public void DetractSpikes()
     {
+		startedDetraction = true;
         pandaAIThis.ChangeStuckOnSpikes();
     }
 
     public void SpikesDetracted()
     {
+		startedDetraction = false;
         pandaAIThis.SpikesDetracted();
     }
     # endregion
@@ -42,8 +45,10 @@ public class TriggeredImpalerSpikeTrap : TrapBase
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-		bloodParticles.transform.position = pandaAI.transform.position;
-		bloodParticles.Play();
+		if(this.startedDetraction == false)
+		{
+			pandaAI.PlayDeathParticles();
+		}
         pandaAIThis = pandaAI;
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }

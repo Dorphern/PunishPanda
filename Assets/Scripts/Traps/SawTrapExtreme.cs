@@ -41,9 +41,7 @@ public class SawTrapExtreme : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-		bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAI.GetPandaFacingDirection().x, 0f, 0f));
-		bloodParticles.transform.position = pandaAI.transform.position;
-		bloodParticles.Play();
+		pandaAI.PlayDeathParticles();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 

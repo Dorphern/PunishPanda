@@ -17,6 +17,7 @@ public class PandaAI : MonoBehaviour {
 	public bool boostEnabled = false;
 	public float boostDuration = 1f;
 	public float pushingLimbsForce = 6f;
+	[SerializeField] protected ParticleSystem deathBloodParticles;
 
     [SerializeField] protected GameObject dismemberedPanda;
 	[SerializeField] protected GameObject electrocutedPanda;
@@ -328,6 +329,11 @@ public class PandaAI : MonoBehaviour {
             return true;
         }
     }
+	
+	public void PlayDeathParticles()
+	{
+		deathBloodParticles.Play();
+	}
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
     {
@@ -585,6 +591,7 @@ public class PandaAI : MonoBehaviour {
     public void SpikesDetracted()
     {
         spikeDetract = true;
+		PlayDeathParticles();
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)
