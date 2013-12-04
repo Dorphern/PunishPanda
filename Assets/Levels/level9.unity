@@ -5328,7 +5328,7 @@ MonoBehaviour:
   achievementTitleLabel: {fileID: 1801069137}
   achievementTextLabel: {fileID: 270085170}
   achievementIcon: {fileID: 259727289}
-  camera: {fileID: 1936671808}
+  GUIcamera: {fileID: 0}
   rt: {fileID: 205297076}
 --- !u!1 &223770555
 GameObject:
@@ -7174,9 +7174,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 1110980055}
   hover: {r: .600000024, g: 1, b: .200000003, a: 1}
-  pressed: {r: .5, g: .5, b: .5, a: 1}
-  duration: .200000003
-  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  pressed: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0
+  disabledColor: {r: 1, g: 1, b: 1, a: 1}
   onClick:
   - mTarget: {fileID: 1534915500}
     mMethodName: OnRestartButtonClicked
@@ -7269,8 +7269,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 413616714}
-  - 33: {fileID: 413616716}
-  - 23: {fileID: 413616715}
   m_Layer: 0
   m_Name: MouthPositionFront
   m_TagString: Untagged
@@ -7289,33 +7287,6 @@ Transform:
   m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
   m_Children: []
   m_Father: {fileID: 1660856252}
---- !u!23 &413616715
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300002, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 499736209}
-  m_GameObject: {fileID: 413616713}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
---- !u!33 &413616716
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300004, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 499736209}
-  m_GameObject: {fileID: 413616713}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &420020931
 GameObject:
   m_ObjectHideFlags: 0
@@ -13083,8 +13054,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 792350866}
-  - 33: {fileID: 792350868}
-  - 23: {fileID: 792350867}
   m_Layer: 0
   m_Name: MouthPositionBack
   m_TagString: Untagged
@@ -13103,33 +13072,6 @@ Transform:
   m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
   m_Children: []
   m_Father: {fileID: 1660856252}
---- !u!23 &792350867
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300000, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 499736209}
-  m_GameObject: {fileID: 792350865}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
---- !u!33 &792350868
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300002, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 499736209}
-  m_GameObject: {fileID: 792350865}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &800864087
 GameObject:
   m_ObjectHideFlags: 0
@@ -13436,7 +13378,7 @@ Transform:
   m_PrefabInternal: {fileID: 1632787514}
   m_GameObject: {fileID: 869204756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.499511719, y: .5, z: -.00048828125}
+  m_LocalPosition: {x: -.518066406, y: 0, z: -.00048828125}
   m_LocalScale: {x: .999872983, y: .999872983, z: .999872983}
   m_Children:
   - {fileID: 2025849874}
@@ -13934,6 +13876,7 @@ MonoBehaviour:
   turnSpeed: .300000012
   jumpEvents:
   - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  doubleTabEvents: []
 --- !u!114 &903224795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14447,7 +14390,7 @@ Transform:
   m_PrefabInternal: {fileID: 1632787514}
   m_GameObject: {fileID: 951057914}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -34.2004395, y: 388.799988, z: 0}
+  m_LocalPosition: {x: -34.9790955, y: 387.961243, z: 0}
   m_LocalScale: {x: 1.43423998, y: 1.43423998, z: 1.43423998}
   m_Children:
   - {fileID: 398293404}
@@ -14781,8 +14724,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d988b6ddd8c7b7b4192c5861f3d566c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseGameEvent: []
-  resumeGameEvent: []
+  pauseGameEvent:
+  - {fileID: 11400178, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  - {fileID: 11400182, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  - {fileID: 11400246, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  resumeGameEvent:
+  - {fileID: 11400176, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  - {fileID: 11400180, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  - {fileID: 11400248, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!114 &982167280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15403,7 +15352,7 @@ Transform:
   m_PrefabInternal: {fileID: 1632787514}
   m_GameObject: {fileID: 278849927}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.499511719, y: .5, z: 0}
+  m_LocalPosition: {x: -.518066406, y: 0, z: -6.10351562e-05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1097748519}
@@ -16666,8 +16615,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1097648129}
-  - 33: {fileID: 1097648131}
-  - 23: {fileID: 1097648130}
   m_Layer: 0
   m_Name: MouthPositionBack
   m_TagString: Untagged
@@ -16686,33 +16633,6 @@ Transform:
   m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
   m_Children: []
   m_Father: {fileID: 903224788}
---- !u!23 &1097648130
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300000, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1225263474}
-  m_GameObject: {fileID: 1097648128}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
---- !u!33 &1097648131
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300002, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1225263474}
-  m_GameObject: {fileID: 1097648128}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1097748518
 GameObject:
   m_ObjectHideFlags: 0
@@ -17198,9 +17118,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 1126750786}
   hover: {r: .600000024, g: 1, b: .200000003, a: 1}
-  pressed: {r: .5, g: .5, b: .5, a: 1}
-  duration: .200000003
-  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  pressed: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0
+  disabledColor: {r: 1, g: 1, b: 1, a: 1}
   onClick:
   - mTarget: {fileID: 1612094416}
     mMethodName: RestartLevel
@@ -19849,7 +19769,7 @@ Transform:
   m_PrefabInternal: {fileID: 1632787514}
   m_GameObject: {fileID: 1326654896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -640.499023, y: 400.5, z: .000366210938}
+  m_LocalPosition: {x: -256.518066, y: 160.5177, z: .000427246094}
   m_LocalScale: {x: .999872983, y: .999872983, z: .999872983}
   m_Children:
   - {fileID: 1899783594}
@@ -19883,8 +19803,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1341286539}
-  - 33: {fileID: 1341286541}
-  - 23: {fileID: 1341286540}
   m_Layer: 0
   m_Name: MouthPositionFront
   m_TagString: Untagged
@@ -19903,33 +19821,6 @@ Transform:
   m_LocalScale: {x: .200000003, y: .200000003, z: .200000003}
   m_Children: []
   m_Father: {fileID: 903224788}
---- !u!23 &1341286540
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300002, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1225263474}
-  m_GameObject: {fileID: 1341286538}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
---- !u!33 &1341286541
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300004, guid: d278ccc1039068e438085983baf5e9c2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1225263474}
-  m_GameObject: {fileID: 1341286538}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1346350744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21733,10 +21624,16 @@ MonoBehaviour:
   timeBeforeScoreAnimation: 1
   timesteps: .0199999996
   achStatsUpdated: 0
-  OnOneStarEvents: []
-  OnTwoStarsEvents: []
-  OnThreeStartsEvents: []
-  OnHighscoreEvents: []
+  OnOneStarEvents:
+  - {fileID: 11400320, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  OnTwoStarsEvents:
+  - {fileID: 11400322, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  OnThreeStartsEvents:
+  - {fileID: 11400324, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  OnHighscoreEvents:
+  - {fileID: 11400326, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  OnScoreEvents:
+  - {fileID: 11400328, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!114 &1534915501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22502,9 +22399,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 2080930475}
   hover: {r: .600000024, g: 1, b: .200000003, a: 1}
-  pressed: {r: .5, g: .5, b: .5, a: 1}
-  duration: .200000003
-  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  pressed: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0
+  disabledColor: {r: 1, g: 1, b: 1, a: 1}
   onClick:
   - mTarget: {fileID: 1534915500}
     mMethodName: OnNextLevelButtonClicked
@@ -22589,47 +22486,51 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400180, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -.499511719
+      value: -.518066406
       objectReference: {fileID: 0}
     - target: {fileID: 400180, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: .5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400178, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -.499511719
+      value: -.518066406
       objectReference: {fileID: 0}
     - target: {fileID: 400178, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: .5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -640.499023
+      value: -256.518066
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 400.5
+      value: 160.5177
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalScale.x
-      value: .00249999994
+      value: .00625000009
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalScale.y
-      value: .00249999994
+      value: .00625000009
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalScale.z
-      value: .00249999994
+      value: .00625000009
       objectReference: {fileID: 0}
     - target: {fileID: 400238, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -34.2004395
+      value: -34.9790955
       objectReference: {fileID: 0}
     - target: {fileID: 400238, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 388.799988
+      value: 387.961243
+      objectReference: {fileID: 0}
+    - target: {fileID: 400180, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -.00048828125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7d3e03ac135da5d448d8569a86e9dd2b, type: 2}
@@ -23016,6 +22917,7 @@ MonoBehaviour:
   turnSpeed: .300000012
   jumpEvents:
   - {fileID: 11400084, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  doubleTabEvents: []
 --- !u!114 &1660856259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23889,9 +23791,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 103053498}
   hover: {r: .600000024, g: 1, b: .200000003, a: 1}
-  pressed: {r: .5, g: .5, b: .5, a: 1}
-  duration: .200000003
-  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  pressed: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0
+  disabledColor: {r: 1, g: 1, b: 1, a: 1}
   onClick:
   - mTarget: {fileID: 1534915500}
     mMethodName: OnLevelsButtonClicked
@@ -24176,9 +24078,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 1755942881}
   hover: {r: .600000024, g: 1, b: .200000003, a: 1}
-  pressed: {r: .5, g: .5, b: .5, a: 1}
-  duration: .200000003
-  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  pressed: {r: 1, g: 1, b: 1, a: 1}
+  duration: 0
+  disabledColor: {r: 1, g: 1, b: 1, a: 1}
   onClick:
   - mTarget: {fileID: 1612094416}
     mMethodName: SelectLevel
@@ -25381,7 +25283,7 @@ Transform:
   m_GameObject: {fileID: 1859760911}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.214016, y: 0, z: 0}
-  m_LocalScale: {x: .00249999994, y: .00249999994, z: .00249999994}
+  m_LocalScale: {x: .00625000009, y: .00625000009, z: .00625000009}
   m_Children:
   - {fileID: 606771897}
   m_Father: {fileID: 2102375519}
@@ -25421,9 +25323,12 @@ MonoBehaviour:
   perfectKillLabel: {fileID: 1383696503}
   normalKillLabel: {fileID: 26735720}
   bloodParticles: {fileID: 568669387}
-  slobbyKillEvents: []
-  perfectKillEvents: []
-  comboKillEvents: []
+  slobbyKillEvents:
+  - {fileID: 11400300, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  perfectKillEvents:
+  - {fileID: 11400298, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  comboKillEvents:
+  - {fileID: 11400302, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!114 &1859760915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25441,18 +25346,18 @@ MonoBehaviour:
   widgetsAreStatic: 0
   cullWhileDragging: 0
   worldToLocal:
-    e00: 171.5
+    e00: 160
     e01: 0
     e02: 0
-    e03: -7740.06445
+    e03: -7221.05176
     e10: 0
-    e11: 171.5
+    e11: 160
     e12: 0
-    e13: -1377.90112
+    e13: -1285.50537
     e20: 0
     e21: 0
-    e22: 171.5
-    e23: 632.464966
+    e22: 160
+    e23: 590.05481
     e30: 0
     e31: 0
     e32: 0

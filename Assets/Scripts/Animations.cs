@@ -75,7 +75,10 @@ public class Animations : MonoBehaviour {
 
     public void SetGrounded()
     {
-        anim.SetBool("Grounded", characterController.isGrounded);
+        if (characterController != null)
+        {
+            anim.SetBool("Grounded", characterController.isGrounded);
+        }
     }
 
     public void SetDoubleTapped ()

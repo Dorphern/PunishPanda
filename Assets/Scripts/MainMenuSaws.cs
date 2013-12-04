@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class MainMenuSaws : MonoBehaviour {
@@ -18,6 +19,13 @@ public class MainMenuSaws : MonoBehaviour {
 	public GameObject projectionPoint;
 	
 	[SerializeField] protected GameObject dismemberedPanda;
+
+    [SerializeField] [EventHookAttribute("On Start Spin")]
+    private List<AudioEvent> startSpinEvents = new List<AudioEvent>(1);
+
+    [SerializeField]
+    [EventHookAttribute("On End Spin")]
+    private List<AudioEvent> endSpinEvents = new List<AudioEvent>(1); 
 	
 	
 	void Start () {
@@ -55,20 +63,35 @@ public class MainMenuSaws : MonoBehaviour {
 	{
 	    if(isDown)
 	    {
-	
-	       sawtrap.ActivateTrap();
-			
-		   Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
-			
+	       	sawtrap.ActivateTrap();
+            HDRSystem.PostEvents(gameObject, startSpinEvents);
+			StartCoroutine("emmitDismembered");				
 	    }
 	 
 	    if(!isDown)
 	    {
+			StopCoroutine("emmitDismembered");
+            HDRSystem.PostEvents(gameObject, endSpinEvents);
 	       	sawtrap.DeactivateTrap();
 			sawObject.transform.rotation = originalPosition;
 
 	    }
 	} 
+	
+	
+	IEnumerator emmitDismembered()
+	{
+		//delay before Instantiate
+		yield return new WaitForSeconds(0.7f);
+		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		yield return new WaitForSeconds(Random.Range(0.2F, 0.5F));
+		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		yield return new WaitForSeconds(Random.Range(0.3F, 0.7F));
+		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+		StartCoroutine("emmitDismembered");
+	}
+	
+	
 	
 	void OnEnable()
 	{
@@ -115,12 +138,6 @@ public class MainMenuSaws : MonoBehaviour {
 			
 	    }
 		
-		//save orginial rotational-position
-		//originalPosition = sawObject.transform.rotation;
-		//add deggress:
-		//originalPosition = Quaternion.Euler(0, 0, -45);
-		
-
 	}
 	
 }
