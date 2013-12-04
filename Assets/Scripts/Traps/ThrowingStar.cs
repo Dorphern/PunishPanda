@@ -90,8 +90,8 @@ public class ThrowingStar : MonoBehaviour
                 {
                     pandaAi.SliceInHalf();
                 }
-
-                bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAi.GetPandaFacingDirection().x, 0f, 0f));
+				bloodParticles.transform.position = pandaAi.transform.position;
+                bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3( - pandaAi.GetPandaFacingDirection().x, 0f, 0f));
 				bloodParticles.Play();
                 SetDirty();
             }
