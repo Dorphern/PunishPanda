@@ -16,7 +16,7 @@ public class ImpalerSpikeTrap : TrapBase {
         return TrapType.ImpalerSpikes;
     }
 
-    override public void ActivateTrap ()
+    override public void ActivateTrap (bool playAnimation = true)
     {
         base.ActivateTrap();
         StartCoroutine(PlayImpalingAnimation());

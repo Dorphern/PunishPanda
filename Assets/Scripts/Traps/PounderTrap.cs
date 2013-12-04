@@ -24,7 +24,7 @@ public class PounderTrap : TrapBase
         return TrapType.Pounder;
     }
 
-    override public void ActivateTrap ()
+    override public void ActivateTrap (bool playAnimation = true)
     {
         base.ActivateTrap();
         StartCoroutine(PlayPoundingAnimation());
