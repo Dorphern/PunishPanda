@@ -80,23 +80,40 @@ public static class AudioEventDrawer
             buttonArea.height = 16;
 
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
-            eventAction.Delay = Mathf.Max(EditorGUI.FloatField(buttonArea, "Seconds Delay", eventAction.Delay), 0);
+
+            UndoHelper.GUIUndo(eventAction, "Event Action Delay", ref eventAction.Delay, () =>
+                Mathf.Max(EditorGUI.FloatField(buttonArea, "Seconds Delay", eventAction.Delay), 0));
             
             buttonArea.y += 33;
             var busAction = eventAction as EventBusAction;
+            var busMuteAction = eventAction as EventBusMuteAction;
             if (busAction != null)
             {
-                if (busAction.VolumeMode == EventBusAction.VolumeSetMode.Relative)
-                    busAction.Volume = EditorGUI.Slider(buttonArea, "Relative Volume", busAction.Volume, -1.0f, 1.0f);
-                else
-                    busAction.Volume = EditorGUI.Slider(buttonArea, "Target Volume", busAction.Volume, 0.0f, 1.0f);
+
+                UndoHelper.GUIUndo(busAction, "Bus Action Volume", ref busAction.Volume, () =>
+                {
+                    if (busAction.VolumeMode == EventBusAction.VolumeSetMode.Relative)
+                        return EditorGUI.Slider(buttonArea, "Relative Volume", busAction.Volume, -1.0f, 1.0f);
+                    else
+                        return EditorGUI.Slider(buttonArea, "Target Volume", busAction.Volume, 0.0f, 1.0f);    
+                });
+
 
                 buttonArea.y += 21;
-                busAction.VolumeMode = (EventBusAction.VolumeSetMode)EditorGUI.EnumPopup(buttonArea, "Volume Mode", busAction.VolumeMode);
+                UndoHelper.GUIUndo(busAction, "Bus Action Volume Mode", ref busAction.VolumeMode, () =>
+                    (EventBusAction.VolumeSetMode)EditorGUI.EnumPopup(buttonArea, "Volume Mode", busAction.VolumeMode));
+
                 buttonArea.y += 26;
-                busAction.Duration = Mathf.Max(EditorGUI.FloatField(buttonArea, "Fade Duration", busAction.Duration), 0);
+                UndoHelper.GUIUndo(busAction, "Bus Action Fade Duration", ref busAction.Duration, () =>
+                    Mathf.Max(EditorGUI.FloatField(buttonArea, "Fade Duration", busAction.Duration), 0));
+
                 buttonArea.y += 21;
-                busAction.FadeCurve = (FadeCurveType)EditorGUI.EnumPopup(buttonArea, "Fade Curve", busAction.FadeCurve);
+                UndoHelper.GUIUndo(busAction, "Bus Action Fade Curve", ref busAction.FadeCurve, () =>
+                    (FadeCurveType)EditorGUI.EnumPopup(buttonArea, "Fade Curve", busAction.FadeCurve));
+            }  else if (busMuteAction != null)
+            {
+                UndoHelper.GUIUndo(busMuteAction, "Mute", ref busMuteAction.Action, () =>
+                    (EventBusMuteAction.MuteAction)EditorGUI.EnumPopup(buttonArea, "Action", busMuteAction.Action));
             }
             EditorGUILayout.EndVertical();
         }
@@ -190,27 +207,7 @@ public static class AudioEventDrawer
                 EditorGUI.LabelField(actionArea, "Data", EditorStyles.boldLabel);
             }
 
-            if (currentAction is EventAudioAction)
-            {
-                AudioNode dragged = OnDragging.DraggingObject<AudioNode>(dragArea, node => node.IsPlayable);
-
-                if (dragged != null)
-                {
-                    (currentAction as EventAudioAction).Node = dragged;
-                }
-            }
-            else if (currentAction is EventBankAction)
-            {
-                AudioBankLink dragged = OnDragging.DraggingObject<AudioBankLink>(dragArea, bank => bank.Type == AudioBankTypes.Link);
-                if (dragged != null)
-                    (currentAction as EventBankAction).BankLink = dragged;
-            }
-            else if (currentAction is EventBusAction)
-            {
-                AudioBus dragged = OnDragging.DraggingObject<AudioBus>(dragArea, bus => true);
-                if (dragged != null)
-                    (currentAction as EventBusAction).Bus = dragged;
-            }
+            HandleDragging(currentAction, dragArea);
 
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
@@ -227,10 +224,14 @@ public static class AudioEventDrawer
 
             rightArea.x += 90;
             rightArea.width = 30;
+
+            bool wasEnabled = GUI.enabled;
+            GUI.enabled = true;
             if (GUI.Button(rightArea, "X"))
             {
                 toRemove = i;
             }
+            GUI.enabled = wasEnabled;
 
             if (Event.current.ClickedWithin(lastArea) )
             {
@@ -253,6 +254,38 @@ public static class AudioEventDrawer
         }
         EditorGUILayout.EndVertical();
         return repaint;
+    }
+
+    private static void HandleDragging(AudioEventAction currentAction, Rect dragArea)
+    {
+        if (currentAction is EventAudioAction)
+        {
+            AudioNode dragged = OnDragging.DraggingObject<AudioNode>(dragArea, node => node.IsPlayable);
+
+            if (dragged != null)
+            {
+                (currentAction as EventAudioAction).Node = dragged;
+            }
+        }
+        else if (currentAction is EventBankAction)
+        {
+            AudioBankLink dragged = OnDragging.DraggingObject<AudioBankLink>(dragArea,
+                bank => bank.Type == AudioBankTypes.Link);
+            if (dragged != null)
+                (currentAction as EventBankAction).BankLink = dragged;
+        }
+        else if (currentAction is EventBusAction)
+        {
+            AudioBus dragged = OnDragging.DraggingObject<AudioBus>(dragArea, bus => true);
+            if (dragged != null)
+                (currentAction as EventBusAction).Bus = dragged;
+        }
+        else if (currentAction is EventBusMuteAction)
+        {
+            AudioBus dragged = OnDragging.DraggingObject<AudioBus>(dragArea, bus => true);
+            if (dragged != null)
+                (currentAction as EventBusMuteAction).Bus = dragged;
+        }
     }
 
 

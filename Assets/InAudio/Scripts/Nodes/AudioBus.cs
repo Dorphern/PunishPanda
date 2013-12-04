@@ -35,6 +35,8 @@ public class AudioBus : MonoBehaviour, ITreeNode<AudioBus>
     //How long after the last duck that it returns to normal volume
     public float ReleaseTime = 1.0f;
 
+    public bool Mute = false;
+
     //Do we need to update the attach audio players?
     [System.NonSerialized]
     public bool Dirty = true;

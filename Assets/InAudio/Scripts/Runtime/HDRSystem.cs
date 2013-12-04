@@ -169,6 +169,13 @@ public class HDRSystem : MonoBehaviour
                     StopAllNodeInBus(busData.Bus);
                 }
                 break;
+            case EventActionTypes.SetBusMute:
+                var busMuteData = eventData as EventBusMuteAction;
+                if (busMuteData != null && busMuteData.Bus != null)
+                {
+                    AudioBusVolumeHelper.MuteAction(busMuteData.Bus, busMuteData.Action);
+                }
+                break;
         }
     }
     #region Post attached to

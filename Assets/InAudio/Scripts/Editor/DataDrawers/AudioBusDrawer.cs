@@ -22,6 +22,11 @@ namespace InAudio.InAudioEditorGUI
 
             EditorGUILayout.Separator();
 
+            UndoHelper.GUIUndo(node, "Mute Bus", ref node.Mute, () =>
+                EditorGUILayout.Toggle("Mute", node.Mute));
+
+            EditorGUILayout.Separator();
+
             UndoHelper.GUIUndo(node, "Volume Change", ref node.Volume, () =>
                 EditorGUILayout.Slider("Master Volume", node.Volume, 0.0f, 1.0f));
 
