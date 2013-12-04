@@ -251,6 +251,9 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
     {
+        if (!IsAlive())
+            return false;
+
         Debug.Log("Hit death object: " + trap.GetTrapType());		
 
         // change state from playAnimation PlayDeathAnimation
