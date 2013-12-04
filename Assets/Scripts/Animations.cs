@@ -49,7 +49,6 @@ public class Animations : MonoBehaviour {
             //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
-        anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
@@ -85,9 +84,22 @@ public class Animations : MonoBehaviour {
 
     public void SpikePullOut()
     {
-        Debug.Log("PullOut");
         anim.SetBool("PullOutSpikes", true);
         StartCoroutine(ChangeSpikesPullOut());
+    }
+
+    public void SetGrounded()
+    {
+        if (characterController != null)
+        {
+            anim.SetBool("Grounded", characterController.isGrounded);
+        }
+    }
+
+    public void SetDoubleTapped ()
+    {
+        anim.SetBool("DoubleTapped", true);
+        StartCoroutine(ResetDoubleTapped());
     }
 
     # endregion
@@ -183,6 +195,12 @@ public class Animations : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.05f);
         anim.SetBool("PullOutSpikes", false);
+    }
+
+    IEnumerator ResetDoubleTapped ()
+    {
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("DoubleTapped", false);
     }
     # endregion
 }
