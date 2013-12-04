@@ -198,9 +198,9 @@ public class PandaMovementController : MonoBehaviour {
 		{
 			movement.offset.x = - movement.currentSpeed * currentPushingMagnitude * pushingForce;
 		}
+        
+        UpdateDirection(direction);
 
-        UpdateDirection(PandaDirection.Left);
-		
 		controller.Move(movement.offset * Time.fixedDeltaTime);
 	}
 	
