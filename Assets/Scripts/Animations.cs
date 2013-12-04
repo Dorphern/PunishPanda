@@ -94,6 +94,11 @@ public class Animations : MonoBehaviour {
         StartCoroutine(ResetDoubleTapped());
     }
 
+    public void MoveToEscape (float zPos)
+    {
+        StartCoroutine(MoveThePandaToEscape(zPos));
+    }
+
     # endregion
 
     # region Private Methods
@@ -165,7 +170,7 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0,101));
+            anim.SetInteger("Random", 99); //PandaRandom.NextInt(0,101));
             anim.SetBool("NewRandom", true);
 			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
@@ -198,8 +203,10 @@ public class Animations : MonoBehaviour {
         anim.SetBool("DoubleTapped", false);
     }
 
-        IEnumerator Peeing()
+    IEnumerator Peeing()
     {
+        yield return new WaitForSeconds(.2f);
+
         float time = 0.5f;
         float step = 0.02f;
         int  steps = (int) (time / step);
@@ -214,7 +221,7 @@ public class Animations : MonoBehaviour {
             yield return new WaitForSeconds(step);  
         }
         pissScript.PissFor(3f); 
-        yield return new WaitForSeconds(4.5f);
+        yield return new WaitForSeconds(4.1f);
         
         time = 0.2f;
         steps = (int) (time / step);
@@ -232,7 +239,20 @@ public class Animations : MonoBehaviour {
         
     }
 
-    void StopPiss()
+    IEnumerator MoveThePandaToEscape (float zPos)
+    {
+        yield return new WaitForSeconds(0.5f);
+        int steps = 10;
+        for (int i = 0; i < steps; i++)
+        {
+            Vector3 newPos = transform.position;
+            newPos.z += zPos / steps;
+            transform.position = newPos;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    void StopPiss ()
     {
         pissScript.InterruptPiss();
         StopCoroutine("Peeing");
