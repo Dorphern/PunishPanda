@@ -12,7 +12,7 @@ using System.Collections.Generic;
 /// </summary>
 
 [ExecuteInEditMode]
-[AddComponentMenu("NGUI/Interaction/Play Tween")]
+[AddComponentMenu("NGUI/Interaction/Run Tween")]
 public class UIRunTween : MonoBehaviour
 {
 	/// <summary>
@@ -102,11 +102,6 @@ public class UIRunTween : MonoBehaviour
 			UnityEditor.EditorUtility.SetDirty(this);
 #endif
 		}
-	}
-	
-		void OnClick ()
-	{
-			Play(true);
 	}
 
 	public void RunTween ()

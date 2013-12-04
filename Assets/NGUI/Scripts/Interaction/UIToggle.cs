@@ -6,6 +6,7 @@
 using UnityEngine;
 using AnimationOrTween;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Simple toggle functionality.
@@ -68,7 +69,10 @@ public class UIToggle : UIWidgetContainer
 	/// </summary>
 
 	public List<EventDelegate> onChange = new List<EventDelegate>();
-
+	
+	public event Action OnToggleActivate;
+	public event Action OnToggleDeactivate;
+	
 	/// <summary>
 	/// Deprecated functionality. Use the 'group' option instead.
 	/// </summary>
@@ -98,6 +102,8 @@ public class UIToggle : UIWidgetContainer
 
 	void OnEnable ()  { list.Add(this); }
 	void OnDisable () { list.Remove(this); }
+	
+	
 
 	/// <summary>
 	/// Activate the initial state.
@@ -147,7 +153,7 @@ public class UIToggle : UIWidgetContainer
 		{
 			mIsActive = !startsActive;
 			mStarted = true;
-			Set(startsActive);
+			SetStart(startsActive);
 		}
 	}
 
@@ -156,7 +162,12 @@ public class UIToggle : UIWidgetContainer
 	/// </summary>
 
 	void OnClick () { if (enabled) value = !value; }
-
+	
+	public void OnValueChange () {
+		Debug.Log ("OnValueChange");
+		if (enabled) value = !value; 
+	
+	}
 	/// <summary>
 	/// Fade out or fade in the active sprite and notify the OnChange event listener.
 	/// </summary>
@@ -167,6 +178,9 @@ public class UIToggle : UIWidgetContainer
 		{
 			mIsActive = state;
 			startsActive = state;
+			
+
+			
 			if (activeSprite != null) activeSprite.alpha = state ? 1f : 0f;
 		}
 		else if (mIsActive != state)
@@ -174,10 +188,17 @@ public class UIToggle : UIWidgetContainer
 			// Uncheck all other toggles
 			if (group != 0 && state)
 			{
+				if(OnToggleActivate!=null)
+					OnToggleActivate();
 				for (int i = 0, imax = list.size; i < imax; )
 				{
 					UIToggle cb = list[i];
-					if (cb != this && cb.group == group) cb.Set(false);
+					if (cb != this && cb.group == group) 
+					{
+						if(cb.OnToggleDeactivate!=null)
+							cb.OnToggleDeactivate();
+						cb.Set(false);
+					}
 					
 					if (list.size != imax)
 					{
@@ -216,6 +237,68 @@ public class UIToggle : UIWidgetContainer
 				eventReceiver.SendMessage(functionName, mIsActive, SendMessageOptions.DontRequireReceiver);
 			}
 			current = null;
+
+			// Play the checkmark animation
+			if (activeAnimation != null)
+			{
+				ActiveAnimation.Play(activeAnimation, state ? Direction.Forward : Direction.Reverse);
+			}
+		}
+	}
+	
+	void SetStart (bool state)
+	{
+		if (!mStarted)
+		{
+			mIsActive = state;
+			startsActive = state;
+			
+			if (state == true && OnToggleActivate!=null)
+				OnToggleActivate();
+			
+			if (activeSprite != null) activeSprite.alpha = state ? 1f : 0f;
+		}
+		else if (mIsActive != state)
+		{
+			// Uncheck all other toggles
+			if (group != 0 && state)
+			{
+				if(OnToggleActivate!=null)
+					OnToggleActivate();
+				for (int i = 0, imax = list.size; i < imax; )
+				{
+					UIToggle cb = list[i];
+					if (cb != this && cb.group == group) 
+					{
+						if(OnToggleDeactivate!=null)
+							cb.OnToggleDeactivate();
+						cb.Set(false);
+					}
+					
+					if (list.size != imax)
+					{
+						imax = list.size;
+						i = 0;
+					}
+					else ++i;
+				}
+			}
+
+			// Remember the state
+			mIsActive = state;
+
+			// Tween the color of the active sprite
+			if (activeSprite != null)
+			{
+				if (instantTween)
+				{
+					activeSprite.alpha = mIsActive ? 1f : 0f;
+				}
+				else
+				{
+					TweenAlpha.Begin(activeSprite.gameObject, 0.15f, mIsActive ? 1f : 0f);
+				}
+			}
 
 			// Play the checkmark animation
 			if (activeAnimation != null)

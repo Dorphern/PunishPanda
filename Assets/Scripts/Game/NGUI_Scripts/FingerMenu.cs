@@ -20,25 +20,40 @@ public class FingerMenu : MonoBehaviour {
 	void Start()
 	{
 		mm = GetComponent<MenuManager>();
-		float size = InstanceFinder.StatsManager.fingerSize;
-		
+		float size = InstanceFinder.StatsManager.FingerSize;
 		if(size == smallFingerSize)
+		{
 			smallToggle.value = true;
+			InstanceFinder.StatsManager.FingerSize = smallFingerSize;
+		}
 		else if(size == mediumFingerSize)
+		{
 			mediumToggle.value = true;
+			InstanceFinder.StatsManager.FingerSize = mediumFingerSize;
+		}
 		else if(size == largeFingerSize)
+		{
 			largeToggle.value = true;
+			InstanceFinder.StatsManager.FingerSize = largeFingerSize;
+		}
 		else if(size == XL_Finger_Size)
+		{
 			xlToggle.value = true;
+			InstanceFinder.StatsManager.FingerSize = XL_Finger_Size;
+		}
 		else
+		{
 			mediumToggle.value = true;
-	}	
+			InstanceFinder.StatsManager.FingerSize = mediumFingerSize;
+		}	
+	}
 	
 	public void OnFingerClickedSmall()
 	{
 		if(smallToggle!=null && smallToggle.value)
 		{
 			InstanceFinder.StatsManager.FingerSize = smallFingerSize;
+			//InstanceFinder.StatsManager.Save();
 		}
 		
 	}
@@ -48,6 +63,7 @@ public class FingerMenu : MonoBehaviour {
 		if(mediumToggle!=null && mediumToggle.value)
 		{
 			InstanceFinder.StatsManager.FingerSize = mediumFingerSize;
+			//InstanceFinder.StatsManager.Save();
 		}	
 		
 	}
@@ -57,6 +73,7 @@ public class FingerMenu : MonoBehaviour {
 		if(largeToggle!=null && largeToggle.value)
 		{
 			InstanceFinder.StatsManager.FingerSize = largeFingerSize;
+			//InstanceFinder.StatsManager.Save();
 		}
 		
 	}
@@ -66,12 +83,29 @@ public class FingerMenu : MonoBehaviour {
 		if(xlToggle!=null && xlToggle.value)
 		{
 			InstanceFinder.StatsManager.FingerSize = XL_Finger_Size;
+			//InstanceFinder.StatsManager.Save();
 		}
 		
 	}
 	
-	public void OnReturnClicked()
+	public void OnFirstTimeSelectClicked()
 	{
+			InstanceFinder.StatsManager.FingerCalibrated = true;
+			InstanceFinder.StatsManager.Save();
+			mm.SwitchToMenu(MenuTypes.MainMenu);
+	}
+	
+	public void OnSelectClicked()
+	{
+			InstanceFinder.StatsManager.Save();
 			mm.SwitchToMenu(MenuTypes.Settings);
 	}
+	
+	public void OnReturnClicked()
+	{
+			InstanceFinder.StatsManager.Save();
+			mm.SwitchToMenu(MenuTypes.Settings);
+	}
+	
+	
 }

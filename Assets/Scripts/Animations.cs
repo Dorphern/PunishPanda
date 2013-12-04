@@ -3,109 +3,204 @@ using System.Collections;
 
 public class Animations : MonoBehaviour {
 
+    [SerializeField] float randomMinWait = 2f;
+    [SerializeField] float randomMaxWait = 6f;
+
     private Animator anim;
     private PandaStateManager stateManager;
+    private CharacterController characterController;
+    private PandaMovementController pandaMovementController;
+    private Collidable collidable;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
 
+    private string escapeUpAnimation = "escapeUp";
+    private string escapeDownAnimation = "escapeDown";
+	
+	private int rightPeeHash;
+	private int leftPeeHash;
 
-	// Use this for initialization
-	void Start () 
-	{
-        anim = gameObject.GetComponentInChildren<Animator>();
-        stateManager = gameObject.GetComponent<PandaStateManager>();
-        pandaAI = gameObject.GetComponent<PandaAI>();       
-	}
+    # region Public Methods
+    public void ChangePandaState (PandaState state)
+    {
+        StartCoroutine(SetNewPandaState(state));
+    }
 
+    public void ChangePandaDirection (PandaDirection direction)
+    {
+        anim.SetInteger("Direction", (int) direction);
+    }
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
-
-        anim.SetBool(pandaStateLast.ToString(), false);
-
         Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-
         Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
 
-
-        if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Right)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-        else if (statePanda == PandaState.HoldingOntoFinger && currentDirection == PandaDirection.Left)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
-
-        if (statePanda == PandaState.Falling && currentDirection == PandaDirection.Right)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-        else if (statePanda == PandaState.Falling && currentDirection == PandaDirection.Left)
-            transform.GetComponentInChildren<Transform>().eulerAngles = new Vector3(transform.eulerAngles.x, 120f, transform.eulerAngles.z);
-
         if (statePanda == PandaState.PushingFinger)
-            transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
-
-        if (currentDirection == PandaDirection.Left)
         {
-            anim.SetBool(currentDirection.ToString(), pandaStateBool);
-            anim.SetBool("Right", false);
+            //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
+            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
         }
-        else
+        else if (pandaStateLast == PandaState.PushingFinger)
         {
-            anim.SetBool(currentDirection.ToString(), pandaStateBool);
-            anim.SetBool("Left", false);
+            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
+            //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
         }
 
-        anim.SetBool(statePanda.ToString(), pandaStateBool);
-
-
-        
+        anim.SetBool("LandingHard", pandaAI.landingHard);
+        StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
     }
-    public void PlayDeathAnimation(TrapType typeTrap, bool hitTrap)
+    public void PlayDeathAnimation(TrapBase trap, PandaDirection pandaDirection)
     {
-       // anim.SetBool(pandaStateLast.ToString(), false);
-       // anim.SetBool(typeTrap.ToString(), hitTrap);
+        anim.SetInteger("TrapPosition", (int) trap.GetTrapPosition());
+        anim.SetInteger("TrapType", (int) trap.GetTrapType());
+        anim.SetInteger("Direction", (int) pandaDirection);
+        if (trap.GetTrapType() == TrapType.EscapeBamboo)
+        {
+            StartCoroutine(PandaEscapeMove(trap.GetTrapPosition()));
+        }
+
+        bool front = (trap.GetTrapPosition() == TrapPosition.WallRight && pandaDirection == PandaDirection.Right)
+            || (trap.GetTrapPosition() == TrapPosition.WallLeft && pandaDirection == PandaDirection.Left);
+        anim.SetBool("Front", front);
     }
 
-    public void PlaySlappedAnimation(PandaState statePanda, bool pandaStateBool, PandaDirection dir, bool isInFace, PandaState pandaStateLast)
+    public void SetSlapped(bool front)
     {
+        anim.SetBool("Front", front);
+        anim.SetBool("Slapped", true);
 
-
-        //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-        //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
-
-        //Quaternion targetChildDirectionQua = transform.FindChild("WalkExport_2").transform.rotation;
-
-
-        
-        anim.SetBool(statePanda.ToString(), pandaStateBool);
-        anim.SetBool(dir.ToString(), pandaStateBool);
-        anim.SetBool("Face", isInFace);
-
-       // anim.MatchTarget(transform.position, targetChildDirectionQua, AvatarTarget.Root, new MatchTargetWeightMask (new Vector3(0f, 1f, 0f), 0f), 0f, 0.64f);
-        StartCoroutine(EndSlap(dir, isInFace));
-
+        StartCoroutine(ResetSlap());
     }
-    IEnumerator EndSlap(PandaDirection dir, bool isInFace)
+
+    public void PlayTriggerAnimations(PandaDirection pandaDirection, CollidableTypes collidableType)
     {
+        StartCoroutine(ChangeCollidableType(collidableType));
+        anim.SetInteger("Direction", (int)pandaDirection);
+    }
 
+    public void SpikePullOut()
+    {
+        anim.SetBool("PullOutSpikes", true);
+        StartCoroutine(ChangeSpikesPullOut());
+    }
 
+    public void SetGrounded()
+    {
+        if (characterController != null)
+        {
+            anim.SetBool("Grounded", characterController.isGrounded);
+        }
+    }
 
-        yield return new WaitForSeconds(0.6f);
+    public void SetDoubleTapped ()
+    {
+        anim.SetBool("DoubleTapped", true);
+        StartCoroutine(ResetDoubleTapped());
+    }
 
-        //Vector3 targetChildDirection = new Vector3(0f, -180f, 0f);
-        //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirection;
+    # endregion
 
-        anim.SetBool(dir.ToString(), false);
+    # region Private Methods
+    // Use this for initialization
+    void Start ()
+    {
+        anim = GetComponentInChildren<Animator>();
+        stateManager = GetComponent<PandaStateManager>();
+        pandaAI = GetComponent<PandaAI>();
+        characterController = GetComponent<CharacterController>();
+        pandaMovementController = GetComponent<PandaMovementController>();
+
+        anim.SetInteger("Direction", (int) stateManager.initDirection);
+		
+		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
+        leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
+
+        collidable = GetComponent<Collidable>();
+
+        StartCoroutine(RandomNumberUpdater());
+    }
+
+    IEnumerator SetNewPandaState (PandaState state)
+    {
+        anim.SetBool("NewState", true);
+        anim.SetInteger("PandaState", (int) state);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("NewState", false);
+    }
+
+    IEnumerator ResetSlap ()
+    {
+        anim.SetInteger("CollidableType", -1);
+        yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
-        if (isInFace)
-            pandaAI.ChangeDirection(null);
-        stateManager.ChangeState(PandaState.Walking);
- 
-
-        
-        
-        
-
-
     }
+
+    IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
+    {
+        yield return new WaitForSeconds(animStateInfo.length);
+        pandaAI.stuckOnSpikes = false;
+        anim.SetBool("LandingHard", false);
+    }
+
+    IEnumerator PandaEscapeMove (TrapPosition position)
+    {
+        if (position == TrapPosition.Ceiling)
+        {
+            yield return new WaitForSeconds(1.1f);
+            animation.Play(escapeUpAnimation);
+        }
+        else if (position == TrapPosition.Ground)
+        {
+            yield return new WaitForSeconds(2f);
+            animation.Play(escapeDownAnimation);
+        }
+    }
+
+    IEnumerator ChangeCollidableType (CollidableTypes collidableType)
+    {
+        anim.SetInteger("CollidableType", (int) collidableType);
+        anim.SetBool("NewCollidableType", true);
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("NewCollidableType", false);
+    }
+
+    IEnumerator RandomNumberUpdater ()
+    {
+        yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
+        while (stateManager.GetState() != PandaState.Died)
+        {
+            anim.SetInteger("Random", PandaRandom.NextInt(0, 101));
+            anim.SetBool("NewRandom", true);
+			yield return new WaitForEndOfFrame();
+            anim.SetBool("NewRandom", false);
+			
+			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
+			if( currHash == leftPeeHash)
+			{
+				//Debug.Log("Lets get peeing yo left!");	
+			}
+			else if(currHash == rightPeeHash)
+			{
+				//Debug.Log("Lets get peeing yo right!");	
+			}
+            yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
+        }
+    }
+
+    IEnumerator ChangeSpikesPullOut ()
+    {
+        yield return new WaitForSeconds(0.05f);
+        anim.SetBool("PullOutSpikes", false);
+    }
+
+    IEnumerator ResetDoubleTapped ()
+    {
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("DoubleTapped", false);
+    }
+    # endregion
 }

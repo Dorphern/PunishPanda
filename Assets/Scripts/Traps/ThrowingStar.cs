@@ -1,11 +1,59 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ThrowingStar : MonoBehaviour 
 {
+    [SerializeField] protected Texture cleanTexture;
+    [SerializeField] protected Texture dirtyTexture;
+	[SerializeField] protected ParticleSystem bloodParticles;
+
 	[System.NonSerialized] public StarSpawner starSpawner;
-	private bool isActive = true;
+    private bool isActive = true;
+
+    [SerializeField]
+    [EventHookAttribute("On Alive Panda Collide")]
+    private List<AudioEvent> onAliveEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Dead Panda Collide")]
+    private List<AudioEvent> onDeadEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Spawn")]
+    private List<AudioEvent> onSpawn = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Finger Collide")]
+    private List<AudioEvent> onFingerEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Wall Collide")]
+    private List<AudioEvent> onWallCollision = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("On Floor Collide")]
+    private List<AudioEvent> onFloorCollision = new List<AudioEvent>();
+
+    public void Activated()
+    {
+        HDRSystem.PostEvents(gameObject, onSpawn);
+    }
+
+
+    public void SetDirty ()
+    {
+        if (dirtyTexture != null) renderer.material.mainTexture = dirtyTexture;
+    }
+
+    public void SetClean ()
+    {
+        if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
+    }
+
+    [HideInInspector]
+    public bool SlicePandaInHalf;
 	
 	public void ShootStar(Vector3 direction, float force, float torque) 
 	{
@@ -23,6 +71,7 @@ public class ThrowingStar : MonoBehaviour
 			this.isActive = false;
 			rigidbody.velocity = Vector3.zero;
 			rigidbody.useGravity = true;
+            HDRSystem.PostEvents(gameObject, onFingerEvents);
 		}
 		
         Collidable collidable = collider.GetComponent<Collidable>();
@@ -30,10 +79,26 @@ public class ThrowingStar : MonoBehaviour
 		
         if (collidable.type == CollidableTypes.Panda && isActive == true)
         {
-            starSpawner.TryPandaKill(collider.GetComponent<PandaAI>());
+            var pandaAi = collider.GetComponent<PandaAI>();
+            if(pandaAi.IsAlive())
+                HDRSystem.PostEvents(gameObject, onAliveEvents);
+            else
+                HDRSystem.PostEvents(gameObject, onDeadEvents);
+            if (starSpawner.TryPandaKill(pandaAi))
+            {
+                if (SlicePandaInHalf)
+                {
+                    pandaAi.SliceInHalf();
+                }
+
+                bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAi.GetPandaFacingDirection().x, 0f, 0f));
+				bloodParticles.Play();
+                SetDirty();
+            }
         }
 		else if(collidable.type == CollidableTypes.Wall)
 		{
+            HDRSystem.PostEvents(gameObject, onWallCollision);
 			this.isActive = false;
 			rigidbody.isKinematic = true;
 		}
@@ -44,12 +109,15 @@ public class ThrowingStar : MonoBehaviour
 				// pool objects instead of destroying them
 				// remove object in a coroutine after a short amount
 				//starSpawner.ReuseThrowingStar(collider.GetComponent<ThrowingStar>());
+                
 				this.enabled = false;
 				renderer.enabled = false;
+				SetClean();
 			}
 		}
 		else if(collidable.type == CollidableTypes.Floor)
 		{
+            HDRSystem.PostEvents(gameObject, onFloorCollision);
 			this.isActive = false;
 			rigidbody.isKinematic = true;
 			GameObject emptyObject = new GameObject();

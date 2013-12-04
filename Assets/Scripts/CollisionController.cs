@@ -23,6 +23,7 @@ public class CollisionController : MonoBehaviour {
     public event Action<ControllerColliderHit> OnWallHit;
     public event Action<ControllerColliderHit> OnDeathTrapHit;
 	public event Action<ControllerColliderHit> OnFloorHit;
+	public event Action<ControllerColliderHit> OnLimbHit;
 	
 	// Default Event Handlers
 	public event Action<ControllerColliderHit> DefaultOnHit;
@@ -64,6 +65,10 @@ public class CollisionController : MonoBehaviour {
             {
                 OnFloorHit(hit);
             }
+			else if (collidable.type == CollidableTypes.Limbs && OnLimbHit != null)
+			{	
+				OnLimbHit(hit);
+			}
 			
 		}
 		
@@ -78,7 +83,6 @@ public class CollisionController : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider c) 
 	{
-        
 		
 		//Default delegate
 		if(DefaultOnTriggerEnter!=null)

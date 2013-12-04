@@ -8,17 +8,17 @@ public class PounderTrap : TrapBase
     [SerializeField] float sleepTime = 2f;
     protected string animationName = "Pounder Animation";
     protected GameObject parentPounder;
-
+	[SerializeField] protected ParticleSystem bloodParticlesRight;
+	[SerializeField] protected ParticleSystem bloodParticlesLeft;
+	
     [SerializeField] [EventHookAttribute("Crush Death")]
     List<AudioEvent> crushDeathsAudioEvents;
 
     [SerializeField]
     [EventHookAttribute("Crusher Start")]
     List<AudioEvent> crusherStartAudioEvents; 
-    
 
     # region Public Methods
-
     override public TrapType GetTrapType ()
     {
         return TrapType.Pounder;
@@ -29,7 +29,6 @@ public class PounderTrap : TrapBase
         base.ActivateTrap();
         StartCoroutine(PlayPoundingAnimation());
     }
-
     # endregion
 
     # region Private Methods
@@ -59,6 +58,9 @@ public class PounderTrap : TrapBase
         {
             HDRSystem.PostEvent(gameObject, crushDeathsAudioEvents[i]);
         }
+		
+		bloodParticlesRight.Play();
+		bloodParticlesLeft.Play();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 

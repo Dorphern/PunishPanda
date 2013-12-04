@@ -46,8 +46,9 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = true;
+        currentLevelIndex = -1;
 		SaveData();
-        Application.LoadLevel(mainMenuName);
+        LoadLevel(mainMenuName);
     }
 	
 	[HideInInspector]
@@ -59,7 +60,7 @@ public class LevelManager : MonoBehaviour
         isInMainMenu = true;
 		loadLevelsScreenFlag = true;
 		SaveData();
-        Application.LoadLevel(mainMenuName);
+        LoadLevel(mainMenuName);
     }
 
     public void LoadLevelByWorldIndex(int index)
@@ -67,11 +68,12 @@ public class LevelManager : MonoBehaviour
         
 		SaveData();
         System.GC.Collect();
-        if (currentWorld.Levels.Count > index)
+        if (currentWorld.Levels.Count > index && index!=-1)
         {
             isInMainMenu = false;
             currentLevelIndex = index;
-            Application.LoadLevel(CurrentLevel.LevelName);
+			AddStatistics();
+            LoadLevel(CurrentLevel.LevelName);
         }
     }
 
@@ -79,25 +81,30 @@ public class LevelManager : MonoBehaviour
     {
         System.GC.Collect();
         isInMainMenu = false;
+        InstanceFinder.GameManager.ActiveLevel.OnLevelReset();
+		AddStatistics();
 		SaveData();
-        Application.LoadLevel(CurrentLevel.LevelName);
+        LoadLevel(CurrentLevel.LevelName);
     }
 
     public void LoadNextLevel()
     {
         System.GC.Collect();
         isInMainMenu = false;
-		SaveData();
         ++currentLevelIndex;
+        InstanceFinder.GameManager.ActiveLevel.OnNextLevel();
         if (MoreLevelsInWorld)
         {
-            Application.LoadLevel(CurrentLevel.LevelName);
+			AddStatistics();
+			SaveData();
+            LoadLevel(CurrentLevel.LevelName);
         }
         else
         {
             NextWorld();
             isInMainMenu = true;
-            Application.LoadLevel("MainMenu");
+			SaveData();
+            LoadLevel(mainMenuName);
         }
     }
 
@@ -160,14 +167,21 @@ public class LevelManager : MonoBehaviour
     {
         get
         {
-            return currentWorld.Levels.Count > currentLevelIndex;
+            return currentWorld.Levels.Count > currentLevelIndex && currentLevelIndex!=-1;
         }
+    }
+
+    public void LoadLevel(string name)
+    {
+        if(InstanceFinder.GameManager.ActiveLevel != null)
+            InstanceFinder.GameManager.ActiveLevel.OnNextLevel();
+        Application.LoadLevel(name);
     }
 
     private void LoadLevelWithTransition(string levelName)
     {
         LevelToLoad = levelName;
-        Application.LoadLevel(transitionLevelName);
+        LoadLevel(transitionLevelName);
     }
 
     private void NextWorld()
@@ -183,10 +197,16 @@ public class LevelManager : MonoBehaviour
         }
     }
 	
+	void AddStatistics()
+	{
+		if(InstanceFinder.StatsManager!=null)
+			InstanceFinder.StatsManager.GamesPlayed++;
+	}
+	
 	// adding this to ensure that data is saved when a level change occurs
 	void SaveData()
 	{
-		InstanceFinder.StatsManager.gamesPlayed++;
+		InstanceFinder.StatsManager.GamesPlayed++;
 		InstanceFinder.AchievementManager.SaveAchievements();
 		InstanceFinder.StatsManager.Save();	
 	}

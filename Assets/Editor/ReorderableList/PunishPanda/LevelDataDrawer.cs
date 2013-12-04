@@ -77,26 +77,30 @@ public class LevelDataDrawer : IReorderableListAdaptor
             currentLevel.LevelName = EditorGUI.TextField(position, "File name", currentLevel.LevelName);
 
             position.y += itemHeight;
-            currentLevel.LevelScore.MaxTimeScore = EditorGUI.FloatField(position, "Max Time Score", currentLevel.LevelScore.MaxTimeScore);
+            currentLevel.MaxTimeScore = EditorGUI.FloatField(position, "Max Time Score", currentLevel.MaxTimeScore);
             position.y += itemHeight;
-            currentLevel.LevelScore.LevelLength = EditorGUI.FloatField(position, "Level Length (Seconds)", currentLevel.LevelScore.LevelLength);
+            currentLevel.LevelLength = EditorGUI.FloatField(position, "Level Length (Seconds)", currentLevel.LevelLength);
 
             position.y += itemHeight;
-            currentLevel.LevelScore.OneStar = EditorGUI.IntField(position, "One Star", currentLevel.LevelScore.OneStar);
+            currentLevel.OneStar = EditorGUI.IntField(position, "One Star", currentLevel.OneStar);
             position.y += itemHeight;
-            currentLevel.LevelScore.TwoStars = EditorGUI.IntField(position, "Two Stars", currentLevel.LevelScore.TwoStars);
+            currentLevel.TwoStars = EditorGUI.IntField(position, "Two Stars", currentLevel.TwoStars);
             position.y += itemHeight;
-            currentLevel.LevelScore.ThreeStars = EditorGUI.IntField(position, "Three Stars", currentLevel.LevelScore.ThreeStars);
+            currentLevel.ThreeStars = EditorGUI.IntField(position, "Three Stars", currentLevel.ThreeStars);
+            position.y += itemHeight;
+            currentLevel.HighScore = EditorGUI.IntField(position, "Highscore", currentLevel.HighScore);
             
             position.y += itemHeight;
-            GUI.enabled = false;
-            EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
+            currentLevel.UnlockedLevel = EditorGUI.Toggle(position, "Unlocked Level", currentLevel.UnlockedLevel);
             position.y += itemHeight;
-            EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
-            GUI.enabled = true;
+            currentLevel.UnlockedFunFact = EditorGUI.Toggle(position, "Unlocked Fact", currentLevel.UnlockedFunFact);
+			position.y += itemHeight;
+            currentLevel.hasPlatforms = EditorGUI.Toggle(position, "Has Platforms", currentLevel.hasPlatforms);
 
             position.y += itemHeight;
             currentLevel.FunFactsText = EditorGUI.TextField(position, "Fact text", currentLevel.FunFactsText);
+            position.y += itemHeight;
+            currentLevel.DanishFunFactsText = EditorGUI.TextField(position, "Danish Fact text", currentLevel.DanishFunFactsText);
             position.y += itemHeight;
 
             position.height = 100;
@@ -104,6 +108,37 @@ public class LevelDataDrawer : IReorderableListAdaptor
             EditorGUI.PrefixLabel(position, 0, new GUIContent("Fun Fact Texture"));
             position.x += 150;
             currentLevel.FunFactsTexture = EditorGUI.ObjectField(position, currentLevel.FunFactsTexture, typeof(Texture2D), false) as Texture2D;
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Hint Screen Texture"));
+            position.x += 150;
+            currentLevel.HintscreenTexture = EditorGUI.ObjectField(position, currentLevel.HintscreenTexture, typeof(Texture2D), false) as Texture2D;
+
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Danish Hint Screen Texture"));
+            position.x += 150;
+            currentLevel.DanishHintscreenTexture = EditorGUI.ObjectField(position, currentLevel.DanishHintscreenTexture, typeof(Texture2D), false) as Texture2D;
+
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Tutorial Texture"));
+            position.x += 150;
+            currentLevel.TutorialTexture = EditorGUI.ObjectField(position, currentLevel.TutorialTexture, typeof(Texture2D), false) as Texture2D;
+
+            position.y += 110;
+            position.x -= 150;
+            position.height = 100;
+            position.width = 100;
+            EditorGUI.PrefixLabel(position, 0, new GUIContent("Danish Tutorial Texture"));
+            position.x += 150;
+            currentLevel.DanishTutorialTexture = EditorGUI.ObjectField(position, currentLevel.DanishTutorialTexture, typeof(Texture2D), false) as Texture2D;
         }
     }
 
@@ -111,7 +146,7 @@ public class LevelDataDrawer : IReorderableListAdaptor
     {
         var currentLevel = levelDataList[index];
         if (currentLevel.Toggled)
-            return itemHeight * 11 + 100;
+            return itemHeight * 12 + 550;
         else
             return itemHeight;
     }

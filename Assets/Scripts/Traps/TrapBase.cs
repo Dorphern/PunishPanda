@@ -3,17 +3,28 @@ using System.Collections;
 
 public enum TrapType
 {
-    Electicity,
-    StaticSpikes,
-    ImpalerSpikes,
-    Pounder,
-    ThrowingStars,
-	DoorTrap,
-    RoundSaw
+    Electicity       = 0,
+    StaticSpikes     = 1,
+    ImpalerSpikes    = 2,
+    Pounder          = 3,
+    ThrowingStars    = 4,
+	DoorTrap         = 5,
+    RoundSaw         = 6,
+    EscapeBamboo     = 7,
+    LedgeFallTrigger = 8
+}
+
+public enum TrapPosition
+{
+    Ceiling         = 180,
+    WallRight       = 90,
+    WallLeft        = 270,
+    Ground          = 0
 }
 
 public abstract class TrapBase : MonoBehaviour {
 
+    [SerializeField] protected TrapPosition position;
     [SerializeField] protected bool initActivated = false;
     [SerializeField] protected bool isPerfectTrap = false;
     [SerializeField] protected int maxPerfectPandaKills = -1; // -1 means there is no max
@@ -21,11 +32,19 @@ public abstract class TrapBase : MonoBehaviour {
     [SerializeField] protected Texture cleanTexture;
     [SerializeField] protected Texture dirtyTexture;
 
+    public delegate void TrapActivationToggle(TrapBase trap);
+    public TrapActivationToggle OnTrapActivate;
+    public TrapActivationToggle OnTrapDeactivate;
+
     protected int pandaKillCount = 0;
     protected bool dirty = false;
 
     # region Public Methods
 
+    public TrapPosition GetTrapPosition()
+    {
+        return position;
+    }
     virtual public bool IsActive ()
     {
         return collider.enabled;
@@ -34,31 +53,65 @@ public abstract class TrapBase : MonoBehaviour {
     virtual public void ActivateTrap ()
     {
         collider.enabled = true;
+        if (OnTrapActivate != null)
+            OnTrapActivate(this);
     }
 
     virtual public void DeactivateTrap ()
     {
         collider.enabled = false;
+        if (OnTrapDeactivate != null)
+            OnTrapDeactivate(this);
     }
 
-    public void SetDirty ()
+    virtual public void SetDirty ()
     {
         dirty = true;
         if (dirtyTexture != null) renderer.material.mainTexture = dirtyTexture;
     }
 
-    public void SetClean ()
+    virtual public void SetClean ()
     {
         dirty = false;
         if (cleanTexture != null) renderer.material.mainTexture = cleanTexture;
     }
+	
+	virtual public BladeDirection GetSpinDirection ()
+	{
+		return BladeDirection.None; 
+	}
 
     public bool IsDirty ()
     {
         return dirty;
     }
 
+    public bool Perfect 
+    {
+        get
+        {
+            return isPerfectTrap;
+        }
+    }
+
     abstract public TrapType GetTrapType ();
+	
+	public bool TryPandaKill(PandaAI pandaAI)
+	{
+		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
+        bool successful = pandaAI.HasEscaped() == false && PandaAttemptKill(pandaAI, isPerfect);
+        if (successful) 
+        {
+            pandaKillCount++;
+			AddStatistics();
+        }
+
+        if (pandaAI.IsAlive() == false)
+        {
+            SetDirty();
+        }
+        return successful;
+	}
 
     # endregion
 
@@ -102,18 +155,35 @@ public abstract class TrapBase : MonoBehaviour {
         {
             TryPandaKill(collider.GetComponent<PandaAI>());
         }
-    }
-	
-	public void TryPandaKill(PandaAI pandaAI)
-	{
-		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-        bool successful = pandaAI.IsAlive() && PandaAttemptKill(pandaAI, isPerfect);
-        if (successful) 
-        {
-            SetDirty();
-            pandaKillCount++;
-        }
 	}
 
+	void AddStatistics()
+	{
+		//TrapType tt = GetTrapType();
+		if(InstanceFinder.StatsManager!=null)
+		{
+			switch(GetTrapType())
+			{
+				case TrapType.ImpalerSpikes:
+					InstanceFinder.StatsManager.SpikeKills++;
+					break;
+				case TrapType.StaticSpikes:
+					InstanceFinder.StatsManager.SpikeKills++;
+					break;
+				case TrapType.Electicity:
+					InstanceFinder.StatsManager.ElectricityKills++;
+					break;
+				case TrapType.Pounder:
+					InstanceFinder.StatsManager.PounderKills++;
+					break;
+				case TrapType.RoundSaw:
+					InstanceFinder.StatsManager.RoundSawKills++;
+					break;
+				case TrapType.ThrowingStars:
+					InstanceFinder.StatsManager.ThrowingStarKills++;
+					break;
+			}
+		}
+	}
     # endregion
 }

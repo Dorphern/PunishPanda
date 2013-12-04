@@ -5,9 +5,13 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     LevelManager levelManager;
+	[HideInInspector]
+	public bool debugMode=false;
 
     void Awake()
     {
+		GA.InitializeQueue();
+		
         var instance = InstanceFinder.GameManager;
         if (instance == null)
         {
@@ -21,7 +25,13 @@ public class GameManager : MonoBehaviour
 
     public void Initialize()
     {
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+
         InstanceFinder.GameManager = this;
+
+        Localization.instance.currentLanguage = "English";
 		
         DontDestroyOnLoad(transform.gameObject);
         levelManager = GetComponent<LevelManager>();

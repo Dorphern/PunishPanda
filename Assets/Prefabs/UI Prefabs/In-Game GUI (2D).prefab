@@ -2585,6 +2585,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d988b6ddd8c7b7b4192c5861f3d566c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseGameEvent: []
+  resumeGameEvent: []
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2648,7 +2650,7 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mAtlas: {fileID: 0}
   mSpriteName: slap
   mFillCenter: 1
   mType: 1
@@ -2672,7 +2674,7 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mAtlas: {fileID: 0}
   mSpriteName: Bounce
   mFillCenter: 1
   mType: 1
@@ -2696,7 +2698,7 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mAtlas: {fileID: 0}
   mSpriteName: Lift
   mFillCenter: 1
   mType: 1
@@ -2717,6 +2719,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 0}
   PauseTint: {fileID: 0}
   HintScreen: {fileID: 0}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!114 &11400026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2839,6 +2844,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d988b6ddd8c7b7b4192c5861f3d566c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseGameEvent: []
+  resumeGameEvent: []
 --- !u!114 &11400036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2953,6 +2960,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d988b6ddd8c7b7b4192c5861f3d566c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseGameEvent: []
+  resumeGameEvent: []
 --- !u!114 &11400046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3050,7 +3059,7 @@ MonoBehaviour:
   mHeight: 50
   mDepth: -2
   autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: e2e3d51860e6e844090d3fd66a1398e3, type: 2}
+  mAtlas: {fileID: 0}
   mSpriteName: Hold
   mFillCenter: 1
   mType: 1
@@ -3155,6 +3164,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 0}
   PauseTint: {fileID: 100032}
   HintScreen: {fileID: 0}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!114 &11400064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3373,6 +3385,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 100060}
   PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!114 &11400078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3413,6 +3428,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 100060}
   PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!114 &11400082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4432,6 +4450,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 100060}
   PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!114 &11400168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4522,6 +4543,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 100060}
   PauseTint: {fileID: 0}
   HintScreen: {fileID: 100064}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!114 &11400176
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4718,15 +4742,12 @@ MonoBehaviour:
   comboObject: {fileID: 100150}
   comboLabel: {fileID: 11400182}
   killObject: {fileID: 100036}
-  killLabel: {fileID: 11400084}
-  normalKillString: Slobby Kill
-  perfectKillString: Perfect Kill
-  tweens:
-  - {fileID: 11400178}
-  - {fileID: 11400192}
-  - {fileID: 11400190}
-  - {fileID: 11400176}
-  - {fileID: 11400180}
+  perfectKillLabel: {fileID: 0}
+  normalKillLabel: {fileID: 0}
+  bloodParticles: {fileID: 0}
+  slobbyKillEvents: []
+  perfectKillEvents: []
+  comboKillEvents: []
 --- !u!114 &11400186
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4962,6 +4983,9 @@ MonoBehaviour:
   PauseMenu: {fileID: 0}
   PauseTint: {fileID: 100032}
   HintScreen: {fileID: 0}
+  HintObj: {fileID: 0}
+  PauseAndReset: {fileID: 0}
+  WhiteTint: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

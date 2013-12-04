@@ -7,7 +7,11 @@ public class SpikeTrapTrigger : MonoBehaviour {
 
     void OnTriggerEnter (Collider collider)
     {
-        spikeTrap.Fire();
+		Collidable collidable = collider.GetComponent<Collidable>();
+		if(collidable != null && collidable.type == CollidableTypes.Panda)
+		{
+    		spikeTrap.Fire();
+		}
     }
 
 }

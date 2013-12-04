@@ -9,13 +9,20 @@ public class StarSpawner : TrapBase
 	public float spawnInterval = 2f;
 	public int maxStarCount = 5;
 	public GameObject starPrefab;
+    [SerializeField] float angle;
+
+    public bool SlicePandaInHalf;
+
+    public float Angle
+    {
+        get { return angle; }
+    }
 	
 	private Queue<ThrowingStar> starsPool;
 	
-	void Start () 
+	void Awake () 
 	{
 		starsPool = new Queue<ThrowingStar>();
-		base.Start();
 	}
 	
 	public override TrapType GetTrapType ()
@@ -25,7 +32,7 @@ public class StarSpawner : TrapBase
 	
 	protected override bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
 	{
-		return pandaAI.AttemptDeathTrapKill(this, isPerfect);	
+        return pandaAI.AttemptDeathTrapKill(this, isPerfect);	
 	}
 	
 	public override void ActivateTrap ()
@@ -47,6 +54,7 @@ public class StarSpawner : TrapBase
 			{
 				GameObject star = Instantiate(starPrefab) as GameObject;
 				ThrowingStar throwingStar = star.GetComponent<ThrowingStar>();
+			    throwingStar.SlicePandaInHalf = SlicePandaInHalf;
 				ActivateThrowingStar(throwingStar);	
 				starsPool.Enqueue(throwingStar);
 			}
@@ -66,6 +74,12 @@ public class StarSpawner : TrapBase
 		star.renderer.enabled = true;
 		star.transform.position = transform.position;
 		star.starSpawner = this;
-		star.ShootStar(transform.forward, force, torque);
+        Vector3 dir = new Vector3(
+            Mathf.Cos(angle * Mathf.Deg2Rad),
+            Mathf.Sin(angle * Mathf.Deg2Rad), 
+            0
+        );
+        star.Activated();
+        star.ShootStar(dir, force, torque);
 	}
 }

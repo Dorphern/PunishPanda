@@ -1,29 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum ActivatorMode
+{
+    Activate,
+    Deactivate
+}
+
 public class TrapActivator : MonoBehaviour {
 
+    [SerializeField] ActivatorMode activatorAction = ActivatorMode.Activate;
     [SerializeField] protected TrapBase[] traps;
 
-    protected void ActivateTraps ()
+    virtual protected void ActivateTraps ()
     {
         for (int i = 0; i < traps.Length; i++)
         {
-            if (traps[i].IsActive() == false)
-            {
-                traps[i].ActivateTrap();
-            }
+            ActivateTrap(traps[i], true);
         }
     }
 
-    protected void DeactivateTraps ()
+    virtual protected void DeactivateTraps ()
     {
         for (int i = 0; i < traps.Length; i++)
         {
-            if (traps[i].IsActive() == true)
-            {
-                traps[i].DeactivateTrap();
-            }
+            ActivateTrap(traps[i], false);
         }
     }
 
@@ -31,13 +32,25 @@ public class TrapActivator : MonoBehaviour {
     {
         for (int i = 0; i < traps.Length; i++)
         {
-            if (traps[i].IsActive() == true)
+            ActivateTrap(traps[i], !traps[i].IsActive());
+        }
+    }
+
+    protected void ActivateTrap (TrapBase trap, bool state)
+    {
+        if (activatorAction == ActivatorMode.Activate && state == true
+            || activatorAction == ActivatorMode.Deactivate && state == false)
+        {
+            if (trap.IsActive() != true)
             {
-                traps[i].DeactivateTrap();
+                trap.ActivateTrap();
             }
-            else
+        }
+        else
+        {
+            if (trap.IsActive() != false)
             {
-                traps[i].ActivateTrap();
+                trap.DeactivateTrap();
             }
         }
     }

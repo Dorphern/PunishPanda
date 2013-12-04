@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DoorTrap : TrapBase {
 	
 	public string animationName;
 	private AnimationState trapClip;
+	private List<PandaAI> pandasOnTrap;
+	private DoorTrapFallingTrigger fallingTrigger;
 	
-	void Start()
+	void Awake()
 	{
+		pandasOnTrap = new List<PandaAI>();
+		fallingTrigger = transform.parent.GetComponent<DoorTrapFallingTrigger>();
 		trapClip = this.animation[animationName];	
 	}
 	
 	public override void ActivateTrap ()
 	{
 		base.ActivateTrap ();
+		fallingTrigger.PandasFalling();
+		
 		trapClip.speed = 1f;
 		if(animation.isPlaying == false)
 		{

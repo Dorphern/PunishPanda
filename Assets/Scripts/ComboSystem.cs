@@ -31,20 +31,40 @@ namespace PunishPanda
 
 public class ComboSystem : MonoBehaviour
 {
-    [SerializeField] private float maxTimeBetweenKills = 1.0f;
-    [SerializeField] private float showDelayTime = 0.0f;
-
-    [SerializeField] private GameObject comboObject;
-    [SerializeField] private UILabel comboLabel;
-
-    [SerializeField] private GameObject killObject;
-    [SerializeField] private UILabel killLabel;
-
-    [SerializeField] private string normalKillString;
-    [SerializeField] private string perfectKillString;
+    [SerializeField]
+    private float maxTimeBetweenKills = 1.0f;
+    [SerializeField]
+    private float showDelayTime = 0.0f;
 
     [SerializeField]
-    private UITweener[] tweens;
+    private GameObject comboObject;
+    [SerializeField]
+    private UILabel comboLabel;
+    [SerializeField]
+    private UILabel comboLabelChild;
+
+    [SerializeField]
+    private GameObject killObject;
+    [SerializeField]
+    private UILabel perfectKillLabel;
+    [SerializeField]
+    private UILabel normalKillLabel;
+
+    [SerializeField]
+    private GameObject bloodParticles;
+
+
+    [SerializeField]
+    [EventHookAttribute("Slobby Kill")]
+    private List<AudioEvent> slobbyKillEvents;
+
+    [SerializeField]
+    [EventHookAttribute("Perfect Kill")]
+    private List<AudioEvent> perfectKillEvents;
+
+    [SerializeField]
+    [EventHookAttribute("Combo Kill")]
+    private List<AudioEvent> comboKillEvents;
 
     private float lastPandaKillTime;
     private int pandaComboKills;
@@ -79,7 +99,7 @@ public class ComboSystem : MonoBehaviour
     }
 
     private void Reset()
-    {       
+    {
         perfectKill = false;
         displayedKills = 0;
         isDoingCombo = false;
@@ -99,7 +119,6 @@ public class ComboSystem : MonoBehaviour
 
     public void OnPandaDeath(bool perfectKill)
     {
-        Debug.Log("panda death");
         this.perfectKill = perfectKill;
         isDoingCombo = true;
 
@@ -112,81 +131,102 @@ public class ComboSystem : MonoBehaviour
         lastPandaKillTime = Time.time;
         levelDeaths.AlivePandas -= 1;
         InstanceFinder.StatsManager.PandasKilled++;
+
+        if (pandaComboKills > 1)
+        {
+            HDRSystem.PostEvents(gameObject, comboKillEvents);
+        }
+        else
+        {
+            if (perfectKill)
+                HDRSystem.PostEvents(gameObject, perfectKillEvents);
+            else
+                HDRSystem.PostEvents(gameObject, slobbyKillEvents);
+        }
     }
-	
-	// Update is called once per frame
-	void Update () {
-	    if (isDoingCombo && Time.time > lastPandaKillTime + showDelayTime)
-	    {
-	        if (displayedKills != pandaComboKills)
-	        {
-	            //Show combo screen for maxTimeBetweenKills time
-	            StopAllCoroutines();
-	            comboObject.SetActive(false);
-	            killObject.SetActive(false);
-	            StartCoroutine(ShowComboScreen());
-	        }
-	    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isDoingCombo && Time.time > lastPandaKillTime + showDelayTime)
+        {
+            if (displayedKills != pandaComboKills)
+            {
+                //Show combo screen for maxTimeBetweenKills time
+                StopAllCoroutines();
+                comboObject.SetActive(false);
+                killObject.SetActive(false);
+                if (bloodParticles != null)
+                    bloodParticles.SetActive(true);
+                StartCoroutine(ShowComboScreen());
+            }
+        }
         else if (Time.time > lastPandaKillTime + showDelayTime)
-	    {
-	        Reset();
-	    }
-	}
+        {
+            Reset();
+        }
+    }
 
     IEnumerator ShowComboScreen()
     {
         displayedKills = pandaComboKills;
-        
+
+
+
+
         if (pandaComboKills == 1)
         {
             killObject.SetActive(true);
             if (perfectKill)
-                killLabel.text = perfectKillString;
+            {
+                perfectKillLabel.gameObject.SetActive(true);
+            }
             else
             {
-                killLabel.text = normalKillString;
+                normalKillLabel.gameObject.SetActive(true);
             }
         }
         else if (pandaComboKills > 1)
         {
+            string comboText = "";
             switch (pandaComboKills)
             {
                 case 2:
-                    comboLabel.text = "2X";
+                    comboText = "2X";
                     break;
                 case 3:
-                    comboLabel.text = "3X";
+                    comboText = "3X";
                     break;
                 case 4:
-                    comboLabel.text = "4X";
+                    comboText = "4X";
                     break;
                 case 5:
-                    comboLabel.text = "5X";
+                    comboText = "5X";
                     break;
                 case 6:
-                    comboLabel.text = "6X";
+                    comboText = "6X";
                     break;
                 case 7:
-                    comboLabel.text = "7X";
+                    comboText = "7X";
                     break;
                 case 8:
-                    comboLabel.text = "8X";
+                    comboText = "8X";
                     break;
                 default:
                     comboLabel.text = "MEGA";
                     break;
             }
+            comboLabel.text = comboText;
+            comboLabelChild.text = comboText;
 
             comboObject.SetActive(true);
         }
-        
-        for (int i = 0; i < tweens.Length; i++)
-        {
-            tweens[i].Reset();
-            tweens[i].PlayForward();
-        }
+
+        killObject.GetComponent<UIPlayTween>().Play(true);
+        comboObject.GetComponent<UIPlayTween>().Play(true);
+
         yield return new WaitForSeconds(maxTimeBetweenKills + 0.2f);
-        if(levelDeaths.ComboKills == null)
+        if (levelDeaths.ComboKills == null)
             levelDeaths.ComboKills = new List<ComboKill>(2);
         levelDeaths.ComboKills.Add(new ComboKill()
         {
@@ -194,8 +234,23 @@ public class ComboSystem : MonoBehaviour
             PerfectKills = perfectKillsCombo,
         });
 
+        AddStatistics();
         Reset();
         comboObject.SetActive(false);
         killObject.SetActive(false);
+        normalKillLabel.gameObject.SetActive(false);
+        perfectKillLabel.gameObject.SetActive(false);
+        if (bloodParticles != null)
+            bloodParticles.SetActive(false);
+    }
+
+    void AddStatistics()
+    {
+        if (InstanceFinder.StatsManager != null && pandaComboKills > 1)
+        {
+            InstanceFinder.StatsManager.PandasComboKilled += pandaComboKills;
+
+
+        }
     }
 }

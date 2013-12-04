@@ -6,67 +6,45 @@ public class Settings : MonoBehaviour {
 	MenuManager menuMan;
 	public UISlider _musicSlider;
 	public UISlider _soundEFXSlider;
-	public UILabel languageLabel;
 	
 	public GameObject SFX_Lever;
 	public GameObject Music_Lever;
 	private Animation SFX_animation;
 	private Animation Music_animation;
-	private bool SFX_leverState;
-	private bool Music_leverState;
+	private int MusicAnimationFlag;
+	private int SFXAnimationFlag;
 	
-	void Awake()
+	void Start()
 	{
 		menuMan = GetComponent<MenuManager>();
 		SFX_animation = SFX_Lever.GetComponent<Animation>();
 		Music_animation = Music_Lever.GetComponent<Animation>();
 		
 		
-		bool music = InstanceFinder.StatsManager.musicEnabled;
-		bool sound = InstanceFinder.StatsManager.soundEffectsEnabled;
-		string lang = InstanceFinder.StatsManager.language;
+		bool music = InstanceFinder.StatsManager.MusicEnabled;
+		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
+		//string lang = InstanceFinder.StatsManager.language;
 		
 
 		if(music)
-		{
 			_musicSlider.value = 1;
-
-		}
 		else
-		{
 			_musicSlider.value = 0;
 
-		}
 		
 		if(sound)
-		{
 			_soundEFXSlider.value = 1;
-
-		}
 		else
-		{
 			_soundEFXSlider.value = 0;
-		}
-		
-		if(languageLabel!=null)
-		{
-			bool initflag = true;
-			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
-			{
-				if(InstanceFinder.Localization.languages[i].name==lang)
-				{
-					languageLabel.text = lang;
-					initflag = false;
-				}
-			}
-			//if the language file is not found default to the default value
-			if(initflag)
-			{
-				languageLabel.text = InstanceFinder.StatsManager.language;
-			}
-		}
-		// language button initialization goes here
 
+		
+
+		
+		//initialize Switches
+		MusicAnimationFlag = 0;
+		SFXAnimationFlag = 0;
+		OnSoundEFXSliderChanged();
+		OnMusicSliderChanged();
 	}
 	
 	public void OnCalibrateFingerClicked()
@@ -76,39 +54,45 @@ public class Settings : MonoBehaviour {
 	
 	public void OnCreditsClicked()
 	{
-		Debug.Log("Credits!");
+		//Debug.Log("Credits!");
+		menuMan.SwitchToMenu (MenuTypes.Credits);
 	}
 	
 	public void OnReturnClicked()
 	{
+		InstanceFinder.StatsManager.Save();
 		menuMan.SwitchToMenu(MenuTypes.MainMenu);
 	}
 	
-	// placeholder code for the placeholder button
-	public void OnLanguageClicked()
+	public void OnEnglishClicked()
 	{
-		if(languageLabel!=null)
+		if(InstanceFinder.Localization.currentLanguage!="English")
 		{
 			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
 			{
-				if(InstanceFinder.Localization.languages[i].name!=languageLabel.text)
+				if(InstanceFinder.Localization.languages[i].name=="English")
 				{
-					if(InstanceFinder.Localization.languages.Length == i-1)
-					{
-						InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[0].name;
-						languageLabel.text = InstanceFinder.Localization.languages[0].name;
-						InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[0].name;
-						InstanceFinder.StatsManager.Save();
-						break;
-					}
-					else
-					{
-						InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
-						languageLabel.text = InstanceFinder.Localization.languages[i].name;
-						InstanceFinder.StatsManager.language = InstanceFinder.Localization.languages[i].name;
-						InstanceFinder.StatsManager.Save();
-						break;
-					}
+					InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
+					break;	
+				}
+			}
+		}
+	}
+	
+	public void OnDanishClicked()
+	{
+		
+		if(InstanceFinder.Localization.currentLanguage!="Danish")
+		{
+			Debug.Log(InstanceFinder.Localization.languages.Length);
+			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
+			{
+				Debug.Log(InstanceFinder.Localization.languages[i].name);
+				if(InstanceFinder.Localization.languages[i].name=="Danish")
+				{
+					
+					InstanceFinder.Localization.currentLanguage = InstanceFinder.Localization.languages[i].name;
+					break;	
 				}
 			}
 		}
@@ -120,23 +104,30 @@ public class Settings : MonoBehaviour {
 	{
 		if(_musicSlider!=null)
 		{
+			//hack for dealing with extra animation (when entering settings)
+			if(MusicAnimationFlag == 1)
+			{	
+				MusicAnimationFlag++;
+				return;
+			}
+			else
+				MusicAnimationFlag++;
+			
 			if(_musicSlider.value==0)
 			{
-				Debug.Log ("Music OFF");
-
+				
 				Music_animation.Play ("leverAnimation2");//goleft
 	
-				InstanceFinder.StatsManager.musicEnabled = false;
-				InstanceFinder.StatsManager.Save();
+				InstanceFinder.StatsManager.MusicEnabled = false;
+				//Debug.Log ("Music OFF");
 			}
 			else
 			{
-				Debug.Log ("Music ON");
 
 				Music_animation.Play ("leverAnimation1");//goright
 
-				InstanceFinder.StatsManager.musicEnabled = true;
-				InstanceFinder.StatsManager.Save();
+				InstanceFinder.StatsManager.MusicEnabled = true;
+				//Debug.Log ("Music ON");
 			}
 		}
 	}
@@ -145,22 +136,28 @@ public class Settings : MonoBehaviour {
 	{
 		if(_soundEFXSlider!=null)
 		{
+			//hack for dealing with extra animation (when entering settings)
+			if(SFXAnimationFlag == 1)
+			{	
+				SFXAnimationFlag++;
+				return;
+			}
+			else
+				SFXAnimationFlag++;
+			
 			if(_soundEFXSlider.value==0)
 			{
-				Debug.Log ("Sound OFF");
-
 				SFX_animation.Play ("leverAnimation2");//goleft
 
-				InstanceFinder.StatsManager.soundEffectsEnabled = false;
-				InstanceFinder.StatsManager.Save();
+				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
+				//Debug.Log ("Sound OFF");
 			}
 			else
 			{
-				Debug.Log ("Sound ON");
 				SFX_animation.Play ("leverAnimation1");//goright		
 				
-				InstanceFinder.StatsManager.soundEffectsEnabled = true;
-				InstanceFinder.StatsManager.Save();
+				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
+				//Debug.Log ("Sound ON");
 			}
 		}
 	}

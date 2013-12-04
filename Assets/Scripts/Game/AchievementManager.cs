@@ -9,6 +9,7 @@ public class Achievement
 {
 	public string name;
 	public string description;
+
 	public float goal;
 	
 	
@@ -104,10 +105,15 @@ public class Achievement
 }
 
 public class AchievementManager : MonoBehaviour {
-
+    [EventHookAttribute("On Achievement")]
+    public List<AudioEvent> OnAchievementEvents = new List<AudioEvent>();
+	
+	public bool debug = false;
 	public List<Achievement> achievementList = new List<Achievement>();
 	
+	[HideInInspector]
 	public delegate void AchievementGoalHandler(Achievement achievement);
+	[HideInInspector]
 	public event AchievementGoalHandler onAchievementCompleted;
 	
 	private Dictionary<string,Achievement> achievements;
@@ -116,15 +122,17 @@ public class AchievementManager : MonoBehaviour {
 	{
 		if(!achievements.ContainsKey(name))
 		{
-			Debug.Log("Attempted to add progress to achievement that doesn't exist: " + name);
+			if(debug)
+				Debug.Log("Attempted to add progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{
 			Achievement ach;
 			achievements.TryGetValue(name, out ach);
 			
-			if(ach.AddProgress(progress))
+			if(ach.AddProgress(progress) && onAchievementCompleted!=null)
 			{
+                HDRSystem.PostEvents(gameObject, OnAchievementEvents);
 				onAchievementCompleted(ach);
 				return true;		
 			}
@@ -136,14 +144,15 @@ public class AchievementManager : MonoBehaviour {
 	{
 		if(!achievements.ContainsKey(name))
 		{
-			Debug.LogError("Attempted to set progress to achievement that doesn't exist: " + name);
+			if(debug)
+				Debug.Log("Attempted to set progress to achievement that doesn't exist: " + name);
 		}
 		else
 		{
 			Achievement ach;
 			achievements.TryGetValue(name, out ach);
 			
-			if(ach.SetProgress(progress))
+			if(ach.SetProgress(progress) && onAchievementCompleted!=null)
 			{
 				onAchievementCompleted(ach);
 				return true;		
@@ -160,18 +169,24 @@ public class AchievementManager : MonoBehaviour {
 	private void LoadAchievements()
 	{
 		achievements = new Dictionary<string, Achievement>();
+	    //var localization = Localization.instance;
 		for(int i=0;i<achievementList.Count;i++)
 		{
+            
+
+
 			if(achievements.ContainsKey(achievementList[i].name))
 			{
-				Debug.Log("Duplicate achievements with the name " + achievementList[i].name);
+				if(debug)
+					Debug.Log("Duplicate achievements with the name " + achievementList[i].name);
 				continue;
 			}
 			
-			float progress = PlayerPrefs.GetFloat(achievementList[i].name, -1f);
+			float progress = PlayerPrefs.GetFloat(achievementList[i].name, 0f);
 			if(progress!= -1)
 				achievementList[i].LoadAchievement(progress);
 			
+            
 			achievements.Add(achievementList[i].name, achievementList[i]);
 		}
 	}
@@ -180,11 +195,27 @@ public class AchievementManager : MonoBehaviour {
 	{
 		List<string> keys = new List<string>(achievements.Keys);
 		Achievement ach;
-		for(int i=0;i<keys.Count;i++)
-		{
-			ach = achievements[keys[i]];
-			PlayerPrefs.SetFloat(ach.name, ach.GetProgress());
-		}
+
+	    //using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\Achiev.txt"))
+	    {
+	        for (int i = 0; i < keys.Count; i++)
+	        {
+	            ach = achievements[keys[i]];
+
+                /*string achievVal = ach.name + "=" + ach.name;
+                string achievDes = ach.description + "=" + ach.description;
+                file.WriteLine(achievVal);
+                file.WriteLine(achievDes);*/
+
+	            float progress = ach.GetProgress();
+	            PlayerPrefs.SetFloat(ach.name, progress);
+	        }
+	    }
+	}
+	
+	public List<Achievement> AchievementsToList()
+	{
+		return new List<Achievement>(achievements.Values);
 	}
 }
 
