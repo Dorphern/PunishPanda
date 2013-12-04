@@ -290,7 +290,14 @@ public class PandaAI : MonoBehaviour {
         else if (trapType == TrapType.RoundSaw)
         {
             BladeDirection bladeDirection = trap.GetSpinDirection();
-            SliceInHalf(trap.transform.position, bladeDirection);
+			if(killType == KillType.Dismember)
+			{
+				Dismember();
+			}
+			else
+			{
+            	SliceInHalf(trap.transform.position, bladeDirection);
+			}
         }
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)

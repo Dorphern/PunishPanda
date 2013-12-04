@@ -15,16 +15,22 @@ public class StaticSpikeTrap : TrapBase {
         return TrapType.StaticSpikes;
     }
 
-    public override void ActivateTrap ()
+    public override void ActivateTrap (bool playAnimation = true)
     {
         base.ActivateTrap();
-        animation.Play(animationInName);
+		if(playAnimation)
+		{
+       		animation.Play(animationInName);
+		}
     }
 
-    public override void DeactivateTrap ()
+    public override void DeactivateTrap (bool playAnimation = true)
     {
         base.DeactivateTrap();
-        animation.Play(animationOutName);
+		if(playAnimation)
+		{
+        	animation.Play(animationOutName);
+		}
     }
 
     # endregion

@@ -33,7 +33,7 @@ public class ElectricityTrap : TrapBase {
         return TrapType.Electicity;
     }
 
-    public override void ActivateTrap ()
+    public override void ActivateTrap (bool playAnimation = true)
     {
         base.ActivateTrap();
         HDRSystem.PostEvents(gameObject, onTrapAwake);
@@ -41,7 +41,7 @@ public class ElectricityTrap : TrapBase {
         StartCoroutine(PlayTextureChange());
     }
 
-    public override void DeactivateTrap ()
+    public override void DeactivateTrap (bool playAnimation = true)
     {
         base.DeactivateTrap();
         HDRSystem.PostEvents(gameObject, onTrapDisable);
