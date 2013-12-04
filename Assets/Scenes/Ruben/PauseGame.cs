@@ -36,7 +36,6 @@ public class PauseGame : MonoBehaviour {
 	{
 		Time.timeScale = savedTimeScale;
         InputHandler.instance.UnpausedGame();
-		Debug.Log("RESUMED");
 		
 		for(int i = 0; i < resumeGameEvent.Count; ++i)
 		{
