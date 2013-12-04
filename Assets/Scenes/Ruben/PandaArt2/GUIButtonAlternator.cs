@@ -28,7 +28,6 @@ public class GUIButtonAlternator : MonoBehaviour {
 		
 		if(buttonType == ButtonType.Sound)
 		{
-			Debug.Log ("SOUND:" + sound);
 			if(sound)
 			{
 				Button1.SetActive(false);
@@ -42,7 +41,6 @@ public class GUIButtonAlternator : MonoBehaviour {
 		}
 		else
 		{
-			Debug.Log ("MUSIC:" + sound);
 			if(music)
 			{
 				Button1.SetActive(true);
