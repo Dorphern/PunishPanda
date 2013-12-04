@@ -39,12 +39,12 @@ public class SawTrap : TrapBase {
         return isActive;
     }
 
-    public override void ActivateTrap ()
+    public override void ActivateTrap (bool playAnimation = true)
     {
         isActive = true;
     }
 
-    public override void DeactivateTrap ()
+    public override void DeactivateTrap (bool playAnimation = true)
     {
         isActive = false;
     }

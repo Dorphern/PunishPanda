@@ -35,13 +35,13 @@ public class StarSpawner : TrapBase
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);	
 	}
 	
-	public override void ActivateTrap ()
+	public override void ActivateTrap (bool playAnimation = true)
 	{
 		base.ActivateTrap ();
 		StartCoroutine(SpawnStars());
 	}
 	
-	public override void DeactivateTrap()
+	public override void DeactivateTrap(bool playAnimation = true)
 	{
 		base.DeactivateTrap();
 	}
