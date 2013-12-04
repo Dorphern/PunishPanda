@@ -61,8 +61,8 @@ public class PandaHalfForce : MonoBehaviour
     {
         yield return new WaitForSeconds(Delay);
 
-        Vector3 leftForce = new Vector3(0, 0, Random.Range(-MinLegForce, -MaxLegForce));
-        Vector3 rightForce = new Vector3(0, 0, Random.Range(MinLegForce, MaxLegForce));
+        Vector3 leftForce = new Vector3(0, 0, Random.Range(MinLegForce, MaxLegForce));
+        Vector3 rightForce = new Vector3(0, 0, Random.Range(-MinLegForce, -MaxLegForce));
 
 
         if (pandaWalkDir == PandaDirection.Right)
