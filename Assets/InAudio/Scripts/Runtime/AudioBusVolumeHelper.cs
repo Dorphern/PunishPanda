@@ -1,5 +1,7 @@
+using System.IO;
 using InAudio.ExtensionMethods;
 using InAudio.Runtime;
+using UnityEditor;
 using UnityEngine;
 
 public static class AudioBusVolumeHelper {
@@ -63,6 +65,10 @@ public static class AudioBusVolumeHelper {
 
         float oldVolume = bus.RuntimeVolume;
         bus.RuntimeVolume = bus.Volume * bus.RuntimeSelfVolume * parentVolume;
+
+        if (bus.Mute)
+            bus.RuntimeVolume = 0;
+
         if (bus.RuntimeVolume != oldVolume)
             bus.Dirty = true;
         
@@ -102,5 +108,14 @@ public static class AudioBusVolumeHelper {
         {
             InitVolumes(bus.Children[i]);
         }        
+    }
+
+    public static void MuteAction(AudioBus audioBus, EventBusMuteAction.MuteAction muteAction)
+    {
+        if (muteAction == EventBusMuteAction.MuteAction.Mute)
+            audioBus.Mute = true;
+        else
+            audioBus.Mute = false;
+        audioBus.Dirty = true;
     }
 }
