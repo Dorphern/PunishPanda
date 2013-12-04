@@ -139,7 +139,6 @@ public class Animations : MonoBehaviour {
     IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
     {
         yield return new WaitForSeconds(animStateInfo.length);
-        pandaAI.stuckOnSpikes = false;
         anim.SetBool("LandingHard", false);
     }
 
