@@ -20,10 +20,10 @@ public class Animations : MonoBehaviour {
 	
 	private int rightPeeHash;
 	private int leftPeeHash;
-	public MeshRenderer penis;
-	public PissParticles pissScript;
-	public GameObject pGO;
-	Vector3 initScale;
+    public MeshRenderer penis;
+    public PissParticles pissScript;
+    public GameObject pGO;
+    Vector3 initScale;
 
     # region Public Methods
     public void ChangePandaState (PandaState state)
@@ -38,23 +38,6 @@ public class Animations : MonoBehaviour {
 
     public void PlayAnimation(PandaState statePanda, bool pandaStateBool, PandaState pandaStateLast, PandaDirection currentDirection)
     {
-        Vector3 holdingTargetDirection = new Vector3(transform.eulerAngles.x, 60f, transform.eulerAngles.z);
-        Vector3 pushingTargetDirection = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180f, transform.eulerAngles.z);
-
-        if (statePanda == PandaState.PushingFinger)
-        {
-            //    transform.GetComponentInChildren<Transform>().eulerAngles = pushingTargetDirection;
-            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            //transform.FindChild("WalkExport_2").transform.localEulerAngles += targetChildDirectionVec;
-        }
-        else if (pandaStateLast == PandaState.PushingFinger)
-        {
-            //Vector3 targetChildDirectionVec = new Vector3(0f, 180f, 0f);
-            //transform.FindChild("WalkExport_2").transform.localEulerAngles -= targetChildDirectionVec;
-        }
-
-        anim.SetBool(statePanda.ToString(), pandaStateBool);
-        anim.SetBool("Grounded", characterController.isGrounded);
         anim.SetBool("LandingHard", pandaAI.landingHard);
         StartCoroutine(CheckAnimationState(anim.GetCurrentAnimatorStateInfo(0), statePanda));
 
@@ -78,9 +61,9 @@ public class Animations : MonoBehaviour {
     {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
-		
-		StopPiss();
-		
+
+        StopPiss();
+
         StartCoroutine(ResetSlap());
     }
 
@@ -92,9 +75,22 @@ public class Animations : MonoBehaviour {
 
     public void SpikePullOut()
     {
-        Debug.Log("PullOut");
         anim.SetBool("PullOutSpikes", true);
         StartCoroutine(ChangeSpikesPullOut());
+    }
+
+    public void SetGrounded()
+    {
+        if (characterController != null)
+        {
+            anim.SetBool("Grounded", characterController.isGrounded);
+        }
+    }
+
+    public void SetDoubleTapped ()
+    {
+        anim.SetBool("DoubleTapped", true);
+        StartCoroutine(ResetDoubleTapped());
     }
 
     # endregion
@@ -115,7 +111,7 @@ public class Animations : MonoBehaviour {
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
 
         collidable = GetComponent<Collidable>();
-		initScale  = pGO.transform.localScale;
+        initScale  = pGO.transform.localScale;
 
         StartCoroutine(RandomNumberUpdater());
     }
@@ -133,13 +129,11 @@ public class Animations : MonoBehaviour {
         anim.SetInteger("CollidableType", -1);
         yield return new WaitForEndOfFrame();
         anim.SetBool("Slapped", false);
-        anim.SetBool("Face", false);
     }
 
     IEnumerator CheckAnimationState (AnimatorStateInfo animStateInfo, PandaState statePanda)
     {
         yield return new WaitForSeconds(animStateInfo.length);
-        pandaAI.stuckOnSpikes = false;
         anim.SetBool("LandingHard", false);
     }
 
@@ -167,83 +161,87 @@ public class Animations : MonoBehaviour {
 
     IEnumerator RandomNumberUpdater ()
     {
-       	yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
+        yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0,101));
+            anim.SetInteger("Random", 99);
             anim.SetBool("NewRandom", true);
 			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
 			
 			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
-			if( currHash == leftPeeHash)
-			{	
-				
-				StartCoroutine("Peeing");
-				penis.enabled = true;
-			}
-			else if(currHash == rightPeeHash)
-			{	
-				StartCoroutine("Peeing");
-				penis.enabled = true;
-			}
-	       yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
+            if( currHash == leftPeeHash)
+            {   
+                
+                StartCoroutine("Peeing");
+                penis.enabled = true;
+            }
+            else if(currHash == rightPeeHash)
+            {   
+                StartCoroutine("Peeing");
+                penis.enabled = true;
+            }
+            yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
     }
-	
-	IEnumerator Peeing()
-	{
-		float time = 0.5f;
-		float step = 0.02f;
-		int  steps = (int) (time / step);
-		float rate = 0.1481097f / steps;
-		for(int i=0;i<steps;i++)
-		{
-			Vector3 s = pGO.transform.localScale;
-			s.x += rate;
-			s.y += rate;
-			s.z += rate;
-			pGO.transform.localScale = s;
-			yield return new WaitForSeconds(step);	
-		}
-		pissScript.PissFor(3f); 
-		yield return new WaitForSeconds(4.5f);
-		
-		time = 0.2f;
-		steps = (int) (time / step);
-		rate = 0.1481097f / steps;
-		for(int i=0;i<steps;i++)
-		{
-			Vector3 s = pGO.transform.localScale;
-			s.x -= rate;
-			s.y -= rate;
-			s.z -= rate;
-			pGO.transform.localScale = s;
-			yield return new WaitForSeconds(step);	
-		}
-		penis.enabled = false;
-		
-	}
-	
-	
-	
+
     IEnumerator ChangeSpikesPullOut ()
     {
         yield return new WaitForSeconds(0.05f);
         anim.SetBool("PullOutSpikes", false);
     }
-	
-	void StopPiss()
-	{
-		pissScript.InterruptPiss();
-		StopCoroutine("Peeing");
-		penis.enabled = false;
-		//reset the scale
-		Vector3 s = pGO.transform.localScale;
-		s.x = 0;
-		s.y = 0;
-		s.z = 0;
-		pGO.transform.localScale = s;
-	}
+
+    IEnumerator ResetDoubleTapped ()
+    {
+        yield return new WaitForEndOfFrame();
+        anim.SetBool("DoubleTapped", false);
+    }
+
+        IEnumerator Peeing()
+    {
+        float time = 0.5f;
+        float step = 0.02f;
+        int  steps = (int) (time / step);
+        float rate = 0.1481097f / steps;
+        for(int i=0;i<steps;i++)
+        {
+            Vector3 s = pGO.transform.localScale;
+            s.x += rate;
+            s.y += rate;
+            s.z += rate;
+            pGO.transform.localScale = s;
+            yield return new WaitForSeconds(step);  
+        }
+        pissScript.PissFor(3f); 
+        yield return new WaitForSeconds(4.5f);
+        
+        time = 0.2f;
+        steps = (int) (time / step);
+        rate = 0.1481097f / steps;
+        for(int i=0;i<steps;i++)
+        {
+            Vector3 s = pGO.transform.localScale;
+            s.x -= rate;
+            s.y -= rate;
+            s.z -= rate;
+            pGO.transform.localScale = s;
+            yield return new WaitForSeconds(step);  
+        }
+        penis.enabled = false;
+        
+    }
+
+    void StopPiss()
+    {
+        pissScript.InterruptPiss();
+        StopCoroutine("Peeing");
+        penis.enabled = false;
+        //reset the scale
+        Vector3 s = pGO.transform.localScale;
+        s.x = 0;
+        s.y = 0;
+        s.z = 0;
+        pGO.transform.localScale = s;
+    }
     # endregion
 }
