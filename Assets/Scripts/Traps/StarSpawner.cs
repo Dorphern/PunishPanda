@@ -11,6 +11,8 @@ public class StarSpawner : TrapBase
 	public GameObject starPrefab;
     [SerializeField] float angle;
 
+    public bool SlicePandaInHalf;
+
     public float Angle
     {
         get { return angle; }
@@ -52,6 +54,7 @@ public class StarSpawner : TrapBase
 			{
 				GameObject star = Instantiate(starPrefab) as GameObject;
 				ThrowingStar throwingStar = star.GetComponent<ThrowingStar>();
+			    throwingStar.SlicePandaInHalf = SlicePandaInHalf;
 				ActivateThrowingStar(throwingStar);	
 				starsPool.Enqueue(throwingStar);
 			}
