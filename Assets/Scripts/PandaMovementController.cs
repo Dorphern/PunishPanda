@@ -164,19 +164,13 @@ public class PandaMovementController : MonoBehaviour {
         dampedVelocity = dampedVelocity * 0.9f + controller.velocity * 0.1f;
         pandaAI.landingHard = dampedVelocity.y < -falling.hardLandingThreshold;
         if (IsGrounded() == false && dampedVelocity.y < - falling.velocityThreshold)
-        {            
+        {                
             pandaAI.Falling();
         }
 
         // Store the last position of the character;
         lastPos = transform.position;
 	}
-
-    void Update ()
-    {
-
-
-    }
 	
 	void PushingMovement(PandaDirection direction, float pushingMagnitude, float lastMag)
 	{
