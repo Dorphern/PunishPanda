@@ -44,8 +44,11 @@ public class WinScreen : MonoBehaviour {
     [EventHookAttribute("Three Stars")]
     public List<AudioEvent> OnThreeStartsEvents = new List<AudioEvent>();
 
-    [EventHookAttribute("Highscore Enable")]
+    [EventHookAttribute("New Highscore")]
     public List<AudioEvent> OnHighscoreEvents = new List<AudioEvent>();
+
+    [EventHookAttribute("Score Event")]
+    public List<AudioEvent> OnScoreEvents = new List<AudioEvent>();
 	
 	int oneStarScore, twoStarScore, threeStarScore;
 	int score, highscore;
@@ -191,7 +194,7 @@ public class WinScreen : MonoBehaviour {
 		yield return new WaitForSeconds(timeBeforeScoreAnimation);
 		for(int i=0; i< normalKills; i++)
 		{
-			
+            HDRSystem.PostEvents(gameObject, OnScoreEvents);
 			//score increment loop
 			ZoomInScoreTypeTween.RunTween();
 			ZoomInScoreTween.RunTween();
@@ -228,6 +231,7 @@ public class WinScreen : MonoBehaviour {
 	    intermediateTotal = pointSystem.PerfectKill;
 		for(int i=0; i< perfectKills; i++)
 		{
+            HDRSystem.PostEvents(gameObject, OnScoreEvents);
 			//score increment loop
 			ZoomInScoreTypeTween.RunTween();
 			ZoomInScoreTween.RunTween();
@@ -260,6 +264,7 @@ public class WinScreen : MonoBehaviour {
 			
 			if(ck.ComboCount > 1)
 			{
+                HDRSystem.PostEvents(gameObject, OnScoreEvents);
 				ScoreTypeLabel.text = ck.ComboCount + Localization.Localize("Combo");
 				intermediateTotal = pointSystem.Combo * ck.ComboCount;
 				
@@ -300,6 +305,7 @@ public class WinScreen : MonoBehaviour {
 		//yield return new WaitForSeconds(timesteps);
 		if(timeScore!=0)
 		{
+            HDRSystem.PostEvents(gameObject, OnScoreEvents);
 			ZoomInScoreTypeTween.RunTween();
 			ZoomInScoreTween.RunTween();
 			scoreLabel.text = (intermediateTotal).ToString("N0");
@@ -341,8 +347,8 @@ public class WinScreen : MonoBehaviour {
 			
 			if(score>=twoStarScore)
 			{
-                HDRSystem.PostEvents(gameObject, OnTwoStarsEvents);
-				yield return new WaitForSeconds(0.8f);
+                yield return new WaitForSeconds(0.8f);
+				HDRSystem.PostEvents(gameObject, OnTwoStarsEvents);
 				tweenAlphaTwoStarBackground.enabled = true;
 				twoStarTexture.SetActive(true);
 				
@@ -350,8 +356,9 @@ public class WinScreen : MonoBehaviour {
 			
 			if(score>=threeStarScore)
 			{
-                HDRSystem.PostEvents(gameObject, OnThreeStartsEvents);
+                
 				yield return new WaitForSeconds(1f);
+				HDRSystem.PostEvents(gameObject, OnThreeStartsEvents);
 				tweenAlphaThreeStarBackground.enabled = true;
 				threeStarTexture.SetActive(true);
 				UpdateAchievementsAndStats();

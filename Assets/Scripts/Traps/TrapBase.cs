@@ -3,14 +3,15 @@ using System.Collections;
 
 public enum TrapType
 {
-    Electicity      = 0,
-    StaticSpikes    = 1,
-    ImpalerSpikes   = 2,
-    Pounder         = 3,
-    ThrowingStars   = 4,
-	DoorTrap        = 5,
-    RoundSaw        = 6,
-    EscapeBamboo    = 7
+    Electicity       = 0,
+    StaticSpikes     = 1,
+    ImpalerSpikes    = 2,
+    Pounder          = 3,
+    ThrowingStars    = 4,
+	DoorTrap         = 5,
+    RoundSaw         = 6,
+    EscapeBamboo     = 7,
+    LedgeFallTrigger = 8
 }
 
 public enum TrapPosition
@@ -98,12 +99,16 @@ public abstract class TrapBase : MonoBehaviour {
 	public bool TryPandaKill(PandaAI pandaAI)
 	{
 		bool isPerfect = (pandaKillCount < maxPerfectPandaKills || maxPerfectPandaKills == -1) && isPerfectTrap;
-        bool successful = pandaAI.IsAlive() && !pandaAI.HasEscaped() && PandaAttemptKill(pandaAI, isPerfect);
+        bool successful = pandaAI.HasEscaped() == false && PandaAttemptKill(pandaAI, isPerfect);
         if (successful) 
         {
-            SetDirty();
             pandaKillCount++;
 			AddStatistics();
+        }
+
+        if (pandaAI.IsAlive() == false)
+        {
+            SetDirty();
         }
         return successful;
 	}
