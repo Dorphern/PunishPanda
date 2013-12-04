@@ -39,7 +39,6 @@ public class PandaAI : MonoBehaviour {
 	private Coroutine boostco;
 	private PandaState preFallingState;
 	private bool changeDirectionOnLanding = false;
-	private bool isBeingDestroyed = false;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -270,8 +269,6 @@ public class PandaAI : MonoBehaviour {
             return false;
 
         Debug.Log("Hit death object: " + trap.GetTrapType());		
-		
-		if(this.isBeingDestroyed == true) return false;
 
         // change state from playAnimation PlayDeathAnimation
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, pandaStateManager.GetDirection());
@@ -289,8 +286,7 @@ public class PandaAI : MonoBehaviour {
         }
         else if (trapType == TrapType.RoundSaw)
         {
-            BladeDirection bladeDirection = trap.GetSpinDirection();
-            SliceInHalf(trap.transform.position, bladeDirection);
+            
         }
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
@@ -305,7 +301,6 @@ public class PandaAI : MonoBehaviour {
             (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
             Destroy(this.gameObject);
-			isBeingDestroyed = true;
         }
 
         // Return false if the panda has already died
@@ -380,7 +375,6 @@ public class PandaAI : MonoBehaviour {
         (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, transform.position);
         Destroy(this.gameObject);
-		isBeingDestroyed = true;
     }
 
     public void SliceInHalf(Vector3 position, BladeDirection bladeDirection)
@@ -388,21 +382,18 @@ public class PandaAI : MonoBehaviour {
         (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, position, bladeDirection);
         Destroy(this.gameObject);
-		isBeingDestroyed = true;
     }
 
     public void Dismember()
     {
         (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
         Destroy(this.gameObject); 
-		isBeingDestroyed = true;
     }
 
     public void Electrocute()
     {
         Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
         Destroy(this.gameObject);
-		isBeingDestroyed = true;
     }
 
 	#endregion
