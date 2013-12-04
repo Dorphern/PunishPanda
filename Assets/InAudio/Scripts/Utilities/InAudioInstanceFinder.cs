@@ -98,9 +98,14 @@ public class InAudioInstanceFinder : MonoBehaviour
                         _editorAudioSource = source;
                     else
                         _editorAudioSource = guide.transform.GetChild(0).gameObject.AddComponent<AudioSource>();
+
+                    
                 }
 
             }
+            if (_editorAudioSource != null)
+                _editorAudioSource.playOnAwake = false;
+
             return _editorAudioSource;
         }
     }

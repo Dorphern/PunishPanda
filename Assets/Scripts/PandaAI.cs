@@ -39,6 +39,7 @@ public class PandaAI : MonoBehaviour {
 	private Coroutine boostco;
 	private PandaState preFallingState;
 	private bool changeDirectionOnLanding = false;
+	private bool isBeingDestroyed = false;
 	
 	float timeSinceLastCollisionWithPanda = 0f;
 	
@@ -61,6 +62,18 @@ public class PandaAI : MonoBehaviour {
     [SerializeField]
     [EventHookAttribute("Double Tab")]
     List<AudioEvent> doubleTabEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Falling")]
+    List<AudioEvent> fallingEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Pushing")]
+    List<AudioEvent> pushingEvents = new List<AudioEvent>();
+
+    [SerializeField]
+    [EventHookAttribute("Pushing End")]
+    List<AudioEvent> pushingEndEvents = new List<AudioEvent>();
 
 	
 	#region Public Methods
@@ -85,6 +98,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.Walking)
 		{
+            HDRSystem.PostEvents(gameObject, pushingEvents);
 			pandaStateManager.ChangeState(PandaState.PushingFinger);
 			return true;
 		}
@@ -95,6 +109,7 @@ public class PandaAI : MonoBehaviour {
 	{
 		if(pandaStateManager.GetState() == PandaState.PushingFinger)
 		{
+            HDRSystem.PostEvents(gameObject, pushingEndEvents);
 			pandaStateManager.ChangeState(PandaState.Walking);	
 		}
 	}
@@ -251,7 +266,12 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect)
     {
+        if (!IsAlive())
+            return false;
+
         Debug.Log("Hit death object: " + trap.GetTrapType());		
+		
+		if(this.isBeingDestroyed == true) return false;
 
         // change state from playAnimation PlayDeathAnimation
         gameObject.GetComponentInChildren<Animations>().PlayDeathAnimation(trap, pandaStateManager.GetDirection());
@@ -285,6 +305,7 @@ public class PandaAI : MonoBehaviour {
             (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
             Destroy(this.gameObject);
+			isBeingDestroyed = true;
         }
 
         // Return false if the panda has already died
@@ -349,6 +370,7 @@ public class PandaAI : MonoBehaviour {
             && pandaStateManager.GetState() != PandaState.Died)
         {
 			preFallingState = pandaStateManager.GetState();
+            HDRSystem.PostEvents(gameObject, fallingEvents);
             pandaStateManager.ChangeState(PandaState.Falling);
         }
     }
@@ -356,8 +378,9 @@ public class PandaAI : MonoBehaviour {
     public void SliceInHalf()
     {
         (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
-                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position, BladeDirection.None);
+                .GetComponent<PandaHalfForce>().SawSplit(this, transform.position);
         Destroy(this.gameObject);
+		isBeingDestroyed = true;
     }
 
     public void SliceInHalf(Vector3 position, BladeDirection bladeDirection)
@@ -365,18 +388,21 @@ public class PandaAI : MonoBehaviour {
         (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, position, bladeDirection);
         Destroy(this.gameObject);
+		isBeingDestroyed = true;
     }
 
     public void Dismember()
     {
         (Instantiate(dismemberedPanda, transform.position, transform.rotation) as GameObject).GetComponent<PandaDismemberment>().Initialize();
         Destroy(this.gameObject); 
+		isBeingDestroyed = true;
     }
 
     public void Electrocute()
     {
         Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
         Destroy(this.gameObject);
+		isBeingDestroyed = true;
     }
 
 	#endregion

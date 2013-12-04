@@ -112,7 +112,7 @@ public class BloodSplatter : MonoBehaviour {
 		if(InstanceFinder.LevelManager.IsInMainMenu == false)
 			levelHasPlatforms = InstanceFinder.LevelManager.CurrentLevel.hasPlatforms;
 		else
-			levelHasPlatforms= true;
+			levelHasPlatforms= false;
 		if(levelHasPlatforms)
 		{
 			slapMaxScale = platformsLevelScale;
@@ -232,22 +232,24 @@ public class BloodSplatter : MonoBehaviour {
 				scale = slapMaxScale;	
 			}
 		}
-		
 		float angleToFloor = Mathf.Abs(angle - 90f);
-		if(angleToFloor < 60f && angleToFloor > 30f)
+		
+		if(InstanceFinder.LevelManager.IsInMainMenu == false)
 		{
-			if(levelHasPlatforms)
+			if(angleToFloor < 60f && angleToFloor > 30f)
 			{
-				if(scale > 0.65f * slapMaxScale)
-					scale = 0.65f * slapMaxScale;
-			}
-			else
-			{
-				if(scale > 0.3f * slapMaxScale)
-					scale = 0.3f * slapMaxScale;
+				if(levelHasPlatforms)
+				{
+					if(scale > 0.65f * slapMaxScale)
+						scale = 0.65f * slapMaxScale;
+				}
+				else
+				{
+					if(scale > 0.3f * slapMaxScale)
+						scale = 0.3f * slapMaxScale;
+				}
 			}
 		}
-		
 		if(angleToFloor < 30f || floorHit)
 		{
 			if(levelHasPlatforms)
