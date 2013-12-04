@@ -90,6 +90,7 @@ public class Animations : MonoBehaviour {
     public void SetDoubleTapped ()
     {
         anim.SetBool("DoubleTapped", true);
+		StopPiss();
         StartCoroutine(ResetDoubleTapped());
     }
 
@@ -111,7 +112,7 @@ public class Animations : MonoBehaviour {
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
 
         collidable = GetComponent<Collidable>();
-        initScale  = pGO.transform.localScale;
+        //initScale  = pGO.transform.localScale;
 
         StartCoroutine(RandomNumberUpdater());
     }
