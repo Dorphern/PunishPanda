@@ -16,6 +16,11 @@ public static class SearchHelper  {
         {
             EditorWindow.GetWindow<AuxWindow>().FindBus(busAction.Bus);
         }
+        var busMuteAction = action as EventBusMuteAction;
+        if (busMuteAction != null && busMuteAction.Bus != null)
+        {
+            EditorWindow.GetWindow<AuxWindow>().FindBus(busMuteAction.Bus);
+        }
         var bankAction = action as EventBankAction;
         if (bankAction != null && bankAction.BankLink != null)
         {
