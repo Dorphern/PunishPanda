@@ -20,6 +20,10 @@ public class Animations : MonoBehaviour {
 	
 	private int rightPeeHash;
 	private int leftPeeHash;
+    public MeshRenderer penis;
+    public PissParticles pissScript;
+    public GameObject pGO;
+    Vector3 initScale;
 
     # region Public Methods
     public void ChangePandaState (PandaState state)
@@ -58,6 +62,8 @@ public class Animations : MonoBehaviour {
         anim.SetBool("Front", front);
         anim.SetBool("Slapped", true);
 
+        StopPiss();
+
         StartCoroutine(ResetSlap());
     }
 
@@ -84,7 +90,13 @@ public class Animations : MonoBehaviour {
     public void SetDoubleTapped ()
     {
         anim.SetBool("DoubleTapped", true);
+		StopPiss();
         StartCoroutine(ResetDoubleTapped());
+    }
+
+    public void MoveToEscape (float zPos)
+    {
+        StartCoroutine(MoveThePandaToEscape(zPos));
     }
 
     # endregion
@@ -105,6 +117,7 @@ public class Animations : MonoBehaviour {
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
 
         collidable = GetComponent<Collidable>();
+        //initScale  = pGO.transform.localScale;
 
         StartCoroutine(RandomNumberUpdater());
     }
@@ -134,12 +147,12 @@ public class Animations : MonoBehaviour {
     {
         if (position == TrapPosition.Ceiling)
         {
-            yield return new WaitForSeconds(1.1f);
+            yield return new WaitForSeconds(characterController.isGrounded ? 1.1f : 0.3f);
             animation.Play(escapeUpAnimation);
         }
         else if (position == TrapPosition.Ground)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(characterController.isGrounded ? 2f : 1.5f);
             animation.Play(escapeDownAnimation);
         }
     }
@@ -157,20 +170,23 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0, 101));
+            anim.SetInteger("Random", PandaRandom.NextInt(0,101));
             anim.SetBool("NewRandom", true);
 			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
 			
 			int currHash = anim.GetNextAnimatorStateInfo(0).nameHash;
-			if( currHash == leftPeeHash)
-			{
-				//Debug.Log("Lets get peeing yo left!");	
-			}
-			else if(currHash == rightPeeHash)
-			{
-				//Debug.Log("Lets get peeing yo right!");	
-			}
+            if( currHash == leftPeeHash)
+            {   
+                
+                StartCoroutine("Peeing");
+                penis.enabled = true;
+            }
+            else if(currHash == rightPeeHash)
+            {   
+                StartCoroutine("Peeing");
+                penis.enabled = true;
+            }
             yield return new WaitForSeconds(PandaRandom.NextFloat(randomMinWait, randomMaxWait));
         }
     }
@@ -185,6 +201,68 @@ public class Animations : MonoBehaviour {
     {
         yield return new WaitForEndOfFrame();
         anim.SetBool("DoubleTapped", false);
+    }
+
+    IEnumerator Peeing()
+    {
+        yield return new WaitForSeconds(.2f);
+
+        float time = 0.5f;
+        float step = 0.02f;
+        int  steps = (int) (time / step);
+        float rate = 0.1481097f / steps;
+        for(int i=0;i<steps;i++)
+        {
+            Vector3 s = pGO.transform.localScale;
+            s.x += rate;
+            s.y += rate;
+            s.z += rate;
+            pGO.transform.localScale = s;
+            yield return new WaitForSeconds(step);  
+        }
+        pissScript.PissFor(3f); 
+        yield return new WaitForSeconds(4.1f);
+        
+        time = 0.2f;
+        steps = (int) (time / step);
+        rate = 0.1481097f / steps;
+        for(int i=0;i<steps;i++)
+        {
+            Vector3 s = pGO.transform.localScale;
+            s.x -= rate;
+            s.y -= rate;
+            s.z -= rate;
+            pGO.transform.localScale = s;
+            yield return new WaitForSeconds(step);  
+        }
+        penis.enabled = false;
+        
+    }
+
+    IEnumerator MoveThePandaToEscape (float zPos)
+    {
+        yield return new WaitForSeconds(0.5f);
+        int steps = 10;
+        for (int i = 0; i < steps; i++)
+        {
+            Vector3 newPos = transform.position;
+            newPos.z += zPos / steps;
+            transform.position = newPos;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    void StopPiss ()
+    {
+        pissScript.InterruptPiss();
+        StopCoroutine("Peeing");
+        penis.enabled = false;
+        //reset the scale
+        Vector3 s = pGO.transform.localScale;
+        s.x = 0;
+        s.y = 0;
+        s.z = 0;
+        pGO.transform.localScale = s;
     }
     # endregion
 }

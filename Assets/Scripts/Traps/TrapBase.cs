@@ -50,14 +50,14 @@ public abstract class TrapBase : MonoBehaviour {
         return collider.enabled;
     }
 
-    virtual public void ActivateTrap ()
+    virtual public void ActivateTrap (bool playAnimation = true)
     {
         collider.enabled = true;
         if (OnTrapActivate != null)
             OnTrapActivate(this);
     }
 
-    virtual public void DeactivateTrap ()
+    virtual public void DeactivateTrap (bool playAnimation = true)
     {
         collider.enabled = false;
         if (OnTrapDeactivate != null)
@@ -130,11 +130,11 @@ public abstract class TrapBase : MonoBehaviour {
 
         if (initActivated)
         {
-            ActivateTrap();
+            ActivateTrap(false);
         }
         else
         {
-            DeactivateTrap();
+            DeactivateTrap(false);
         }
     }
 

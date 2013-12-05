@@ -5,16 +5,28 @@ public class PissParticles : MonoBehaviour {
 	
 	public ParticleSystem piss;
 	public ParticleSystem subPiss;
-	public PissPudle pissPudle;
-	public MeshRenderer puddleMesh;
+//	public PissPudle pissPudle;
+//	public MeshRenderer puddleMesh;
 	
 	bool peeing = false;
+	private Quaternion rightEmission;
+	private Quaternion leftEmission;
+	float initGravity;
+    float initLife;
 	
-	//assuming no puddle is the first state;
-	int pissPudleTransitions = 4; 
+	int pissTransitions = 4; 
+	
+	void Start()
+	{
+		initGravity = piss.gravityModifier;
+        initLife = piss.startLifetime;
+	}
 	
 	public void PissFor(float duration)
 	{
+		//adjust direction based on state:
+
+		
 		if(!peeing)
 		{
 			peeing = true;
@@ -24,11 +36,12 @@ public class PissParticles : MonoBehaviour {
 	
 	public void InterruptPiss()
 	{
-		if(peeing)
-		{
-			StopCoroutine("Pee");
-			puddleMesh.enabled = false;
-		}
+		StopCoroutine("Pee");
+		piss.Stop ();
+		//puddleMesh.enabled = false;
+		peeing = false;
+		piss.gravityModifier = initGravity;
+		//gameObject.SetActive(false);
 	}
 	
 	IEnumerator Pee(float duration)
@@ -39,29 +52,30 @@ public class PissParticles : MonoBehaviour {
 			piss.Play();
 		
 		
+		yield return new WaitForSeconds(2.8f);
 		
-		for(int i=0; i<pissPudleTransitions; i++)
+		float d = 1f;
+        int steps = 10;
+        float gravTarget = 0.8f / steps;
+        float lifeTarget = 0.5f / steps;
+
+        for (int i = 0; i < steps; i++)
 		{
-			yield return new WaitForSeconds(duration/pissPudleTransitions);
-			pissPudle.SetSpriteCell(i);
-			puddleMesh.enabled = true;
+            piss.gravityModifier += gravTarget;
+            piss.startLifetime -= lifeTarget;
+            yield return new WaitForSeconds(d / steps);
 		}
 		
-		yield return new WaitForSeconds(duration/pissPudleTransitions);
+		piss.gravityModifier = -1.5f;
+		yield return new WaitForSeconds(0.2f);
 		
 		if(piss!=null)
+		{
 			piss.Stop();
-		
-		yield return new WaitForSeconds(1f);
-		
-		//add extra delay for puddle
-		puddleMesh.enabled = false;
+			piss.gravityModifier = initGravity;
+            piss.startLifetime = initLife;
+		}
 		peeing = false;
 	}
-	
-	void Start()
-	{
-			
-		PissFor(5f);
-	}
+
 }

@@ -16,28 +16,45 @@ public class DoorTrap : TrapBase {
 		trapClip = this.animation[animationName];	
 	}
 	
-	public override void ActivateTrap ()
+	public override void ActivateTrap (bool playAnimation = true)
 	{
 		base.ActivateTrap ();
 		fallingTrigger.PandasFalling();
-		
-		trapClip.speed = 1f;
-		if(animation.isPlaying == false)
+		if(playAnimation)
 		{
-			trapClip.time = 0f;
+			trapClip.speed = 1f;
+			if(animation.isPlaying == false)
+			{
+				trapClip.time = 0f;
+			}
+			this.animation.Play();
 		}
-		this.animation.Play();
+		else
+		{
+			trapClip.speed = 1f;
+			trapClip.time = trapClip.length;
+			this.animation.Play();
+		}
 	}
 	
-	public override void DeactivateTrap ()
+	public override void DeactivateTrap (bool playAnimation = true)
 	{
 		base.DeactivateTrap ();
-		trapClip.speed = -1f;
-		if(animation.isPlaying == false)
+		if(playAnimation)
 		{
-			trapClip.time = trapClip.length;	
+			trapClip.speed = -1f;
+			if(animation.isPlaying == false)
+			{
+				trapClip.time = trapClip.length;	
+			}
+			this.animation.Play();
 		}
-		this.animation.Play();
+		else
+		{
+			trapClip.speed = -1f;
+			trapClip.time = 0f;
+			this.animation.Play();
+		}
 	}
 	
 	public override TrapType GetTrapType ()
