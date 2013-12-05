@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
- 
+
 public class DownloadObbExample : MonoBehaviour
 {
+	public static bool isAndroid = true;
 	private string expPath;
 	private string logtxt;
 	private bool alreadyLogged = false;
@@ -11,14 +12,24 @@ public class DownloadObbExample : MonoBehaviour
  
 	public Texture2D background;
 	public GUISkin mySkin;
- 
+ 	
+	void Awake()
+	{
+		#if UNITY_EDITOR
+		DownloadObbExample.isAndroid = false;
+		#endif
+	}
+	
 	void log( string t )
 	{
 		logtxt += t + "\n";
 		print("MYLOG " + t);
 	}
+
 	void OnGUI()
 	{
+		if(DownloadObbExample.isAndroid == false) return;
+		
 		//GUI.skin = mySkin;
 		GUI.DrawTexture(new Rect(0,0,background.width,background.height),background);
  
