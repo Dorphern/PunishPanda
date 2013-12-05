@@ -67,6 +67,7 @@ public class ComboSystem : MonoBehaviour
     private List<AudioEvent> comboKillEvents;
 
     private float lastPandaKillTime;
+    private float lastPerfectPandaKillTime;
     private int pandaComboKills;
     private bool isDoingCombo = false;
     private int displayedKills = 0;
@@ -76,6 +77,8 @@ public class ComboSystem : MonoBehaviour
     private int normalKillsCombo;
 
     private LevelDeaths levelDeaths;
+
+    private bool wasLastKillPerfect = false;
 
     public LevelDeaths LevelDeaths
     {
@@ -105,9 +108,10 @@ public class ComboSystem : MonoBehaviour
         isDoingCombo = false;
         pandaComboKills = 0;
         lastPandaKillTime = 0;
-
+        lastPerfectPandaKillTime = 0;
         normalKillsCombo = 0;
         perfectKillsCombo = 0;
+        wasLastKillPerfect = false;
     }
 
     public void RegisterPanda()
@@ -127,12 +131,16 @@ public class ComboSystem : MonoBehaviour
         else
             normalKillsCombo += 1;
 
+        wasLastKillPerfect = perfectKill;
+
+        if (perfectKill)
+            lastPerfectPandaKillTime = Time.time;
         pandaComboKills += 1;
         lastPandaKillTime = Time.time;
         levelDeaths.AlivePandas -= 1;
         InstanceFinder.StatsManager.PandasKilled++;
 
-        if (pandaComboKills > 1)
+        /*if (pandaComboKills > 1 && wasLastKillPerfect)
         {
             HDRSystem.PostEvents(gameObject, comboKillEvents);
         }
@@ -142,7 +150,7 @@ public class ComboSystem : MonoBehaviour
                 HDRSystem.PostEvents(gameObject, perfectKillEvents);
             else
                 HDRSystem.PostEvents(gameObject, slobbyKillEvents);
-        }
+        }*/
     }
 
     // Update is called once per frame
@@ -171,12 +179,11 @@ public class ComboSystem : MonoBehaviour
     {
         displayedKills = pandaComboKills;
 
-
-
-
-        if (pandaComboKills == 1)
+        if (pandaComboKills == 1 || !wasLastKillPerfect || perfectKillsCombo == 1)
         {
             killObject.SetActive(true);
+            normalKillLabel.gameObject.SetActive(false);
+            perfectKillLabel.gameObject.SetActive(false);
             if (perfectKill)
             {
                 perfectKillLabel.gameObject.SetActive(true);
@@ -186,10 +193,12 @@ public class ComboSystem : MonoBehaviour
                 normalKillLabel.gameObject.SetActive(true);
             }
         }
-        else if (pandaComboKills > 1)
+        else if (perfectKillsCombo > 1)
         {
+            killObject.SetActive(false);
             string comboText = "";
-            switch (pandaComboKills)
+
+            switch (perfectKillsCombo)
             {
                 case 2:
                     comboText = "2X";
