@@ -22,16 +22,18 @@ public class AchievementWindow : MonoBehaviour {
 		InstanceFinder.AchievementManager.onAchievementCompleted += OnAchievementComplete;
 	}
 	
-	void OnAchievementComplete(Achievement achievement)
+	void OnDestroy()
 	{
-		
-		completedAchievements.Enqueue(achievement);
-		
+		InstanceFinder.AchievementManager.onAchievementCompleted -= OnAchievementComplete;
+	}
+	
+	void OnAchievementComplete(Achievement achievement)
+	{		
 		if(!isRunning) 
 		{
 			isRunning = true;
 
-            StartCoroutine(runAchievementWindow());
+            StartCoroutine("runAchievementWindow");
 		}
 	}
 	

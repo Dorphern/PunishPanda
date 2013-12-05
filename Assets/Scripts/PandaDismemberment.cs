@@ -24,6 +24,7 @@ public class PandaDismemberment : MonoBehaviour
 	
 	private Vector3 explosionForce = Vector3.zero;
 	private Vector2 splatDirection = Vector2.right;
+	private Vector3 bloodSplatterOffset = new Vector3(0, 0.7f, 0);
 
 	public void Initialize()
 	{
@@ -61,7 +62,7 @@ public class PandaDismemberment : MonoBehaviour
 				angle += (angle < 0) ? -15f : 15f;
 				splatDirection =  new Vector2(Mathf.Sin(Mathf.Deg2Rad * angle), Mathf.Cos(Mathf.Deg2Rad * angle));
 			
-				BloodSplatter.Instance.ProjectHit(transform.position, splatDirection.normalized);
+				BloodSplatter.Instance.ProjectHit(transform.position + bloodSplatterOffset, splatDirection.normalized);
 			}
 		}
 	}

@@ -305,7 +305,7 @@ public class PandaAI : MonoBehaviour {
             if (trapType == TrapType.StaticSpikes)
             pandaController.EnableColliders(false);
 			
-            BloodSplatter.Instance.ProjectHit(transform.position, Vector2.zero);
+            BloodSplatter.Instance.ProjectHit(deathBloodParticles.transform.position, Vector2.zero);
         }
         else if (trapType == TrapType.ThrowingStars)
         {
