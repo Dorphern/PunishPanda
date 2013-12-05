@@ -9,42 +9,48 @@ public class Settings : MonoBehaviour {
 	
 	public GameObject SFX_Lever;
 	public GameObject Music_Lever;
+	
 	private Animation SFX_animation;
 	private Animation Music_animation;
-	private int MusicAnimationFlag;
-	private int SFXAnimationFlag;
+	private bool MusicAnimationFlag;
+	private bool SFXAnimationFlag;
+	private bool firstSFX;
+	private bool firstMusic;
 	
+	private bool sound;
+	private bool music;
+		
 	void Start()
 	{
 		menuMan = GetComponent<MenuManager>();
 		SFX_animation = SFX_Lever.GetComponent<Animation>();
 		Music_animation = Music_Lever.GetComponent<Animation>();
 		
-		
-		bool music = InstanceFinder.StatsManager.MusicEnabled;
-		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
+		Debug.Log ("STARTEDsttngs");
+		//GET THE LOADED VALUES
+		music = InstanceFinder.StatsManager.MusicEnabled;
+		sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
 		//string lang = InstanceFinder.StatsManager.language;
 		
-
-		if(music)
-			_musicSlider.value = 1;
-		else
-			_musicSlider.value = 0;
-
+		
+		//initialization flags
+//		MusicAnimationFlag = true;
+//		SFXAnimationFlag = true;
+		
 		
 		if(sound)
-			_soundEFXSlider.value = 1;
+		{
+			SFX_animation.Play ("leverAnimation2");//goleft
+		}
 		else
-			_soundEFXSlider.value = 0;
-
+		{
+			SFX_animation.Play ("leverAnimation1");//goright
+		}
+		
+		firstSFX = true;
+		firstMusic = true;
 		
 
-		
-		//initialize Switches
-		MusicAnimationFlag = 0;
-		SFXAnimationFlag = 0;
-		OnSoundEFXSliderChanged();
-		OnMusicSliderChanged();
 	}
 	
 	public void OnCalibrateFingerClicked()
@@ -97,61 +103,128 @@ public class Settings : MonoBehaviour {
 	}
 			
 	
+
+	
+	
+	public float getSFXvalue()
+	{
+		//Debug.Log ("got SFX: "+_soundEFXSlider.value);
+		return _soundEFXSlider.value;
+	}
+	
+	//Gets called AFTER a slider toggle
+	public void OnSoundEFXSliderChanged()
+	{
+
+		
+
+		    if(firstSFX	== true)
+			{	
+				firstSFX = false;
+				firstTimeSFX();
+				return;
+			}
+
+
+		
+		float temp = getSFXvalue ();
+		if(temp == 0)//left
+		{
+//			Debug.Log ("SFXAnimationFlag: "+SFXAnimationFlag);
+			InstanceFinder.SoundSettings.OnSFXEnable();
+//			if(SFXAnimationFlag == false)
+//			{
+//				SFXAnimationFlag = true;
+//				//dont animate on 2nd call for ON;
+//				Debug.Log ("didnt animate left");
+//				return;
+//				
+//			}
+//			SFX_animation.Play ("leverAnimation2");//goleft
+		}
+		else
+		{
+//			Debug.Log ("SFXAnimationFlag: "+SFXAnimationFlag);
+			InstanceFinder.SoundSettings.OnSFXDisable();
+//			if(SFXAnimationFlag == false)
+//			{
+//				SFXAnimationFlag = true;
+//				//dont animate on 2nd call for ON;
+//				return;
+//				
+//			}
+//			SFX_animation.Play ("leverAnimation1");//goright	
+		}
+		
+
+	}
+	
+	
+	
+	
+	public float getMusicvalue()
+	{
+		//Debug.Log ("got Mus: "+ _musicSlider.value);
+		return _musicSlider.value;
+	}
+	
+	
 	// crappy workaround, there is no delegate that returns the value ffs!
 	public void OnMusicSliderChanged()
 	{
-		if(_musicSlider!=null)
-		{
-			//hack for dealing with extra animation (when entering settings)
-			if(MusicAnimationFlag == 1)
-			{	
-				MusicAnimationFlag++;
-				return;
-			}
-			else
-				MusicAnimationFlag++;
-			
-			if(_musicSlider.value==1)
-			{
-						
-				Music_animation.Play ("leverAnimation1");//goright
-				InstanceFinder.StatsManager.MusicEnabled = false;
-			}
-			else
-			{
 
-				Music_animation.Play ("leverAnimation2");//goleft
-				InstanceFinder.StatsManager.MusicEnabled = true;
-			}
-		}
-	}
-	
-	public void OnSoundEFXSliderChanged()
-	{
-		if(_soundEFXSlider!=null)
-		{
-			//hack for dealing with extra animation (when entering settings)
-			if(SFXAnimationFlag == 1)
+			 if(firstMusic	== true)
 			{	
-				SFXAnimationFlag++;
+				firstMusic = false;
+				firstTimeMusic();
 				return;
 			}
-			else
-				SFXAnimationFlag++;
+		
+
 			
-			if(_soundEFXSlider.value==1)
-			{
-				
-				SFX_animation.Play ("leverAnimation1");//goright
-				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
-			}
-			else
-			{
-					
-				SFX_animation.Play ("leverAnimation2");//goleft
-				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
-			}
+		
+		float temp = getMusicvalue ();
+		if(temp == 0)//left
+		{
+			InstanceFinder.SoundSettings.OnMusicEnable();
 		}
+		else
+		{
+			InstanceFinder.SoundSettings.OnMusicDisable();
+		}
+
+				
+
 	}
 	
+	
+	
+	public void firstTimeSFX()
+	{
+		Debug.Log ("Initializing Sound: "+sound);
+		if(sound)
+		{
+			_soundEFXSlider.value = 0; //point left
+			
+		}
+		else
+		{
+			_soundEFXSlider.value = 1; //point right
+		}
+		
+		
+		
+	}
+	
+	private void firstTimeMusic()
+	{
+		Debug.Log ("Initializing Music: "+music);
+		if(music)
+			_musicSlider.value = 0;
+		else
+			_musicSlider.value = 1;
+		
+		
+
+	}
 }

@@ -67,7 +67,6 @@ public class ComboSystem : MonoBehaviour
     private List<AudioEvent> comboKillEvents;
 
     private float lastPandaKillTime;
-    private float lastPerfectPandaKillTime;
     private int pandaComboKills;
     private bool isDoingCombo = false;
     private int displayedKills = 0;
@@ -108,7 +107,6 @@ public class ComboSystem : MonoBehaviour
         isDoingCombo = false;
         pandaComboKills = 0;
         lastPandaKillTime = 0;
-        lastPerfectPandaKillTime = 0;
         normalKillsCombo = 0;
         perfectKillsCombo = 0;
         wasLastKillPerfect = false;
@@ -133,8 +131,6 @@ public class ComboSystem : MonoBehaviour
 
         wasLastKillPerfect = perfectKill;
 
-        if (perfectKill)
-            lastPerfectPandaKillTime = Time.time;
         pandaComboKills += 1;
         lastPandaKillTime = Time.time;
         levelDeaths.AlivePandas -= 1;
