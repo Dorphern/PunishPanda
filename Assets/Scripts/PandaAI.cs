@@ -266,9 +266,7 @@ public class PandaAI : MonoBehaviour {
      * return true if the panda was successfully killed
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect, KillType killType = KillType.Default)
-    {
-
-        Debug.Log("Hit death object: " + trap.GetTrapType());		
+	{
 		
 		if(this.isBeingDestroyed == true) return false;
 

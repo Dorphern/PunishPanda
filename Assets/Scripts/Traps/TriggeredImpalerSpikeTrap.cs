@@ -3,7 +3,6 @@ using System.Collections;
 
 public class TriggeredImpalerSpikeTrap : TrapBase
 {
-    [SerializeField] float sleepTime = 2f;
     protected float inactivePosition = -1.7f;
     protected string animationName = "Triggered Spike Animation";
 	[SerializeField] private ParticleSystem bloodParticles;

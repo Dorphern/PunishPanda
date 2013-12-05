@@ -48,7 +48,6 @@ public class PandaStateManager : MonoBehaviour {
 	[SerializeField] public PandaDirection initDirection = PandaDirection.Left;
     private PandaState currentState;
     private PandaDirection currentDirection;
-    private int slapCount = 0;
 
     # region Public Methods
 	

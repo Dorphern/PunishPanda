@@ -13,8 +13,7 @@ public class PissParticles : MonoBehaviour {
 	private Quaternion leftEmission;
 	float initGravity;
     float initLife;
-	
-	int pissTransitions = 4; 
+
 	
 	void Start()
 	{
