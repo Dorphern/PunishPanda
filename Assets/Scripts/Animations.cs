@@ -9,7 +9,6 @@ public class Animations : MonoBehaviour {
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
-    private PandaMovementController pandaMovementController;
     private Collidable collidable;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
@@ -109,7 +108,6 @@ public class Animations : MonoBehaviour {
         stateManager = GetComponent<PandaStateManager>();
         pandaAI = GetComponent<PandaAI>();
         characterController = GetComponent<CharacterController>();
-        pandaMovementController = GetComponent<PandaMovementController>();
 
         anim.SetInteger("Direction", (int) stateManager.initDirection);
 		
