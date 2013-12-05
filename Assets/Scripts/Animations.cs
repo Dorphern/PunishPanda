@@ -94,6 +94,11 @@ public class Animations : MonoBehaviour {
         StartCoroutine(ResetDoubleTapped());
     }
 
+    public void MoveToEscape (float zPos)
+    {
+        StartCoroutine(MoveThePandaToEscape(zPos));
+    }
+
     # endregion
 
     # region Private Methods
@@ -142,12 +147,12 @@ public class Animations : MonoBehaviour {
     {
         if (position == TrapPosition.Ceiling)
         {
-            yield return new WaitForSeconds(1.1f);
+            yield return new WaitForSeconds(characterController.isGrounded ? 1.1f : 0.3f);
             animation.Play(escapeUpAnimation);
         }
         else if (position == TrapPosition.Ground)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(characterController.isGrounded ? 2f : 1.5f);
             animation.Play(escapeDownAnimation);
         }
     }
@@ -198,8 +203,10 @@ public class Animations : MonoBehaviour {
         anim.SetBool("DoubleTapped", false);
     }
 
-        IEnumerator Peeing()
+    IEnumerator Peeing()
     {
+        yield return new WaitForSeconds(.2f);
+
         float time = 0.5f;
         float step = 0.02f;
         int  steps = (int) (time / step);
@@ -214,7 +221,7 @@ public class Animations : MonoBehaviour {
             yield return new WaitForSeconds(step);  
         }
         pissScript.PissFor(3f); 
-        yield return new WaitForSeconds(4.5f);
+        yield return new WaitForSeconds(4.1f);
         
         time = 0.2f;
         steps = (int) (time / step);
@@ -232,7 +239,20 @@ public class Animations : MonoBehaviour {
         
     }
 
-    void StopPiss()
+    IEnumerator MoveThePandaToEscape (float zPos)
+    {
+        yield return new WaitForSeconds(0.5f);
+        int steps = 10;
+        for (int i = 0; i < steps; i++)
+        {
+            Vector3 newPos = transform.position;
+            newPos.z += zPos / steps;
+            transform.position = newPos;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    void StopPiss ()
     {
         pissScript.InterruptPiss();
         StopCoroutine("Peeing");

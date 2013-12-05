@@ -39,12 +39,12 @@ public class SawTrap : TrapBase {
         return isActive;
     }
 
-    public override void ActivateTrap ()
+    public override void ActivateTrap (bool playAnimation = true)
     {
         isActive = true;
     }
 
-    public override void DeactivateTrap ()
+    public override void DeactivateTrap (bool playAnimation = true)
     {
         isActive = false;
     }
@@ -91,12 +91,12 @@ public class SawTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-		bloodParticles.transform.localRotation = Quaternion.LookRotation( new Vector3(pandaAI.GetPandaFacingDirection().x, 0f, 0f));
-		bloodParticles.transform.position = pandaAI.transform.position;
-		bloodParticles.Play();
-        bool kill = pandaAI.AttemptDeathTrapKill(this, isPerfect);
-        if (DismemberInstead)
-            pandaAI.Dismember();
+		pandaAI.PlayDeathParticles();
+		bool kill;
+		if (DismemberInstead)
+			kill = pandaAI.AttemptDeathTrapKill(this, isPerfect, PandaAI.KillType.Dismember);
+        else
+			kill = pandaAI.AttemptDeathTrapKill(this, isPerfect);
         return kill;
     }
 

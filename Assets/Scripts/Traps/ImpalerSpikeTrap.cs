@@ -16,7 +16,7 @@ public class ImpalerSpikeTrap : TrapBase {
         return TrapType.ImpalerSpikes;
     }
 
-    override public void ActivateTrap ()
+    override public void ActivateTrap (bool playAnimation = true)
     {
         base.ActivateTrap();
         StartCoroutine(PlayImpalingAnimation());
@@ -47,7 +47,7 @@ public class ImpalerSpikeTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-		bloodParticles.Play();
+		pandaAI.PlayDeathParticles();
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 
