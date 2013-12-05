@@ -28,6 +28,7 @@ public class RuntimePlayer : MonoBehaviour
 
         PlayingNode = node;
         DSPTime time = dspPool.GetObject();
+
         time.CurrentEndTime = AudioSettings.dspTime;
         StartCoroutine(StartPlay(node, node, time));
     }
@@ -177,7 +178,7 @@ public class RuntimePlayer : MonoBehaviour
                 endTime.CurrentEndTime += length;
 
                 if (!firstClip)
-                    yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime) - length + 0.050f);
+                    yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime) - length + 0.2f);
 
                 firstClip = false;
             }
@@ -217,16 +218,11 @@ public class RuntimePlayer : MonoBehaviour
                 }
             }
 
-            if (breakLoop && current.Type == AudioNodeType.Sequence)
+            if (breakLoop && (loops > 0 || loopInfinite))
             {
                 breakLoop = false;
-                int currentLoops = loops;
-                bool currentInfinite = loopInfinite;
-
                 loops = 0;
                 loopInfinite = false;
-                if (currentLoops > 0 || currentInfinite)
-                    continue;
             }
         }
     }
@@ -250,9 +246,8 @@ public class RuntimePlayer : MonoBehaviour
 
             length = RuntimeHelper.LengthFromPitch(length, Current.pitch);
             endTimes[currentIndex] = playAtDSPTime + length;
-
+            
             Current.PlayScheduled(playAtDSPTime);
-
         }
         
         return length;

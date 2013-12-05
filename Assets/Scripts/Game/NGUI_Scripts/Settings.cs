@@ -118,7 +118,6 @@ public class Settings : MonoBehaviour {
 				
 				Music_animation.Play ("leverAnimation2");//goleft
 	
-				InstanceFinder.StatsManager.MusicEnabled = false;
 				//Debug.Log ("Music OFF");
 			}
 			else
@@ -126,7 +125,6 @@ public class Settings : MonoBehaviour {
 
 				Music_animation.Play ("leverAnimation1");//goright
 
-				InstanceFinder.StatsManager.MusicEnabled = true;
 				//Debug.Log ("Music ON");
 			}
 		}
