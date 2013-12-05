@@ -436,7 +436,12 @@ public class PandaAI : MonoBehaviour {
 
     public void SliceInHalf()
     {
-        (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+		Quaternion rotation = transform.rotation;
+		if(preFallingState == PandaState.PushingFinger)
+		{
+			rotation *= Quaternion.AngleAxis(180f, Vector3.up);	
+		}
+        (Instantiate(slicedInHalfPanda, transform.position, rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, transform.position);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
@@ -444,7 +449,12 @@ public class PandaAI : MonoBehaviour {
 
     public void SliceInHalf(Vector3 position, BladeDirection bladeDirection)
     {
-        (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+		Quaternion rotation = transform.rotation;
+		if(preFallingState == PandaState.PushingFinger)
+		{
+			rotation *= Quaternion.AngleAxis(180f, Vector3.up);	
+		}
+        (Instantiate(slicedInHalfPanda, transform.position, rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, position, bladeDirection);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
