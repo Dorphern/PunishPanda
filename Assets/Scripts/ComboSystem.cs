@@ -140,7 +140,7 @@ public class ComboSystem : MonoBehaviour
         levelDeaths.AlivePandas -= 1;
         InstanceFinder.StatsManager.PandasKilled++;
 
-        /*if (pandaComboKills > 1 && wasLastKillPerfect)
+        if (perfectKillsCombo > 1 && wasLastKillPerfect)  
         {
             HDRSystem.PostEvents(gameObject, comboKillEvents);
         }
@@ -150,7 +150,7 @@ public class ComboSystem : MonoBehaviour
                 HDRSystem.PostEvents(gameObject, perfectKillEvents);
             else
                 HDRSystem.PostEvents(gameObject, slobbyKillEvents);
-        }*/
+        }
     }
 
     // Update is called once per frame
