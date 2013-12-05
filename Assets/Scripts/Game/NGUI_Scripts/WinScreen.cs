@@ -196,7 +196,7 @@ public class WinScreen : MonoBehaviour {
 		// normal kills
 
 
-        ScoreTypeLabel.text = Localization.instance.Get("NormalKill");
+        ScoreTypeLabel.text = Localization.instance.Get("SlobbyKill");
 		intermediateTotal = pointSystem.PerKill;
 		
 		

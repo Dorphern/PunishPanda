@@ -11,22 +11,14 @@ public class PandaMovementController : MonoBehaviour {
     [SerializeField] JumpingOff jumpOff;
     [SerializeField] Falling falling;
     [SerializeField] Escape escape;
-    [SerializeField] float hangingOffSet = 30f;
     [SerializeField] float pushingForce = 15f;
 	private float currentPushingMagnitude = 0f;
 	
 	private CharacterController controller;
 	private PandaAI pandaAI;
-    private Animations animations;
     private PandaStateManager pandaStateManager;
 	Vector3 lastPos;
     Vector3 dampedVelocity;
-    private float escapeSlideSpeed = 0f;
-	
-	bool withinRange = false;
-
-    [SerializeField] float velocityDampingSpeed = 0.1f;
-    [SerializeField] float velocityRotation = 3f;
  
     #region SerializedClasses
 	[System.Serializable]
@@ -136,7 +128,6 @@ public class PandaMovementController : MonoBehaviour {
 	{
 	    controller = GetComponent<CharacterController>();
 		pandaAI = GetComponent<PandaAI>();
-        animations = GetComponent<Animations>();
         pandaStateManager = GetComponent<PandaStateManager>();
 		
 		movement.currentSpeed = movement.walkSpeed;

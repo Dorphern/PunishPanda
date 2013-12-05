@@ -30,7 +30,6 @@ public class Lever : TrapActivator {
 	
 	void OnTriggerEnter(Collider collider)
 	{
-        Debug.Log("enter!");
 		colliderType = collider.GetComponent<Collidable>();
 		if(colliderType == null) return;
 		

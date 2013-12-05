@@ -8,12 +8,10 @@ public class DoorTrap : TrapBase {
 	public string deactivationClip;
 	private AnimationState activationState;
 	private AnimationState deactivationState;
-	private List<PandaAI> pandasOnTrap;
 	private DoorTrapFallingTrigger fallingTrigger;
 	
 	void Awake()
 	{
-		pandasOnTrap = new List<PandaAI>();
 		fallingTrigger = transform.parent.GetComponent<DoorTrapFallingTrigger>();
 		activationState = this.animation[activationClip];	
 		deactivationState = this.animation[deactivationClip];	
