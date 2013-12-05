@@ -5,7 +5,7 @@ public class PandaEscape : TrapBase
 {
     protected string animationInName = "bambooIn";
     protected string animationOutName = "bambooOut";
-
+	protected bool pandaEscaped = false;
 
     # region Public Methods
     public override TrapType GetTrapType ()
@@ -15,6 +15,8 @@ public class PandaEscape : TrapBase
 
     public override void ActivateTrap (bool playAnimation = true)
     {
+		if(pandaEscaped) return;
+		
         base.ActivateTrap();
 		if(playAnimation)
 		{
@@ -24,6 +26,8 @@ public class PandaEscape : TrapBase
 
     public override void DeactivateTrap (bool playAnimation = true)
     {
+		if(pandaEscaped) return;
+		
         base.DeactivateTrap();
 		if(playAnimation)
 		{
@@ -35,6 +39,7 @@ public class PandaEscape : TrapBase
     # region Private Methods
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
+		pandaEscaped = true;
         pandaAI.PandaEscape(this, position);
         return false;
     }

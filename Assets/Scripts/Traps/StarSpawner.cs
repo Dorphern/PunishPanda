@@ -80,6 +80,7 @@ public class StarSpawner : TrapBase
             0
         );
         star.Activated();
-        star.ShootStar(dir, force, torque);
+        if (angle <= 90 && angle >= -90) star.ShootStar(dir, force, torque);
+		else star.ShootStar(dir, force, -torque);
 	}
 }

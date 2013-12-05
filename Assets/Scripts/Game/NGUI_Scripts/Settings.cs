@@ -113,19 +113,17 @@ public class Settings : MonoBehaviour {
 			else
 				MusicAnimationFlag++;
 			
-			if(_musicSlider.value==0)
+			if(_musicSlider.value==1)
 			{
-				
-				Music_animation.Play ("leverAnimation2");//goleft
-	
-				//Debug.Log ("Music OFF");
+						
+				Music_animation.Play ("leverAnimation1");//goright
+				InstanceFinder.StatsManager.MusicEnabled = false;
 			}
 			else
 			{
 
-				Music_animation.Play ("leverAnimation1");//goright
-
-				//Debug.Log ("Music ON");
+				Music_animation.Play ("leverAnimation2");//goleft
+				InstanceFinder.StatsManager.MusicEnabled = true;
 			}
 		}
 	}
@@ -143,19 +141,17 @@ public class Settings : MonoBehaviour {
 			else
 				SFXAnimationFlag++;
 			
-			if(_soundEFXSlider.value==0)
+			if(_soundEFXSlider.value==1)
 			{
-				SFX_animation.Play ("leverAnimation2");//goleft
-
+				
+				SFX_animation.Play ("leverAnimation1");//goright
 				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
-				//Debug.Log ("Sound OFF");
 			}
 			else
 			{
-				SFX_animation.Play ("leverAnimation1");//goright		
-				
+					
+				SFX_animation.Play ("leverAnimation2");//goleft
 				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
-				//Debug.Log ("Sound ON");
 			}
 		}
 	}

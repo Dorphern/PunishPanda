@@ -321,7 +321,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400036}
   - 114: {fileID: 11400286}
-  - 114: {fileID: 11400278}
   m_Layer: 8
   m_Name: PandDeadLabel
   m_TagString: Untagged
@@ -1139,7 +1138,7 @@ GameObject:
   - 114: {fileID: 11400222}
   - 114: {fileID: 11400220}
   m_Layer: 8
-  m_Name: DoomedLabel
+  m_Name: TheWorldIsLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1716,6 +1715,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100202
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400202}
+  - 114: {fileID: 11400278}
+  - 114: {fileID: 11400422}
+  m_Layer: 8
+  m_Name: DoomedLabel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &100204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,7 +2107,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -721.127441, y: 360.563354, z: .000305175781}
+  m_LocalPosition: {x: -480.749512, y: 360.75, z: .000305175781}
   m_LocalScale: {x: .999872983, y: .999872983, z: .999872983}
   m_Children:
   - {fileID: 400008}
@@ -2994,6 +3010,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400200}
+  - {fileID: 400202}
   - {fileID: 400118}
   m_Father: {fileID: 400158}
 --- !u!4 &400152
@@ -3157,7 +3174,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100208}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.00048828125, y: 1.12670898, z: .000122070312}
+  m_LocalPosition: {x: -.75, y: .75, z: .000122070312}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400220}
@@ -3169,7 +3186,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100180}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.00048828125, y: 1.12670898, z: -.00048828125}
+  m_LocalPosition: {x: -.75, y: .75, z: -.00048828125}
   m_LocalScale: {x: .999872983, y: .999872983, z: .999872983}
   m_Children:
   - {fileID: 400212}
@@ -3295,6 +3312,17 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 180, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400150}
+--- !u!4 &400202
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100202}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -43, z: -.000171661377}
+  m_LocalScale: {x: 1.00007999, y: 1.00007999, z: 1.00007999}
   m_Children: []
   m_Father: {fileID: 400150}
 --- !u!4 &400204
@@ -3460,7 +3488,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -43.3808899, y: 374.648193, z: 0}
+  m_LocalPosition: {x: -28.4999084, y: 374.999756, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400038}
@@ -5523,6 +5551,7 @@ MonoBehaviour:
   oneStarTexture: {fileID: 100112}
   twoStarTexture: {fileID: 100076}
   threeStarTexture: {fileID: 100104}
+  chamberCleared: {fileID: 11400286}
   FunFactsLabel: {fileID: 11400310}
   scoreLabel: {fileID: 11400184}
   ScoreTypeLabel: {fileID: 11400208}
@@ -6858,7 +6887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: Doomed
+  key: TheWorldIs
 --- !u!114 &11400222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6872,14 +6901,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 1
-  mWidth: 388
-  mHeight: 180
+  mWidth: 0
+  mHeight: 0
   mDepth: 21
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
-  mText: "The world is \nDOOMED"
+  mText: '
+
+'
   mFontSize: 90
   mFontStyle: 0
   mEncoding: 0
@@ -7620,13 +7651,36 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100036}
+  m_GameObject: {fileID: 100202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
+  m_Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: PandaDead
+  mColor: {r: 0, g: 0, b: 0, a: 1}
+  mPivot: 1
+  mWidth: 0
+  mHeight: 0
+  mDepth: 21
+  autoResizeBoxCollider: 0
+  keepCrispWhenShrunk: 1
+  mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
+  mFont: {fileID: 0}
+  mText: 
+  mFontSize: 90
+  mFontStyle: 0
+  mEncoding: 0
+  mMaxLineCount: 0
+  mEffectStyle: 0
+  mEffectColor: {r: 0, g: 0, b: 0, a: 1}
+  mSymbols: 1
+  mEffectDistance: {x: 1, y: 1}
+  mOverflow: 2
+  mShrinkToFit: 0
+  mMaxLineWidth: 0
+  mMaxLineHeight: 0
+  mLineWidth: 0
+  mMultiline: 1
 --- !u!114 &11400280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8258,14 +8312,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 1
-  mWidth: 442
-  mHeight: 90
+  mWidth: 0
+  mHeight: 0
   mDepth: 21
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
-  mText: A panda escaped!!
+  mText: 
   mFontSize: 90
   mFontStyle: 0
   mEncoding: 0
@@ -9509,6 +9563,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054393be5eb4a6b43ad634c82501c87a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11400422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100202}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Doomed
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1
