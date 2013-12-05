@@ -8,20 +8,27 @@ public class SideWallButton : TrapActivator
     public float activationTimeLength = 3f;
     private Collidable colliderType;
     private string animationName = "wallButtonAnimation";
+	private bool isActivated = false;
 
     protected override void ActivateTraps()
     {
-        base.ActivateTraps();
-        StartCoroutine(PlayActivateAnimation());
-        var buttonSound = GetComponentInChildren<CountDownTime>();
-        if(buttonSound != null)
-            buttonSound.Activate(activationTimeLength);
+		if(this.isActivated == false)
+		{
+	        base.ActivateTraps();
+	        StartCoroutine(PlayActivateAnimation());
+	        var buttonSound = GetComponentInChildren<CountDownTime>();
+	        if(buttonSound != null)
+	            buttonSound.Activate(activationTimeLength);
+			
+			this.isActivated = true;
+		}
     }
 
     protected override void DeactivateTraps()
     {
         base.DeactivateTraps();
         PlayDeactiveAnimation();
+		this.isActivated = false;
     }
 
     void OnTriggerEnter(Collider collider)

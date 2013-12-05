@@ -178,8 +178,12 @@ public class InputHandler : MonoBehaviour {
 		//if we didnt touch anything relevant we add a blockade and swipeController to the finger
 		if(!hitflag)
 		{
-			selectedBlockades.Add(fingerID,  blockades[0]);
-			blockades.RemoveAt(0);
+			
+			if(!selectedBlockades.ContainsKey(fingerID))
+			{
+				selectedBlockades.Add(fingerID,  blockades[0]);
+				blockades.RemoveAt(0);
+			}
 			lastMousePos[fingerID] = position;
 		}
 	}
