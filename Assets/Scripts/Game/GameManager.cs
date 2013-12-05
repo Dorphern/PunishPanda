@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
 		GA.InitializeQueue();
+		// this allows the transparent objects to be sorted properly based on the distance from the camera
+		Camera.main.transparencySortMode = TransparencySortMode.Orthographic;
 		
         var instance = InstanceFinder.GameManager;
         if (instance == null)
