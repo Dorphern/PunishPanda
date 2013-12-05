@@ -267,8 +267,6 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect, KillType killType = KillType.Default)
     {
-        if (!IsAlive())
-            return false;
 
         Debug.Log("Hit death object: " + trap.GetTrapType());		
 		
