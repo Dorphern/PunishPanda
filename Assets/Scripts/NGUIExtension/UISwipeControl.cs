@@ -39,7 +39,7 @@ public class UISwipeControl : MonoBehaviour
         if (transform.childCount > 0)
         {
             Recenter(transform.GetChild(0));
-            Label.text = 1 + XofYString + transform.childCount;
+            //Label.text = 1 + XofYString + transform.childCount;
         }
         else
         {
@@ -49,7 +49,7 @@ public class UISwipeControl : MonoBehaviour
 
     void Start()
     {
-        Label.text = (startClosetsChildIndex + 1) + XofYString + transform.childCount;
+        
     }
 
     void OnDragFinished()
@@ -189,8 +189,10 @@ public class UISwipeControl : MonoBehaviour
 
         if (target == null)
         {
-            if(mCenteredObject != null)
+            if (mCenteredObject != null)
                 target = mCenteredObject.transform;
+            else
+                target = gameObject.transform;
         }
 
         if (target != null)
@@ -210,7 +212,7 @@ public class UISwipeControl : MonoBehaviour
             // Spring the panel to this calculated position
             SpringPanel.Begin(mDrag.gameObject, dt.localPosition - offset, springStrength).onFinished = onFinished;
         }
-        else mCenteredObject = null;
+        
     }
 
     private static Transform ClosetsChild(Transform trans, Vector3 offsetCenter, float min, out int index)
@@ -249,5 +251,10 @@ public class UISwipeControl : MonoBehaviour
         Vector3 offsetCenter = center - mDrag.currentMomentum * (mDrag.momentumAmount * 0.1f);
         startClosetsChild = ClosetsChild(transform, offsetCenter, float.MaxValue, out startClosetsChildIndex);
         touchStartPos = UICamera.currentTouch.pos;
+    }
+
+    public void RedoLabel()
+    {
+        Label.text = (startClosetsChildIndex + 1) + XofYString + transform.childCount;
     }
 }
