@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 public class DoorTrap : TrapBase {
 	
-	public string animationName;
-	private AnimationState trapClip;
+	public string activationClip;
+	public string deactivationClip;
+	private AnimationState activationState;
+	private AnimationState deactivationState;
 	private List<PandaAI> pandasOnTrap;
 	private DoorTrapFallingTrigger fallingTrigger;
 	
@@ -13,27 +15,32 @@ public class DoorTrap : TrapBase {
 	{
 		pandasOnTrap = new List<PandaAI>();
 		fallingTrigger = transform.parent.GetComponent<DoorTrapFallingTrigger>();
-		trapClip = this.animation[animationName];	
+		activationState = this.animation[activationClip];	
+		deactivationState = this.animation[deactivationClip];	
 	}
 	
 	public override void ActivateTrap (bool playAnimation = true)
 	{
 		base.ActivateTrap ();
 		fallingTrigger.PandasFalling();
+		
 		if(playAnimation)
 		{
-			trapClip.speed = 1f;
 			if(animation.isPlaying == false)
 			{
-				trapClip.time = 0f;
+				activationState.time = 0f;
 			}
-			this.animation.Play();
+			else
+			{
+				this.animation.Stop();
+				activationState.time = deactivationState.time;
+			}
+			this.animation.Play(activationClip);
 		}
 		else
 		{
-			trapClip.speed = 1f;
-			trapClip.time = trapClip.length;
-			this.animation.Play();
+			activationState.time = activationState.length;
+			this.animation.Play(activationClip);
 		}
 	}
 	
@@ -42,18 +49,21 @@ public class DoorTrap : TrapBase {
 		base.DeactivateTrap ();
 		if(playAnimation)
 		{
-			trapClip.speed = -1f;
 			if(animation.isPlaying == false)
 			{
-				trapClip.time = trapClip.length;	
+				deactivationState.time = 0f;	
 			}
-			this.animation.Play();
+			else
+			{
+				this.animation.Stop();
+				deactivationState.time = activationState.time;
+			}
+			this.animation.Play(deactivationClip);
 		}
 		else
 		{
-			trapClip.speed = -1f;
-			trapClip.time = 0f;
-			this.animation.Play();
+			deactivationState.time = deactivationState.length;
+			this.animation.Play(deactivationClip);
 		}
 	}
 	
