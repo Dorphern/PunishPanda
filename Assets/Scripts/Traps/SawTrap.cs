@@ -91,7 +91,6 @@ public class SawTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-		pandaAI.PlayDeathParticles();
 		bool kill;
 		if (DismemberInstead)
 			kill = pandaAI.AttemptDeathTrapKill(this, isPerfect, PandaAI.KillType.Dismember);
