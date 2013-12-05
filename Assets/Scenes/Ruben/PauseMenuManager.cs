@@ -69,7 +69,9 @@ public class PauseMenuManager : MonoBehaviour {
 				textureComponent.width = TutorialTexture.width;
 				textureComponent.height = TutorialTexture.height;
 				
+				
 				PauseAndReset.SetActive (false);
+				pausegame.TutorialPause();
 				StartCoroutine(startTutorial ());
 			}
 		}
@@ -172,15 +174,12 @@ public class PauseMenuManager : MonoBehaviour {
 		// wait one update for data initialization
 		yield return null;
 		
-		pausegame.TutorialPause();
-		//PauseAndReset.SetActive (false);
-	
 
 		WhiteTint.SetActive(true);
 		HintScreen.SetActive(true);
 		
-		hintAlphaComponent.Play();
-		whiteTintAlphaComponent.Play();
+		hintAlphaComponent.PlayForward();
+		whiteTintAlphaComponent.PlayForward();
 	}
 	
 	IEnumerator ExitTutorial()

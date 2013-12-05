@@ -36,6 +36,10 @@ public class Level : MonoBehaviour
     [EventHookAttribute("On Level Reset")]
     private List<AudioEvent> onReset = new List<AudioEvent>();
 
+    [SerializeField]
+    [EventHookAttribute("On Level Start")]
+    private List<AudioEvent> onStartEvents = new List<AudioEvent>();
+
     # region Public Methods
 
     public void Pause()
@@ -114,6 +118,7 @@ public class Level : MonoBehaviour
     # region Private Methods
     private void OnEnable()
     {
+        HDRSystem.PostEvents(gameObject, onStartEvents);
         Time.timeScale = 1.0f;
         //This code only exists to enable that the game will work correctly when working in the editor and loading a random map
         if (!GetComponent<InstanceFinder>().SetupIfMissing())
@@ -121,6 +126,9 @@ public class Level : MonoBehaviour
             InstanceFinder.GameManager.ActiveLevel = this;
         }
         InstanceFinder.GameManager.ActiveLevel = this;
+		
+		// this allows the transparent objects to be sorted properly based on the distance from the camera
+		Camera.main.transparencySortMode = TransparencySortMode.Orthographic;
     }
 
     private void Update()

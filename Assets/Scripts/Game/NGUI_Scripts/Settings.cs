@@ -90,10 +90,8 @@ public class Settings : MonoBehaviour {
 		
 		if(InstanceFinder.Localization.currentLanguage!="Danish")
 		{
-			Debug.Log(InstanceFinder.Localization.languages.Length);
 			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
 			{
-				Debug.Log(InstanceFinder.Localization.languages[i].name);
 				if(InstanceFinder.Localization.languages[i].name=="Danish")
 				{
 					

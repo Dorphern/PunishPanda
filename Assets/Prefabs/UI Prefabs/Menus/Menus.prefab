@@ -2269,6 +2269,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400268}
   - 114: {fileID: 11400418}
+  - 114: {fileID: 11400982}
   m_Layer: 8
   m_Name: indexFingerLabel
   m_TagString: Untagged
@@ -4022,6 +4023,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400478}
   - 114: {fileID: 11400876}
+  - 114: {fileID: 11400980}
   m_Layer: 8
   m_Name: creditsTexture
   m_TagString: Untagged
@@ -6342,6 +6344,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400768}
   - 114: {fileID: 11400978}
+  - 114: {fileID: 11400984}
   m_Layer: 8
   m_Name: indexFingerLabel
   m_TagString: Untagged
@@ -15316,7 +15319,6 @@ MonoBehaviour:
   _soundEFXSlider: {fileID: 11400574}
   SFX_Lever: {fileID: 100620}
   Music_Lever: {fileID: 100202}
-  soundSettings: {fileID: 0}
 --- !u!114 &11400252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15752,6 +15754,7 @@ MonoBehaviour:
   Button1: {fileID: 100432}
   Button2: {fileID: 100186}
   buttonType: 1
+  settingsScript: {fileID: 11400250}
 --- !u!114 &11400294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16070,6 +16073,7 @@ MonoBehaviour:
   Button1: {fileID: 100626}
   Button2: {fileID: 100236}
   buttonType: 0
+  settingsScript: {fileID: 11400250}
 --- !u!114 &11400322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16755,12 +16759,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100628}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor: {r: .926470578, g: .0543103442, b: .0543103442, a: 1}
+  mColor: {r: .283582091, g: .283582091, b: .283582091, a: 1}
   mPivot: 4
   mWidth: 20
   mHeight: 48
@@ -17190,14 +17194,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 334
-  mHeight: 70
+  mWidth: 0
+  mHeight: 0
   mDepth: 6
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
-  mText: use index finger
+  mText: 
   mFontSize: 70
   mFontStyle: 0
   mEncoding: 0
@@ -20382,12 +20386,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100640}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor: {r: 1, g: .0586206913, b: .141683653, a: 1}
+  mColor: {r: .283582091, g: .283582091, b: .283582091, a: 1}
   mPivot: 4
   mWidth: 20
   mHeight: 48
@@ -22388,7 +22392,7 @@ MonoBehaviour:
     width: 1
     height: 1
   mShader: {fileID: 4800000, guid: e75727d9555d9d14ca51d91908c681bc, type: 3}
-  mTexture: {fileID: 2800000, guid: 804308111723bd747bf2eb13a9879cd7, type: 3}
+  mTexture: {fileID: 2800000, guid: 5ab47c8aa2aeb454c80db28b156c7658, type: 3}
   mMat: {fileID: 0}
 --- !u!114 &11400878
 MonoBehaviour:
@@ -22660,10 +22664,7 @@ MonoBehaviour:
     yVelocity: {x: 0, y: 0, z: 0}
     smoothTime: .100000001
     targetJumpPos: {x: 0, y: 0, z: 0}
-  hangingOffSet: 30
   pushingForce: 15
-  velocityDampingSpeed: .100000001
-  velocityRotation: 2
 --- !u!114 &11400910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -23191,14 +23192,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 334
-  mHeight: 70
+  mWidth: 0
+  mHeight: 0
   mDepth: 6
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
-  mText: use index finger
+  mText: 
   mFontSize: 70
   mFontStyle: 0
   mEncoding: 0
@@ -23213,6 +23214,49 @@ MonoBehaviour:
   mMaxLineHeight: 0
   mLineWidth: 0
   mMultiline: 1
+--- !u!114 &11400980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b5bd8d2e1bcbe4580036799fb6ca41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCamera: {fileID: 0}
+  container: {fileID: 0}
+  style: 3
+  runOnlyOnce: 0
+  relativeSize: {x: 1.58500004, y: 1.83000004}
+  initialSize: {x: 1, y: 1}
+  borderPadding: {x: 0, y: 0}
+  widgetContainer: {fileID: 0}
+--- !u!114 &11400982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: IndexFinger
+--- !u!114 &11400984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: IndexFinger
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1
@@ -29399,10 +29443,7 @@ MonoBehaviour:
     yVelocity: {x: 0, y: 0, z: 0}
     smoothTime: .100000001
     targetJumpPos: {x: 0, y: 0, z: 0}
-  hangingOffSet: 30
   pushingForce: 15
-  velocityDampingSpeed: .100000001
-  velocityRotation: 3
 --- !u!114 &513653239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32063,7 +32104,6 @@ MonoBehaviour:
   _soundEFXSlider: {fileID: 1185325426}
   SFX_Lever: {fileID: 0}
   Music_Lever: {fileID: 0}
-  soundSettings: {fileID: 0}
 --- !u!114 &835811338
 MonoBehaviour:
   m_ObjectHideFlags: 0

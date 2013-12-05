@@ -25,7 +25,6 @@ public class UIToggleScale : MonoBehaviour
 
 	Vector3 mScale;
 	bool mStarted = false;
-	bool mHighlighted = false;
 	UIToggle toggle;
 	
 	// using awake since this need to be initialized before start

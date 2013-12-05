@@ -21,7 +21,10 @@ namespace PunishPanda.Game
             {
                 int normalKills = kills[i].NormalKills;
                 int perfectKills = kills[i].PerfectKills;
-                int combo = kills[i].ComboCount;
+                int combo = kills[i].PerfectKills;
+
+                
+
                 //Debug.Log("(" + normalKills + "*" + pointSystem.PerKill + "+" + perfectKills + "*" + pointSystem.PerfectKill + ")*" + combo + " = " + ((normalKills * pointSystem.PerKill + perfectKills * pointSystem.PerfectKill) * combo));
                 score += normalKills*pointSystem.PerKill + perfectKills*pointSystem.PerfectKill;
 				
