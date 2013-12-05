@@ -9,7 +9,6 @@ public class Animations : MonoBehaviour {
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
-    private Collidable collidable;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
@@ -113,9 +112,6 @@ public class Animations : MonoBehaviour {
 		
 		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
-
-        collidable = GetComponent<Collidable>();
-        //initScale  = pGO.transform.localScale;
 
         StartCoroutine(RandomNumberUpdater());
     }

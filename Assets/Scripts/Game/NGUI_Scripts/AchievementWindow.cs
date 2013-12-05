@@ -9,8 +9,7 @@ public class AchievementWindow : MonoBehaviour {
 	public UITexture achievementIcon;
 	public GameObject GUIcamera;
 	public UIRunTween rt;
-	
-	bool forward = true;
+
 	Queue<Achievement> completedAchievements;
 	bool isRunning = false;
 	Localization localization;
