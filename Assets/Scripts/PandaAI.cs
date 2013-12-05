@@ -17,6 +17,7 @@ public class PandaAI : MonoBehaviour {
 	public bool boostEnabled = false;
 	public float boostDuration = 1f;
 	public float pushingLimbsForce = 6f;
+	[SerializeField] protected ParticleSystem deathBloodParticles;
 
     [SerializeField] protected GameObject dismemberedPanda;
 	[SerializeField] protected GameObject electrocutedPanda;
@@ -328,6 +329,15 @@ public class PandaAI : MonoBehaviour {
             return true;
         }
     }
+	
+	public void PlayDeathParticles(bool unParent = true)
+	{
+		if(unParent == true)
+		{
+			deathBloodParticles.transform.parent = null;	
+		}
+		deathBloodParticles.Play();
+	}
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
     {
@@ -345,15 +355,12 @@ public class PandaAI : MonoBehaviour {
             
         pandaStateManager.ChangeState(PandaState.Escape);
         animations.PlayDeathAnimation(escape, pandaStateManager.GetDirection());
-        Debug.Log(pandaStateManager.GetDirection());
         pandaMovementController.SetVelocity(0, 0);
 
         // Fairy dust! MAGIC beyond this line
         // ---------------------------------------
         Vector3 newPos = transform.position;
         newPos.x = escape.transform.position.x;
-        newPos.z = escape.transform.position.z;
-        newPos.y += 0.2f;
 
         if (pandaStateManager.GetDirection() == PandaDirection.Left)
         {
@@ -367,6 +374,10 @@ public class PandaAI : MonoBehaviour {
         transform.position = newPos;
         // --------------------------------------
         // Fairy dust fades away
+        if (characterController.isGrounded == true)
+        {
+            animations.MoveToEscape(-1.1f);
+        }
 
         InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
     }
@@ -585,6 +596,7 @@ public class PandaAI : MonoBehaviour {
     public void SpikesDetracted()
     {
         spikeDetract = true;
+		PlayDeathParticles(false);
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)
