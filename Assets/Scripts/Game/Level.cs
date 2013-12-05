@@ -121,6 +121,9 @@ public class Level : MonoBehaviour
             InstanceFinder.GameManager.ActiveLevel = this;
         }
         InstanceFinder.GameManager.ActiveLevel = this;
+		
+		// this allows the transparent objects to be sorted properly based on the distance from the camera
+		Camera.main.transparencySortMode = TransparencySortMode.Orthographic;
     }
 
     private void Update()
