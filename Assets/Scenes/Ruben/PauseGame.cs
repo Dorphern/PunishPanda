@@ -13,7 +13,7 @@ public class PauseGame : MonoBehaviour {
 	[SerializeField] [EventHookAttribute("ResumeGame")]
 	List<AudioEvent> resumeGameEvent;
 
-	void Start () 
+	void Awake () 
 	{
 		savedTimeScale = Time.timeScale;
 		inputScript = InputHandler.instance;
