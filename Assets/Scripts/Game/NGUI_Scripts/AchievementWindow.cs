@@ -31,7 +31,7 @@ public class AchievementWindow : MonoBehaviour {
 		{
 			isRunning = true;
 
-            StartCoroutine(runAchievementWindow());
+            StartCoroutine("runAchievementWindow");
 		}
 	}
 	
