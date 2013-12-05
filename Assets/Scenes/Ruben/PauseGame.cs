@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class PauseGame : MonoBehaviour {
-	
+public class PauseGame : MonoBehaviour
+{
+    public static PauseGame Instance
+    {
+        get; private set;
+    }
+
 	private float savedTimeScale;
 	private GameObject inputHandler;
 	private InputHandler inputScript;
@@ -13,12 +18,18 @@ public class PauseGame : MonoBehaviour {
 	[SerializeField] [EventHookAttribute("ResumeGame")]
 	List<AudioEvent> resumeGameEvent;
 
-	void Awake () 
+    private bool hasUnpaused = false;
+
+    public delegate void FirstUnpauseDelegate();
+
+    public FirstUnpauseDelegate FirstUnpause;
+
+	void Awake ()
 	{
+	    Instance = this;
 		savedTimeScale = Time.timeScale;
 		inputScript = InputHandler.instance;
 	}
-	
 
 	public void StopTime()
 	{
@@ -48,6 +59,10 @@ public class PauseGame : MonoBehaviour {
 	{
 		Time.timeScale = savedTimeScale;
         inputScript.UnpausedGame();
+	    if (!hasUnpaused && FirstUnpause != null)
+	    {
+	        FirstUnpause();
+	    }
 		
 		for(int i = 0; i < resumeGameEvent.Count; ++i)
 		{

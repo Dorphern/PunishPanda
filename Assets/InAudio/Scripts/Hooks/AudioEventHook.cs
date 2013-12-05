@@ -23,10 +23,13 @@ public class AudioEventHook : MonoBehaviour
 
     void OnEnable()
     {
-        for (int i = 0; i < OnEnableEvents.Count; ++i)
+        PauseGame.Instance.FirstUnpause += () =>
         {
-            HDRSystem.PostEvent(gameObject, OnEnableEvents[i]);
-        }
+            for (int i = 0; i < OnEnableEvents.Count; ++i)
+            {
+                HDRSystem.PostEvent(gameObject, OnEnableEvents[i]);
+            }
+        };
     }
 
     void Start()
