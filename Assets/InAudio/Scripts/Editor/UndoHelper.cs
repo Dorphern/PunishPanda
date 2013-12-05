@@ -168,7 +168,8 @@ namespace InAudio
         {
             SceneView.RepaintAll();
             HandleUtility.Repaint();
-            EditorUtility.SetDirty(obj);
+            if(obj != null)
+                EditorUtility.SetDirty(obj);
 #if !UNITY_4_1 && !UNITY_4_2
             if(obj != null)
                 Undo.DestroyObjectImmediate(obj);

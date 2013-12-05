@@ -14,6 +14,7 @@ public class WinScreen : MonoBehaviour {
 	public GameObject oneStarTexture;
 	public GameObject twoStarTexture;
 	public GameObject threeStarTexture;
+	public UILabel  chamberCleared;
 	public UILabel  FunFactsLabel;
 	public UILabel  scoreLabel;
 	public UILabel  ScoreTypeLabel;
@@ -56,6 +57,7 @@ public class WinScreen : MonoBehaviour {
 	
 	LevelData levelData;
 	Level level;
+	int levelnumber;
 	
 	int total = 0, intermediateTotal = 0;
 
@@ -83,6 +85,7 @@ public class WinScreen : MonoBehaviour {
 		InstanceFinder.GameManager.ActiveLevel.onLevelComplete += OnLevelComplete;
 		levelData = InstanceFinder.LevelManager.CurrentLevel;
 		level = InstanceFinder.GameManager.ActiveLevel;
+		levelnumber = InstanceFinder.LevelManager.currentLevelIndex + 1;
 	}
 	
 	private void OnLevelComplete()
@@ -114,6 +117,9 @@ public class WinScreen : MonoBehaviour {
             FunFactsLabel.text = levelData.DanishFunFactsText;
         score = level.GetScore();
         highscore = levelData.HighScore;
+		
+		chamberCleared.text = Localization.instance.Get("Chamber") + " " + levelnumber 
+			+ " " + Localization.instance.Get("Cleared");
 		
 		oneStarScore = levelData.OneStar;
 		twoStarScore = levelData.TwoStars;
