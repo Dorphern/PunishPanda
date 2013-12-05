@@ -70,6 +70,8 @@ public class MainMenuSaws : MonoBehaviour {
 	 
 	    if(!isDown)
 	    {
+			
+			//also do all this the object gets disabled
 			StopCoroutine("emmitDismembered");
             HDRSystem.PostEvents(gameObject, endSpinEvents);
 	       	sawtrap.DeactivateTrap();
@@ -91,6 +93,15 @@ public class MainMenuSaws : MonoBehaviour {
 		StartCoroutine("emmitDismembered");
 	}
 	
+	//fix for multitouching saws
+	void OnDisable()
+	{
+			StopCoroutine("emmitDismembered");
+			sawtrap.DeactivateTrap();
+			sawObject.transform.rotation = originalPosition;
+			sawtrap.Reset ();
+		
+	}
 	
 	
 	void OnEnable()
