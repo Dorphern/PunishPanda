@@ -12,14 +12,6 @@ public class GUIButtonAlternator : MonoBehaviour {
 	public GameObject Button2;
 	public ButtonType buttonType;
 
-    [SerializeField]
-    [EventHookAttribute("Off")]
-    List<AudioEvent> onOff = new List<AudioEvent>();
-
-    [SerializeField]
-    [EventHookAttribute("On")]
-    List<AudioEvent> onOn = new List<AudioEvent>();
-
 	
 	void Start () {
 		//check for inital state..
@@ -60,7 +52,6 @@ public class GUIButtonAlternator : MonoBehaviour {
 		if(Button1.activeInHierarchy == false)
 		{
 			
-            HDRSystem.PostEvents(gameObject, onOff);
             //these ^^ effect the mainmenu initialization issue..
 			Button1.SetActive(true);
 			Button2.SetActive(false);
@@ -68,7 +59,7 @@ public class GUIButtonAlternator : MonoBehaviour {
 		}
 		else
 		{
-            HDRSystem.PostEvents(gameObject, onOn);
+
 			//these ^^ effect the mainmenu initialization issue...
 			Button1.SetActive(false);
 			Button2.SetActive(true);
