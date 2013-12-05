@@ -15,7 +15,6 @@ public class FingerMenuScript : MonoBehaviour {
 	
 	void Start()
 	{
-		MenuManager mm = GetComponent<MenuManager>();
 		float size = InstanceFinder.StatsManager.FingerSize;
 		if(size == fm.smallFingerSize)
 			smallToggle.value = true;

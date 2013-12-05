@@ -178,8 +178,8 @@ public class PauseMenuManager : MonoBehaviour {
 		WhiteTint.SetActive(true);
 		HintScreen.SetActive(true);
 		
-		hintAlphaComponent.Play();
-		whiteTintAlphaComponent.Play();
+		hintAlphaComponent.PlayForward();
+		whiteTintAlphaComponent.PlayForward();
 	}
 	
 	IEnumerator ExitTutorial()
