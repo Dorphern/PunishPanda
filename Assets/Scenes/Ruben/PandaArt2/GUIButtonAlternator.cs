@@ -56,17 +56,24 @@ public class GUIButtonAlternator : MonoBehaviour {
 	
 	public void toggleButtons()
 	{
+		Debug.Log ("toggled Button "+gameObject);
 		if(Button1.activeInHierarchy == false)
 		{
+			
             HDRSystem.PostEvents(gameObject, onOff);
+            //these ^^ effect the mainmenu initialization issue..
 			Button1.SetActive(true);
 			Button2.SetActive(false);
+
 		}
 		else
 		{
             HDRSystem.PostEvents(gameObject, onOn);
+			//these ^^ effect the mainmenu initialization issue...
 			Button1.SetActive(false);
 			Button2.SetActive(true);
+			
+
 		}
 	}
 	
