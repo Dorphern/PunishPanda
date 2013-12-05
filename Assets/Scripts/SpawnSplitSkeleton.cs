@@ -9,6 +9,7 @@ public class SpawnSplitSkeleton : MonoBehaviour {
 	public Renderer ashSilhouette;
 	// Use this for initialization
 	void Start () {
+		this.animation["Take 001"].speed = 1f;
 		StartCoroutine(SpawnSkeleton());
 	}
 	
