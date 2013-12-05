@@ -58,7 +58,7 @@ public class InputHandler : MonoBehaviour {
 	
 	public void PausedGame()
 	{
-		#if UNITY_EDITOR 
+		#if (UNITY_EDITOR || UNITY_STANDALONE)
 		PerformCursorEnded(1);
 		#else
 		for(int i=0; i<touches.Length; i++)
@@ -82,7 +82,7 @@ public class InputHandler : MonoBehaviour {
 			return;	
 		}
 		
-#if UNITY_EDITOR
+#if (UNITY_EDITOR || UNITY_STANDALONE)
 		if(paused == false)
 			MouseUpdate();
 #else
