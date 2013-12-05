@@ -76,6 +76,10 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Pushing End")]
     List<AudioEvent> pushingEndEvents = new List<AudioEvent>();
 
+    [SerializeField]
+    [EventHookAttribute("Electrocuted")]
+    List<AudioEvent> electrocutedEvents = new List<AudioEvent>();
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -459,7 +463,9 @@ public class PandaAI : MonoBehaviour {
 
     public void Electrocute()
     {
-        Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+        
+        var electroPanda = Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f))) as GameObject;
+        HDRSystem.PostEvents(electroPanda, electrocutedEvents);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
     }

@@ -10,9 +10,4 @@ public class Intro : MonoBehaviour
 	    Handheld.PlayFullScreenMovie(Path, Color.black, FullScreenMovieControlMode.Minimal, FullScreenMovieScalingMode.None);
         InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
 }
