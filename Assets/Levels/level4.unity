@@ -6966,9 +6966,10 @@ Animation:
   m_GameObject: {fileID: 503528478}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 7148615a7a34c71478cb32060df34c2a, type: 3}
+  m_Animation: {fileID: 7400000, guid: b9520f556b6b36f4e894259710b66e77, type: 3}
   m_Animations:
-  - {fileID: 7400000, guid: 7148615a7a34c71478cb32060df34c2a, type: 3}
+  - {fileID: 7400000, guid: b9520f556b6b36f4e894259710b66e77, type: 3}
+  - {fileID: 7400000, guid: 5979e11a5036be04bbdc2b12ba34232e, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -18208,6 +18209,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .994521916
       objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: 9d1f7619d1805d44f812793d3bf103de, type: 2}
+      propertyPath: initActivated
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9d1f7619d1805d44f812793d3bf103de, type: 2}
   m_RootGameObject: {fileID: 1866351549}
@@ -18788,7 +18793,7 @@ Transform:
   m_GameObject: {fileID: 947847610}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: -4.37113883e-08}
   m_LocalPosition: {x: 0, y: 0, z: -.5}
-  m_LocalScale: {x: .5, y: .5, z: .5}
+  m_LocalScale: {x: .25, y: .25, z: .5}
   m_Children: []
   m_Father: {fileID: 1515749073}
 --- !u!65 &947847612
@@ -18802,8 +18807,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.70736814, y: 24.9250526, z: 4}
-  m_Center: {x: 0, y: 12.4625263, z: -2}
+  m_Size: {x: 7.41473627, y: 49.8501053, z: 4}
+  m_Center: {x: 0, y: 24.9250526, z: -2}
 --- !u!114 &947847613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25267,7 +25272,7 @@ Transform:
   m_GameObject: {fileID: 1349832397}
   m_LocalRotation: {x: -.104528464, y: 0, z: 0, w: .994521916}
   m_LocalPosition: {x: 1.19838667, y: .434981525, z: 4.40563583}
-  m_LocalScale: {x: 1.02448678, y: 1, z: 1}
+  m_LocalScale: {x: 1.03715885, y: 1, z: 1}
   m_Children:
   - {fileID: 503528479}
   m_Father: {fileID: 404392001}
@@ -34531,7 +34536,7 @@ Transform:
   m_GameObject: {fileID: 1644562899}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: -4.37113883e-08}
   m_LocalPosition: {x: 0, y: 0, z: -.5}
-  m_LocalScale: {x: .5, y: .5, z: .5}
+  m_LocalScale: {x: .25, y: .25, z: .5}
   m_Children: []
   m_Father: {fileID: 1035941894}
 --- !u!65 &1644562901
@@ -34545,8 +34550,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.70736814, y: 24.9250526, z: 4}
-  m_Center: {x: 0, y: 12.4625263, z: -2}
+  m_Size: {x: 7.41473627, y: 49.8501053, z: 4}
+  m_Center: {x: 0, y: 24.9250526, z: -2}
 --- !u!114 &1644562902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36174,9 +36179,10 @@ Animation:
   m_GameObject: {fileID: 152024548}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 7148615a7a34c71478cb32060df34c2a, type: 3}
+  m_Animation: {fileID: 7400000, guid: b9520f556b6b36f4e894259710b66e77, type: 3}
   m_Animations:
-  - {fileID: 7400000, guid: 7148615a7a34c71478cb32060df34c2a, type: 3}
+  - {fileID: 7400000, guid: b9520f556b6b36f4e894259710b66e77, type: 3}
+  - {fileID: 7400000, guid: 5979e11a5036be04bbdc2b12ba34232e, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -39504,7 +39510,8 @@ MonoBehaviour:
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
-  animationName: ActivateDoor
+  activationClip: ActivateDoor
+  deactivationClip: DeactivateDoor
 --- !u!65 &1813736788
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39920,7 +39927,7 @@ GameObject:
   - 114: {fileID: 1863598964}
   - 114: {fileID: 1863598963}
   - 114: {fileID: 1863598962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PauseTint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40118,7 +40125,7 @@ Transform:
   m_GameObject: {fileID: 1866351549}
   m_LocalRotation: {x: -.104528464, y: 0, z: 0, w: .994521916}
   m_LocalPosition: {x: -5.5062604, y: .434981525, z: 4.40563631}
-  m_LocalScale: {x: 1.02448678, y: 1, z: 1}
+  m_LocalScale: {x: 1.03715885, y: 1, z: 1}
   m_Children:
   - {fileID: 152024549}
   m_Father: {fileID: 404392001}
@@ -43525,7 +43532,8 @@ MonoBehaviour:
   maxPerfectPandaKills: -1
   cleanTexture: {fileID: 0}
   dirtyTexture: {fileID: 0}
-  animationName: ActivateDoor
+  activationClip: ActivateDoor
+  deactivationClip: DeactivateDoor
 --- !u!65 &2103800299
 BoxCollider:
   m_ObjectHideFlags: 0
