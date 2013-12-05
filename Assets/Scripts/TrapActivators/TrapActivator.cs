@@ -38,6 +38,11 @@ public class TrapActivator : MonoBehaviour {
 
     protected void ActivateTrap (TrapBase trap, bool state)
     {
+        if (trap == null)
+        {
+            return;
+        }
+
         if (activatorAction == ActivatorMode.Activate && state == true
             || activatorAction == ActivatorMode.Deactivate && state == false)
         {
