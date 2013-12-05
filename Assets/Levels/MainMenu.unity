@@ -13811,7 +13811,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cleanTexture: {fileID: 2800000, guid: be79d6156e555b04d8761d120ea44909, type: 3}
   dirtyTexture: {fileID: 2800000, guid: b39fca6f1595b9042a6319fcc2964a3f, type: 3}
-  bloodParticles: {fileID: 32854473}
   onAliveEvents:
   - {fileID: 11400122, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   onDeadEvents:
@@ -26053,6 +26052,7 @@ MonoBehaviour:
   boostEnabled: 1
   boostDuration: .300000012
   pushingLimbsForce: 6
+  deathBloodParticles: {fileID: 0}
   dismemberedPanda: {fileID: 100020, guid: 8abf91a663f54b34583bfdde65a2715c, type: 2}
   electrocutedPanda: {fileID: 100000, guid: 19b9859a028559a43a0704876e558f48, type: 2}
   slicedInHalfPanda: {fileID: 100000, guid: cb0ce3de56e08a344a1bd28fdab60b1a, type: 2}
@@ -28976,7 +28976,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cleanTexture: {fileID: 2800000, guid: 2134eacc0c5b3284096a785e8520ba22, type: 3}
   dirtyTexture: {fileID: 2800000, guid: d385d310b8ed0524fad94ead99becea4, type: 3}
-  bloodParticles: {fileID: 1886773077}
   onAliveEvents:
   - {fileID: 11400122, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   onDeadEvents:
@@ -49179,46 +49178,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.78999996, y: 2.21000004, z: 1}
   m_Center: {x: 0, y: -.170000002, z: 0}
---- !u!1001 &1273011633
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_RootGameObject: {fileID: 2067360898}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &1273651011
 GameObject:
   m_ObjectHideFlags: 0
@@ -53083,7 +53042,7 @@ MonoBehaviour:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100004, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1395599477}
@@ -53100,7 +53059,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400008, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 1395599475}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -53117,11 +53076,13 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 4566502cd3b1d23498efc5aac5e49072, type: 3}
     FunFactsText: The snake in eden was actually a panda
     DanishFunFactsText: Slangen i paradis var i virkeligheden en panda
-    HintscreenTexture: {fileID: 2800000, guid: 98802b1126889064eb0946633e411dc9, type: 3}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 2800000, guid: d1d3ef413f6b9c242bbfa4ee90f88f61, type: 3}
-    DanishTutorialTexture: {fileID: 0}
-    Toggled: 0
+    HintscreenTexture: {fileID: 2800000, guid: 72a8ef6c4a3b8c1499ef2c2d1f3d7dac, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 3435dfac22053554ca7f94228b8eea3e,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 769a2ffbb3ee2e64f9ae394c6e588925, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: dd4d89eb0a366ab4683c967f93c6550b,
+      type: 3}
+    Toggled: 1
     MaxTimeScore: 120000
     LevelLength: 20
     OneStar: 30000
@@ -53135,10 +53096,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 6bd77c2474f4b7d4e92955304e38a241, type: 3}
     FunFactsText: 99% of school shootings are panda related
     DanishFunFactsText: Stop panda terrorismen
-    HintscreenTexture: {fileID: 2800000, guid: dceacc51c25a2c141873277e113780fe, type: 3}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 2800000, guid: 5882c5112b787e047bbac4999cad69e4, type: 3}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 015642f15199b004ab7c24f593f3a258, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 015642f15199b004ab7c24f593f3a258,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 5070d32fbcb895f469d0e8e41496dc12, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: 0db343132a60f11409947b2bcf6fc657,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 120000
     LevelLength: 25
@@ -53153,10 +53116,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 52d0c11d7197126478e7983ff64e638c, type: 3}
     FunFactsText: Your mom is a panda
     DanishFunFactsText: Din mor er en panda
-    HintscreenTexture: {fileID: 2800000, guid: 3f1c2a95851d836488bff3984a2ceb55, type: 3}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 2800000, guid: 823c83205ff20694b9b20f7394eee8bc, type: 3}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: d1f3b48b1ca6e9c4d8f0683d512eed0a, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 693385f7659ab21479abf15595672997,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: c2843b918330a664d986e3924eb5642c, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: fe1cbbe30378f454d9389512e0302893,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 70000
     LevelLength: 40
@@ -53171,11 +53136,13 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 07ee9bd6a16ab934bbe20f69300a42a5, type: 3}
     FunFactsText: A panda sank Titanic
     DanishFunFactsText: Det var ikke et isbjerg, men en panda der sank Titanic
-    HintscreenTexture: {fileID: 2800000, guid: c65767b946a89a643a099bab5d120896, type: 3}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 2800000, guid: 8b4d5b20f97323b429e7a1217fdee6b5, type: 3}
-    DanishTutorialTexture: {fileID: 0}
-    Toggled: 1
+    HintscreenTexture: {fileID: 2800000, guid: 929237a821700fa4980b562cfaae9c15, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: d8efb0efff0dde346b8bab2db009c7a5,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 8997c9bdbe01c7c4698d57d97f0773c6, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: c478db45e2dbdbf43a64d68b41d2448d,
+      type: 3}
+    Toggled: 0
     MaxTimeScore: 60000
     LevelLength: 60
     OneStar: 900
@@ -53189,10 +53156,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 9dd63b266a962c44c9f6b39dcf378dcc, type: 3}
     FunFactsText: Most Hell Angels members are descended from pandas
     DanishFunFactsText: De fleste HA rockere nedstammer fra pandaen
-    HintscreenTexture: {fileID: 2800000, guid: f26b32ef8c54d534180de46c433ae90f, type: 3}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 2800000, guid: c8137aadb6dda5346af32396a3688a00, type: 3}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: e0ac24dde5b42474aa53423aa41f1f36, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: e0ac24dde5b42474aa53423aa41f1f36,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: c5f40ecd3e39f7f4dbcab2eaec6d0a12, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: 0771d208632d0084a9fd308d7af8be10,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 60000
     LevelLength: 40
@@ -53207,10 +53176,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
-    HintscreenTexture: {fileID: 2800000, guid: 7c6789b30ba5b1f4a9152613e43d642f, type: 3}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 2800000, guid: 4db30f786d7e2ca4bb9952d5be952c59, type: 3}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 62b874ad2ef3d124b923d6ec86ed9301, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 62b874ad2ef3d124b923d6ec86ed9301,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 62b874ad2ef3d124b923d6ec86ed9301, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: 62b874ad2ef3d124b923d6ec86ed9301,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 60000
     LevelLength: 70
@@ -53225,10 +53196,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: 1eea49af98cddb8409376d55d1166c23, type: 3}
     FunFactsText: The pandas invented zumba
     DanishFunFactsText: Pandaerne har opfundet zumba
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 52858ae3db427a64e854725003092ac6, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 52858ae3db427a64e854725003092ac6,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 52858ae3db427a64e854725003092ac6, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: 52858ae3db427a64e854725003092ac6,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 70000
     LevelLength: 25
@@ -53243,10 +53216,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 2800000, guid: c5d74446fd1ea0e4c8ad7423dba338c6, type: 3}
     FunFactsText: The kkk was founded by pandas
     DanishFunFactsText: KKK blev grundlagt af pandaer
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: bb64bc31525b82b40bb48786e706403e, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: bb64bc31525b82b40bb48786e706403e,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: bb64bc31525b82b40bb48786e706403e, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: bb64bc31525b82b40bb48786e706403e,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 5000
     LevelLength: 25
@@ -53261,10 +53236,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: fee245799b9d28a49a38bb29a03f346a, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: fee245799b9d28a49a38bb29a03f346a,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: fee245799b9d28a49a38bb29a03f346a, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: fee245799b9d28a49a38bb29a03f346a,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 75000
     LevelLength: 25
@@ -53279,10 +53256,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 6a79945b3783bb243b0a352b569862bd, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 6a79945b3783bb243b0a352b569862bd,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 6a79945b3783bb243b0a352b569862bd, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: 6a79945b3783bb243b0a352b569862bd,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 120000
     LevelLength: 40
@@ -53297,10 +53276,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: f815e26b2dabfa54a8034039f3f89974, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: f815e26b2dabfa54a8034039f3f89974,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: f815e26b2dabfa54a8034039f3f89974, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: f815e26b2dabfa54a8034039f3f89974,
+      type: 3}
     Toggled: 0
     MaxTimeScore: 120000
     LevelLength: 40
@@ -53315,10 +53296,12 @@ MonoBehaviour:
     FunFactsTexture: {fileID: 0}
     FunFactsText: 
     DanishFunFactsText: 
-    HintscreenTexture: {fileID: 0}
-    DanishHintscreenTexture: {fileID: 0}
-    TutorialTexture: {fileID: 0}
-    DanishTutorialTexture: {fileID: 0}
+    HintscreenTexture: {fileID: 2800000, guid: 30123029a8e10e74d8bc290fbe4c4d16, type: 3}
+    DanishHintscreenTexture: {fileID: 2800000, guid: 30123029a8e10e74d8bc290fbe4c4d16,
+      type: 3}
+    TutorialTexture: {fileID: 2800000, guid: 30123029a8e10e74d8bc290fbe4c4d16, type: 3}
+    DanishTutorialTexture: {fileID: 2800000, guid: 30123029a8e10e74d8bc290fbe4c4d16,
+      type: 3}
     Toggled: 1
     MaxTimeScore: 180000
     LevelLength: 90
@@ -53329,7 +53312,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400004, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 1395599475}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -54973,6 +54956,7 @@ MonoBehaviour:
   boostEnabled: 1
   boostDuration: 0
   pushingLimbsForce: 6
+  deathBloodParticles: {fileID: 0}
   dismemberedPanda: {fileID: 100020, guid: 8abf91a663f54b34583bfdde65a2715c, type: 2}
   electrocutedPanda: {fileID: 100000, guid: 19b9859a028559a43a0704876e558f48, type: 2}
   slicedInHalfPanda: {fileID: 100000, guid: cb0ce3de56e08a344a1bd28fdab60b1a, type: 2}
@@ -76663,6 +76647,46 @@ MonoBehaviour:
   mMaxLineHeight: 0
   mLineWidth: 0
   mMultiline: 1
+--- !u!1001 &1922219923
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
+  m_RootGameObject: {fileID: 2067360898}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!114 &1923578217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81064,7 +81088,7 @@ ParticleSystemRenderer:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 2067360906}
@@ -81087,7 +81111,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400010, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81194,7 +81218,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81210,7 +81234,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400016, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81222,7 +81246,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400012, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81237,7 +81261,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400006, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81250,7 +81274,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81268,7 +81292,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: 1c668b86d8902454db1934c78cf0df23,
     type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -81280,7 +81304,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 1c668b86d8902454db1934c78cf0df23, type: 2}
-  m_PrefabInternal: {fileID: 1273011633}
+  m_PrefabInternal: {fileID: 1922219923}
   m_GameObject: {fileID: 2067360898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}

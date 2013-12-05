@@ -47,7 +47,7 @@ public class ImpalerSpikeTrap : TrapBase {
 
     override protected bool PandaAttemptKill (PandaAI pandaAI, bool isPerfect)
     {
-		pandaAI.PlayDeathParticles();
+		pandaAI.PlayDeathParticles(GetTrapPosition(), false);
         return pandaAI.AttemptDeathTrapKill(this, isPerfect);
     }
 
