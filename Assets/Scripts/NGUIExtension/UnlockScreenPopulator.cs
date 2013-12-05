@@ -46,6 +46,7 @@ public class UnlockScreenPopulator : MonoBehaviour
             lastPos += SpaceBetweenItems;
         }
         OnEnable();
+        GetComponentInChildren<UISwipeControl>().RedoLabel();
     }
 
     //Set labels to the right language
