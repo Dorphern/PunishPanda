@@ -271,7 +271,7 @@ public class WinScreen : MonoBehaviour {
 		{	
 			ComboKill ck = kills[i];
 			
-			if(ck.ComboCount > 1)
+			if(ck.ComboCount > 1 && ck.PerfectKills > 1)
 			{
                 HDRSystem.PostEvents(gameObject, OnScoreEvents);
 				ScoreTypeLabel.text = ck.ComboCount + Localization.Localize("Combo");
