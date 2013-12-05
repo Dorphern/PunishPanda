@@ -68,7 +68,8 @@ public class PauseMenuManager : MonoBehaviour {
 			{
 				textureComponent.width = TutorialTexture.width;
 				textureComponent.height = TutorialTexture.height;
-			
+				
+				PauseAndReset.SetActive (false);
 				StartCoroutine(startTutorial ());
 			}
 		}
@@ -116,6 +117,7 @@ public class PauseMenuManager : MonoBehaviour {
 		else
 		{
 			Debug.Log ("A Hint picture is NOT setup for this level!");
+			Debug.Log ("Start from the 'MainMenu' scene to see them");
 		}
 			
 	}
@@ -164,7 +166,7 @@ public class PauseMenuManager : MonoBehaviour {
 		yield return null;
 		
 		pausegame.TutorialPause();
-		PauseAndReset.SetActive (false);
+		//PauseAndReset.SetActive (false);
 	
 
 		WhiteTint.SetActive(true);
