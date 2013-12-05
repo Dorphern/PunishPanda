@@ -83,8 +83,9 @@ public class MainMenuSaws : MonoBehaviour {
 	
 	IEnumerator emmitDismembered()
 	{
-		//delay before Instantiate
-		yield return new WaitForSeconds(0.7f);
+		//start delay before Instantiate
+		yield return new WaitForSeconds(0.4f);
+		
 		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
 		yield return new WaitForSeconds(Random.Range(0.2F, 0.5F));
 		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
