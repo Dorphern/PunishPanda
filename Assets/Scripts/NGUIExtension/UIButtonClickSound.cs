@@ -12,7 +12,8 @@ public class UIButtonClickSound : MonoBehaviour {
 
     void OnEnable()
     {
-        GetComponent<UIButton>().OnPressedButton += button => HDRSystem.PostEvents(gameObject, pressEvents);
+        if(GetComponent<UIButton>() != null)
+            GetComponent<UIButton>().OnPressedButton += button => HDRSystem.PostEvents(gameObject, pressEvents);
     }
 
     void OnClick()

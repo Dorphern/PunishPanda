@@ -37,11 +37,13 @@ public class SoundSettings : MonoBehaviour {
 
     public void OnSFXEnable()
     {
+        Debug.Log("SFX Enable");
         HDRSystem.PostEvents(gameObject, onSFXEnable);
     }
 
     public void OnSFXDisable()
     {
+        Debug.Log("Disable Enable");
         HDRSystem.PostEvents(gameObject, onSFXDisable);
     }
 

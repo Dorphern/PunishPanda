@@ -78,6 +78,7 @@ public static class AudioBankWorker {
     public static void AddNodeToBank(AudioNode node, AudioClip clip)
     {
         var bank = node.GetBank().LazyBankFetch;
+        EditorUtility.SetDirty(bank);
         bank.Clips.Add(CreateTuple(node, clip));
     }
 

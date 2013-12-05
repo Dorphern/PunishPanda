@@ -24,7 +24,7 @@ public class IntegrityGUI
     {
         EditorGUILayout.HelpBox("Do not Undo these operations! No guarantee about what could break.", MessageType.Warning);
         EditorGUILayout.Separator(); EditorGUILayout.Separator(); EditorGUILayout.Separator();
-        EditorGUILayout.HelpBox("While Banks works in allmost every time, it can happen that audio nodes gets deattached from their bank when working in the editor. \nThis will reassign all nodes to their correct bank.", MessageType.Info);
+        EditorGUILayout.HelpBox("While Banks works in almost every time, it can happen that audio nodes gets deattached from their bank when working in the editor. \nThis will reassign all nodes to their correct bank.", MessageType.Info);
         if (GUILayout.Button("Fix Bank Integrity"))
         {
             TreeWalker.ForEach(InAudioInstanceFinder.DataManager.BankLinkTree, DeleteAllNodesFromBanks);
