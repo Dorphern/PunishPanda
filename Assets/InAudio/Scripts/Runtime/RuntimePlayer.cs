@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Remoting.Messaging;
 using InAudio;
 using InAudio.ExtensionMethods;
 using InAudio.RuntimeHelperClass;
@@ -9,7 +10,7 @@ using System.Collections;
 /// <summary>
 /// The class that actually plays the audio
 /// </summary>
-[AddComponentMenu(FolderSettings.ComponentPathPrefabs+"Audio Player/Runtime Player")]
+[AddComponentMenu(FolderSettings.ComponentPathPrefabs + "Audio Player/Runtime Player")]
 [RequireComponent(typeof(AudioSource))]
 public class RuntimePlayer : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class RuntimePlayer : MonoBehaviour
 
         spawnedFrom.ReleaseObject(this);
         runtimeInfo.Node.GetBus().RuntimePlayers.Remove(this);
-       
+
         StopAllCoroutines();
     }
 
@@ -60,7 +61,7 @@ public class RuntimePlayer : MonoBehaviour
     {
         for (int i = 0; i < audioSources.Length; ++i)
         {
-            if(audioSources[i] == null)
+            if (audioSources[i] == null)
                 continue;
             audioSources[i].clip = null;
             audioSources[i].Stop();
@@ -100,13 +101,13 @@ public class RuntimePlayer : MonoBehaviour
 
     public void Initialize(AudioGOPool spawnedFrom)
     {
-        
+
         this.spawnedFrom = spawnedFrom;
         if (audioSources == null)
             audioSources = GetComponents<AudioSource>();
         if (endTimes == null)
             endTimes = new double[audioSources.Length];
-        if(originalVolume == null)
+        if (originalVolume == null)
             originalVolume = new float[audioSources.Length];
     }
 
@@ -141,7 +142,7 @@ public class RuntimePlayer : MonoBehaviour
     }
 
     private IEnumerator StartPlay(AudioNode root, AudioNode current, DSPTime endTime)
-    {        
+    {
         yield return StartCoroutine(NextNode(root, current, endTime));
         dspPool.ReleaseObject(endTime);
         yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime));
@@ -154,7 +155,7 @@ public class RuntimePlayer : MonoBehaviour
         byte loops = 0;
         var nodeData = current.NodeData;
         bool loopInfinite = nodeData.LoopInfinite;
-        if(!loopInfinite)
+        if (!loopInfinite)
             loops = RuntimeHelper.GetLoops(current);
 
         endTime.CurrentEndTime += RuntimeHelper.InitialDelay(nodeData);
@@ -170,15 +171,17 @@ public class RuntimePlayer : MonoBehaviour
             {
                 NextFreeAudioSource();
                 float nodeVolume;
-                
+
                 float length = PlayScheduled(root, current, endTime.CurrentEndTime, out nodeVolume);
-                
+
                 originalVolume[currentIndex] = nodeVolume;
-                
+
                 endTime.CurrentEndTime += length;
 
                 if (!firstClip)
                     yield return new WaitForSeconds((float)(endTime.CurrentEndTime - AudioSettings.dspTime) - length + 0.2f);
+                else 
+                    yield return null; //Audio will glitch if there is a loop and the next playscheduled is called in the same frame
 
                 firstClip = false;
             }
@@ -234,7 +237,7 @@ public class RuntimePlayer : MonoBehaviour
         volume = 1;
         if (audioData.Clip != null)
         {
-            length = audioData.Clip.samples/(float) audioData.Clip.frequency;
+            length = audioData.Clip.samples / (float)audioData.Clip.frequency;
 
             Current.clip = audioData.Clip;
             Current.volume = RuntimeHelper.ApplyVolume(startNode, currentNode);
@@ -246,10 +249,10 @@ public class RuntimePlayer : MonoBehaviour
 
             length = RuntimeHelper.LengthFromPitch(length, Current.pitch);
             endTimes[currentIndex] = playAtDSPTime + length;
-            
+
             Current.PlayScheduled(playAtDSPTime);
         }
-        
+
         return length;
     }
 
@@ -259,13 +262,13 @@ public class RuntimePlayer : MonoBehaviour
 
         if (endTimes == null)
         {
-            Initialize(spawnedFrom); 
+            Initialize(spawnedFrom);
         }
-         
+
         for (int i = 0; i < audioSources.Length; ++i)
         {
             if (endTimes[i] < dspTime)
-            { 
+            {
                 currentIndex = i;
                 return;
             }
