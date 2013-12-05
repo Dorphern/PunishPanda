@@ -13,6 +13,7 @@ public class InstanceFinder : MonoBehaviour
     public static ComboSystem ComboSystem { get; set; }
     public static Localization Localization { get; set; }
 	public static AchievementManager AchievementManager { get; set; }
+    public static SoundSettings SoundSettings { get; set; }
 
     public bool SetupIfMissing()
     {
