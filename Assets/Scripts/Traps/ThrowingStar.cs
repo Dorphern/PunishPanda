@@ -89,7 +89,6 @@ public class ThrowingStar : MonoBehaviour
                 {
                     pandaAi.SliceInHalf();
                 }
-				pandaAi.PlayDeathParticles();
                 SetDirty();
             }
         }
