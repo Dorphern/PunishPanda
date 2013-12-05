@@ -239,7 +239,7 @@ public class TreeDrawer<T> where T : UnityEngine.Object, ITreeNode<T>
 
     private bool CheckIsSelected(Rect area)
     {
-        return (Event.current.type == EventType.MouseDown || Event.current.type == EventType.ContextClick) && area.Contains(Event.current.mousePosition) && Event.current.type != EventType.Repaint;
+        return (Event.current.type == EventType.MouseDown || Event.current.type == EventType.ContextClick) && Event.current.mousePosition.x > _area.x && Event.current.mousePosition.x < _area.x + area.width - 50 && area.Contains(Event.current.mousePosition) && Event.current.type != EventType.Repaint;
     }
 
     private void AssignSelectedArea(Rect area)

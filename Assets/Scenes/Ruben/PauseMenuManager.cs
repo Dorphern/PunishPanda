@@ -70,7 +70,6 @@ public class PauseMenuManager : MonoBehaviour {
 				textureComponent.height = TutorialTexture.height;
 			
 				StartCoroutine(startTutorial ());
-				//startTutorial();
 			}
 		}
 	}
@@ -124,7 +123,12 @@ public class PauseMenuManager : MonoBehaviour {
 	//called "onPress"
 	public void OnHintReturnClick()
 	{
-		StartCoroutine(ExitTutorial());
+		//No FADE OUT:
+		//StartCoroutine(ExitTutorial());
+		hintAlphaComponent.Reset();
+		whiteTintAlphaComponent.Reset ();
+		WhiteTint.SetActive(false);
+		HintScreen.SetActive(false);
 		
 		PauseAndReset.SetActive (true);
 
@@ -159,7 +163,6 @@ public class PauseMenuManager : MonoBehaviour {
 		// wait one update for data initialization
 		yield return null;
 		
-		//pausegame.StopTime();
 		pausegame.TutorialPause();
 		PauseAndReset.SetActive (false);
 	

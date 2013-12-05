@@ -17,6 +17,7 @@ public class PandaAI : MonoBehaviour {
 	public bool boostEnabled = false;
 	public float boostDuration = 1f;
 	public float pushingLimbsForce = 6f;
+	[SerializeField] protected ParticleSystem deathBloodParticles;
 
     [SerializeField] protected GameObject dismemberedPanda;
 	[SerializeField] protected GameObject electrocutedPanda;
@@ -266,8 +267,6 @@ public class PandaAI : MonoBehaviour {
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect, KillType killType = KillType.Default)
     {
-        if (!IsAlive())
-            return false;
 
         Debug.Log("Hit death object: " + trap.GetTrapType());		
 		
@@ -298,21 +297,27 @@ public class PandaAI : MonoBehaviour {
 			{
             	SliceInHalf(trap.transform.position, bladeDirection);
 			}
+			PlayDeathParticles(trap.GetTrapPosition());
         }
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
         {
             if (trapType == TrapType.StaticSpikes)
             pandaController.EnableColliders(false);
-
-            BloodSplatter.Instance.ProjectHit(transform.position, Vector2.right);
+			
+            BloodSplatter.Instance.ProjectHit(transform.position, Vector2.zero);
         }
-        else if (trapType == TrapType.ThrowingStars && isPerfect)
+        else if (trapType == TrapType.ThrowingStars)
         {
-            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
-                .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
-            Destroy(this.gameObject);
-			isBeingDestroyed = true;
+			if(isPerfect)
+			{
+	            (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+	                .GetComponent<PandaHalfForce>().ThrowingStarSplit(this, trap);
+	            Destroy(this.gameObject);
+				isBeingDestroyed = true;
+			}
+			
+			PlayDeathParticles(trap.GetTrapPosition());
         }
 
         // Return false if the panda has already died
@@ -328,6 +333,39 @@ public class PandaAI : MonoBehaviour {
             return true;
         }
     }
+	
+	public void PlayDeathParticles(TrapPosition trapPosition, bool unParent = true)
+	{
+		if(unParent == true)
+		{
+			deathBloodParticles.transform.parent = null;	
+		}
+		else
+		{
+			Vector3 trapForward = Vector3.forward;
+			switch(trapPosition)
+			{
+				case TrapPosition.Ground:
+					trapForward = Vector3.up;
+					break;
+				case TrapPosition.Ceiling:
+					trapForward = Vector3.down;
+					break;
+				case TrapPosition.WallLeft:
+					trapForward = Vector3.right;
+					break;
+				case TrapPosition.WallRight:
+					trapForward = Vector3.left;
+					break;
+				default:
+					trapForward = Vector3.forward;
+					break;
+			}
+		
+		deathBloodParticles.transform.rotation = Quaternion.LookRotation(trapForward);	
+		}
+		deathBloodParticles.Play();
+	}
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
     {
@@ -583,9 +621,10 @@ public class PandaAI : MonoBehaviour {
         animations.SpikePullOut();
     }
 
-    public void SpikesDetracted()
+    public void SpikesDetracted(TrapPosition trapPosition)
     {
         spikeDetract = true;
+		PlayDeathParticles(trapPosition, false);
     }
 	
 	public void ChangeDirection(ControllerColliderHit hit)

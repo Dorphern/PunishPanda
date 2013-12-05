@@ -250,6 +250,7 @@ public class BloodSplatter : MonoBehaviour {
 				}
 			}
 		}
+		
 		if(angleToFloor < 30f || floorHit)
 		{
 			if(levelHasPlatforms)
@@ -293,11 +294,16 @@ public class BloodSplatter : MonoBehaviour {
 			// Collider hit.
 			RecycleDecalProjectors();	
 		
-			Quaternion projectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 			
 			//Debug.DrawRay(hitInfo.point,  - projectionDirection, Color.green, 2000f);
 			
 			float angleToFloor = Mathf.Abs(angle - 90f);
+			
+			if(angleToFloor < 30f && hitInfo.normal == Vector3.forward) // if we slap down while falling
+			{
+				projectionDirection.z = 1f;
+			}
+			
 			if(angleToFloor < 30f)
 				decalProjectorOffset = scale * 0.75f;
 			else
@@ -305,6 +311,7 @@ public class BloodSplatter : MonoBehaviour {
 				
 			Vector3 projectorPosition = hitInfo.point - (decalProjectorOffset * projectionDirection.normalized);
 			
+			Quaternion projectorRotation = ProjectorRotationUtility.ProjectorRotation ( projectionDirection, Vector3.up);
 			Quaternion slapRotation = Quaternion.Euler (0.0f, angle , 0.0f);
 			projectorRotation = projectorRotation * slapRotation;	
 			

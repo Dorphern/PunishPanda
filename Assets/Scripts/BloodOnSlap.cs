@@ -102,7 +102,7 @@ public class BloodOnSlap : MonoBehaviour {
 		if(diff > 0.1)
 		{
 			//Object instantiates facing the Z-axis direction	
-			Instantiate(Resources.Load(objectName),PandaMouthBack.transform.position, Quaternion.LookRotation(projectionDirection));
+			Instantiate(particleV2,PandaMouthBack.transform.position, Quaternion.LookRotation(projectionDirection));
 		}
 
 
