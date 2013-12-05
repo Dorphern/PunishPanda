@@ -132,8 +132,9 @@ public class AchievementManager : MonoBehaviour {
 			
 			if(ach.AddProgress(progress) && onAchievementCompleted!=null)
 			{
-                HDRSystem.PostEvents(gameObject, OnAchievementEvents);
-				onAchievementCompleted(ach);
+				HDRSystem.PostEvents(gameObject, OnAchievementEvents);
+				if(onAchievementCompleted!=null)
+					onAchievementCompleted(ach);
 				return true;		
 			}
 		}
@@ -154,7 +155,9 @@ public class AchievementManager : MonoBehaviour {
 			
 			if(ach.SetProgress(progress) && onAchievementCompleted!=null)
 			{
-				onAchievementCompleted(ach);
+				HDRSystem.PostEvents(gameObject, OnAchievementEvents);
+				if(onAchievementCompleted!=null)
+					onAchievementCompleted(ach);
 				return true;		
 			}
 		}

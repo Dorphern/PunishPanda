@@ -94,9 +94,9 @@ public class Animations : MonoBehaviour {
         StartCoroutine(ResetDoubleTapped());
     }
 
-    public void MoveToEscape (float zPos)
+    public void MoveToEscape (float zPos, TrapPosition position)
     {
-        StartCoroutine(MoveThePandaToEscape(zPos));
+        StartCoroutine(MoveThePandaToEscape(zPos, position));
     }
 
     # endregion
@@ -239,9 +239,9 @@ public class Animations : MonoBehaviour {
         
     }
 
-    IEnumerator MoveThePandaToEscape (float zPos)
+    IEnumerator MoveThePandaToEscape (float zPos, TrapPosition position)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(position == TrapPosition.Ceiling ? 0.8f : 0.4f);
         int steps = 10;
         for (int i = 0; i < steps; i++)
         {

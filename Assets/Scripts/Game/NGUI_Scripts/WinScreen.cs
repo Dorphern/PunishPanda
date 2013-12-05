@@ -6,6 +6,7 @@ using PunishPanda;
 
 public class WinScreen : MonoBehaviour {
 	
+	public PauseMenuManager pmm;
 	public GameObject winScreen;
 	public GameObject NewHighScoreTextureDanish;
 	public GameObject NewHighScoreTextureEnglish;
@@ -94,8 +95,10 @@ public class WinScreen : MonoBehaviour {
 		yield return new WaitForSeconds(timeBeforeWinScreen);
 
 		SetWinScreenData();
+		pmm.OnLevelComplete();
 		if(InputHandler.instance!=null) 
             InputHandler.instance.PausedGame();
+		
 		winScreen.SetActive(true);
 
         InstanceFinder.StatsManager.Save();

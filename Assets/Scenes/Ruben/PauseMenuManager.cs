@@ -159,6 +159,13 @@ public class PauseMenuManager : MonoBehaviour {
 			PauseMenu.SetActive (false);
 	}
 	
+	public void OnLevelComplete()
+	{
+		PauseAndReset.SetActive(false);
+		
+		DisablePauseMenu();
+	}
+	
 	//for showhing tutorial screen/animation at levelstart
 	IEnumerator startTutorial()
 	{

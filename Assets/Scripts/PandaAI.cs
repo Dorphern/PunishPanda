@@ -305,7 +305,7 @@ public class PandaAI : MonoBehaviour {
             if (trapType == TrapType.StaticSpikes)
             pandaController.EnableColliders(false);
 			
-            BloodSplatter.Instance.ProjectHit(transform.position, Vector2.zero);
+            BloodSplatter.Instance.ProjectHit(deathBloodParticles.transform.position, Vector2.zero);
         }
         else if (trapType == TrapType.ThrowingStars)
         {
@@ -404,7 +404,7 @@ public class PandaAI : MonoBehaviour {
         // Fairy dust fades away
         if (characterController.isGrounded == true)
         {
-            animations.MoveToEscape(-1.1f);
+            animations.MoveToEscape(escape.transform.position.z, position);
         }
 
         InstanceFinder.GameManager.ActiveLevel.PandaEscaped();

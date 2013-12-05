@@ -15,6 +15,8 @@ public class UILoseLevel : MonoBehaviour
 	
 	public GameObject YouSuckEnglishTexture;
 	public GameObject YouSuckDanishTexture;
+	
+	public PauseMenuManager pmm;
 
 
     void OnEnable()
@@ -31,6 +33,7 @@ public class UILoseLevel : MonoBehaviour
     {
         yield return new WaitForSeconds(LoseFadeTime);
         //Time.timeScale = 0;
+		pmm.OnLevelComplete();
 		if(InputHandler.instance!=null) InputHandler.instance.PausedGame();
         LoseCamera.SetActive(true);
 		

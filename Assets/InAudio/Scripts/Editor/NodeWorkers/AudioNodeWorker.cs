@@ -182,7 +182,9 @@ public static class AudioNodeWorker  {
     {
         UndoHelper.RecordObjectFull(UndoHelper.Array(node.Parent, node.Parent.NodeData, node.GetBank().LazyBankFetch), "Undo Deletion of " + node.Name);
         for (int i = node.Children.Count - 1; i > 0; --i)
-            DeleteNode(node.Children[i]);
+            DeleteNodeRec(node.Children[i]);
+
+        AudioBankWorker.RemoveNodeFromBank(node);
 
         if (node.Parent.Type == AudioNodeType.Random) //We also need to remove the child from the weight list
         {
@@ -190,8 +192,6 @@ public static class AudioNodeWorker  {
             if (data != null)
                 data.weights.RemoveAt(node.Parent.Children.FindIndex(node)); //Find in parent, and then remove the weight in the random node
         }
-
-        AudioBankWorker.RemoveNodeFromBank(node);
 
         node.Parent.Children.Remove(node);
         UndoHelper.Destroy(node.NodeData);
