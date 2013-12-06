@@ -30,6 +30,7 @@ public class PandaAI : MonoBehaviour {
 	public float pushingMagnitude;
 	public float lastPushingMagnitude;
 	public float pandaCollisionDelay = 0.02f;
+	public float deathParticlesLength = 1f;
     public bool landingHard;
     public bool spikeDetract;	
 	public bool isMainMenuPanda;
@@ -293,13 +294,15 @@ public class PandaAI : MonoBehaviour {
             BladeDirection bladeDirection = trap.GetSpinDirection();
 			if(killType == KillType.Dismember)
 			{
+				//PlayDeathParticles(trap.GetTrapPosition());
 				Dismember();
 			}
 			else
 			{
+				BloodSplatter.Instance.ProjectSpray(deathBloodParticles.transform.position, Vector2.zero);
+				//PlayDeathParticles(trap.GetTrapPosition());
             	SliceInHalf(trap.transform.position, bladeDirection);
 			}
-			PlayDeathParticles(trap.GetTrapPosition());
         }
         else if (trapType == TrapType.ImpalerSpikes
                  || trapType == TrapType.StaticSpikes)
@@ -307,7 +310,7 @@ public class PandaAI : MonoBehaviour {
             if (trapType == TrapType.StaticSpikes)
             pandaController.EnableColliders(false);
 			
-            BloodSplatter.Instance.ProjectHit(deathBloodParticles.transform.position, Vector2.zero);
+            BloodSplatter.Instance.ProjectSpray(deathBloodParticles.transform.position, Vector2.zero);
         }
         else if (trapType == TrapType.ThrowingStars)
         {
@@ -318,8 +321,8 @@ public class PandaAI : MonoBehaviour {
 	            Destroy(this.gameObject);
 				isBeingDestroyed = true;
 			}
-			
-			PlayDeathParticles(trap.GetTrapPosition());
+			BloodSplatter.Instance.ProjectSpray(deathBloodParticles.transform.position, Vector2.zero);
+			//PlayDeathParticles(trap.GetTrapPosition());
         }
 
         // Return false if the panda has already died
@@ -366,7 +369,8 @@ public class PandaAI : MonoBehaviour {
 		
 		deathBloodParticles.transform.rotation = Quaternion.LookRotation(trapForward);	
 		}
-		deathBloodParticles.Play();
+		deathBloodParticles.Play(true);
+		StartCoroutine(StopDeathParticles(deathParticlesLength));
 	}
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
@@ -730,6 +734,12 @@ public class PandaAI : MonoBehaviour {
 		yield return new WaitForSeconds(timeToWait);
 		if(pandaStateManager.GetState()==PandaState.Boosting)
 			pandaStateManager.ChangeState(PandaState.Walking);
+	}
+	
+	IEnumerator StopDeathParticles(float timeToWait)
+	{
+		yield return new WaitForSeconds(timeToWait);
+		deathBloodParticles.Stop(true);
 	}
 	
 	IEnumerator SpawnElectrocutedPanda(float timeToWait)
