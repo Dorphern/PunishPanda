@@ -294,13 +294,11 @@ public class PandaAI : MonoBehaviour {
             BladeDirection bladeDirection = trap.GetSpinDirection();
 			if(killType == KillType.Dismember)
 			{
-				//PlayDeathParticles(trap.GetTrapPosition());
 				Dismember();
 			}
 			else
 			{
 				BloodSplatter.Instance.ProjectSpray(deathBloodParticles.transform.position, Vector2.zero);
-				//PlayDeathParticles(trap.GetTrapPosition());
             	SliceInHalf(trap.transform.position, bladeDirection);
 			}
         }
@@ -322,7 +320,6 @@ public class PandaAI : MonoBehaviour {
 				isBeingDestroyed = true;
 			}
 			BloodSplatter.Instance.ProjectSpray(deathBloodParticles.transform.position, Vector2.zero);
-			//PlayDeathParticles(trap.GetTrapPosition());
         }
 
         // Return false if the panda has already died
