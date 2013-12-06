@@ -38,21 +38,21 @@ public class SoundSettings : MonoBehaviour {
 
     public void OnSFXEnable()
     {
-        Debug.Log("SFX Enable");
+        //Debug.Log("SFX Enable");
         HDRSystem.PostEvents(gameObject, onSFXEnable);
         InstanceFinder.StatsManager.SoundEffectsEnabled = true;
     }
 
     public void OnSFXDisable()
     {
-        Debug.Log("SFX Disable");
+        //Debug.Log("SFX Disable");
         HDRSystem.PostEvents(gameObject, onSFXDisable);
         InstanceFinder.StatsManager.SoundEffectsEnabled = false;
     }
 
     public void OnMusicEnable()
     {
-        Debug.Log("Music Enable");
+        //Debug.Log("Music Enable");
         InstanceFinder.StatsManager.MusicEnabled = true;
         HDRSystem.PostEvents(gameObject, onMusicEnable);
     }
@@ -60,7 +60,7 @@ public class SoundSettings : MonoBehaviour {
     public void OnMusicDisable()
     {
         InstanceFinder.StatsManager.MusicEnabled = false;
-        Debug.Log("Music Disable");
+        //Debug.Log("Music Disable");
         HDRSystem.PostEvents(gameObject, onMusicDisable);
     }
 }
