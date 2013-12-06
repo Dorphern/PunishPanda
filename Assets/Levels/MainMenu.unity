@@ -15512,11 +15512,7 @@ MonoBehaviour:
   Button1: {fileID: 1143539212}
   Button2: {fileID: 222212720}
   buttonType: 1
-  onOff:
-  - {fileID: 11400182, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  onOn:
-  - {fileID: 11400356, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400180, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  settingsScript: {fileID: 835811337}
 --- !u!1 &318199465
 GameObject:
   m_ObjectHideFlags: 0
@@ -16103,7 +16099,6 @@ MonoBehaviour:
   maxPerfectPandaKills: 1
   cleanTexture: {fileID: 2800000, guid: f65325ab14ce61940ba82c2afa1c1c4b, type: 3}
   dirtyTexture: {fileID: 2800000, guid: 4a3599452a336d64f9afc405ad689301, type: 3}
-  sleepTime: 1
   bloodParticles: {fileID: 1228950480}
 --- !u!65 &346225371
 BoxCollider:
@@ -17506,11 +17501,7 @@ MonoBehaviour:
   Button1: {fileID: 1476060462}
   Button2: {fileID: 513653231}
   buttonType: 0
-  onOff:
-  - {fileID: 11400182, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  onOn:
-  - {fileID: 11400356, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400180, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  settingsScript: {fileID: 835811337}
 --- !u!1 &362722299
 GameObject:
   m_ObjectHideFlags: 0
@@ -26011,6 +26002,7 @@ MonoBehaviour:
   fallingEvents: []
   pushingEvents: []
   pushingEndEvents: []
+  electrocutedEvents: []
 --- !u!114 &544036962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26064,10 +26056,7 @@ MonoBehaviour:
     yVelocity: {x: 0, y: 0, z: 0}
     smoothTime: .100000001
     targetJumpPos: {x: 0, y: 0, z: 0}
-  hangingOffSet: 30
   pushingForce: 15
-  velocityDampingSpeed: .100000001
-  velocityRotation: 2
 --- !u!114 &544036964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55098,6 +55087,7 @@ MonoBehaviour:
   - {fileID: 11400370, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   pushingEndEvents:
   - {fileID: 11400374, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  electrocutedEvents: []
 --- !u!114 &1437619846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55151,10 +55141,7 @@ MonoBehaviour:
     yVelocity: {x: 0, y: 0, z: 0}
     smoothTime: .100000001
     targetJumpPos: {x: 0, y: 0, z: 0}
-  hangingOffSet: 30
   pushingForce: 15
-  velocityDampingSpeed: .100000001
-  velocityRotation: 2
 --- !u!1 &1438204441
 GameObject:
   m_ObjectHideFlags: 0
@@ -60632,7 +60619,6 @@ MonoBehaviour:
   maxPerfectPandaKills: 1
   cleanTexture: {fileID: 2800000, guid: 5425f807857864947adc893dc03c0c43, type: 3}
   dirtyTexture: {fileID: 2800000, guid: fc57faaef16e9164ba16e08337d1e6d3, type: 3}
-  sleepTime: 1
   bloodParticles: {fileID: 444584834}
 --- !u!114 &1625043718
 MonoBehaviour:
@@ -81386,6 +81372,7 @@ GameObject:
   - 114: {fileID: 2067360901}
   - 114: {fileID: 2067360900}
   - 114: {fileID: 2067360899}
+  - 114: {fileID: 2067360907}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -81476,7 +81463,7 @@ MonoBehaviour:
     description: Get 60 combo kills
     goal: 60
     achievementIcon: {fileID: 0}
-  - name: Shock therapy
+  - name: Shock Therapy
     description: Kill 50 pandas on shock traps
     goal: 50
     achievementIcon: {fileID: 0}
@@ -81484,7 +81471,7 @@ MonoBehaviour:
     description: Kill 50 pandas on roundsaw traps
     goal: 50
     achievementIcon: {fileID: 0}
-  - name: Meat poudin!
+  - name: Meat Poundin!
     description: Kill 50 pandas on Pounder traps
     goal: 50
     achievementIcon: {fileID: 0}
@@ -81532,17 +81519,13 @@ MonoBehaviour:
     description: level9d
     goal: 1
     achievementIcon: {fileID: 0}
-  - name: level9
-    description: level9d
-    goal: 1
-    achievementIcon: {fileID: 0}
   - name: level10
     description: level10d
     goal: 1
     achievementIcon: {fileID: 0}
   - name: level11
-    description: Let 30 pandas escape
-    goal: 50
+    description: level11d
+    goal: 1
     achievementIcon: {fileID: 0}
   - name: level12
     description: level12d
@@ -81651,6 +81634,26 @@ Transform:
   m_Children:
   - {fileID: 1395599477}
   m_Father: {fileID: 0}
+--- !u!114 &2067360907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400014, guid: 1c668b86d8902454db1934c78cf0df23,
+    type: 2}
+  m_PrefabInternal: {fileID: 712513678}
+  m_GameObject: {fileID: 2067360898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cfa77c69862c648bd0cfc0d51f2fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSFXEnable:
+  - {fileID: 11400180, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  onSFXDisable:
+  - {fileID: 11400182, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  onMusicEnable:
+  - {fileID: 11400176, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  onMusicDisable:
+  - {fileID: 11400178, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!1 &2067521518
 GameObject:
   m_ObjectHideFlags: 0

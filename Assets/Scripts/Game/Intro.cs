@@ -7,7 +7,10 @@ public class Intro : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+#if UNITY_ANDROID
 	    Handheld.PlayFullScreenMovie(Path, Color.black, FullScreenMovieControlMode.Minimal, FullScreenMovieScalingMode.None);
-        InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
+#endif
+		InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
+
 	}
 }
