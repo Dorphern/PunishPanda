@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RemoveAfterTime : MonoBehaviour {
-
+public class RemoveAfterTime : MonoBehaviour
+{
+    public GameObject DeleteSelfItNotActive;
 	
 	public float EventLength = 2f;
 	
@@ -17,6 +18,12 @@ public class RemoveAfterTime : MonoBehaviour {
 			Destroy(gameObject, EventLength);
 		}
 	}
-	
-	
+
+    void Update()
+    {
+        if (MenuManager.Instance != null && MenuManager.Instance.GetCurrentMenuType() != MenuTypes.MainMenu)
+        {
+            Object.Destroy(gameObject);
+        }
+    }
 }
