@@ -134,7 +134,6 @@ public class ComboSystem : MonoBehaviour
         pandaComboKills += 1;
         lastPandaKillTime = Time.time;
         levelDeaths.AlivePandas -= 1;
-        InstanceFinder.StatsManager.PandasKilled++;
 
         if (perfectKillsCombo > 1 && wasLastKillPerfect)  
         {
