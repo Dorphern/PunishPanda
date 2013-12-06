@@ -13,12 +13,17 @@ public class GUIButtonAlternator : MonoBehaviour {
 	public ButtonType buttonType;
 	
 	public Settings settingsScript;
-
+	
+	[EventHookAttribute("Lever switch")]
+	public List<AudioEvent> leverSounds = new List<AudioEvent>();
+	
+	private bool initFlag;
+	
 	
 	void Start () {
-
+			
 		float temp; 
-		
+
 		if(buttonType == ButtonType.Sound)
 		{
 			temp = settingsScript.getSFXvalue();
@@ -53,13 +58,24 @@ public class GUIButtonAlternator : MonoBehaviour {
 	{
 		float temp; 
 		
+		if(initFlag == true)
+		{
+			HDRSystem.PostEvents(gameObject, leverSounds);
+		}
+		else
+		{
+			//done initializing
+			initFlag = true;
+		}
+
 		if(buttonType == ButtonType.Sound)
 		{
+			
 			temp = settingsScript.getSFXvalue();
 			if(temp == 0) //left (ON)
 			{
 				Button1.SetActive(false);
-				Button2.SetActive(true);
+				Button2.SetActive(true);	
 			}
 			else 
 			{
@@ -82,8 +98,5 @@ public class GUIButtonAlternator : MonoBehaviour {
 			}
 		}			
 	}
-	
-	
-	
 	
 }
