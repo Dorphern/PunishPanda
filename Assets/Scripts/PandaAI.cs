@@ -405,10 +405,7 @@ public class PandaAI : MonoBehaviour {
         transform.position = newPos;
         // --------------------------------------
         // Fairy dust fades away
-        if (characterController.isGrounded == true)
-        {
-            animations.MoveToEscape(escape.transform.position.z, position);
-        }
+        animations.MoveToEscape(escape.transform.position.z, position, !characterController.isGrounded);
 
         InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
     }

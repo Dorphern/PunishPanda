@@ -171,6 +171,7 @@ public class UISwipeControl : MonoBehaviour
             {
                 startClosetsChildIndex += 1;
                 target = transform.GetChild(startClosetsChildIndex);
+                Debug.Log("end");
 
             }
         }
