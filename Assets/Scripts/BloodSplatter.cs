@@ -48,6 +48,7 @@ public class BloodSplatter : MonoBehaviour {
 	public int slapUVmax;
 	public int hitUVmin;
 	public int hitUVmax;
+	public List<int> sprayIndex;
 	
 	private bool levelHasPlatforms = false;
 		// The reference to the instantiated prefab's DS_Decals instance.
@@ -93,6 +94,12 @@ public class BloodSplatter : MonoBehaviour {
 	private void NextHitUV () 
 	{
 		m_UVRectangleIndex = Random.Range(hitUVmin, hitUVmax + 1);
+	}
+	
+	private void NextSprayUV () 
+	{
+		int index = Random.Range(0, sprayIndex.Count);
+		m_UVRectangleIndex = sprayIndex[index];
 	}
 	
 	private void Awake()
@@ -190,6 +197,22 @@ public class BloodSplatter : MonoBehaviour {
 		float angle = GetProjectionAngle();
 		
 		NextHitUV();
+		ProjectBlood(rayStart, angle, scale, slapForce);
+	}
+	
+	public void ProjectSpray(Vector3 rayStart ,Vector2 slapDirection, float slapForce = 2)
+	{
+		float scale = Random.Range(hitMinScale, hitMaxScale);
+		
+		rayStart.y -= 0.5f;
+		
+		projectionDirection.x = slapDirection.x;
+		projectionDirection.y = slapDirection.y;
+		projectionDirection.z = 1f;
+		
+		float angle = GetProjectionAngle();
+		
+		NextSprayUV();
 		ProjectBlood(rayStart, angle, scale, slapForce);
 	}
 	
