@@ -122,6 +122,11 @@ public class Animations : MonoBehaviour {
 		
 	}
 	
+    void OnEnable()
+    {
+        StartCoroutine(RandomNumberUpdater());
+    }
+    
     IEnumerator SetNewPandaState (PandaState state)
     {
         anim.SetBool("NewState", true);
