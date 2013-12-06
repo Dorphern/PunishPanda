@@ -279,7 +279,8 @@ public class StatsManager : MonoBehaviour
     public int PandasKilled
     {
         get { return pandasKilled; }
-        set { if (pandasKilled<value)
+        set { 
+			if (pandasKilled<value)
 			{
 			  int val = value-pandasKilled;
 			  am.AddProgressToAchievement("First kill", val);
@@ -288,7 +289,9 @@ public class StatsManager : MonoBehaviour
 			  am.AddProgressToAchievement("Serial Killah", val);
 			  am.AddProgressToAchievement("Massmurdah", val);
 			  am.AddProgressToAchievement("Exterminator", val);
-			} }
+			}
+			pandasKilled = value;
+		}
     }
 
     public int PandaSlaps
