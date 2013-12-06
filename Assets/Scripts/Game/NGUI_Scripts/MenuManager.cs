@@ -12,6 +12,11 @@ public class MenuManager: MonoBehaviour {
 	
 	private MenuTypes currentMenu;
 
+    public static MenuManager Instance
+    {
+        get; private set;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -28,6 +33,11 @@ public class MenuManager: MonoBehaviour {
                 #endif
             }
         }
+    }
+
+    void OnEnable()
+    {
+        Instance = this;
     }
 	
 	// Use this for initialization
