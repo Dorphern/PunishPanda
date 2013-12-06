@@ -83,15 +83,25 @@ public class MainMenuSaws : MonoBehaviour {
 	
 	IEnumerator emmitDismembered()
 	{
-		//start delay before Instantiate
-		yield return new WaitForSeconds(0.4f);
-		
-		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
-		yield return new WaitForSeconds(Random.Range(0.2F, 0.5F));
-		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
-		yield return new WaitForSeconds(Random.Range(0.3F, 0.7F));
-		Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
-		StartCoroutine("emmitDismembered");
+		GameObject[] clones = GameObject.FindGameObjectsWithTag("Respawn");
+		//Debug.Log (clones.Length);
+		if(clones.Length <= 8)
+		{
+			//start delay before Instantiate
+			yield return new WaitForSeconds(0.4f);
+			
+			Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+			yield return new WaitForSeconds(Random.Range(0.2F, 0.5F));
+			Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+			yield return new WaitForSeconds(Random.Range(0.3F, 0.7F));
+			Instantiate(dismemberedPanda, projectionPoint.transform.position, projectionPoint.transform.rotation);
+			StartCoroutine("emmitDismembered");
+		}
+		else
+		{
+			yield return new WaitForSeconds(Random.Range(0.3F, 0.7F));
+			StartCoroutine("emmitDismembered");
+		}
 	}
 	
 	//fix for multitouching saws
