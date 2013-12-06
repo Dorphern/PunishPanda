@@ -100,7 +100,7 @@ public class Animations : MonoBehaviour {
     # endregion
 
     # region Private Methods
-    // Use this for initialization
+    // Use this for initialization	
     void Start ()
     {
         anim = GetComponentInChildren<Animator>();
@@ -115,7 +115,13 @@ public class Animations : MonoBehaviour {
 
         StartCoroutine(RandomNumberUpdater());
     }
-
+	
+	void OnDisable()
+	{
+		StopPiss();	
+		
+	}
+	
     IEnumerator SetNewPandaState (PandaState state)
     {
         anim.SetBool("NewState", true);
