@@ -28,12 +28,13 @@ public class PauseGame : MonoBehaviour
 	{
 	    Instance = this;
 		savedTimeScale = Time.timeScale;
-		inputScript = InputHandler.instance;
+
 	}
 
 	public void StopTime()
 	{
 		Time.timeScale = 0;
+        inputScript = InputHandler.instance;
         inputScript.PausedGame();
 		
 		//PAUSE AUDIO ALSO??
@@ -57,6 +58,7 @@ public class PauseGame : MonoBehaviour
 	
 	public void ResumeGame()
 	{
+        inputScript = InputHandler.instance;
 		Time.timeScale = savedTimeScale;
         inputScript.UnpausedGame();
 	    if (!hasUnpaused && FirstUnpause != null)
