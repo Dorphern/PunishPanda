@@ -20,16 +20,26 @@ public class AudioEventHook : MonoBehaviour
 
     /*[EventHookCollisionAttribute("On Collision", this)]
     public List<AudioEvent> OnCollisionEvents = new List<AudioEvent>();*/
+	
+	private bool hasBeenEnabled = false;
 
     void OnEnable()
     {
+		
+		if(PauseGame.Instance != null)
+		{
         PauseGame.Instance.FirstUnpause += () =>
         {
-            for (int i = 0; i < OnEnableEvents.Count; ++i)
-            {
-                HDRSystem.PostEvent(gameObject, OnEnableEvents[i]);
-            }
+			if(!hasBeenEnabled)
+			{
+	            for (int i = 0; i < OnEnableEvents.Count; ++i)
+	            {
+	                HDRSystem.PostEvent(gameObject, OnEnableEvents[i]);
+	            }
+			}
+			hasBeenEnabled = true;
         };
+		}
     }
 
     void Start()

@@ -231,6 +231,8 @@ GameObject:
   - 114: {fileID: 11400440}
   - 114: {fileID: 11400442}
   - 114: {fileID: 11400444}
+  - 114: {fileID: 11400446}
+  - 114: {fileID: 11400448}
   m_Layer: 0
   m_Name: EventSave
   m_TagString: Untagged
@@ -353,8 +355,8 @@ MonoBehaviour:
   - {fileID: 11400070}
   - {fileID: 11400126}
   - {fileID: 11400262}
-  - {fileID: 11400440}
   - {fileID: 11400174}
+  - {fileID: 11400440}
   - {fileID: 11400192}
   ActionList: []
 --- !u!114 &11400008
@@ -1877,7 +1879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GUID: 1675128547
   Type: 1
-  FoldedOut: 0
+  FoldedOut: 1
   Name: Settings
   Parent: {fileID: 11400006}
   Delay: 0
@@ -2521,6 +2523,7 @@ MonoBehaviour:
   - {fileID: 11400248}
   - {fileID: 11400246}
   - {fileID: 11400434}
+  - {fileID: 11400446}
   ActionList: []
 --- !u!114 &11400246
 MonoBehaviour:
@@ -4156,13 +4159,14 @@ MonoBehaviour:
   GUID: 1324628243
   Type: 3
   FoldedOut: 1
-  Name: Level start
+  Name: Menu start
   Parent: {fileID: 11400244}
   Delay: 0
   Filtered: 0
   Children: []
   ActionList:
   - {fileID: 11400436}
+  - {fileID: 11400448}
 --- !u!114 &11400436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4177,7 +4181,7 @@ MonoBehaviour:
   Delay: 0
   EventActionType: 7
   Bus: {fileID: 11400022, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
-  Volume: 0
+  Volume: 1
   VolumeMode: 0
   FadeCurve: 1
   Duration: 0
@@ -4251,6 +4255,44 @@ MonoBehaviour:
   Delay: 0
   EventActionType: 1
   Node: {fileID: 11400160, guid: ddaf7f3484a7b0a4b8af27084d85b6cf, type: 2}
+--- !u!114 &11400446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ebc63b0afd5be46bad1f9913414e93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GUID: 1069513033
+  Type: 3
+  FoldedOut: 1
+  Name: Pause Child
+  Parent: {fileID: 11400244}
+  Delay: 0
+  Filtered: 0
+  Children: []
+  ActionList: []
+--- !u!114 &11400448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa602f909486304a8bacf94ffd1ad2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Delay: 0
+  EventActionType: 7
+  Bus: {fileID: 11400014, guid: 6ef7b7c25c2331b4184ae6c34c34ec64, type: 2}
+  Volume: 1
+  VolumeMode: 0
+  FadeCurve: 1
+  Duration: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
