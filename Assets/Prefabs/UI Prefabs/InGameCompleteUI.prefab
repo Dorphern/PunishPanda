@@ -425,6 +425,7 @@ GameObject:
   - 65: {fileID: 6500018}
   - 114: {fileID: 11400140}
   - 114: {fileID: 11400138}
+  - 114: {fileID: 11400424}
   m_Layer: 8
   m_Name: LevelSelectionButton
   m_TagString: Untagged
@@ -1366,6 +1367,7 @@ GameObject:
   - 114: {fileID: 11400272}
   - 65: {fileID: 6500020}
   - 114: {fileID: 11400274}
+  - 114: {fileID: 11400426}
   m_Layer: 8
   m_Name: MenuButton
   m_TagString: Untagged
@@ -1896,7 +1898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &100232
 GameObject:
   m_ObjectHideFlags: 1
@@ -2537,7 +2539,7 @@ Transform:
   m_GameObject: {fileID: 100058}
   m_LocalRotation: {x: 0, y: 0, z: .173647955, w: .984807789}
   m_LocalPosition: {x: -47.9251099, y: 92.1011353, z: 0}
-  m_LocalScale: {x: 1.00007999, y: 1.00007987, z: 1.00007999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400148}
 --- !u!4 &400072
@@ -3106,7 +3108,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100150}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 219.749908, y: .749816895, z: 0}
+  m_LocalPosition: {x: 264.000092, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400198}
@@ -3608,7 +3610,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 1
-  m_Depth: 1
+  m_Depth: 2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 257
@@ -3664,7 +3666,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 1
-  m_Depth: 4.09000015
+  m_Depth: 5
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 257
@@ -3692,7 +3694,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 1
-  m_Depth: 1
+  m_Depth: 2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 257
@@ -5120,23 +5122,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 215
-  mHeight: 70
+  mWidth: 190
+  mHeight: 50
   mDepth: 2
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
   mText: 
-  mFontSize: 20
+  mFontSize: 32
   mFontStyle: 0
   mEncoding: 0
-  mMaxLineCount: 0
+  mMaxLineCount: 3
   mEffectStyle: 0
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
-  mOverflow: 1
+  mOverflow: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -5729,8 +5731,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 298
-  mHeight: 200
+  mWidth: 600
+  mHeight: 400
   mDepth: 14
   autoResizeBoxCollider: 0
   mRect:
@@ -6100,7 +6102,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 166
   mHeight: 48
-  mDepth: 11
+  mDepth: 3
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
@@ -6592,7 +6594,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 298
   mHeight: 200
-  mDepth: 14
+  mDepth: 31
   autoResizeBoxCollider: 0
   mRect:
     serializedVersion: 2
@@ -6882,7 +6884,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100132}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
   m_Name: 
@@ -6903,7 +6905,7 @@ MonoBehaviour:
   mPivot: 1
   mWidth: 0
   mHeight: 0
-  mDepth: 21
+  mDepth: 0
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
@@ -7441,11 +7443,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiCamera: {fileID: 2000004}
-  container: {fileID: 0}
+  container: {fileID: 100192}
   side: 5
   halfPixelOffset: 1
   runOnlyOnce: 0
-  relativeOffset: {x: -.270000011, y: 0}
+  relativeOffset: {x: -.25, y: 0}
   pixelOffset: {x: 0, y: 0}
   widgetContainer: {fileID: 0}
 --- !u!114 &11400262
@@ -7635,7 +7637,7 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 298
   mHeight: 200
-  mDepth: 14
+  mDepth: 15
   autoResizeBoxCollider: 0
   mRect:
     serializedVersion: 2
@@ -7661,7 +7663,7 @@ MonoBehaviour:
   mPivot: 1
   mWidth: 0
   mHeight: 0
-  mDepth: 21
+  mDepth: 0
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
@@ -8297,7 +8299,7 @@ MonoBehaviour:
     width: 1
     height: 1
   mShader: {fileID: 4800000, guid: e75727d9555d9d14ca51d91908c681bc, type: 3}
-  mTexture: {fileID: 2800000, guid: 7802175a5d1c21b418268f2c1169c6db, type: 3}
+  mTexture: {fileID: 2800000, guid: 6cbd22d4ab9a8434f85ff2b9bc66dfa8, type: 3}
   mMat: {fileID: 0}
 --- !u!114 &11400330
 MonoBehaviour:
@@ -8314,7 +8316,7 @@ MonoBehaviour:
   mPivot: 1
   mWidth: 0
   mHeight: 0
-  mDepth: 21
+  mDepth: 0
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
@@ -8620,7 +8622,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100200}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
   m_Name: 
@@ -9569,12 +9571,34 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100202}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   key: Doomed
+--- !u!114 &11400424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054393be5eb4a6b43ad634c82501c87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400426
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054393be5eb4a6b43ad634c82501c87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

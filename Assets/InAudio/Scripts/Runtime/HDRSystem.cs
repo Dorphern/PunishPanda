@@ -41,18 +41,48 @@ public class HDRSystem : MonoBehaviour
             BankLoader.Unload(bank);
     }
 
-    public static void PostEvents(GameObject controllingObject, IList<AudioEvent> postEvent)
+    public static void PostEvents(GameObject controllingObject, IList<AudioEvent> postEvents)
     {
-        if (instance != null && controllingObject != null && postEvent != null)
+        if (instance != null && controllingObject != null && postEvents != null)
         {
-            int count = postEvent.Count;
+            int count = postEvents.Count;
             for (int i = 0; i < count; i++)
             {
-                AudioEvent audioEvent = postEvent[i];
+                AudioEvent audioEvent = postEvents[i];
                 if(audioEvent != null)
-                    instance.OnPostEvent(controllingObject, postEvent[i], controllingObject);    
+                    instance.OnPostEvent(controllingObject, postEvents[i], controllingObject);    
             }
             
+        }
+    }
+
+    public static void PostEventsAtPosition(GameObject controllingObject, IList<AudioEvent> postEvents, Vector3 position)
+    {
+        if (instance != null && controllingObject != null && postEvents != null)
+        {
+            int count = postEvents.Count;
+            for (int i = 0; i < count; i++)
+            {
+                AudioEvent audioEvent = postEvents[i];
+                if (audioEvent != null)
+                    instance.OnPostEvent(controllingObject, postEvents[i], position);
+            }
+
+        }
+    }
+
+    public static void PostEventAttachedTo(GameObject controllingObject, IList<AudioEvent> postEvents, GameObject attachedToOther)
+    {
+        if (instance != null && controllingObject != null && postEvents != null)
+        {
+            int count = postEvents.Count;
+            for (int i = 0; i < count; i++)
+            {
+                AudioEvent audioEvent = postEvents[i];
+                if (audioEvent != null)
+                    instance.OnPostEvent(controllingObject, postEvents[i], attachedToOther);
+            }
+
         }
     }
 

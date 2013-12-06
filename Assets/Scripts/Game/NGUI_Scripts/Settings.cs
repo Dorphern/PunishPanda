@@ -9,42 +9,59 @@ public class Settings : MonoBehaviour {
 	
 	public GameObject SFX_Lever;
 	public GameObject Music_Lever;
+	
 	private Animation SFX_animation;
 	private Animation Music_animation;
-	private int MusicAnimationFlag;
-	private int SFXAnimationFlag;
+	private bool MusicAnimationFlag;
+	private bool SFXAnimationFlag;
+	private bool firstSFX;
+	private bool firstMusic;
 	
+	private bool sound;
+	private bool music;
+		
 	void Start()
 	{
 		menuMan = GetComponent<MenuManager>();
 		SFX_animation = SFX_Lever.GetComponent<Animation>();
 		Music_animation = Music_Lever.GetComponent<Animation>();
 		
-		
-		bool music = InstanceFinder.StatsManager.MusicEnabled;
-		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
+		//GET THE LOADED VALUES
+		music = InstanceFinder.StatsManager.MusicEnabled;
+		sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
 		//string lang = InstanceFinder.StatsManager.language;
 		
-
-		if(music)
-			_musicSlider.value = 1;
-		else
-			_musicSlider.value = 0;
-
+		
+		//flags for skipping animation when we enter settings
+		MusicAnimationFlag = true;
+		SFXAnimationFlag = true;
+		
 		
 		if(sound)
-			_soundEFXSlider.value = 1;
+		{
+			SFX_animation.Play ("leverAnimation2");//goleft
+			SFXAnimationFlag = false;
+		}
 		else
-			_soundEFXSlider.value = 0;
+		{
+			SFX_animation.Play ("leverAnimation1");//goright
+		}
+		
+		if(music)
+		{
+			Music_animation.Play ("leverAnimation2");//goleft
+			MusicAnimationFlag = false;
+		}
+		else
+		{
+			Music_animation.Play ("leverAnimation1");//goright
+		}
 
 		
-
+		firstSFX = true;
+		firstMusic = true;
 		
-		//initialize Switches
-		MusicAnimationFlag = 0;
-		SFXAnimationFlag = 0;
-		OnSoundEFXSliderChanged();
-		OnMusicSliderChanged();
+
 	}
 	
 	public void OnCalibrateFingerClicked()
@@ -84,10 +101,8 @@ public class Settings : MonoBehaviour {
 		
 		if(InstanceFinder.Localization.currentLanguage!="Danish")
 		{
-			Debug.Log(InstanceFinder.Localization.languages.Length);
 			for(int i=0;i<InstanceFinder.Localization.languages.Length; i++)
 			{
-				Debug.Log(InstanceFinder.Localization.languages[i].name);
 				if(InstanceFinder.Localization.languages[i].name=="Danish")
 				{
 					
@@ -99,61 +114,124 @@ public class Settings : MonoBehaviour {
 	}
 			
 	
-	// crappy workaround, there is no delegate that returns the value ffs!
-	public void OnMusicSliderChanged()
-	{
-		if(_musicSlider!=null)
-		{
-			//hack for dealing with extra animation (when entering settings)
-			if(MusicAnimationFlag == 1)
-			{	
-				MusicAnimationFlag++;
-				return;
-			}
-			else
-				MusicAnimationFlag++;
-			
-			if(_musicSlider.value==1)
-			{
-						
-				Music_animation.Play ("leverAnimation1");//goright
-				InstanceFinder.StatsManager.MusicEnabled = false;
-			}
-			else
-			{
 
-				Music_animation.Play ("leverAnimation2");//goleft
-				InstanceFinder.StatsManager.MusicEnabled = true;
-			}
-		}
+	
+	
+	public float getSFXvalue()
+	{
+		return _soundEFXSlider.value;
 	}
 	
 	public void OnSoundEFXSliderChanged()
 	{
-		if(_soundEFXSlider!=null)
+		if(firstSFX	== true)
+		{	
+			firstSFX = false;
+			firstTimeSFX();
+			return;
+		}
+
+		float temp = getSFXvalue ();
+
+		if(temp == 0)//left
 		{
-			//hack for dealing with extra animation (when entering settings)
-			if(SFXAnimationFlag == 1)
-			{	
-				SFXAnimationFlag++;
+			InstanceFinder.SoundSettings.OnSFXEnable();
+			if(SFXAnimationFlag == false)
+			{
+				SFXAnimationFlag = true;
+				//dont animate on 2nd call for ON;
 				return;
 			}
 			else
-				SFXAnimationFlag++;
-			
-			if(_soundEFXSlider.value==1)
 			{
-				
-				SFX_animation.Play ("leverAnimation1");//goright
-				InstanceFinder.StatsManager.SoundEffectsEnabled = false;
+				SFX_animation.Play ("leverAnimation2");//goleft
+			}
+		}
+		else
+		{
+			InstanceFinder.SoundSettings.OnSFXDisable();
+			if(SFXAnimationFlag == false)
+			{
+				SFXAnimationFlag = true;
+				return;
 			}
 			else
 			{
-					
-				SFX_animation.Play ("leverAnimation2");//goleft
-				InstanceFinder.StatsManager.SoundEffectsEnabled = true;
+				SFX_animation.Play ("leverAnimation1");//goright
 			}
 		}
+	}
+	
+		
+	public float getMusicvalue()
+	{
+		return _musicSlider.value;
+	}
+	
+	
+	public void OnMusicSliderChanged()
+	{
+
+		if(firstMusic	== true)
+		{	
+			firstMusic = false;
+			firstTimeMusic();
+			return;
+		}
+		
+		float temp = getMusicvalue ();
+
+		if(temp == 0)//left
+		{
+			InstanceFinder.SoundSettings.OnMusicEnable();
+			if(MusicAnimationFlag == false)
+			{
+				MusicAnimationFlag = true;
+				//dont animate call for ON;
+				return;	
+			}
+			else
+			{
+				Music_animation.Play ("leverAnimation2");//goleft
+			}
+		}
+		else
+		{
+			InstanceFinder.SoundSettings.OnMusicDisable();
+			if(MusicAnimationFlag == false)
+			{
+				MusicAnimationFlag = true;
+				return;
+			}
+			else
+			{
+				Music_animation.Play ("leverAnimation1");//goright
+			}
+		}
+	}
+	
+	
+	
+	public void firstTimeSFX()
+	{
+		//Debug.Log ("Initializing Sound: "+sound);
+		if(sound)
+		{
+			_soundEFXSlider.value = 0; //point left		
+		}
+		else
+		{
+			_soundEFXSlider.value = 1; //point right
+		}		
+	}
+	
+	private void firstTimeMusic()
+	{
+		//Debug.Log ("Initializing Music: "+music);
+		if(music)
+			_musicSlider.value = 0; //point left
+		else
+			_musicSlider.value = 1;
 	}
 	
 }

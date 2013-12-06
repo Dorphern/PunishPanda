@@ -7,8 +7,14 @@ public class LevelMenu : MonoBehaviour {
 	
 	public void LoadLevel1()
 	{
-		InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
-	}
+#if UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8
+        InstanceFinder.LevelManager.LoadLevel("IntroScene");
+#else
+		Debug.Log("Skipping intro scene in non handheld");
+        InstanceFinder.LevelManager.LoadLevelByWorldIndex(0);
+#endif
+
+    }
 	
 	public void LoadLevel2()
 	{

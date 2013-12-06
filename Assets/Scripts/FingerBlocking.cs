@@ -37,14 +37,22 @@ public class FingerBlocking : MonoBehaviour {
         transform.position = pos;
 	}
 	
-	public void ActivateBlockade() 
-	{
+	public void ActivateBlockade()
+    {
+        if (this == null)
+        {
+            return;
+        }
         collider.enabled = true;
         ChildCollidersEnabled(true);
 	}
 	
 	public void DeactivateBlockade()
 	{
+        if (this == null)
+        {
+            return;
+        }
 		collider.enabled = false;
         ChildCollidersEnabled(false);
 		collider.isTrigger = false;

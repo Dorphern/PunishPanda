@@ -2269,6 +2269,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400268}
   - 114: {fileID: 11400418}
+  - 114: {fileID: 11400982}
   m_Layer: 8
   m_Name: indexFingerLabel
   m_TagString: Untagged
@@ -6343,6 +6344,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400768}
   - 114: {fileID: 11400978}
+  - 114: {fileID: 11400984}
   m_Layer: 8
   m_Name: indexFingerLabel
   m_TagString: Untagged
@@ -15752,11 +15754,9 @@ MonoBehaviour:
   Button1: {fileID: 100432}
   Button2: {fileID: 100186}
   buttonType: 1
-  onOff:
-  - {fileID: 11400182, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  onOn:
+  settingsScript: {fileID: 11400250}
+  leverSounds:
   - {fileID: 11400356, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400180, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!114 &11400294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16075,11 +16075,9 @@ MonoBehaviour:
   Button1: {fileID: 100626}
   Button2: {fileID: 100236}
   buttonType: 0
-  onOff:
-  - {fileID: 11400182, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  onOn:
+  settingsScript: {fileID: 11400250}
+  leverSounds:
   - {fileID: 11400356, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
-  - {fileID: 11400180, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
 --- !u!114 &11400322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -17200,14 +17198,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 334
-  mHeight: 70
+  mWidth: 0
+  mHeight: 0
   mDepth: 6
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
-  mText: use index finger
+  mText: 
   mFontSize: 70
   mFontStyle: 0
   mEncoding: 0
@@ -22619,6 +22617,7 @@ MonoBehaviour:
   - {fileID: 11400370, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
   pushingEndEvents:
   - {fileID: 11400374, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  electrocutedEvents: []
 --- !u!114 &11400906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -22670,10 +22669,7 @@ MonoBehaviour:
     yVelocity: {x: 0, y: 0, z: 0}
     smoothTime: .100000001
     targetJumpPos: {x: 0, y: 0, z: 0}
-  hangingOffSet: 30
   pushingForce: 15
-  velocityDampingSpeed: .100000001
-  velocityRotation: 2
 --- !u!114 &11400910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -23201,14 +23197,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 4
-  mWidth: 334
-  mHeight: 70
+  mWidth: 0
+  mHeight: 0
   mDepth: 6
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 00168cea2eb534845abc214106f93e52, type: 3}
   mFont: {fileID: 0}
-  mText: use index finger
+  mText: 
   mFontSize: 70
   mFontStyle: 0
   mEncoding: 0
@@ -23242,6 +23238,30 @@ MonoBehaviour:
   initialSize: {x: 1, y: 1}
   borderPadding: {x: 0, y: 0}
   widgetContainer: {fileID: 0}
+--- !u!114 &11400982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: IndexFinger
+--- !u!114 &11400984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa69d5b40401f77469779cf7f6fc94a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: IndexFinger
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1
@@ -29377,6 +29397,7 @@ MonoBehaviour:
   fallingEvents: []
   pushingEvents: []
   pushingEndEvents: []
+  electrocutedEvents: []
 --- !u!114 &513653237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29428,10 +29449,7 @@ MonoBehaviour:
     yVelocity: {x: 0, y: 0, z: 0}
     smoothTime: .100000001
     targetJumpPos: {x: 0, y: 0, z: 0}
-  hangingOffSet: 30
   pushingForce: 15
-  velocityDampingSpeed: .100000001
-  velocityRotation: 3
 --- !u!114 &513653239
 MonoBehaviour:
   m_ObjectHideFlags: 0

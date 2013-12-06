@@ -15,7 +15,6 @@ public class BloodOnSlap : MonoBehaviour {
 	public Version particleVersion;
 	public GameObject particleV2;
 	
-	private string objectName;
 	private float timeStamp1;
 	private float timeStamp2;
 	//private GameObject slapParticles;
@@ -25,19 +24,19 @@ public class BloodOnSlap : MonoBehaviour {
 	[EventHookAttribute("Slap")]
 	[SerializeField] List<AudioEvent> slapAudioEvents = new List<AudioEvent>();
 	
-	void Start ()
-    {	
-		if(particleVersion == Version.v1)
-		{
-			objectName = "particle_slap_v1";	
-		}
-		else
-		{
-			objectName = "particle_slap_v2";
-		}
-		
-		//slapParticles = Instantiate(Resources.Load(objectName)) as GameObject;
-	}
+//	void Start ()
+//    {	
+//		if(particleVersion == Version.v1)
+//		{
+//			objectName = "particle_slap_v1";	
+//		}
+//		else
+//		{
+//			objectName = "particle_slap_v2";
+//		}
+//		
+//		//slapParticles = Instantiate(Resources.Load(objectName)) as GameObject;
+//	}
 	
 	
 	//Method for emmiting blood in the same direction(and angle) as slap.

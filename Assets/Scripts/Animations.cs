@@ -9,8 +9,6 @@ public class Animations : MonoBehaviour {
     private Animator anim;
     private PandaStateManager stateManager;
     private CharacterController characterController;
-    private PandaMovementController pandaMovementController;
-    private Collidable collidable;
     PandaAI pandaAI;
     private PandaState currentStatePanda;
     private PandaDirection currentDirection;
@@ -94,34 +92,41 @@ public class Animations : MonoBehaviour {
         StartCoroutine(ResetDoubleTapped());
     }
 
-    public void MoveToEscape (float zPos, TrapPosition position)
+    public void MoveToEscape (float zPos, TrapPosition position, bool fastMove)
     {
-        StartCoroutine(MoveThePandaToEscape(zPos, position));
+        StartCoroutine(MoveThePandaToEscape(zPos, position, fastMove));
     }
 
     # endregion
 
     # region Private Methods
-    // Use this for initialization
+    // Use this for initialization	
     void Start ()
     {
         anim = GetComponentInChildren<Animator>();
         stateManager = GetComponent<PandaStateManager>();
         pandaAI = GetComponent<PandaAI>();
         characterController = GetComponent<CharacterController>();
-        pandaMovementController = GetComponent<PandaMovementController>();
 
         anim.SetInteger("Direction", (int) stateManager.initDirection);
 		
 		rightPeeHash = Animator.StringToHash("Idle Variations.Right Pee");
         leftPeeHash  = Animator.StringToHash("Idle Variations.Left Pee");
 
-        collidable = GetComponent<Collidable>();
-        //initScale  = pGO.transform.localScale;
-
         StartCoroutine(RandomNumberUpdater());
     }
-
+	
+	void OnDisable()
+	{
+		StopPiss();	
+		
+	}
+	
+    void OnEnable()
+    {
+        StartCoroutine(RandomNumberUpdater());
+    }
+    
     IEnumerator SetNewPandaState (PandaState state)
     {
         anim.SetBool("NewState", true);
@@ -239,9 +244,13 @@ public class Animations : MonoBehaviour {
         
     }
 
-    IEnumerator MoveThePandaToEscape (float zPos, TrapPosition position)
+    IEnumerator MoveThePandaToEscape (float zPos, TrapPosition position, bool fastMove)
     {
-        yield return new WaitForSeconds(position == TrapPosition.Ceiling ? 0.8f : 0.4f);
+        if (fastMove == false)
+        {
+            yield return new WaitForSeconds(position == TrapPosition.Ceiling ? 0.8f : 0.4f);
+        }
+        
         int steps = 10;
         for (int i = 0; i < steps; i++)
         {

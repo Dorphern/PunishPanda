@@ -76,6 +76,10 @@ public class PandaAI : MonoBehaviour {
     [EventHookAttribute("Pushing End")]
     List<AudioEvent> pushingEndEvents = new List<AudioEvent>();
 
+    [SerializeField]
+    [EventHookAttribute("Electrocuted")]
+    List<AudioEvent> electrocutedEvents = new List<AudioEvent>();
+
 	
 	#region Public Methods
 	public void DoubleTapped()
@@ -266,9 +270,7 @@ public class PandaAI : MonoBehaviour {
      * return true if the panda was successfully killed
      **/
     public bool AttemptDeathTrapKill (TrapBase trap, bool isPerfect, KillType killType = KillType.Default)
-    {
-
-        Debug.Log("Hit death object: " + trap.GetTrapType());		
+	{
 		
 		if(this.isBeingDestroyed == true) return false;
 
@@ -402,10 +404,7 @@ public class PandaAI : MonoBehaviour {
         transform.position = newPos;
         // --------------------------------------
         // Fairy dust fades away
-        if (characterController.isGrounded == true)
-        {
-            animations.MoveToEscape(escape.transform.position.z, position);
-        }
+        animations.MoveToEscape(escape.transform.position.z, position, !characterController.isGrounded);
 
         InstanceFinder.GameManager.ActiveLevel.PandaEscaped();
     }
@@ -436,7 +435,12 @@ public class PandaAI : MonoBehaviour {
 
     public void SliceInHalf()
     {
-        (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+		Quaternion rotation = transform.rotation;
+		if(preFallingState == PandaState.PushingFinger)
+		{
+			rotation *= Quaternion.AngleAxis(180f, Vector3.up);	
+		}
+        (Instantiate(slicedInHalfPanda, transform.position, rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, transform.position);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
@@ -444,7 +448,12 @@ public class PandaAI : MonoBehaviour {
 
     public void SliceInHalf(Vector3 position, BladeDirection bladeDirection)
     {
-        (Instantiate(slicedInHalfPanda, transform.position, transform.rotation) as GameObject)
+		Quaternion rotation = transform.rotation;
+		if(preFallingState == PandaState.PushingFinger)
+		{
+			rotation *= Quaternion.AngleAxis(180f, Vector3.up);	
+		}
+        (Instantiate(slicedInHalfPanda, transform.position, rotation) as GameObject)
                 .GetComponent<PandaHalfForce>().SawSplit(this, position, bladeDirection);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
@@ -459,7 +468,9 @@ public class PandaAI : MonoBehaviour {
 
     public void Electrocute()
     {
-        Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+        
+        var electroPanda = Instantiate(electrocutedPanda, transform.position + new Vector3(0, -1f, 0f), Quaternion.Euler(new Vector3(0f, 0f, 0f))) as GameObject;
+        HDRSystem.PostEvents(electroPanda, electrocutedEvents);
         Destroy(this.gameObject);
 		isBeingDestroyed = true;
     }

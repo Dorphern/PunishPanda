@@ -11,24 +11,23 @@ public class GUIButtonAlternator : MonoBehaviour {
 	public GameObject Button1;
 	public GameObject Button2;
 	public ButtonType buttonType;
-
-    [SerializeField]
-    [EventHookAttribute("Off")]
-    List<AudioEvent> onOff = new List<AudioEvent>();
-
-    [SerializeField]
-    [EventHookAttribute("On")]
-    List<AudioEvent> onOn = new List<AudioEvent>();
-
+	
+	public Settings settingsScript;
+	
+	[EventHookAttribute("Lever switch")]
+	public List<AudioEvent> leverSounds = new List<AudioEvent>();
+	
+	private bool initFlag;
+	
 	
 	void Start () {
-		//check for inital state..
-		bool music = InstanceFinder.StatsManager.MusicEnabled;
-		bool sound = InstanceFinder.StatsManager.SoundEffectsEnabled;
-		
+			
+		float temp; 
+
 		if(buttonType == ButtonType.Sound)
 		{
-			if(sound)
+			temp = settingsScript.getSFXvalue();
+			if(temp == 0) //left (ON)
 			{
 				Button1.SetActive(false);
 				Button2.SetActive(true);
@@ -41,45 +40,63 @@ public class GUIButtonAlternator : MonoBehaviour {
 		}
 		else
 		{
-			if(music)
-			{
-				Button1.SetActive(true);
-				Button2.SetActive(false);
-			}
-			else 
+			temp = settingsScript.getMusicvalue();
+			if(temp == 0)
 			{
 				Button1.SetActive(false);
 				Button2.SetActive(true);
+			}
+			else 
+			{
+				Button1.SetActive(true);
+				Button2.SetActive(false);
 			}
 		}
 	}
 	
 	public void toggleButtons()
 	{
-		Debug.Log ("toggled Button "+gameObject);
-		if(Button1.activeInHierarchy == false)
+		float temp; 
+		
+		if(initFlag == true)
 		{
-			
-            HDRSystem.PostEvents(gameObject, onOff);
-            //these ^^ effect the mainmenu initialization issue..
-			Button1.SetActive(true);
-			Button2.SetActive(false);
-
+			HDRSystem.PostEvents(gameObject, leverSounds);
 		}
 		else
 		{
-            HDRSystem.PostEvents(gameObject, onOn);
-			//these ^^ effect the mainmenu initialization issue...
-			Button1.SetActive(false);
-			Button2.SetActive(true);
-			
-
+			//done initializing
+			initFlag = true;
 		}
+
+		if(buttonType == ButtonType.Sound)
+		{
+			
+			temp = settingsScript.getSFXvalue();
+			if(temp == 0) //left (ON)
+			{
+				Button1.SetActive(false);
+				Button2.SetActive(true);	
+			}
+			else 
+			{
+				Button1.SetActive(true);
+				Button2.SetActive(false);
+			}
+		}
+		else
+		{
+			temp = settingsScript.getMusicvalue();
+			if(temp == 0)
+			{
+				Button1.SetActive(false);
+				Button2.SetActive(true);
+			}
+			else 
+			{
+				Button1.SetActive(true);
+				Button2.SetActive(false);
+			}
+		}			
 	}
-	
-	
-	
-	
-	
 	
 }
