@@ -488,7 +488,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400062}
-  - 114: {fileID: 11400268}
   - 65: {fileID: 6500016}
   - 114: {fileID: 11400092}
   m_Layer: 8
@@ -562,7 +561,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400074}
-  - 114: {fileID: 11400314}
   - 65: {fileID: 6500020}
   - 114: {fileID: 11400152}
   m_Layer: 8
@@ -1674,6 +1672,7 @@ GameObject:
   - 114: {fileID: 11400250}
   - 114: {fileID: 11400254}
   - 114: {fileID: 11400256}
+  - 114: {fileID: 11400268}
   m_Layer: 0
   m_Name: MenuController
   m_TagString: Untagged
@@ -4094,7 +4093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &100488
 GameObject:
   m_ObjectHideFlags: 1
@@ -5238,7 +5237,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400628}
-  - 114: {fileID: 11400378}
   - 114: {fileID: 11400374}
   - 65: {fileID: 6500004}
   m_Layer: 8
@@ -5337,7 +5335,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400640}
-  - 114: {fileID: 11400696}
   - 114: {fileID: 11400690}
   - 65: {fileID: 6500080}
   m_Layer: 8
@@ -8879,7 +8876,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.19254112, y: .469760895, z: 9.53674316e-07}
+  m_LocalPosition: {x: -.994112015, y: .469760895, z: 9.53674316e-07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400748}
@@ -9572,7 +9569,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 345.171204, y: -35.0000381, z: 0}
+  m_LocalPosition: {x: 287.25061, y: -35.2499771, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400544}
@@ -10395,7 +10392,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 575.285339, y: 360.714111, z: 0}
+  m_LocalPosition: {x: 479.250427, y: 360.749817, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400440}
@@ -15511,25 +15508,19 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100056}
-  m_Enabled: 0
+  m_GameObject: {fileID: 100198}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f1ff234b1b046d4dbb6f7fdab994ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mColor: {r: 0, g: 0, b: 0, a: 1}
-  mPivot: 1
-  mWidth: 150
-  mHeight: 500
-  mDepth: 11
-  autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
-  mSpriteName: Glow - Outer
-  mFillCenter: 0
-  mType: 1
-  mFillDirection: 4
-  mFillAmount: 1
-  mInvert: 0
+  OnEnableEvents: []
+  OnStartEvents:
+  - {fileID: 11400434, guid: caebdf79dbe0dc144afe9e244a04b8c7, type: 2}
+  OnDisableEvents: []
+  OnDestroyEvents: []
+  OnVisibleEvents: []
+  OnInvisibleEvents: []
 --- !u!114 &11400270
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15542,7 +15533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onChange: []
-  mBG: {fileID: 11400268}
+  mBG: {fileID: 0}
   mFG: {fileID: 11400266}
   mDir: 1
   mInverted: 0
@@ -15982,30 +15973,6 @@ MonoBehaviour:
   mFillDirection: 4
   mFillAmount: 1
   mInvert: 0
---- !u!114 &11400314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100064}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mColor: {r: 0, g: 0, b: 0, a: 1}
-  mPivot: 1
-  mWidth: 150
-  mHeight: 500
-  mDepth: 11
-  autoResizeBoxCollider: 0
-  mAtlas: {fileID: 11400000, guid: 62adb30369acbf943a67cee0f69267a3, type: 2}
-  mSpriteName: Glow - Outer
-  mFillCenter: 0
-  mType: 1
-  mFillDirection: 4
-  mFillAmount: 1
-  mInvert: 0
 --- !u!114 &11400316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16018,7 +15985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onChange: []
-  mBG: {fileID: 11400314}
+  mBG: {fileID: 0}
   mFG: {fileID: 11400310}
   mDir: 1
   mInverted: 0
@@ -16757,30 +16724,6 @@ MonoBehaviour:
   callWhenFinished: 
   from: {x: 0, y: 0, z: 0}
   to: {x: 0, y: 0, z: 180}
---- !u!114 &11400378
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100628}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mColor: {r: .283582091, g: .283582091, b: .283582091, a: 1}
-  mPivot: 4
-  mWidth: 20
-  mHeight: 48
-  mDepth: 8
-  autoResizeBoxCollider: 0
-  mAtlas: {fileID: 0}
-  mSpriteName: Button
-  mFillCenter: 1
-  mType: 1
-  mFillDirection: 4
-  mFillAmount: 1
-  mInvert: 0
 --- !u!114 &11400380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20384,30 +20327,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: Sausage
---- !u!114 &11400696
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100640}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mColor: {r: .283582091, g: .283582091, b: .283582091, a: 1}
-  mPivot: 4
-  mWidth: 20
-  mHeight: 48
-  mDepth: 8
-  autoResizeBoxCollider: 0
-  mAtlas: {fileID: 0}
-  mSpriteName: Button
-  mFillCenter: 1
-  mType: 1
-  mFillDirection: 4
-  mFillAmount: 1
-  mInvert: 0
 --- !u!114 &11400698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -23421,7 +23340,7 @@ SkinnedMeshRenderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 1ca0b1ce601b2084890ad9778526094c, type: 2}
+  - {fileID: 2100000, guid: b005733b9a927dd4d83e85e6c1a995ac, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
