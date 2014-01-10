@@ -57,14 +57,7 @@ public class UnlockScreenPopulator : MonoBehaviour
         {
             if (levels[i].UnlockedFunFact)
             {
-                if (Localization.instance.IsEnglish)
-                {
-                    textLabels[i].text = levels[i].FunFactsText;
-                }
-                else
-                {
-                    textLabels[i].text = levels[i].DanishFunFactsText;
-                }
+				textLabels[i].text = levels[i].FunFactsText;               
             }
         }
     }

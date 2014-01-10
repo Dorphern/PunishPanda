@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PauseMenuManager : MonoBehaviour {
@@ -49,17 +49,10 @@ public class PauseMenuManager : MonoBehaviour {
 		
 		if(!InstanceFinder.GameManager.debugMode)
 		{
-			//get start-tutorial texture:
-	    	if (Localization.instance.currentLanguage == "English")
-	    	{
-            	HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
-	        	TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
-	    	}
-	    	else
-	    	{
-            	HintTexture = InstanceFinder.LevelManager.CurrentLevel.DanishHintscreenTexture;
-	        	TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.DanishTutorialTexture;
-	    	}
+		
+    		HintTexture = InstanceFinder.LevelManager.CurrentLevel.HintscreenTexture;
+        	TutorialTexture = InstanceFinder.LevelManager.CurrentLevel.TutorialTexture;
+
 			
 			//set start-tutorial texture to component
 			textureComponent.mainTexture = TutorialTexture;

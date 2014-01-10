@@ -110,9 +110,9 @@ public class StatsManager : MonoBehaviour
 
         for (int i = 0; i < levels.Count; i++)
         {
-            levels[i].HighScore = PlayerPrefs.GetInt(levels[i].LevelName + levelScore);
-            levels[i].UnlockedLevel = PlayerPrefs.GetInt(levels[i].LevelName + levelUnlocked) == 1 ? true : false;
-            levels[i].UnlockedFunFact = PlayerPrefs.GetInt(levels[i].LevelName + funfactUnlocked) == 1 ? true : false;
+            levels[i].HighScore = PlayerPrefs.GetInt(levels[i].LevelNameWidescreen + levelScore);
+            levels[i].UnlockedLevel = PlayerPrefs.GetInt(levels[i].LevelNameWidescreen + levelUnlocked) == 1 ? true : false;
+            levels[i].UnlockedFunFact = PlayerPrefs.GetInt(levels[i].LevelNameWidescreen + funfactUnlocked) == 1 ? true : false;
         }
     }
 
@@ -145,9 +145,9 @@ public class StatsManager : MonoBehaviour
         for (int i = 0; i < levels.Count; i++)
         {
             scoreCombined += levels[i].HighScore;
-            PlayerPrefs.SetInt(levels[i].LevelName + levelScore, levels[i].HighScore);
-            PlayerPrefs.SetInt(levels[i].LevelName + levelUnlocked, levels[i].UnlockedLevel == true ? 1 : 0);
-            PlayerPrefs.SetInt(levels[i].LevelName + funfactUnlocked, levels[i].UnlockedFunFact == true ? 1 : 0);
+            PlayerPrefs.SetInt(levels[i].LevelNameWidescreen + levelScore, levels[i].HighScore);
+            PlayerPrefs.SetInt(levels[i].LevelNameWidescreen + levelUnlocked, levels[i].UnlockedLevel == true ? 1 : 0);
+            PlayerPrefs.SetInt(levels[i].LevelNameWidescreen + funfactUnlocked, levels[i].UnlockedFunFact == true ? 1 : 0);
         }
         PlayerPrefs.SetInt(totalScoreKey, TotalScore);
         PlayerPrefs.Save();

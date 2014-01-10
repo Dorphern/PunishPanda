@@ -60,7 +60,7 @@ namespace Rotorz.ReorderableList {
 
         public static LevelData DefaultItemDrawer(Rect position, LevelData item)
         {
-            GUI.Label(position, item.LevelName);
+            GUI.Label(position, item.LevelNameWidescreen);
             return item;
         }
 

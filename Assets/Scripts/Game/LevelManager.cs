@@ -73,7 +73,21 @@ public class LevelManager : MonoBehaviour
             isInMainMenu = false;
             currentLevelIndex = index;
 			AddStatistics();
-            LoadLevel(CurrentLevel.LevelName);
+
+            LoadLevel(GetNameByIndexAndRatio(currentLevelIndex));
+        }
+    }
+
+    private string GetNameByIndexAndRatio(int index)
+    {
+        //Then widescreen
+        if(Screen.width / (float)Screen.height > 1.4)
+        {
+            return currentWorld.Levels[index].LevelNameWidescreen;
+        }
+        else
+        {
+            return currentWorld.Levels[index].LevelNameNonWide;
         }
     }
 
@@ -84,7 +98,7 @@ public class LevelManager : MonoBehaviour
         InstanceFinder.GameManager.ActiveLevel.OnLevelReset();
 		AddStatistics();
 		SaveData();
-        LoadLevel(CurrentLevel.LevelName);
+        LoadLevel(GetNameByIndexAndRatio(currentLevelIndex));
     }
 
     public void LoadNextLevel()
@@ -97,7 +111,7 @@ public class LevelManager : MonoBehaviour
         {
 			AddStatistics();
 			SaveData();
-            LoadLevel(CurrentLevel.LevelName);
+            LoadLevel(GetNameByIndexAndRatio(currentLevelIndex));
         }
         else
         {
@@ -107,6 +121,8 @@ public class LevelManager : MonoBehaviour
             LoadLevel(mainMenuName);
         }
     }
+
+    
 
     public GameWorld GetWorld(int index)
     {

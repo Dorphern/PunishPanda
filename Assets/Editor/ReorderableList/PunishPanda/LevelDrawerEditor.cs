@@ -45,7 +45,7 @@ public class LevelDrawerEditor : Editor
 
     private LevelData DrawItem(Rect position, LevelData item)
     {
-        GUI.Label(position, item.LevelName);
+        GUI.Label(position, item.LevelNameWidescreen);
         return item;
     }
 

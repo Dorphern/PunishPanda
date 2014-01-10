@@ -18,7 +18,7 @@ public class Animations : MonoBehaviour {
 	
 	private int rightPeeHash;
 	private int leftPeeHash;
-    public MeshRenderer penis;
+    [SerializeField] private MeshRenderer penis;
     public PissParticles pissScript;
     public GameObject pGO;
     Vector3 initScale;

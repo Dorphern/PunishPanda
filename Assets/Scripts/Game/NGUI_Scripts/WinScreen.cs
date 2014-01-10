@@ -111,10 +111,7 @@ public class WinScreen : MonoBehaviour {
     {
  
         funFactsTexture.mainTexture = levelData.FunFactsTexture;
-        if (Localization.instance.currentLanguage == "English")
-            FunFactsLabel.text = levelData.FunFactsText;
-        else
-            FunFactsLabel.text = levelData.DanishFunFactsText;
+        FunFactsLabel.text = levelData.FunFactsText;
         score = level.GetScore();
         highscore = levelData.HighScore;
 		
@@ -149,7 +146,7 @@ public class WinScreen : MonoBehaviour {
 				if(InstanceFinder.AchievementManager != null)
 				{
 					// if the achievement has been completed
-					if(InstanceFinder.AchievementManager.SetProgressToAchievement(levelData.LevelName,3))
+					if(InstanceFinder.AchievementManager.SetProgressToAchievement(levelData.LevelNameWidescreen,3))
 					{
 						// that means that the stars for this level had not been collected until now
 						// thus we add progress to the star hunter achievement
@@ -382,11 +379,7 @@ public class WinScreen : MonoBehaviour {
 		{
             HDRSystem.PostEvents(gameObject, OnHighscoreEvents);
 			//localization of stamps
-			if(Localization.instance.currentLanguage == "Danish")
-				NewHighScoreTextureDanish.SetActive(true);
-			// defaulting to english
-			else
-				NewHighScoreTextureEnglish.SetActive(true);
+			NewHighScoreTextureEnglish.SetActive(true);
 		}
 		else
 		{

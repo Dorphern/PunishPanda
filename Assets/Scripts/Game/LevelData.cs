@@ -5,7 +5,8 @@ using UnityEngine;
 [Serializable]
 public class LevelData
 {
-    [SerializeField] public string LevelName = "";
+    [SerializeField] public string LevelNameWidescreen = "";
+    [SerializeField] public string LevelNameNonWide = "";
 
     [SerializeField] 
     public int HighScore;
@@ -22,21 +23,21 @@ public class LevelData
     public Texture2D FunFactsTexture;
     [SerializeField]
     public string FunFactsText;
-    [SerializeField]
-    public string DanishFunFactsText;
+	/*[SerializeField]
+    public string DanishFunFactsText;*/
 
     [SerializeField]
     public Texture2D HintscreenTexture;
-
-    [SerializeField]
-    public Texture2D DanishHintscreenTexture;
+		
 
     [SerializeField]
     public Texture2D TutorialTexture;
 
-    [SerializeField]
-    public Texture2D DanishTutorialTexture;
+	//[SerializeField]
+	//public Texture2D DanishTutorialTexture;
 
+
+	public GameObject GUIObject;
 
     public bool Toggled;
 
