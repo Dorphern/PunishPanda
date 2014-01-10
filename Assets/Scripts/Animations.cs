@@ -21,6 +21,7 @@ public class Animations : MonoBehaviour {
     public MeshRenderer penis;
     public PissParticles pissScript;
     public GameObject pGO;
+	public GameObject penisPixelBox;
     Vector3 initScale;
 
     # region Public Methods
@@ -223,6 +224,7 @@ public class Animations : MonoBehaviour {
             s.y += rate;
             s.z += rate;
             pGO.transform.localScale = s;
+			penisPixelBox.transform.localScale = s * 2.5f;
             yield return new WaitForSeconds(step);  
         }
         pissScript.PissFor(3f); 
@@ -238,6 +240,7 @@ public class Animations : MonoBehaviour {
             s.y -= rate;
             s.z -= rate;
             pGO.transform.localScale = s;
+			penisPixelBox.transform.localScale = s * 2.5f;
             yield return new WaitForSeconds(step);  
         }
         penis.enabled = false;
@@ -272,6 +275,7 @@ public class Animations : MonoBehaviour {
         s.y = 0;
         s.z = 0;
         pGO.transform.localScale = s;
+		penisPixelBox.transform.localScale = s * 2.5f;
     }
     # endregion
 }
