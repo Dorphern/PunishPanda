@@ -23,6 +23,7 @@ public class Animations : MonoBehaviour {
     public MeshRenderer penis;
     public PissParticles pissScript;
     public GameObject pGO;
+	public GameObject penisPixelateBox;
     Vector3 initScale;
 
     # region Public Methods
@@ -170,7 +171,7 @@ public class Animations : MonoBehaviour {
         yield return new WaitForSeconds(PandaRandom.NextFloat(0f, randomMaxWait));
         while (stateManager.GetState() != PandaState.Died)
         {
-            anim.SetInteger("Random", PandaRandom.NextInt(0,101));
+            anim.SetInteger("Random", PandaRandom.NextInt(0,301));
             anim.SetBool("NewRandom", true);
 			yield return new WaitForEndOfFrame();
             anim.SetBool("NewRandom", false);
@@ -218,6 +219,7 @@ public class Animations : MonoBehaviour {
             s.y += rate;
             s.z += rate;
             pGO.transform.localScale = s;
+			penisPixelateBox.transform.localScale = s *3f; //new Vector3(s.x * 8, s.y * 2, s.z * 0.1f);
             yield return new WaitForSeconds(step);  
         }
         pissScript.PissFor(3f); 
@@ -233,6 +235,7 @@ public class Animations : MonoBehaviour {
             s.y -= rate;
             s.z -= rate;
             pGO.transform.localScale = s;
+			penisPixelateBox.transform.localScale = s*3f;
             yield return new WaitForSeconds(step);  
         }
         penis.enabled = false;
@@ -263,6 +266,7 @@ public class Animations : MonoBehaviour {
         s.y = 0;
         s.z = 0;
         pGO.transform.localScale = s;
+		penisPixelateBox.transform.localScale = s* 3;
     }
     # endregion
 }
