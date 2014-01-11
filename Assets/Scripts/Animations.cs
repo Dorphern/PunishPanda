@@ -224,7 +224,7 @@ public class Animations : MonoBehaviour {
             s.y += rate;
             s.z += rate;
             pGO.transform.localScale = s;
-			penisPixelBox.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			penisPixelBox.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
             yield return new WaitForSeconds(step);  
         }
         pissScript.PissFor(3f); 
