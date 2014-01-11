@@ -49,6 +49,7 @@ public class AchievementWindow : MonoBehaviour {
 				if(achievementTitleLabel!=null)
 				{
 					achievementTitleLabel.text = localization.Get(ach.name);
+					GA.API.Design.NewEvent("panda:"+localization.Get(ach.name).ToString(), transform.position);
 				}
 				if(achievementTextLabel!=null)
 					achievementTextLabel.text = localization.Get(ach.description);
