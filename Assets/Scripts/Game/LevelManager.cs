@@ -48,7 +48,11 @@ public class LevelManager : MonoBehaviour
         isInMainMenu = true;
         currentLevelIndex = -1;
 		SaveData();
-        LoadLevel(mainMenuName);
+
+        if (WidescreenCheck.IsWideScreen())
+            LoadLevel(mainMenuName);
+        else
+            LoadLevel(mainMenuNameNonWide);
     }
 	
 	[HideInInspector]
@@ -123,7 +127,10 @@ public class LevelManager : MonoBehaviour
             NextWorld();
             isInMainMenu = true;
 			SaveData();
-            LoadLevel(mainMenuName);
+            if (WidescreenCheck.IsWideScreen())
+                LoadLevel(mainMenuName);
+            else
+                LoadLevel(mainMenuNameNonWide);
         }
     }
 
