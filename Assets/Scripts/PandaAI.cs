@@ -97,6 +97,7 @@ public class PandaAI : MonoBehaviour {
 			pandaStateManager.ChangeState(PandaState.Idle);
             animations.SetDoubleTapped();
 			BloodSplatter.Instance.ProjectHit(transform.position, new Vector2(0f, - 0.2f));
+			GA.API.Design.NewEvent("panda:doubleTapped", transform.position);
 		}
 	}
 
@@ -191,6 +192,7 @@ public class PandaAI : MonoBehaviour {
                 // Panda is slapped in the back
                 if (boostEnabled && pandaStateManager.GetState() == PandaState.Walking) // we boost only when walking
                 {
+					GA.API.Design.NewEvent("panda:Boosted", transform.position);
                     //boostStartTime = Time.time;
                     if (boostco != null)
                     {
@@ -284,9 +286,11 @@ public class PandaAI : MonoBehaviour {
         {
             //pandaController.EnableColliders( false );
 			StartCoroutine(SpawnElectrocutedPanda(0f));
+			GA.API.Design.NewEvent("panda:Electrocuted", transform.position);
         }
         else if (trapType == TrapType.Pounder)
         {
+			GA.API.Design.NewEvent("panda:Pounder", transform.position);
             Dismember();
         }
         else if (trapType == TrapType.RoundSaw)
@@ -294,6 +298,7 @@ public class PandaAI : MonoBehaviour {
             BladeDirection bladeDirection = trap.GetSpinDirection();
 			if(killType == KillType.Dismember)
 			{
+				GA.API.Design.NewEvent("panda:RoundSaw", transform.position);
 				Dismember();
 			}
 			else
@@ -372,6 +377,7 @@ public class PandaAI : MonoBehaviour {
 
     public void PandaEscape (PandaEscape escape, TrapPosition position)
     {
+		GA.API.Design.NewEvent("panda:Escaped", transform.position);
         if (pandaStateManager.GetState() == PandaState.PushingFinger && transform.position.x < escape.transform.position.x)
         {
             pandaStateManager.ChangeDirection(global::PandaDirection.Right);
