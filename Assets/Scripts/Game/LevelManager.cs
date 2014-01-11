@@ -60,7 +60,11 @@ public class LevelManager : MonoBehaviour
         isInMainMenu = true;
 		loadLevelsScreenFlag = true;
 		SaveData();
-        LoadLevel(mainMenuName);
+
+        if (IsWideScreen())
+            LoadLevel(mainMenuName);
+        else
+            LoadLevel(mainMenuNameNonWide);
     }
 
     public void LoadLevelByWorldIndex(int index)
@@ -78,10 +82,18 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private static bool IsWideScreen()
+    {
+        if (Screen.width / (float)Screen.height > 1.4)
+            return true;
+        else
+            return false;
+    }
+
     private string GetNameByIndexAndRatio(int index)
     {
         //Then widescreen
-        if(Screen.width / (float)Screen.height > 1.4)
+        if (IsWideScreen())
         {
             return currentWorld.Levels[index].LevelNameWidescreen;
         }
@@ -168,6 +180,9 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private string mainMenuName;
+
+    [SerializeField]
+    private string mainMenuNameNonWide;
 
     [SerializeField]
     private List<GameWorld> worlds;
