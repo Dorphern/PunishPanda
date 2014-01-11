@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
 		loadLevelsScreenFlag = true;
 		SaveData();
 
-        if (IsWideScreen())
+        if (WidescreenCheck.IsWideScreen())
             LoadLevel(mainMenuName);
         else
             LoadLevel(mainMenuNameNonWide);
@@ -82,18 +82,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private static bool IsWideScreen()
-    {
-        if (Screen.width / (float)Screen.height > 1.4)
-            return true;
-        else
-            return false;
-    }
 
     private string GetNameByIndexAndRatio(int index)
     {
         //Then widescreen
-        if (IsWideScreen())
+        if (WidescreenCheck.IsWideScreen())
         {
             return currentWorld.Levels[index].LevelNameWidescreen;
         }
