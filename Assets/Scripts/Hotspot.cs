@@ -20,9 +20,9 @@ public class Hotspot : MonoBehaviour {
 	
 	void Start ()
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer && !iPhone.generation.ToString().Contains("iPad"))
+		if (Application.platform == RuntimePlatform.IPhonePlayer && iPhone.generation.ToString().Contains("iPhone"))
 		{
-			hotspotActiveLines.transform.localScale *= 2;
+			hotspotActiveLines.transform.localScale *= 1.7f;
 		}
 	}
     void OnTriggerEnter (Collider collider)
