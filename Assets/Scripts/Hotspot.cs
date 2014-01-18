@@ -17,7 +17,14 @@ public class Hotspot : MonoBehaviour {
     [SerializeField] private float bounceDirection = 1f;
 	
     private bool hotspotActive = false;
-
+	
+	void Start ()
+	{
+		if (Application.platform == RuntimePlatform.IPhonePlayer && !iPhone.generation.ToString().Contains("iPad"))
+		{
+			hotspotActiveLines.transform.localScale *= 2;
+		}
+	}
     void OnTriggerEnter (Collider collider)
     {
         CheckPandaHit(collider);
@@ -48,6 +55,7 @@ public class Hotspot : MonoBehaviour {
         hotspotActive = true;
 		hotspotActiveLines.SetActive(hotspotActive);
 		//renderer.material.color = Color.green;
+		
     }
 
     public void DeactivateHotspot ()
