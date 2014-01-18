@@ -19,6 +19,14 @@ public class FingerMenu : MonoBehaviour {
 	
 	void Start()
 	{
+		if (Application.platform == RuntimePlatform.IPhonePlayer && iPhone.generation.ToString().Contains("iPhone")) 
+		{
+			smallFingerSize *= 2;
+			mediumFingerSize *= 2;
+			largeFingerSize *= 2;
+			XL_Finger_Size *= 2;
+		}
+		
 		mm = GetComponent<MenuManager>();
 		float size = InstanceFinder.StatsManager.FingerSize;
 		if(size == smallFingerSize)
